@@ -18,10 +18,10 @@ export default function Home() {
               <span className="text-secondary uppercase text-sm md:text-lg font-semibold">
                 EDUCATION SOLUTION
               </span>
-              <h1 className="text-background text-3xl md:text-6xl font-sans font-bold pb-5">
+              <h1 className="text-background text-3xl md:text-6xl font-sans font-bold pb-1 md:pb-5">
                 Cloud-based LMS trusted by 1000+
               </h1>
-              <p className="text-background text-sm md:text-xl py-5">
+              <p className="text-background text-sm md:text-xl py-1 md:py-5">
                 Lorem Ipsum is simply dummy text of the printing typesetting
                 industry. Lorem Ipsum has been
               </p>

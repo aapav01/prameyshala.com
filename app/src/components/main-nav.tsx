@@ -6,7 +6,7 @@ import { Button } from "./ui/button";
 function MainNav() {
   return (
     <nav className="">
-      <div className="container flex min-h-[3rem] p-6">
+      <div className="container flex min-h-[3rem] p-6 gap-2">
         <div className="flex-1">
           <Link href="/" passHref>
             <Image
@@ -18,9 +18,9 @@ function MainNav() {
             />
           </Link>
         </div>
-        <div className="flex-1 flex justify-end items-center">
-          <Button variant={'outline'} className="mr-4">Login</Button>
-          <Button className="mr-4 text-xs md:text-sm">Get Started <span className="hidden md:flex">For Free</span></Button>
+        <div className="flex-1 flex justify-end items-center gap-1">
+          <Button variant={'outline'}>Login</Button>
+          <Button className="text-xs md:text-sm">Get Started <span className="hidden md:flex">For Free</span></Button>
         </div>
       </div>
     </nav>
