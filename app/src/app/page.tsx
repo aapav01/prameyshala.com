@@ -11,23 +11,23 @@ import TestimonialMain from "@/components/testimontial-main";
 export default function Home() {
   return (
     <main className="min-h-screen">
-      <section className="mx-12 py-28 bg-primary-deep rounded-xl shadow-lg">
+      <section className="mx-12  md:py-28 bg-primary-deep rounded-xl shadow-lg">
         <div className="container">
           <div className="flex flex-col lg:flex-row h-full items-center relative">
             <div className="w-full lg:w-1/2">
-              <span className="text-secondary uppercase text-lg font-semibold">
+              <span className="text-secondary uppercase text-sm md:text-lg font-semibold">
                 EDUCATION SOLUTION
               </span>
-              <h1 className="text-background text-6xl font-sans font-bold pb-5">
+              <h1 className="text-background text-3xl md:text-6xl font-sans font-bold pb-5">
                 Cloud-based LMS trusted by 1000+
               </h1>
-              <p className="text-background text-xl py-5">
+              <p className="text-background text-sm md:text-xl py-5">
                 Lorem Ipsum is simply dummy text of the printing typesetting
                 industry. Lorem Ipsum has been
               </p>
               <div className="flex">
-                <Button variant={"outline"} className="text-lg py-6">
-                  Get Started For Free
+                <Button variant={"outline"} className="text-xs md:text-lg md:py-6">
+                  Get Started<span className="hidden md:flex">For Free</span>
                 </Button>
                 <Button
                   variant={"ghost"}
@@ -80,10 +80,10 @@ export default function Home() {
             <div className="mx-auto items-center justify-center flex h-fit">
               <Image
                 src={content_2.src}
-                height={content_2.height}
-                width={content_2.width}
+                height={320}
+                width={320}
                 className="h-fit rounded-lg absolute"
-                alt=""
+                alt="teacher"
               />
               <img className="" src="img/about/about_8.png" alt="" />
             </div>
@@ -131,8 +131,8 @@ export default function Home() {
         </div>
       </section>
       <section className="container py-12">
-        <div className="flex flex-row items-center">
-          <div className="w-1/2 md:w-1/2 lg:w-4/12 ">
+        <div className="columns-1 md:columns-3 items-center gap-3">
+          <div className="">
             <div className="md:mb-7">
               <span className="mb-5 text-primary bg-primary/10 rounded-2xl text-sm font-semibold px-3 py-1">
                 Course List
@@ -142,21 +142,21 @@ export default function Home() {
               </h2>
             </div>
           </div>
-          <div className="w-1/2 md:w-1/2 lg:w-5/12 ">
+          <div className="">
             <p>
               Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent
               finibus imperdiet nibh, vel varius tortor cursus ut. Integer
               volutpat mollis scelerisque.
             </p>
           </div>
-          <div className="w-1/2 md:w-1/2 lg:w-3/12 flex justify-end">
+          <div className="flex justify-end">
             <Button variant={"secondary"} className="py-6">
               All Categories
               <ArrowRightIcon className="ml-1" />
             </Button>
           </div>
         </div>
-        <div className="w-full mt-10 grid grid-cols-4 gap-4">
+        <div className="w-full mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           <ServiceCard
             title="Hello World"
             description="Hello from Pramey Shala"
@@ -247,14 +247,14 @@ export default function Home() {
       </section>
       <section className="registerarea pt-10">
         <div className="container">
-          <div className="flex flex-row">
+          <div className="flex flex-col sm:flex-row">
             <div className="lg:w-7/12 w-full">
               <div className="registerarea__wraper">
                 <div className="section__title registerarea__section__title">
                   <span className="text-primary bg-white/90 rounded-2xl text-sm font-semibold px-3 py-1">
                     Course List
                   </span>
-                  <div className="mt-5 text-5xl section__title__heading heading__underline font-bold">
+                  <div className="mt-5 text-3xl md:text-5xl section__title__heading heading__underline font-bold">
                     <h2>
                       Register Your{" "}
                       <span className="rock-underline">Account</span> Get free
