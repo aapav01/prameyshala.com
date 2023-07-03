@@ -1,4 +1,3 @@
-/* eslint-disable @next/next/no-img-element */
 import Image from "next/image";
 import { CheckCircledIcon, ArrowRightIcon } from "@radix-ui/react-icons";
 // Components
@@ -26,7 +25,10 @@ export default function Home() {
                 industry. Lorem Ipsum has been
               </p>
               <div className="flex">
-                <Button variant={"outline"} className="text-xs md:text-lg md:py-6">
+                <Button
+                  variant={"outline"}
+                  className="text-xs md:text-lg md:py-6"
+                >
                   Get Started<span className="hidden md:flex">For Free</span>
                 </Button>
                 <Button
@@ -43,10 +45,18 @@ export default function Home() {
                   src="/img/young-student.png"
                   height={512}
                   width={505}
-                  className=" absolute"
+                  className="absolute"
+                  loading="lazy"
                   alt=""
                 />
-                <img className="" src="img/about/about_8.png" alt="" />
+                <Image
+                  height={544}
+                  width={515}
+                  className=""
+                  loading="lazy"
+                  src="/img/about/about_8.png"
+                  alt=""
+                />
               </div>
             </div>
           </div>
@@ -65,9 +75,10 @@ export default function Home() {
               strokeLinejoin="round"
             />
           </svg>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             className="top-[20%] left-[5%] animate-pulse absolute"
-            src="img/herobanner/herobanner__6.png"
+            src="/img/herobanner/herobanner__6.png"
             alt=""
           />
           <span className="bottom-[15%] right-[5%] bg-gradient-radial from-indigo-600 via-transparent opacity-20 absolute h-96 w-96" />
@@ -84,7 +95,13 @@ export default function Home() {
                 className="h-fit rounded-lg absolute"
                 alt="teacher"
               />
-              <img className="" src="img/about/about_8.png" alt="" />
+              <Image
+                height={544}
+                width={515}
+                className=""
+                src="/img/about/about_8.png"
+                alt=""
+              />
             </div>
           </div>
           <div className="w-full lg:w-1/2">
@@ -268,7 +285,12 @@ export default function Home() {
                         className="video-btn"
                         href="https://www.youtube.com/watch?v=vHdclsdkp28"
                       >
-                        <img src="/img/icons/video.png" alt="" />
+                        <Image
+                          width={32}
+                          height={32}
+                          src="/img/icons/video.png"
+                          alt=""
+                        />
                       </a>
                     </div>
                     <div className="registerarea__para">
@@ -333,17 +355,29 @@ export default function Home() {
           </div>
         </div>
         <div className="registerarea__img">
-          <img
+          <Image
             className="register__1"
+            width={100}
+            height={100}
             src="/img/register/register__1.png"
             alt=""
           />
-          <img
+          <svg
             className="register__2"
-            src="/img/register/register__2.png"
-            alt=""
-          />
-          <img
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M16.5961 10.265L19 1.33069L10.0022 3.73285L1 6.1306L7.59393 12.6627L14.1879 19.1992L16.5961 10.265Z"
+              stroke="#FFB31F"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+          <Image
+            width={100}
+            height={100}
             className="register__3"
             src="/img/register/register__3.png"
             alt=""
