@@ -3,7 +3,7 @@ module.exports = {
     name: 'prameyshala',
     exec_mode: 'cluster',
     script: 'node_modules/next/dist/bin/next',
-    args: 'start',
+    args: 'start -p 3001',
     watch: true,
   }]
 }
