@@ -28,6 +28,14 @@ function TestimonialMain({}: Props) {
           navigation
           spaceBetween={20}
           slidesPerView={2}
+          breakpoints={{
+            320 : {
+              slidesPerView: 1,
+            },
+            1024: {
+              slidesPerView: 2,
+            }
+          }}
         >
           <SwiperSlide>
             <TestimonialCard
