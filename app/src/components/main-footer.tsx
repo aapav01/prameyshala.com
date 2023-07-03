@@ -12,7 +12,7 @@ function MainFooter({}: Props) {
     <footer className="bg-primary-deep text-indigo-300 py-8">
       <div className="container">
         <div className="border-b-2 border-indigo-900 pb-8">
-          <div className="flex flex-row gap-4">
+          <div className="flex flex-col md:flex-row gap-4">
             <div className="max-w-sm">
               <Link href="/" passHref>
                 <Image
@@ -34,18 +34,18 @@ function MainFooter({}: Props) {
                 <Image
                   src={AppStore.src}
                   alt="App Store"
-                  width={150}
+                  width={120}
                   height={48}
                 />
                 <Image
                   src={PlayStore.src}
                   alt="Play Store"
-                  width={150}
+                  width={120}
                   height={48}
                 />
               </div>
             </div>
-            <div className="grid grid-cols-3 p-8 gap-4 text-lg w-full">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 p-8 gap-4 text-lg w-full">
               <div>
                 <p className="font-sans font-bold text-indigo-100">Usefull Links</p>
                 <ul className="mt-2">
