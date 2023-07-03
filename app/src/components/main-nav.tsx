@@ -20,7 +20,7 @@ function MainNav() {
         </div>
         <div className="flex-1 flex justify-end items-center">
           <Button variant={'outline'} className="mr-4">Login</Button>
-          <Button className="mr-4">Get Started For Free</Button>
+          <Button className="mr-4 text-xs md:text-sm">Get Started <span className="hidden md:flex">For Free</span></Button>
         </div>
       </div>
     </nav>

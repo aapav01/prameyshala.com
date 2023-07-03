@@ -11,7 +11,7 @@ import TestimonialMain from "@/components/testimontial-main";
 export default function Home() {
   return (
     <main className="min-h-screen">
-      <section className="mx-12  md:py-28 bg-primary-deep rounded-xl shadow-lg">
+      <section className="mx-4 md:mx-12 py-8 md:py-28 bg-primary-deep rounded-xl shadow-lg">
         <div className="container">
           <div className="flex flex-col lg:flex-row h-full items-center relative">
             <div className="w-full lg:w-1/2">
@@ -31,7 +31,7 @@ export default function Home() {
                 </Button>
                 <Button
                   variant={"ghost"}
-                  className="mx-2 text-white text-sm py-6"
+                  className="mx-2 text-white text-xs md:text-sm py-6"
                 >
                   Find Out More
                 </Button>
@@ -92,7 +92,7 @@ export default function Home() {
             <span className="text-secondary bg-secondary/10 px-3 py-1 rounded-2xl text-sm font-semibold">
               About Us
             </span>
-            <h2 className="text-6xl font-sans font-bold py-5">
+            <h2 className="text-3xl md:text-6xl font-sans font-bold py-5">
               Welcome to the <span className="rock-underline">Online</span>{" "}
               Learning Center
             </h2>
