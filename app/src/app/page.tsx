@@ -70,7 +70,6 @@ export default function Home() {
             src="img/herobanner/herobanner__6.png"
             alt=""
           />
-          <span className="top-[5%] left-[45%] bg-gradient-radial from-indigo-600 via-transparent opacity-20 absolute h-96 w-96" />
           <span className="bottom-[15%] right-[5%] bg-gradient-radial from-indigo-600 via-transparent opacity-20 absolute h-96 w-96" />
         </div>
       </section>
