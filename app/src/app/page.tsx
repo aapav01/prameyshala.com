@@ -26,10 +26,10 @@ export default function Home() {
               </p>
               <div className="flex">
                 <Button
-                  variant={"outline"}
+                  variant={"white"}
                   className="text-xs md:text-lg md:py-6"
                 >
-                  Get Started<span className="hidden md:flex">For Free</span>
+                  Get Started <span className="hidden md:flex md:ml-1">For Free</span>
                 </Button>
                 <Button
                   variant={"ghost"}
