@@ -49,7 +49,7 @@ function MainFooter({}: Props) {
               <div>
                 <p className="font-sans font-bold text-indigo-100">Usefull Links</p>
                 <ul className="mt-2">
-                  <li>About Us</li>
+                  <li><a href="/about">About Us</a></li>
                   <li>Careers</li>
                   <li>Blogs</li>
                 </ul>
