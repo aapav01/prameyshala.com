@@ -1,0 +1,14 @@
+{
+  "name": "tailwind_theme",
+  "version": "0.1.0",
+  "license": "MIT",
+  "scripts": {
+    "start": "tailwindcss -i main.css -o ../static/css/main.css --watch",
+    "build": "tailwindcss -i main.css -o ../static/css/main.css --minify"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.4.14",
+    "postcss": "^8.4.25",
+    "tailwindcss": "^3.3.2"
+  }
+}
