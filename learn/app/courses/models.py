@@ -1,4 +1,5 @@
 from django.db import models
+from app.accounts.models import User
 
 class Classes(models.Model):
     name = models.CharField(max_length=255)
@@ -40,7 +41,7 @@ class Chapter(models.Model):
     collectionid = models.CharField(
         db_column='collectionId', max_length=255, blank=True, null=True)
     course_id = models.ForeignKey(Subject, on_delete=models.CASCADE)
-    user_id = models.ForeignKey('auth.User', on_delete=models.CASCADE)
+    user_id = models.ForeignKey(User, on_delete=models.CASCADE)
     created_at = models.DateTimeField(blank=True, null=True)
     updated_at = models.DateTimeField(blank=True, null=True)
 
@@ -62,7 +63,7 @@ class Lesson(models.Model):
     status = models.CharField(max_length=10)
     platform = models.CharField(max_length=11, blank=True, null=True)
     platform_video_id = models.CharField(max_length=255, blank=True, null=True)
-    user_id = models.ForeignKey('auth.User', on_delete=models.CASCADE)
+    user_id = models.ForeignKey(User, on_delete=models.CASCADE)
     chapter_id = models.ForeignKey(Chapter, on_delete=models.CASCADE)
     created_at = models.DateTimeField(blank=True, null=True)
     updated_at = models.DateTimeField(blank=True, null=True)
