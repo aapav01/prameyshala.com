@@ -26,6 +26,7 @@
     <meta property="og:url" content="{{ url }}" />
     <meta property="og:image" content="" />
     {% comment %} Main SEO link {% endcomment %}
+    <meta name="keywords" content="" />
     <link rel="canonical" href="{{ url }}" />
     {% endblock seo %}
     <link rel="apple-touch-icon" href="{% static 'icon.png' %}" />
@@ -41,12 +42,12 @@
 </head>
 
 <body class="overflow-x-hidden w-screen relative">
-    {% include 'header.html' %}
+    {% include "header.html" %}
     <main id="top">
         {% block content %}
         {% endblock content %}
     </main>
-    {% include 'footer.html' %}
+    {% include "footer.html" %}
     {% comment %} <!-- JavaScript --> {% endcomment %}
     <script type="text/javascript" src="{% static 'js/main.js' %}"></script>
     {% block body_js %}{% endblock body_js %}
