@@ -1,16 +1,29 @@
 from django.db import models
 
-class Course(models.Model):
+class Classes(models.Model):
+    name = models.CharField(max_length=255)
+    description = models.TextField()
+    image = models.CharField(max_length=255)
+    slug = models.CharField(unique=True, max_length=255)
+    postition = models.IntegerField()
+    publish_at = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateTimeField(auto_now_add=True, blank=True, null=True)
+    updated_at = models.DateTimeField(auto_now_add=True, blank=True, null=True)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        db_table = 'classes'
+
+class Subject(models.Model):
     name = models.CharField(max_length=255)
     short = models.CharField(max_length=255, blank=True, null=True)
     description = models.TextField()
     slug = models.CharField(unique=True, max_length=255)
     image = models.CharField(max_length=255)
-    latest_price = models.FloatField()
-    before_price = models.FloatField(blank=True, null=True)
-    public = models.IntegerField()
     publish_at = models.DateTimeField()
-    user_id = models.ForeignKey('auth.User', on_delete=models.CASCADE)
+    standard_id = models.ForeignKey(Classes, on_delete=models.CASCADE)
     created_at = models.DateTimeField(blank=True, null=True)
     updated_at = models.DateTimeField(blank=True, null=True)
 
@@ -18,15 +31,15 @@ class Course(models.Model):
         return self.name
 
     class Meta:
-        db_table = 'courses'
+        db_table = 'subjects'
 
 class Chapter(models.Model):
     name = models.CharField(max_length=255)
     description = models.TextField(blank=True, null=True)
-    # Field name made lowercase.
+    image = models.CharField(max_length=255)
     collectionid = models.CharField(
         db_column='collectionId', max_length=255, blank=True, null=True)
-    course_id = models.ForeignKey(Course, on_delete=models.CASCADE)
+    course_id = models.ForeignKey(Subject, on_delete=models.CASCADE)
     user_id = models.ForeignKey('auth.User', on_delete=models.CASCADE)
     created_at = models.DateTimeField(blank=True, null=True)
     updated_at = models.DateTimeField(blank=True, null=True)

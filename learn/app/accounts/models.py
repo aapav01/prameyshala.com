@@ -1,5 +1,5 @@
 from django.db import models
-from app.courses.models import Course
+from app.courses.models import Classes
 
 
 class Enrollment(models.Model):
@@ -8,7 +8,7 @@ class Enrollment(models.Model):
     description = models.TextField(blank=True, null=True)
     status = models.CharField(max_length=7)
     user_id = models.ForeignKey('auth.User', on_delete=models.CASCADE)
-    course_id = models.ForeignKey(Course, on_delete=models.CASCADE)
+    classes_id = models.ForeignKey(Classes, on_delete=models.CASCADE)
     created_at = models.DateTimeField(blank=True, null=True)
     updated_at = models.DateTimeField(blank=True, null=True)
 
