@@ -1,10 +1,32 @@
 from django.db import models
-# from app.courses.models import Classes
 from django.core.validators import RegexValidator
-from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 
 phone_validator = RegexValidator(
     r"^(\+?\d{0,4})?\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{4}\)?)?$", "The phone number provided is invalid")
+
+class UserManager(BaseUserManager):
+    def create_superuser(self, phone_number, email, full_name, password=None, **extra_fields):
+        if not email:
+            raise ValueError("User must have an email")
+        if not password:
+            raise ValueError("User must have a password")
+        if not full_name:
+            raise ValueError("User must have a full name")
+        if not phone_number:
+            raise ValueError("User must have a phone number")
+
+        user = self.model(
+            email=self.normalize_email(email)
+        )
+        user.phone_number = phone_number
+        user.full_name = full_name
+        user.set_password(password)
+        user.admin = True
+        user.staff = True
+        user.active = True
+        user.save(using=self._db)
+        return user
 
 class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(max_length=100, unique=True)
@@ -12,6 +34,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     full_name = models.CharField(max_length=30)
     is_active = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)
+    objects = UserManager()
     USERNAME_FIELD = 'phone_number'
     REQUIRED_FIELDS = ['email', 'full_name']
 
