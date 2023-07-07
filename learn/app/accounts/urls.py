@@ -1,3 +1,6 @@
 from django.urls import include, path
+from . import views
 
-urlpatterns = []
+urlpatterns = [
+    path('', views.login, name='login')
+]
