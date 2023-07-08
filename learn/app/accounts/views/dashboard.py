@@ -1,8 +1,8 @@
 from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
 from django.views import View
 
-class HomeView(View):
-    template_name = 'accounts/home.html'
+@login_required()
+def home(request):
+    return render(request, 'accounts/home.html')
 
-    def get(self, request):
-        return render(request, self.template_name)
