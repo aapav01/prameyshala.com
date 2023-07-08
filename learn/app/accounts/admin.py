@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth.forms import UserChangeForm, UserCreationForm
-from .models import User
+from .models import User, Enrollment, Payments
 
 class UserAdmin(BaseUserAdmin):
     form = UserChangeForm
@@ -27,3 +27,5 @@ class UserAdmin(BaseUserAdmin):
         return form
 
 admin.site.register(User, UserAdmin)
+admin.site.register(Enrollment)
+admin.site.register(Payments)
