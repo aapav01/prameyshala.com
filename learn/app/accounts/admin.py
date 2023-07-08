@@ -6,11 +6,11 @@ from .models import User
 class UserAdmin(BaseUserAdmin):
     form = UserChangeForm
     add_form = UserCreationForm
-    list_display = ('email', 'phone_number', 'full_name', 'is_active', 'is_admin')
-    list_filter = ('is_active', 'is_admin')
+    list_display = ('email', 'phone_number', 'full_name', 'is_active', 'is_staff')
+    list_filter = ('is_active', 'is_staff')
     fieldsets = (
         (None, {'fields': ('full_name', 'email', 'phone_number', 'password')}),
-        ('Permissions', {'fields': ('is_active', 'is_admin', 'is_superuser', 'last_login', 'groups', 'user_permissions')}),
+        ('Permissions', {'fields': ('is_active', 'is_staff', 'is_superuser', 'last_login', 'groups', 'user_permissions')}),
     )
     add_fieldsets = (
         (None, {'fields': ('full_name', 'phone_number', 'email', 'password1', 'password2')}),
