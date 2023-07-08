@@ -1,6 +1,8 @@
 {% extends "base.html" %}
 {% load static %}
-{% block title %}Login | Pramey Shala{% endblock title %}
+{% block title %}
+  Login | Pramey Shala
+{% endblock title %}
 {% block content %}
   <section>
     <div class="container p-10">
@@ -12,21 +14,15 @@
                 <div class="md:mx-6 md:p-12">
                   <img width="auto"
                        height="auto"
-                       class="mx-auto w-50 my-12"
+                       class="mx-auto w-50 mb-12"
                        src="{% static 'svg/logo.svg' %}"
                        alt="Pramey Shala" />
-                  <form>
+                  <form method="post">
+                    {% csrf_token %}
                     <div class="relative mb-4">
-                      <div class="form-control w-full">
-                        <label class="label">
-                          <span class="label-text">Mobile No.</span>
-                        </label>
-                        <input type="tel"
-                               placeholder="+911234567890"
-                               class="input input-bordered w-full" />
-                      </div>
+                      <div class="form-control w-full">{{ form }}</div>
                     </div>
-                    <button class="btn btn-primary w-full p-2 mb-12" type="button">Get OTP</button>
+                    <button class="btn btn-primary w-full p-2 mb-12" type="submit">Login</button>
                     <div class="flex items-center justify-end pb-6">
                       <p class="mb-0 mr-2">Don't have an account?</p>
                       <button type="button" class="btn btn-outline">Register</button>

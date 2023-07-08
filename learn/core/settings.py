@@ -98,7 +98,7 @@ DATABASES = {
 AUTH_USER_MODEL = 'accounts.User'
 
 AUTHENTICATION_BACKENDS = [
-    'accounts.backends.EmailPhoneUsernameAuthenticationBackend',
+    'app.accounts.backends.EmailPhoneUsernameAuthenticationBackend',
 ]
 
 # Password validation

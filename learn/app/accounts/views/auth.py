@@ -1,9 +1,9 @@
 from django.shortcuts import render, redirect
 from django.views import View
-from .backends import EmailPhoneUsernameAuthenticationBackend as EoP
+from app.accounts.backends import EmailPhoneUsernameAuthenticationBackend as EoP
 from django.contrib.auth import login
 from django.contrib import messages
-from .forms import UserLoginForm
+from app.accounts.forms import UserLoginForm
 
 class UserLoginView(View):
     form_class = UserLoginForm
@@ -22,7 +22,7 @@ class UserLoginView(View):
         form = self.form_class(request.POST)
         if form.is_valid():
             cd = form.cleaned_data
-            user = EoP.authenticate(request, username=cd['email'], password=cd['password'])
+            user = EoP.authenticate(request, username=cd['phone_number'], password=cd['password'])
             if user is not None:
                 login(request, user)
                 messages.success(request, 'You have successfully logged in!', 'success')
