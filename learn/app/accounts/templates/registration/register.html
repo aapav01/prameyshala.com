@@ -1,7 +1,7 @@
 {% extends "layouts/auth.html" %}
 {% load static %}
 {% block title %}
-  Login | Pramey Shala
+  Sign Up | Pramey Shala
 {% endblock title %}
 {% block content %}
   <section>
@@ -14,7 +14,7 @@
                 <div class="md:mx-6 md:p-12">
                   <img width="auto"
                        height="auto"
-                       class="mx-auto w-50 mb-12"
+                       class="mx-auto w-50 mb-6"
                        src="{% static 'svg/logo.svg' %}"
                        alt="Pramey Shala" />
                   <form method="post">
@@ -24,12 +24,12 @@
                     </div>
                     <button class="btn btn-primary w-full p-2 mb-12"
                             data-ripple-light="true"
-                            type="submit">Login</button>
+                            type="submit">Register</button>
                     <div class="flex items-center justify-end pb-6">
-                      <p class="mb-0 mr-2">Don't have an account?</p>
-                      <a href="{% url 'core:register' %}"
-                         data-ripple-light="true"
-                         class="btn btn-outline">Register</a>
+                      <p class="mb-0 mr-2">Already have an account?</p>
+                      <a data-ripple-light="true"
+                         href="{% url 'core:login' %}"
+                         class="btn btn-outline">Login</a>
                     </div>
                   </form>
                 </div>

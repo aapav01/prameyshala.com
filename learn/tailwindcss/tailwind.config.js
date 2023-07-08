@@ -1,5 +1,7 @@
 /** @type {import('tailwindcss').Config} */
-module.exports = {
+const withMT = require("@material-tailwind/html/utils/withMT");
+
+module.exports = withMT({
   content: [
     "../templates/**/*.{html,js}",
     "../**/templates/**/*.{html,js}",
@@ -49,5 +51,5 @@ module.exports = {
   daisyui: {
     themes: ["light"],
   }
-}
+});
 
