@@ -1,9 +1,9 @@
 from django.shortcuts import render, redirect
 from django.views import View
-from .backends import EmailPhoneUsernameAuthenticationBackend as EoP
+from app.accounts.backends import EmailPhoneUsernameAuthenticationBackend as EoP
 from django.contrib.auth import login
 from django.contrib import messages
-from .forms import UserLoginForm
+from app.accounts.forms import UserLoginForm
 
 class UserLoginView(View):
     form_class = UserLoginForm
