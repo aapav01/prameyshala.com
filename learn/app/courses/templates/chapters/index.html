@@ -21,6 +21,8 @@
             <tr>
               <th class="px-4 py-3">Name</th>
               <th class="px-4 py-3">Description</th>
+              <th class="px-4 py-3">Course</th>
+              <th class="px-4 py-3">Collection ID</th>
               <th class="px-4 py-3">Action</th>
             </tr>
           </thead>
@@ -28,14 +30,18 @@
             <tr>
               <th class="px-4 py-3">Name</th>
               <th class="px-4 py-3">Description</th>
+              <th class="px-4 py-3">Course</th>
+              <th class="px-4 py-3">Collection ID</th>
               <th class="px-4 py-3">Action</th>
             </tr>
           </tfoot>
           <tbody>
-            {% for class in classes %}
+            {% for chapter in chapters %}
               <tr class="border-b border-blue-gray-50">
-                <td class="px-4 py-3">{{ class.name }}</td>
-                <td class="px-4 py-3">{{ class.description }}</td>
+                <td class="px-4 py-3">{{ chapter.name }}</td>
+                <td class="px-4 py-3">{{ chapter.description }}</td>
+                <td class="px-4 py-3">{{ chapter.course }}</td>
+                <td class="px-4 py-3">{{ chapter.collectionid }}</td>
                 <td class="flex gap-2 px-4 py-3">
                   <a class="btn btn-sm btn-success btn-square"><i class="fad fa-edit"></i></a>
                   <a class="btn btn-sm btn-error btn-square"><i class="far fa-trash-alt"></i></a>

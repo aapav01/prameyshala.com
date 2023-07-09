@@ -1,40 +1,45 @@
-from django.shortcuts import render, redirect, get_object_or_404
-from django.views import View
+from django.contrib import messages
+from django.shortcuts import render, redirect
+from django.views.generic import ListView, DetailView, UpdateView, DeleteView
+from django.urls import reverse_lazy
 from ..models import Subject
-from ..forms import *
+from ..forms import SubjectForm
 
 
-class SubjectsView(View):
+class SubjectsView(ListView):
     model = Subject
     template_name = 'subjects/index.html'
     form = SubjectForm
-    title = 'Subjects'
-    breadcrumbs = [{'url': 'core:home',
-                    'label': 'Dashboard'}, {'label': 'Courses'}, {'label': 'Subjects'}]
-    context = {
+    context_object_name = "subjects"
+    extra_context = {
         'title': 'Subjects',
-        'breadcrumbs': breadcrumbs,
+        'breadcrumbs': [{'url': 'core:home',
+                         'label': 'Dashboard'}, {'label': 'Courses'}, {'label': 'Subjects'}],
+        'form': form
     }
 
-    # list
-    def get(self, request):
-        subjects = self.model.objects.all()
-        self.context.update({'subjects': subjects})
-        return render(request, self.template_name, self.context)
-
     # create
-    def post(self, request, *args):
-        form = form(request.POST)
-        self.context.update({'form': form})
+    def post(self, request, **kwargs):
+        form = self.form(request.POST)
+        self.extra_context.update({'form': form})
         if form.is_valid():
-            name = form.cleaned_data['name']
-            description = form.cleaned_data['description']
-            # image = form.cleaned_data['image']
-            slug = form.cleaned_data['slug']
-            position = form.cleaned_data['position']
-            publish_at = form.cleaned_data['publish_at']
-            # image, #todo: add image
-            subject = self.model(name, description, slug, position, publish_at)
-            subject.save()
-            return redirect('subjects')
-        return render(request, self.template_name, self.context)
+            messages.success(request, 'Chapter created successfully.')
+            form.save()
+            return redirect('courses:chapters')
+        else:
+            return render(request, self.template_name, self.get_context_data(**kwargs))
+
+
+class SubjectUpdateView(UpdateView):
+    model = Subject
+
+    def get(self, request, **kwargs):
+        return redirect('courses:subjects')
+
+
+class SubjectDeleteView(DeleteView):
+    model = Subject
+    success_url = reverse_lazy("subjects")
+
+    def get(self, request, **kwargs):
+        return redirect('courses:subjects')
