@@ -8,16 +8,24 @@ class SubjectsView(View):
     model = Subject
     template_name = 'subjects/index.html'
     form = SubjectForm
+    title = 'Subjects'
+    breadcrumbs = [{'url': 'core:home',
+                    'label': 'Dashboard'}, {'label': 'Courses'}, {'label': 'Subjects'}]
+    context = {
+        'title': 'Subjects',
+        'breadcrumbs': breadcrumbs,
+    }
 
     # list
     def get(self, request):
         subjects = self.model.objects.all()
-        context = {'subjects': subjects}
-        return render(request, self.template_name, context)
+        self.context.update({'subjects': subjects})
+        return render(request, self.template_name, self.context)
 
     # create
     def post(self, request, *args):
         form = form(request.POST)
+        self.context.update({'form': form})
         if form.is_valid():
             name = form.cleaned_data['name']
             description = form.cleaned_data['description']
@@ -29,4 +37,4 @@ class SubjectsView(View):
             subject = self.model(name, description, slug, position, publish_at)
             subject.save()
             return redirect('subjects')
-        return render(request, self.template_name, {"form": form})
+        return render(request, self.template_name, self.context)

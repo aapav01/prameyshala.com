@@ -8,16 +8,24 @@ class ClassesView(View):
     model = Classes
     template_name = 'classes/index.html'
     form = ClassesForm
+    title = 'Classes'
+    breadcrumbs = [{'url': 'core:home',
+                    'label': 'Dashboard'}, {'label': 'Courses'}, {'label': 'Classes'}]
+    context = {
+        'title': 'Classes',
+        'breadcrumbs': breadcrumbs,
+    }
 
     # list
     def get(self, request):
         classes = self.model.objects.all()
-        context = {'classes': classes}
-        return render(request, self.template_name, context)
+        self.context.update({'classes': classes})
+        return render(request, self.template_name, self.context)
 
     # create
     def post(self, request, *args):
         form = form(request.POST)
+        self.context.update({'form': form})
         if form.is_valid():
             name = form.cleaned_data['name']
             description = form.cleaned_data['description']
@@ -29,7 +37,7 @@ class ClassesView(View):
                                  slug, position, publish_at)
             classes.save()
             return redirect('classes')
-        return render(request, self.template_name, {"form": form})
+        return render(request, self.template_name, self.context)
 
     # update
     def patch(self, request):
