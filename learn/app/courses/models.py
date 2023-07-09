@@ -24,7 +24,7 @@ class Subject(models.Model):
     slug = models.CharField(unique=True, max_length=255)
     image = models.CharField(max_length=255)
     publish_at = models.DateTimeField()
-    standard_id = models.ForeignKey(Classes, on_delete=models.CASCADE)
+    standard = models.ForeignKey(Classes, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now=False, auto_now_add=True, blank=True, null=True)
     updated_at = models.DateTimeField(auto_now=True, blank=True, null=True)
 
@@ -40,8 +40,8 @@ class Chapter(models.Model):
     image = models.CharField(max_length=255)
     collectionid = models.CharField(
         db_column='collectionId', max_length=255, blank=True, null=True)
-    course = models.ForeignKey(Subject, on_delete=models.CASCADE, db_column='course_id')
-    user = models.ForeignKey(User, on_delete=models.CASCADE, db_column='user_id')
+    course = models.ForeignKey(Subject, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now=False, auto_now_add=True, blank=True, null=True)
     updated_at = models.DateTimeField(auto_now=True, blank=True, null=True)
 
@@ -63,8 +63,8 @@ class Lesson(models.Model):
     status = models.CharField(max_length=10)
     platform = models.CharField(max_length=11, blank=True, null=True)
     platform_video_id = models.CharField(max_length=255, blank=True, null=True)
-    user_id = models.ForeignKey(User, on_delete=models.CASCADE)
-    chapter_id = models.ForeignKey(Chapter, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    chapter = models.ForeignKey(Chapter, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now=False, auto_now_add=True, blank=True, null=True)
     updated_at = models.DateTimeField(auto_now=True, blank=True, null=True)
 
