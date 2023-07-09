@@ -1,12 +1,12 @@
 {% extends "layouts/dashboard.html" %}
 {% load static %}
 {% block title %}
-  Classes | Pramey Shala
+  Subjects | Pramey Shala
 {% endblock title %}
 {% block content %}
   <div class="mt-12 mb-8 flex flex-col gap-12">
     <div class="flex justify-between px-6">
-      <a class="btn bg-gradient-to-br from-purple-600 to-pink-400 text-white px-12 border-0 shadow-md shadow-purple-500/50">+ Add Class</a>
+      <a class="btn bg-gradient-to-br from-purple-600 to-pink-400 text-white px-12 border-0 shadow-md shadow-purple-500/50">+ Add Subjects</a>
     </div>
     <div class="relative flex w-full flex-col rounded-xl bg-base-100 bg-clip-border text-base-content shadow-md">
       <div class="relative mx-4 -mt-6 mb-4 grid px-6 py-8 overflow-hidden rounded-xl bg-gradient-to-tr from-indigo-600 to-indigo-400 bg-clip-border text-white shadow-lg shadow-indigo-500/40">
@@ -39,8 +39,8 @@
                 <td class="px-4 py-3">{{ class.description }}</td>
                 <td class="px-4 py-3">{{ class.slug }}</td>
                 <td class="flex gap-2 px-4 py-3">
-                  <a class="btn btn-sm btn-success">edit</a>
-                  <a class="btn btn-sm btn-error">delete</a>
+                  <a class="btn btn-sm btn-success btn-square"><i class="fad fa-edit"></i></a>
+                  <a class="btn btn-sm btn-error btn-square text-white"><i class="fad fa-trash-alt"></i></a>
                 </td>
               </tr>
             {% endfor %}

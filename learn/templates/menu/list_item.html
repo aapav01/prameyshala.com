@@ -14,3 +14,8 @@
      {% if request.resolver_match.url_name == 'classes' %}class="active"{% endif %}
      data-ripple-light="true"><i class="far fa-screen-users"></i>Classes</a>
 </li>
+<li>
+  <a href="{% url 'courses:subjects' %}"
+     {% if request.resolver_match.url_name == 'subjects' %}class="active"{% endif %}
+     data-ripple-light="true"><i class="far fa-books"></i>Subjects</a>
+</li>
