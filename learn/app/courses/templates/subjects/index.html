@@ -1,0 +1,52 @@
+{% extends "layouts/dashboard.html" %}
+{% load static %}
+{% block title %}
+  Classes | Pramey Shala
+{% endblock title %}
+{% block content %}
+  <div class="mt-12 mb-8 flex flex-col gap-12">
+    <div class="flex justify-between px-6">
+      <a class="btn bg-gradient-to-br from-purple-600 to-pink-400 text-white px-12 border-0 shadow-md shadow-purple-500/50">+ Add Class</a>
+    </div>
+    <div class="relative flex w-full flex-col rounded-xl bg-base-100 bg-clip-border text-base-content shadow-md">
+      <div class="relative mx-4 -mt-6 mb-4 grid px-6 py-8 overflow-hidden rounded-xl bg-gradient-to-tr from-indigo-600 to-indigo-400 bg-clip-border text-white shadow-lg shadow-indigo-500/40">
+        <h1 class="block font-sans leading-snug tracking-normal text-white antialiased text-lg font-semibold">
+          Subjects
+        </h1>
+      </div>
+      <div class="flex flex-col gap-4 p-6">
+        <table class="w-full min-w-[640px] table-auto overflow-y-auto">
+          <thead class="border-b border-blue-gray-50 py-3 px-5 text-left font-bold uppercase text-blue-gray-400 text-sm">
+            <tr>
+              <th class="px-4 py-3">Name</th>
+              <th class="px-4 py-3">Description</th>
+              <th class="px-4 py-3">Slug</th>
+              <th class="px-4 py-3">Action</th>
+            </tr>
+          </thead>
+          <tfoot class="border-t border-blue-gray-50 py-3 px-5 text-left font-bold uppercase text-blue-gray-400 text-sm">
+            <tr>
+              <th class="px-4 py-3">Name</th>
+              <th class="px-4 py-3">Description</th>
+              <th class="px-4 py-3">Slug</th>
+              <th class="px-4 py-3">Action</th>
+            </tr>
+          </tfoot>
+          <tbody>
+            {% for class in classes %}
+              <tr class="border-b border-blue-gray-50">
+                <td class="px-4 py-3">{{ class.name }}</td>
+                <td class="px-4 py-3">{{ class.description }}</td>
+                <td class="px-4 py-3">{{ class.slug }}</td>
+                <td class="flex gap-2 px-4 py-3">
+                  <a class="btn btn-sm btn-success">edit</a>
+                  <a class="btn btn-sm btn-error">delete</a>
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+{% endblock content %}
