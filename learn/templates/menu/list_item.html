@@ -19,3 +19,8 @@
      {% if request.resolver_match.url_name == 'subjects' %}class="active"{% endif %}
      data-ripple-light="true"><i class="far fa-books"></i>Subjects</a>
 </li>
+<li>
+  <a href="{% url 'courses:chapters' %}"
+     {% if request.resolver_match.url_name == 'chapters' %}class="active"{% endif %}
+     data-ripple-light="true"><i class="fa-regular fa-book"></i>Chapters</a>
+</li>
