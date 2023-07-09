@@ -24,3 +24,8 @@
      {% if request.resolver_match.url_name == 'chapters' %}class="active"{% endif %}
      data-ripple-light="true"><i class="fa-regular fa-book"></i>Chapters</a>
 </li>
+<li>
+  <a href="{% url 'courses:lessons' %}"
+     {% if request.resolver_match.url_name == 'lessons' %}class="active"{% endif %}
+     data-ripple-light="true"><i class="fa-regular fa-chalkboard"></i>Lessons</a>
+</li>
