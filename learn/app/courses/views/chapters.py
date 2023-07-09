@@ -1,59 +1,41 @@
 from django.contrib import messages
 from django.shortcuts import render, redirect
-from django.views import View
+from django.views.generic import ListView, DetailView, UpdateView, DeleteView
+from django.urls import reverse_lazy
 from ..models import Chapter
-from ..forms import *
+from ..forms import ChapterForm
 
 
-class ChapterView(View):
+class ChapterView(ListView):
     model = Chapter
     template_name = "chapters/index.html"
     form = ChapterForm
-    title = 'Chapters'
-    breadcrumbs = [{'url': 'core:home',
-                    'label': 'Dashboard'}, {'label': 'Courses'}, {'label': 'Classes'}]
-    context = {
-        'title': title,
-        'breadcrumbs': breadcrumbs,
-    }
-
-    # list
-    def get(self, request):
-        chapters = self.model.objects.all()
-        self.context.update({'chapters': chapters})
-        self.context.update({'form': self.form})
-        return render(request, self.template_name, self.context)
+    context_object_name = "chapters"
+    extra_context = {'title': 'Chapters', 'breadcrumbs': [{'url': 'core:home', 'label': 'Dashboard'}, {
+        'label': 'Courses'}, {'label': 'Chapters'}], 'form': form}
 
     # create
-    def post(self, request):
+    def post(self, request, **kwargs):
         form = self.form(request.POST)
-        self.context.update({'form': form})
+        self.extra_context.update({'form': form})
         if form.is_valid():
             messages.success(request, 'Chapter created successfully.')
             form.save()
             return redirect('courses:chapters')
         else:
-            return render(request, self.template_name, self.context)
+            return render(request, self.template_name, self.get_context_data(**kwargs))
 
-    # update
-    def put(self, request, pk):
-        pass
-        #todo: not tested yet
-        chapter = self.model.objects.get(pk=pk)
-        form = self.form(request.POST, instance=chapter)
-        self.context.update({'form': form})
-        if form.is_valid():
-            messages.success(request, 'Chapter updated successfully.')
-            form.save()
-            return redirect('courses:chapters')
-        else:
-            return render(request, self.template_name, self.context)
 
-    # delete
-    def delete(self, request, pk):
-        pass
-        #todo: not tested yet
-        chapter = self.model.objects.get(pk=pk)
-        chapter.delete()
-        messages.success(request, 'Chapter deleted successfully.')
+class ChapterUpdateView(UpdateView):
+    model = Chapter
+
+    def get(self, request, **kwargs):
+        return redirect('courses:chapters')
+
+
+class ChapterDeleteView(DeleteView):
+    model = Chapter
+    success_url = reverse_lazy("chapters")
+
+    def get(self, request, **kwargs):
         return redirect('courses:chapters')
