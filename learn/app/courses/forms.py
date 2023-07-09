@@ -1,30 +1,26 @@
-from django import forms
+from django.forms import ModelForm
+from .models import Classes, Subject, Chapter, Lesson
 
 
-class ClassesForm(forms.Form):
-    name = forms.CharField(max_length=255,
-                           widget=forms.TextInput(attrs={
-                               'class': 'djanog-custom-forms input',
-                               'type': 'text', 'placeholder': 'Name'}),
-                           label='Name'
-                           )
-    description = forms.CharField(widget=forms.Textarea(attrs={
-        'class': 'djanog-custom-forms input',
-        'type': 'text', 'placeholder': 'Description'}),
-        label='Description'
-    )
-    image = forms.CharField(max_length=255,
-                            widget=forms.TextInput(attrs={
-                                'class': 'djanog-custom-forms input',
-                                'type': 'image', 'placeholder': 'Image'}),
-                            label='Image'
-                            )
-    position = forms.IntegerField(widget=forms.TextInput(attrs={
-        'class': 'djanog-custom-forms input',
-        'type': 'text', 'placeholder': 'Position'}),
-        label='Position'
-    )
+class ClassesForm(ModelForm):
+    class Meta:
+        model = Classes
+        fields = "__all__"
 
 
-class SubjectForm(forms.Form):
-    pass
+class SubjectForm(ModelForm):
+    class Meta:
+        model = Subject
+        fields = "__all__"
+
+
+class ChapterForm(ModelForm):
+    class Meta:
+        model = Chapter
+        fields = "__all__"
+
+
+class LessonForm(ModelForm):
+    class Meta:
+        model = Lesson
+        fields = "__all__"
