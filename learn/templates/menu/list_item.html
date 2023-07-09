@@ -1,9 +1,16 @@
 <li>
-  <a href="{% url 'core:home' %}" {% if request.resolver_match.url_name == 'home' %}class="active"{% endif %} data-ripple-light="true">
-    Home
+  <a href="{% url 'core:home' %}"
+     {% if request.resolver_match.url_name == 'home' %}class="active"{% endif %}
+     data-ripple-light="true">
+    <i class="far fa-home"></i> Home
   </a>
 </li>
-<li><a data-ripple-light="true">Profile</a></li>
+<li>
+  <a data-ripple-light="true"><i class="far fa-user"></i> Profile</a>
+</li>
 <li class="p-4 font-bold">Courses</li>
-<li><a href="{% url 'courses:classes' %}" {% if request.resolver_match.url_name == 'classes' %}class="active"{% endif %}  data-ripple-light="true">Classes</a></li>
-
+<li>
+  <a href="{% url 'courses:classes' %}"
+     {% if request.resolver_match.url_name == 'classes' %}class="active"{% endif %}
+     data-ripple-light="true"><i class="far fa-screen-users"></i>Classes</a>
+</li>
