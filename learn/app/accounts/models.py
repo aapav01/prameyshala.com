@@ -65,8 +65,8 @@ class Enrollment(models.Model):
     status = models.CharField(max_length=7)
     user_id = models.ForeignKey(User, on_delete=models.CASCADE)
     classes_id = models.ForeignKey('courses.Classes', on_delete=models.CASCADE)
-    created_at = models.DateTimeField(blank=True, null=True)
-    updated_at = models.DateTimeField(blank=True, null=True)
+    created_at = models.DateTimeField(auto_now=False, auto_now_add=True, blank=True, null=True)
+    updated_at = models.DateTimeField(auto_now=True, blank=True, null=True)
 
     class Meta:
         db_table = 'enrollments'
@@ -81,8 +81,8 @@ class Payments(models.Model):
     amount = models.CharField(max_length=255)
     json_response = models.TextField()
     enrollment_id = models.ForeignKey(Enrollment, on_delete=models.CASCADE)
-    created_at = models.DateTimeField(blank=True, null=True)
-    updated_at = models.DateTimeField(blank=True, null=True)
+    created_at = models.DateTimeField(auto_now=False, auto_now_add=True, blank=True, null=True)
+    updated_at = models.DateTimeField(auto_now=True, blank=True, null=True)
 
     class Meta:
         db_table = 'payments'

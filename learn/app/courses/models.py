@@ -25,8 +25,8 @@ class Subject(models.Model):
     image = models.CharField(max_length=255)
     publish_at = models.DateTimeField()
     standard_id = models.ForeignKey(Classes, on_delete=models.CASCADE)
-    created_at = models.DateTimeField(blank=True, null=True)
-    updated_at = models.DateTimeField(blank=True, null=True)
+    created_at = models.DateTimeField(auto_now=False, auto_now_add=True, blank=True, null=True)
+    updated_at = models.DateTimeField(auto_now=True, blank=True, null=True)
 
     def __str__(self):
         return self.name
@@ -40,10 +40,10 @@ class Chapter(models.Model):
     image = models.CharField(max_length=255)
     collectionid = models.CharField(
         db_column='collectionId', max_length=255, blank=True, null=True)
-    course_id = models.ForeignKey(Subject, on_delete=models.CASCADE)
-    user_id = models.ForeignKey(User, on_delete=models.CASCADE)
-    created_at = models.DateTimeField(blank=True, null=True)
-    updated_at = models.DateTimeField(blank=True, null=True)
+    course = models.ForeignKey(Subject, on_delete=models.CASCADE, db_column='course_id')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, db_column='user_id')
+    created_at = models.DateTimeField(auto_now=False, auto_now_add=True, blank=True, null=True)
+    updated_at = models.DateTimeField(auto_now=True, blank=True, null=True)
 
     def __str__(self):
         return self.name
@@ -65,8 +65,8 @@ class Lesson(models.Model):
     platform_video_id = models.CharField(max_length=255, blank=True, null=True)
     user_id = models.ForeignKey(User, on_delete=models.CASCADE)
     chapter_id = models.ForeignKey(Chapter, on_delete=models.CASCADE)
-    created_at = models.DateTimeField(blank=True, null=True)
-    updated_at = models.DateTimeField(blank=True, null=True)
+    created_at = models.DateTimeField(auto_now=False, auto_now_add=True, blank=True, null=True)
+    updated_at = models.DateTimeField(auto_now=True, blank=True, null=True)
 
     def __str__(self):
         return self.title
