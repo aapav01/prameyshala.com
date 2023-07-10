@@ -12,6 +12,7 @@ class SubjectForm(ModelForm):
     class Meta:
         model = Subject
         fields = "__all__"
+        exclude = ['publish_at', 'slug']
 
 
 class ChapterForm(ModelForm):

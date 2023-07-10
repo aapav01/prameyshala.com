@@ -23,7 +23,7 @@ class Subject(models.Model):
     description = models.TextField()
     slug = models.SlugField(unique=True, max_length=255)
     image = models.ImageField(upload_to='static/uploads/subjects', blank=True, null=True)
-    publish_at = models.DateTimeField()
+    publish_at = models.DateTimeField(auto_now_add=True, blank=True, null=True)
     standard = models.ForeignKey(Classes, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now=False, auto_now_add=True, blank=True, null=True)
     updated_at = models.DateTimeField(auto_now=True, blank=True, null=True)
