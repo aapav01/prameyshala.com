@@ -35,7 +35,7 @@ class ChapterUpdateView(UpdateView):
 
 class ChapterDeleteView(DeleteView):
     model = Chapter
-    success_url = reverse_lazy("chapters")
+    success_url = reverse_lazy("courses:chapters")
 
     def get(self, request, **kwargs):
-        return redirect('courses:chapters')
+        return self.delete(request, **kwargs)

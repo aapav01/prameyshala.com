@@ -23,9 +23,9 @@ class SubjectsView(ListView):
         form = self.form(request.POST)
         self.extra_context.update({'form': form})
         if form.is_valid():
-            messages.success(request, 'Chapter created successfully.')
+            messages.success(request, 'Subjects created successfully.')
             form.save()
-            return redirect('courses:chapters')
+            return redirect('courses:subjects')
         else:
             return render(request, self.template_name, self.get_context_data(**kwargs))
 
@@ -39,7 +39,7 @@ class SubjectUpdateView(UpdateView):
 
 class SubjectDeleteView(DeleteView):
     model = Subject
-    success_url = reverse_lazy("subjects")
+    success_url = reverse_lazy("courses:subjects")
 
     def get(self, request, **kwargs):
-        return redirect('courses:subjects')
+        return self.delete(request, **kwargs)

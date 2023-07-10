@@ -19,9 +19,9 @@ class LessonView(ListView):
         form = self.form(request.POST)
         self.extra_context.update({'form': form})
         if form.is_valid():
-            messages.success(request, 'Chapter created successfully.')
+            messages.success(request, 'Lesson created successfully.')
             form.save()
-            return redirect('courses:chapters')
+            return redirect('courses:lessons')
         else:
             return render(request, self.template_name, self.get_context_data(**kwargs))
 
@@ -30,12 +30,12 @@ class LessonUpdateView(UpdateView):
     model = Lesson
 
     def get(self, request, **kwargs):
-        return redirect('courses:chapters')
+        return redirect('courses:lessons')
 
 
 class LessonDeleteView(DeleteView):
     model = Lesson
-    success_url = reverse_lazy("chapters")
+    success_url = reverse_lazy("courses:lessons")
 
     def get(self, request, **kwargs):
-        return redirect('courses:chapters')
+        return self.delete(request, **kwargs)

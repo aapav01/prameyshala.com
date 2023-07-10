@@ -44,7 +44,7 @@
                 <td class="px-4 py-3">{{ chapter.collectionid }}</td>
                 <td class="flex gap-2 px-4 py-3">
                   <a class="btn btn-sm btn-success btn-square"><i class="fad fa-edit"></i></a>
-                  <a class="btn btn-sm btn-error btn-square"><i class="far fa-trash-alt"></i></a>
+                  <a href="{% url 'courses:chapter-delete' pk=chapter.pk %}" class="btn btn-sm btn-error btn-square"><i class="far fa-trash-alt"></i></a>
                 </td>
               </tr>
             {% endfor %}
