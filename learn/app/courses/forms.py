@@ -6,6 +6,7 @@ class ClassesForm(ModelForm):
     class Meta:
         model = Classes
         fields = "__all__"
+        exclude = ['slug']
 
 
 class SubjectForm(ModelForm):

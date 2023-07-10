@@ -2,6 +2,7 @@ from django.contrib import messages
 from django.shortcuts import render, redirect
 from django.views.generic import ListView, DetailView
 from django.views.generic.edit import UpdateView, DeleteView
+from django.utils.text import slugify
 from django.urls import reverse_lazy
 from ..models import Classes
 from ..forms import ClassesForm
@@ -12,8 +13,11 @@ class ClassesView(ListView):
     template_name = "classes/index.html"
     form = ClassesForm
     context_object_name = "classes"
-    extra_context = {'title': 'Classes', 'breadcrumbs': [{'url': 'core:home', 'label': 'Dashboard'}, {
-        'label': 'Courses'}, {'label': 'Classes'}], 'form': form}
+    extra_context = {
+        'title': 'Classes',
+        'breadcrumbs': [{'url': 'core:home', 'label': 'Dashboard'}, {'label': 'Courses'}, {'label': 'Classes'}],
+        'form': form
+    }
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -27,9 +31,11 @@ class ClassesView(ListView):
         form = self.form(request.POST)
         self.extra_context.update({'form': form})
         if form.is_valid():
-            messages.success(request, 'Class has been created successfully.')
-            form.save()
+            instance = form.save(commit=False)
+            instance.slug = slugify(instance.name)
+            instance.save()
             form = self.form()
+            messages.success(request, f'{instance.name} has been created successfully.')
             return redirect('courses:classes')
         else:
             return render(request, self.template_name, self.get_context_data(**kwargs))
@@ -37,12 +43,14 @@ class ClassesView(ListView):
 
 class ClassesUpdateView(UpdateView):
     model = Classes
-    fields = "__all__"
+    form_class = ClassesForm
     success_url = reverse_lazy("courses:classes")
 
-    def post(self, request, **kwargs):
-        messages.info(request, 'Class has been updated successfully.')
-        return super().post(request, **kwargs)
+    def form_valid(self, form):
+        form.instance.slug = slugify(form.instance.name)
+        messages.info(
+            self.request, f'{form.instance.name} has been updated successfully.')
+        return super().form_valid(form)
 
 
 class ClassesDeleteView(DeleteView):
