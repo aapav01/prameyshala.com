@@ -34,7 +34,7 @@ class LessonView(ListView):
             instance = form.save()
             messages.success(
                 request, f'{instance.title} has been created successfully.')
-            form = self.form()
+            self.extra_context.update({'form': LessonForm})
             return redirect('courses:lessons')
         else:
             return render(request, self.template_name, self.get_context_data(**kwargs))

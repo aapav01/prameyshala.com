@@ -34,8 +34,8 @@ class ClassesView(ListView):
             instance = form.save(commit=False)
             instance.slug = slugify(instance.name)
             instance.save()
-            form = self.form()
             messages.success(request, f'{instance.name} has been created successfully.')
+            self.extra_context.update({'form': ClassesForm})
             return redirect('courses:classes')
         else:
             return render(request, self.template_name, self.get_context_data(**kwargs))

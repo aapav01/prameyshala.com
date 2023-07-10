@@ -33,7 +33,7 @@ class ChapterView(ListView):
             instance = form.save()
             messages.success(
                 request, f'{instance.name} has been created successfully.')
-            form = self.form()
+            self.extra_context.update({'form': ChapterForm})
             return redirect('courses:chapters')
         else:
             return render(request, self.template_name, self.get_context_data(**kwargs))

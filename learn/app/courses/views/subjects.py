@@ -37,9 +37,9 @@ class SubjectsView(ListView):
             instance.slug = slugify(
                 instance.standard.name + '_' + instance.name)
             instance.save()
-            form = self.form()
             messages.success(
                 request, f'{instance.name} has been created successfully.')
+            self.extra_context.update({'form': SubjectForm})
             return redirect('courses:subjects')
         else:
             return render(request, self.template_name, self.get_context_data(**kwargs))
