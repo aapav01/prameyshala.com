@@ -36,12 +36,12 @@
             </tr>
           </tfoot>
           <tbody>
-            {% for chapter in chapters %}
+            {% for subject in subjects %}
               <tr class="border-b border-blue-gray-50">
-                <td class="px-4 py-3">{{ chapter.name }}</td>
-                <td class="px-4 py-3">{{ chapter.short }}</td>
-                <td class="px-4 py-3">{{ chapter.standard }}</td>
-                <td class="px-4 py-3">{{ chapter.publish_at }}</td>
+                <td class="px-4 py-3">{{ subject.name }}</td>
+                <td class="px-4 py-3">{{ subject.short }}</td>
+                <td class="px-4 py-3">{{ subject.standard }}</td>
+                <td class="px-4 py-3">{{ subject.publish_at }}</td>
                 <td class="flex gap-2 px-4 py-3">
                   <a class="btn btn-sm btn-success btn-square"><i class="fad fa-edit"></i></a>
                   <a class="btn btn-sm btn-error btn-square"><i class="far fa-trash-alt"></i></a>

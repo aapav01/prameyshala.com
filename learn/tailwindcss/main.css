@@ -6,6 +6,18 @@
     @apply input input-bordered;
 }
 
+.djanog-custom-forms input[type="checkbox"] {
+    @apply checkbox checkbox-primary;
+}
+
+.djanog-custom-forms input[type="radio"] {
+    @apply radio radio-primary;
+}
+
+.djanog-custom-forms input[type="file"] {
+    @apply file-input file-input-bordered;
+}
+
 .djanog-custom-forms label {
     @apply label;
 }
