@@ -19,7 +19,7 @@
         <table class="w-full min-w-[640px] table-auto overflow-y-auto">
           <thead class="border-b border-blue-gray-50 py-3 px-5 text-left font-bold uppercase text-blue-gray-400 text-sm">
             <tr>
-              <th class="px-4 py-3">Name</th>
+              <th class="px-4 py-3">Title</th>
               <th class="px-4 py-3">Description</th>
               <th class="px-4 py-3">Chapter</th>
               <th class="px-4 py-3">Lesson Type</th>
@@ -29,7 +29,7 @@
           </thead>
           <tfoot class="border-t border-blue-gray-50 py-3 px-5 text-left font-bold uppercase text-blue-gray-400 text-sm">
             <tr>
-              <th class="px-4 py-3">Name</th>
+              <th class="px-4 py-3">Title</th>
               <th class="px-4 py-3">Description</th>
               <th class="px-4 py-3">Chapter</th>
               <th class="px-4 py-3">Lesson Type</th>
@@ -40,14 +40,19 @@
           <tbody>
             {% for lesson in lessons %}
               <tr class="border-b border-blue-gray-50">
-                <td class="px-4 py-3">{{ lesson.name }}</td>
+                <td class="px-4 py-3">{{ lesson.title }}</td>
                 <td class="px-4 py-3">{{ lesson.description }}</td>
                 <td class="px-4 py-3">{{ lesson.chapter }}</td>
                 <td class="px-4 py-3">{{ lesson.lesson_type }}</td>
                 <td class="px-4 py-3">{{ lesson.status }}</td>
                 <td class="flex gap-2 px-4 py-3">
-                  <a class="btn btn-sm btn-success btn-square"><i class="fad fa-edit"></i></a>
-                  <a href="{% url 'courses:lesson-delete' pk=lesson.pk %}" class="btn btn-sm btn-error btn-square"><i class="far fa-trash-alt"></i></a>
+                  <button onclick="update_lesson_{{ lesson.pk }}.showModal()"
+                          class="btn btn-sm btn-success btn-square">
+                    <i class="fad fa-edit"></i>
+                  </button>
+                  <a href="{% url 'courses:lesson-delete' pk=lesson.pk %}"
+                     onclick="if(confirm('Are you sure you want to delete {{ class.name }} from database?')) return true; else return false;"
+                     class="btn btn-sm btn-error btn-square"><i class="far fa-trash-alt"></i></a>
                 </td>
               </tr>
             {% endfor %}
@@ -73,4 +78,29 @@
       <button>close</button>
     </form>
   </dialog>
+  {% for lesson in lessons %}
+    <dialog id="update_lesson_{{ lesson.pk }}"
+            class="modal modal-bottom sm:modal-middle transition-all duration-500 ease-in-out">
+      <form method="post"
+            action="{% url 'courses:lesson-update' pk=lesson.pk %}"
+            class="modal-box sm:max-w-5xl">
+        {% csrf_token %}
+        <h2 class="font-mono font-semibold text-lg">
+          Update - {{ lesson.title }} of {{ lesson.chapter.name }} in {{ lesson.chapter.course.name }}
+        </h2>
+        <div class="relative mb-4">
+          <div class="form-control w-full djanog-custom-forms grid grid-cols-1 md:grid-cols-2 gap-4">
+            {{ lesson.form.as_div }}
+          </div>
+        </div>
+        <div class="modal-action justify-between">
+          <p class="text-xs mt-auto">Press esc to close the window or outside the dialog box.</p>
+          <button type="submit" class="btn btn-success shadow">Update</button>
+        </div>
+      </form>
+      <form method="dialog" class="modal-backdrop backdrop-blur-md">
+        <button>close</button>
+      </form>
+    </dialog>
+  {% endfor %}
 {% endblock content %}

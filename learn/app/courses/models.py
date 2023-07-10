@@ -57,7 +57,7 @@ class Lesson(models.Model):
     length = models.FloatField(blank=True, null=True)
     url = models.CharField(max_length=255, blank=True, null=True)
     thumb_url = models.ImageField(upload_to='static/uploads/lessons', blank=True, null=True)
-    public = models.IntegerField()
+    public = models.BooleanField(default=False)
     position = models.IntegerField(blank=True, null=True)
     lesson_type = models.CharField(db_column='type', max_length=8)
     status = models.CharField(max_length=10)

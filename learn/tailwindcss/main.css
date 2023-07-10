@@ -7,11 +7,11 @@
 }
 
 .djanog-custom-forms input[type="checkbox"] {
-    @apply checkbox checkbox-primary w-full;
+    @apply checkbox checkbox-primary checkbox-lg;
 }
 
 .djanog-custom-forms input[type="radio"] {
-    @apply radio radio-primary w-full;
+    @apply radio radio-primary;
 }
 
 .djanog-custom-forms input[type="file"] {
