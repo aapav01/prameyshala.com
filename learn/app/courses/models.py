@@ -4,9 +4,9 @@ from app.accounts.models import User
 class Classes(models.Model):
     name = models.CharField(max_length=255)
     description = models.TextField()
-    image = models.CharField(max_length=255)
+    image = models.CharField(max_length=255, blank=True, null=True)
     slug = models.CharField(unique=True, max_length=255)
-    postition = models.IntegerField()
+    postition = models.IntegerField(blank=True, null=True)
     publish_at = models.DateTimeField(auto_now_add=True)
     created_at = models.DateTimeField(auto_now_add=True, blank=True, null=True)
     updated_at = models.DateTimeField(auto_now_add=True, blank=True, null=True)
@@ -22,7 +22,7 @@ class Subject(models.Model):
     short = models.CharField(max_length=255, blank=True, null=True)
     description = models.TextField()
     slug = models.CharField(unique=True, max_length=255)
-    image = models.CharField(max_length=255)
+    image = models.CharField(max_length=255, blank=True, null=True)
     publish_at = models.DateTimeField()
     standard = models.ForeignKey(Classes, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now=False, auto_now_add=True, blank=True, null=True)
@@ -37,7 +37,7 @@ class Subject(models.Model):
 class Chapter(models.Model):
     name = models.CharField(max_length=255)
     description = models.TextField(blank=True, null=True)
-    image = models.CharField(max_length=255)
+    image = models.CharField(max_length=255, blank=True, null=True)
     collectionid = models.CharField(
         db_column='collectionId', max_length=255, blank=True, null=True)
     course = models.ForeignKey(Subject, on_delete=models.CASCADE)
@@ -58,7 +58,7 @@ class Lesson(models.Model):
     url = models.CharField(max_length=255, blank=True, null=True)
     thumb_url = models.CharField(max_length=255, blank=True, null=True)
     public = models.IntegerField()
-    position = models.IntegerField()
+    position = models.IntegerField(blank=True, null=True)
     lesson_type = models.CharField(db_column='type', max_length=8)
     status = models.CharField(max_length=10)
     platform = models.CharField(max_length=11, blank=True, null=True)
