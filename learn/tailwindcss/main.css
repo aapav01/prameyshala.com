@@ -3,19 +3,19 @@
 @tailwind utilities;
 
 .djanog-custom-forms input {
-    @apply input input-bordered;
+    @apply input input-bordered w-full;
 }
 
 .djanog-custom-forms input[type="checkbox"] {
-    @apply checkbox checkbox-primary;
+    @apply checkbox checkbox-primary w-full;
 }
 
 .djanog-custom-forms input[type="radio"] {
-    @apply radio radio-primary;
+    @apply radio radio-primary w-full;
 }
 
 .djanog-custom-forms input[type="file"] {
-    @apply file-input file-input-bordered;
+    @apply file-input file-input-bordered w-full;
 }
 
 .djanog-custom-forms label {
@@ -23,11 +23,11 @@
 }
 
 .djanog-custom-forms textarea {
-    @apply textarea textarea-bordered;
+    @apply textarea textarea-bordered w-full;
 }
 
 .djanog-custom-forms select {
-    @apply select select-bordered;
+    @apply select select-bordered w-full;
 }
 
 .menu li > *:not(ul):not(details):active, .menu li > *:not(ul):not(details).active, .menu li > details > summary:active {
