@@ -30,7 +30,7 @@ class Subject(models.Model):
     updated_at = models.DateTimeField(auto_now=True, blank=True, null=True)
 
     def __str__(self):
-        return self.name
+        return self.name + ' - ' + self.standard.name
 
     class Meta:
         db_table = 'subjects'
@@ -47,7 +47,7 @@ class Chapter(models.Model):
     updated_at = models.DateTimeField(auto_now=True, blank=True, null=True)
 
     def __str__(self):
-        return self.name
+        return self.name + ' - ' + self.course.name
 
     class Meta:
         db_table = 'chapters'
