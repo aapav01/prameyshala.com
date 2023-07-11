@@ -53,6 +53,12 @@
   {{ form.chapter }}
 </div>
 <div class="form-control">
+  <label for="{{ form.teacher.id_for_label }}">
+    <span class="label-text">{{ form.teacher.label }}</span>
+  </label>
+  {{ form.teacher }}
+</div>
+<div class="form-control">
   <label for="{{ form.public.id_for_label }}">
     <span class="label-text">{{ form.public.label }}</span>
   </label>

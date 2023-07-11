@@ -27,7 +27,7 @@ class LessonForm(ModelForm):
     template_name = "lessons/form_snippet.html"
     class Meta:
         model = Lesson
-        exclude = ['status', 'length', 'position', 'platform_video_id', 'user']
+        exclude = ['status', 'length', 'position', 'platform_video_id', 'created_by', 'updated_by']
         widgets = {
             'lesson_type': forms.Select(attrs={'required': True}),
         }

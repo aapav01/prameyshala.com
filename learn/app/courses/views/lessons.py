@@ -31,7 +31,9 @@ class LessonView(ListView):
         form = self.form(request.POST)
         self.extra_context.update({'form': form})
         if form.is_valid():
-            instance = form.save()
+            instance = form.save(commit=False)
+            instance.created_by = request.user
+            instance.save()
             messages.success(
                 request, f'{instance.title} has been created successfully.')
             self.extra_context.update({'form': LessonForm})
@@ -46,6 +48,7 @@ class LessonUpdateView(UpdateView):
     success_url = reverse_lazy("courses:lessons")
 
     def form_valid(self, form):
+        form.instance.updated_by = self.request.user
         messages.info(
             self.request, f'{form.instance.title} of {form.instance.chapter.name} has been updated successfully.')
         return super().form_valid(form)
