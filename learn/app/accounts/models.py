@@ -47,7 +47,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     REQUIRED_FIELDS = ['email', 'full_name']
 
     def __str__(self):
-        return self.email
+        return self.full_name + ' - ' + self.email
 
     @staticmethod
     def has_perm(perm, obj=None, **kwargs):
