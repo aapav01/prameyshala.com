@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_browser_reload',
+    'graphene_django',
 ]
 
 MIDDLEWARE = [
@@ -154,3 +155,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 FIXTURE_DIRS = [
     os.path.join(BASE_DIR, 'fixtures'),
 ]
+
+# Graphene - Graphql API
+GRAPHENE = {
+    "SCHEMA": "core.schema.schema"
+}
