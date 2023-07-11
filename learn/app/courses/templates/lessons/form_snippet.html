@@ -1,0 +1,60 @@
+{% comment %} Looping over the form’s fields  {% endcomment %}
+{% comment %} {% for field in form %}
+  <div class="form-control">
+    {{ field.errors }}
+    <label for="{{ field.id_for_label }}">
+      <span class="label-text">{{ field.label }}</span>
+    </label>
+    {{ field }}
+    <label>{{ field.help_text }}</label>
+  </div>
+{% endfor %} {% endcomment %}
+{% comment %} Rendering fields manually {% endcomment %}
+<div class="form-control">
+  <label for="{{ form.title.id_for_label }}">
+    <span class="label-text">{{ form.title.label }}</span>
+  </label>
+  {{ form.title }}
+</div>
+<div class="form-control col-span-2">
+  <label for="{{ form.description.id_for_label }}">
+    <span class="label-text">{{ form.description.label }}</span>
+  </label>
+  {{ form.description }}
+</div>
+<div class="form-control">
+  <label for="{{ form.thumb_url.id_for_label }}">
+    <span class="label-text">{{ form.thumb_url.label }}</span>
+  </label>
+  {{ form.thumb_url }}
+</div>
+<div class="form-control">
+  <label for="{{ form.lesson_type.id_for_label }}">
+    <span class="label-text">{{ form.lesson_type.label }}</span>
+  </label>
+  {{ form.lesson_type }}
+</div>
+<div id="{{ form.platform.id_for_label }}_div" class="form-control hidden">
+  <label for="{{ form.platform.id_for_label }}">
+    <span class="label-text">{{ form.platform.label }}</span>
+  </label>
+  {{ form.platform }}
+</div>
+<div id="{{ form.url.id_for_label }}_div" class="form-control hidden">
+  <label for="{{ form.url.id_for_label }}">
+    <span class="label-text">{{ form.url.label }}</span>
+  </label>
+  {{ form.url }}
+</div>
+<div class="form-control">
+  <label for="{{ form.chapter.id_for_label }}">
+    <span class="label-text">{{ form.chapter.label }}</span>
+  </label>
+  {{ form.chapter }}
+</div>
+<div class="form-control">
+  <label for="{{ form.public.id_for_label }}">
+    <span class="label-text">{{ form.public.label }}</span>
+  </label>
+  {{ form.public }}
+</div>

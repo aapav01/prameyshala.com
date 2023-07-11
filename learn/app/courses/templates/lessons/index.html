@@ -67,11 +67,11 @@
       {% csrf_token %}
       <h2 class="font-mono font-semibold text-lg">Add New Lesson</h2>
       <div class="relative mb-4">
-        <div class="form-control w-full djanog-custom-forms grid grid-cols-1 md:grid-cols-2 gap-4">{{ form.as_div }}</div>
+        <div class="w-full djanog-custom-forms grid grid-flow-dense grid-cols-1 md:grid-cols-2 gap-4">{{ form }}</div>
       </div>
       <div class="modal-action justify-between">
         <p class="text-xs mt-auto">Press esc to close the window or outside the dialog box.</p>
-        <button type="submit" class="btn btn-success">Add</button>
+        <button type="submit" class="btn btn-success">Save</button>
       </div>
     </form>
     <form method="dialog" class="modal-backdrop backdrop-blur-md">
@@ -89,8 +89,8 @@
           Update - {{ lesson.title }} of {{ lesson.chapter.name }} in {{ lesson.chapter.course.name }}
         </h2>
         <div class="relative mb-4">
-          <div class="form-control w-full djanog-custom-forms grid grid-cols-1 md:grid-cols-2 gap-4">
-            {{ lesson.form.as_div }}
+          <div class="w-full djanog-custom-forms grid grid-cols-1 md:grid-cols-2 gap-4">
+            {{ lesson.form }}
           </div>
         </div>
         <div class="modal-action justify-between">

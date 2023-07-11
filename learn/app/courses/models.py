@@ -1,5 +1,6 @@
 from django.db import models
 from app.accounts.models import User
+from django.utils.translation import gettext_lazy as _
 
 class Classes(models.Model):
     name = models.CharField(max_length=255)
@@ -52,16 +53,38 @@ class Chapter(models.Model):
         db_table = 'chapters'
 
 class Lesson(models.Model):
+    class UploadStatus(models.TextChoices):
+        CREATED = 'created', _('Created')
+        PENDING = 'pending', _('Pending')
+        UPLOADING = 'uploading', _('Uploading')
+        PROCESSING = 'processing', _('Processing')
+        READY = 'ready', _('Ready')
+        ERROR = 'error', _('Error')
+
+    class LessonType(models.TextChoices):
+        NONE = None, _('---------')
+        VIDEO = 'video', _('Video')
+        DOCUMENT = 'document', _('Document')
+        AUDIO = 'audio', _('Audio')
+        IMAGE = 'image', _('Image')
+        TEXT = 'text', _('Text')
+
+    class SupportPlatform(models.TextChoices):
+        NONE = None, _('---------')
+        FILE = 'file', _('File')
+        YOUTUBE = 'youtube', _('Youtube')
+        VIMEO = 'vimeo', _('Vimeo')
+
     title = models.CharField(max_length=255)
-    description = models.CharField(max_length=255, blank=True, null=True)
+    description = models.TextField(max_length=255, blank=True, null=True)
     length = models.FloatField(blank=True, null=True)
     url = models.CharField(max_length=255, blank=True, null=True)
     thumb_url = models.ImageField(upload_to='static/uploads/lessons', blank=True, null=True)
     public = models.BooleanField(default=False)
-    position = models.IntegerField(blank=True, null=True)
-    lesson_type = models.CharField(db_column='type', max_length=8)
-    status = models.CharField(max_length=10)
-    platform = models.CharField(max_length=11, blank=True, null=True)
+    position = models.IntegerField(blank=True, null=True, default=9999)
+    lesson_type = models.CharField(db_column='type', max_length=8, choices=LessonType.choices, default=None)
+    status = models.CharField(max_length=10, choices=UploadStatus.choices, default=UploadStatus.CREATED)
+    platform = models.CharField(max_length=11, blank=True, null=True, choices=SupportPlatform.choices, default=None)
     platform_video_id = models.CharField(max_length=255, blank=True, null=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     chapter = models.ForeignKey(Chapter, on_delete=models.CASCADE)

@@ -18,6 +18,10 @@
     @apply file-input file-input-bordered w-full;
 }
 
+.djanog-custom-forms input[type="hidden"] {
+    @apply hidden;
+}
+
 .djanog-custom-forms label {
     @apply label;
 }

@@ -1,3 +1,4 @@
+from django import forms
 from django.forms import ModelForm
 from .models import Classes, Subject, Chapter, Lesson
 
@@ -23,6 +24,7 @@ class ChapterForm(ModelForm):
 
 
 class LessonForm(ModelForm):
+    template_name = "lessons/form_snippet.html"
     class Meta:
         model = Lesson
-        fields = "__all__"
+        exclude = ['status', 'length', 'position', 'platform_video_id', 'user']
