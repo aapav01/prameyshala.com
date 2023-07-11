@@ -28,3 +28,6 @@ class LessonForm(ModelForm):
     class Meta:
         model = Lesson
         exclude = ['status', 'length', 'position', 'platform_video_id', 'user']
+        widgets = {
+            'lesson_type': forms.Select(attrs={'required': True}),
+        }
