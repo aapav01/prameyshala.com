@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.urls import include, path
 from .views import *
 
@@ -13,7 +14,7 @@ urlpatterns = [
     path('chapters/',  ChapterView.as_view(), name='chapters'),
     path("chapter/<int:pk>/", ChapterUpdateView.as_view(), name="chapter-update"),
     path("chapter/<int:pk>/delete/", ChapterDeleteView.as_view(), name="chapter-delete"),
-    path('lessons/',  LessonView.as_view(), name='lessons'),
-    path("lesson/<int:pk>/", LessonUpdateView.as_view(), name="lesson-update"),
-    path("lesson/<int:pk>/delete/", LessonDeleteView.as_view(), name="lesson-delete"),
+    path('lessons/',  login_required(LessonView.as_view()), name='lessons'),
+    path("lesson/<int:pk>/", login_required(LessonUpdateView.as_view()), name="lesson-update"),
+    path("lesson/<int:pk>/delete/", login_required(LessonDeleteView.as_view()), name="lesson-delete"),
 ]
