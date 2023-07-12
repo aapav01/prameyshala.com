@@ -22,7 +22,7 @@ class LessonView(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         for obj in context[self.context_object_name]:
-            temp_form = LessonForm(instance=obj)
+            temp_form = LessonForm(instance=obj, prefix=obj.pk)
             obj.form = temp_form
         return context
 
