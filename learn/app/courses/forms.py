@@ -20,7 +20,7 @@ class SubjectForm(ModelForm):
 class ChapterForm(ModelForm):
     class Meta:
         model = Chapter
-        fields = "__all__"
+        exclude = ['collectionid', 'user']
 
 
 class LessonForm(ModelForm):

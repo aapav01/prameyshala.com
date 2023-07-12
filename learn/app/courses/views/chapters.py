@@ -5,6 +5,19 @@ from django.views.generic.edit import UpdateView, DeleteView
 from django.urls import reverse_lazy
 from ..models import Chapter
 from ..forms import ChapterForm
+import requests
+import environ
+
+
+# Initialise environment variables
+env = environ.Env()
+environ.Env.read_env()
+
+headers = {
+    "accept": "application/json",
+    "content-type": "application/*+json",
+    "AccessKey": env('BUNNYCDN_ACCESS_KEY')
+}
 
 
 class ChapterView(ListView):
@@ -30,7 +43,21 @@ class ChapterView(ListView):
         form = self.form(request.POST)
         self.extra_context.update({'form': form})
         if form.is_valid():
-            instance = form.save()
+            instance = form.save(commit=False)
+            try:
+                payload = '{"name\":\"'+instance.name+'\"}'
+                response = requests.post(
+                    f"https://video.bunnycdn.com/library/{env('BUNNYCDN_VIDEO_LIBRARY_ID')}/collections", data=payload, headers=headers)
+
+                if response.status_code == 200:
+                    instance.collectionid = response.json()['guid']
+                else:
+                    messages.error(
+                        request, f'Error creating collection on BunnyCDN. {response.json()["title"]}')
+            except Exception as e:
+                print(e)
+            instance.user = request.user
+            instance.save()
             messages.success(
                 request, f'{instance.name} has been created successfully.')
             self.extra_context.update({'form': ChapterForm})
