@@ -84,3 +84,16 @@ class ChapterDeleteView(DeleteView):
     def get(self, request, **kwargs):
         messages.error(request, 'Chapter has been deleted successfully.')
         return self.delete(request, **kwargs)
+
+    def delete(self, request, **kwargs):
+        instance = self.get_object()
+        try:
+            response = requests.delete(
+                f"https://video.bunnycdn.com/library/{env('BUNNYCDN_VIDEO_LIBRARY_ID')}/collections/{instance.collectionid}", headers=headers)
+            messages.info(request, 'Succesfully deleting collection on BunnyCDN.')
+            if response.status_code != 200:
+                messages.error(
+                    request, f'Error deleting collection on BunnyCDN. {response.json()["title"]}')
+        except Exception as e:
+            print(e)
+        return super().delete(request, **kwargs)
