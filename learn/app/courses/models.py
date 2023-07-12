@@ -70,7 +70,6 @@ class Lesson(models.Model):
         TEXT = 'text', _('Text')
 
     class SupportPlatform(models.TextChoices):
-        NONE = None, _('---------')
         FILE = 'file', _('File')
         YOUTUBE = 'youtube', _('Youtube')
         VIMEO = 'vimeo', _('Vimeo')
