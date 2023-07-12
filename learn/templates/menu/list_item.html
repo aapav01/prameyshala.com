@@ -1,7 +1,6 @@
 <li>
-  <a href="{% url 'core:home' %}"
-     {% if request.resolver_match.url_name == 'home' %}class="active"{% endif %}
-     data-ripple-light="true">
+  <a href="{% url 'core:home' %}" {% if request.resolver_match.url_name=='home' %}class="active" {% endif %}
+    data-ripple-light="true">
     <i class="far fa-home"></i> Home
   </a>
 </li>
@@ -12,22 +11,18 @@
 </li>
 <li class="p-4 font-bold">Courses</li>
 <li>
-  <a href="{% url 'courses:classes' %}"
-     {% if request.resolver_match.url_name == 'classes' %}class="active"{% endif %}
-     data-ripple-light="true"><i class="far fa-screen-users"></i>Classes</a>
+  <a href="{% url 'courses:classes' %}" {% if request.resolver_match.url_name=='classes' %}class="active" {% endif %}
+    data-ripple-light="true"><i class="far fa-screen-users"></i>Classes</a>
 </li>
 <li>
-  <a href="{% url 'courses:subjects' %}"
-     {% if request.resolver_match.url_name == 'subjects' %}class="active"{% endif %}
-     data-ripple-light="true"><i class="far fa-books"></i>Subjects</a>
+  <a href="{% url 'courses:subjects' %}" {% if request.resolver_match.url_name=='subjects' %}class="active" {% endif %}
+    data-ripple-light="true"><i class="far fa-books"></i>Subjects</a>
 </li>
 <li>
-  <a href="{% url 'courses:chapters' %}"
-     {% if request.resolver_match.url_name == 'chapters' %}class="active"{% endif %}
-     data-ripple-light="true"><i class="fa-regular fa-book"></i>Chapters</a>
+  <a href="{% url 'courses:chapters' %}" {% if request.resolver_match.url_name=='chapters' %}class="active" {% endif %}
+    data-ripple-light="true"><i class="fa-regular fa-book"></i>Chapters</a>
 </li>
 <li>
-  <a href="{% url 'courses:lessons' %}"
-     {% if request.resolver_match.url_name == 'lessons' %}class="active"{% endif %}
-     data-ripple-light="true"><i class="fa-regular fa-chalkboard"></i>Lessons</a>
+  <a href="{% url 'courses:lessons' %}" {% if request.resolver_match.url_name=='lessons' %}class="active" {% endif %}
+    data-ripple-light="true"><i class="fa-regular fa-chalkboard"></i>Lessons</a>
 </li>
