@@ -99,6 +99,7 @@ DATABASES = {
 AUTH_USER_MODEL = 'accounts.User'
 
 AUTHENTICATION_BACKENDS = [
+    "graphql_jwt.backends.JSONWebTokenBackend",
     'app.accounts.backends.EmailPhoneUsernameAuthenticationBackend',
 ]
 
@@ -158,5 +159,8 @@ FIXTURE_DIRS = [
 
 # Graphene - Graphql API
 GRAPHENE = {
-    "SCHEMA": "core.schema.schema"
+    "SCHEMA": "core.schema.schema",
+    "MIDDLEWARE": [
+        "graphql_jwt.middleware.JSONWebTokenMiddleware",
+    ],
 }

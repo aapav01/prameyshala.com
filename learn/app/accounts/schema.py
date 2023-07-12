@@ -25,6 +25,7 @@ class Query(graphene.ObjectType):
     # users
     users = graphene.List(UserType)
     user = graphene.Field(UserType, id=graphene.Int(required=True))
+    me = graphene.Field(UserType)
 
     # payments
     payments = graphene.List(PaymentsType)
@@ -40,6 +41,12 @@ class Query(graphene.ObjectType):
 
     def resolve_user(self, info, id):
         return User.objects.get(pk=id)
+
+    def resolve_me(self, info, **kwargs):
+        user = info.context.user
+        if not user.is_authenticated:
+            raise Exception("Authentication credentials were not provided")
+        return user
 
     # payments
     def resolve_payments(self, info):
