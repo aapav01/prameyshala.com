@@ -1,0 +1,83 @@
+{% extends "layouts/dashboard.html" %}
+{% load static %}
+{% block title %}
+  {{ user.full_name }}'s Profile | Pramey Shala
+{% endblock title %}
+{% block content %}
+  <div class="relative mt-8 h-72 w-full overflow-hidden rounded-xl bg-cover	bg-center">
+    <div class="absolute inset-0 h-full w-full bg-blue-500/50"></div>
+  </div>
+  <div class="relative flex flex-col bg-clip-border rounded-xl bg-white text-gray-700 shadow-md mx-3 -mt-16 mb-6 lg:mx-4">
+    <div class="p-4">
+      <div class="mb-10 flex items-center justify-between gap-6">
+        <div class="flex items-center gap-6">
+          <div class="avatar">
+            <div class="w-24 rounded-xl shadow-lg shadow-blue-gray-500/40">
+              <img src="https://placehold.co/600x400"  width="78px" height="78px" alt="{{ user.full_name }}" />
+            </div>
+          </div>
+          <div>
+            <h5 class="block antialiased tracking-normal font-sans text-xl font-semibold leading-snug text-blue-gray-900 mb-1">
+              {{ user.full_name }}
+            </h5>
+            <p class="block antialiased font-sans text-sm leading-normal font-normal text-blue-gray-600">CEO / Co-Founder</p>
+          </div>
+        </div>
+      </div>
+      <div class="gird-cols-1 mb-12 grid gap-12 px-4 lg:grid-cols-2">
+        <div class="relative flex flex-col bg-clip-border bg-transparent text-gray-700 shadow p-8 rounded-xl">
+          <div class="relative bg-clip-border overflow-hidden bg-transparent text-gray-700 shadow-none mx-0 mt-0 flex items-center justify-between gap-4">
+            <h6 class="block antialiased tracking-normal font-sans text-base font-semibold leading-relaxed text-blue-gray-900">
+              Profile Information
+            </h6>
+            <a class="btn btn-ghost btn-sm btn-square"><i class="fad fa-pencil"></i></a>
+          </div>
+          <div class="p-0">
+            {% comment %} <p class="block antialiased font-sans text-sm leading-normal font-normal text-blue-gray-500">
+              
+            </p> {% endcomment %}
+            <hr class="my-4 border-blue-gray-50">
+            <ul class="flex flex-col gap-4 p-0">
+              <li class="flex items-center gap-4">
+                <p class="block antialiased font-sans text-sm leading-normal text-blue-gray-900 font-semibold capitalize">
+                  first name:
+                </p>
+                <p class="block antialiased font-sans text-sm leading-normal font-normal text-blue-gray-500">{{ user.full_name }}</p>
+              </li>
+              <li class="flex items-center gap-4">
+                <p class="block antialiased font-sans text-sm leading-normal text-blue-gray-900 font-semibold capitalize">mobile:</p>
+                <p class="block antialiased font-sans text-sm leading-normal font-normal text-blue-gray-500">{{ user.phone_number }}</p>
+              </li>
+              <li class="flex items-center gap-4">
+                <p class="block antialiased font-sans text-sm leading-normal text-blue-gray-900 font-semibold capitalize">email:</p>
+                <p class="block antialiased font-sans text-sm leading-normal font-normal text-blue-gray-500">{{ user.email }}</p>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="shadow p-4 rounded-xl">
+          <div class="relative bg-clip-border overflow-hidden bg-transparent text-gray-700 shadow-none mx-0 mt-0 flex items-center justify-between gap-4">
+            <h6 class="block antialiased tracking-normal font-sans text-base font-semibold leading-relaxed text-blue-gray-900 mb-3">
+              Platform Settings
+            </h6>
+          </div>
+          <div class="text-lg">Comming Soon</div>
+        </div>
+      </div>
+      <div class="px-4 pb-4">
+        <h6 class="block antialiased tracking-normal font-sans text-base font-semibold leading-relaxed text-blue-gray-900 mb-2">
+          Your Enrolled Courses
+        </h6>
+        <p class="block antialiased font-sans text-sm leading-normal font-normal text-blue-gray-500">
+          You have enrolled in 4 courses
+        </p>
+        <div class="mt-6 grid grid-cols-1 gap-12 md:grid-cols-2 xl:grid-cols-4">
+          <div class="card shadow p-4"></div>
+          <div class="card shadow p-4"></div>
+          <div class="card shadow p-4"></div>
+          <div class="card shadow p-4"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock content %}
