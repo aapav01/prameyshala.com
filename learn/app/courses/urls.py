@@ -16,5 +16,6 @@ urlpatterns = [
     path("chapter/<int:pk>/delete/", login_required(ChapterDeleteView.as_view()), name="chapter-delete"),
     path('lessons/',  login_required(LessonView.as_view()), name='lessons'),
     path("lesson/<int:pk>/", login_required(LessonUpdateView.as_view()), name="lesson-update"),
+    path("lesson/<int:pk>/detail/", login_required(LessonDetailView.as_view()), name="lesson-detail"),
     path("lesson/<int:pk>/delete/", login_required(LessonDeleteView.as_view()), name="lesson-delete"),
 ]

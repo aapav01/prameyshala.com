@@ -1,6 +1,6 @@
 from django.contrib import messages
 from django.shortcuts import render, redirect
-from django.views.generic import ListView
+from django.views.generic import ListView, DetailView
 from django.views.generic.edit import UpdateView, DeleteView
 from django.utils.text import slugify
 from django.urls import reverse_lazy
@@ -63,6 +63,21 @@ class LessonView(ListView):
             return redirect('courses:lessons')
         else:
             return render(request, self.template_name, self.get_context_data(**kwargs))
+
+class LessonDetailView(DetailView):
+    model = Lesson
+    template_name = "lessons/detail.html"
+    context_object_name = "lesson"
+    extra_context = {
+        'breadcrumbs': [{'url': 'core:home', 'label': 'Dashboard'},{'label': 'Courses'}, {'url': 'courses:lessons', 'label': 'Lessons'},{}],
+    }
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['breadcrumbs'][3]={'label': context['lesson'].title}
+        context['title'] = context['lesson'].title
+        context['form'] = LessonForm(instance=context['lesson'], prefix=context['lesson'].pk)
+        return context
 
 
 class LessonUpdateView(UpdateView):
