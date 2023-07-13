@@ -55,7 +55,8 @@
       <div class="toast toast-end transition-all ease-in duration-1000">
         {% comment %}
         """making all alert-<color> render"""
-          <div class="alert-info alert-success alert-error alert-warning"></div> 
+        <span class="alert-info"/><span class="alert-success"/>
+        <span class="alert-error"/><span class="alert-warning"/>
         {% endcomment %}
         {% for message in messages %}
           <div class="alert text-white alert-{% if message.tags %}{{ message.tags }}{% endif %}"
@@ -73,6 +74,13 @@
             src="{% static 'scripts/require.js' %}"></script>
     <script src="https://unpkg.com/@material-tailwind/html@latest/scripts/ripple.js"></script>
     <script src="https://unpkg.com/@material-tailwind/html@latest/scripts/dismissible.js"></script>
+    <script>
+      $(document).ready(function () {
+        $(".toast").each(function () {
+          $(this).delay(3000).fadeOut(1000);
+        });
+      });
+    </script>
     {% block body_js %}
     {% endblock body_js %}
     {% django_browser_reload_script %}
