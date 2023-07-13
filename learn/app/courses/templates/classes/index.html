@@ -40,7 +40,10 @@
                 <td class="px-4 py-3">{{ class.description }}</td>
                 <td class="px-4 py-3">{{ class.slug }}</td>
                 <td class="flex gap-2 px-4 py-3">
-                  <button onclick="update_class_{{ class.pk }}.showModal()" class="btn btn-sm btn-success btn-square"><i class="fad fa-edit"></i></button>
+                  <button onclick="update_class_{{ class.pk }}.showModal()"
+                          class="btn btn-sm btn-success btn-square">
+                    <i class="fad fa-edit"></i>
+                  </button>
                   <a href="{% url 'courses:class-delete' pk=class.pk %}"
                      onclick="if(confirm('Are you sure you want to delete {{ class.name }} from database?')) return true; else return false;"
                      class="btn btn-sm btn-error btn-square"><i class="far fa-trash-alt"></i></a>
@@ -54,7 +57,9 @@
   </div>
   <dialog id="create_class"
           class="modal modal-bottom sm:modal-middle transition-all duration-500 ease-in-out">
-    <form method="post" class="modal-box sm:max-w-5xl">
+    <form method="post"
+          enctype="multipart/form-data"
+          class="modal-box sm:max-w-5xl">
       {% csrf_token %}
       <h2 class="font-mono font-semibold text-lg">Add New Class</h2>
       <div class="relative mb-4">
@@ -70,22 +75,27 @@
     </form>
   </dialog>
   {% for class in classes %}
-  <dialog id="update_class_{{ class.pk }}"
-          class="modal modal-bottom sm:modal-middle transition-all duration-500 ease-in-out">
-    <form method="post" action="{% url 'courses:class-update' pk=class.pk %}" class="modal-box sm:max-w-5xl">
-      {% csrf_token %}
-      <h2 class="font-mono font-semibold text-lg">Update - {{ class.name }}</h2>
-      <div class="relative mb-4">
-        <div class="form-control w-full djanog-custom-forms grid grid-cols-1 md:grid-cols-2 gap-4">{{ class.form.as_div }}</div>
-      </div>
-      <div class="modal-action justify-between">
-        <p class="text-xs mt-auto">Press esc to close the window or outside the dialog box.</p>
-        <button type="submit" class="btn btn-success shadow">Update</button>
-      </div>
-    </form>
-    <form method="dialog" class="modal-backdrop backdrop-blur-md">
-      <button>close</button>
-    </form>
-  </dialog>
+    <dialog id="update_class_{{ class.pk }}"
+            class="modal modal-bottom sm:modal-middle transition-all duration-500 ease-in-out">
+      <form method="post"
+            enctype="multipart/form-data"
+            action="{% url 'courses:class-update' pk=class.pk %}"
+            class="modal-box sm:max-w-5xl">
+        {% csrf_token %}
+        <h2 class="font-mono font-semibold text-lg">Update - {{ class.name }}</h2>
+        <div class="relative mb-4">
+          <div class="form-control w-full djanog-custom-forms grid grid-cols-1 md:grid-cols-2 gap-4">
+            {{ class.form.as_div }}
+          </div>
+        </div>
+        <div class="modal-action justify-between">
+          <p class="text-xs mt-auto">Press esc to close the window or outside the dialog box.</p>
+          <button type="submit" class="btn btn-success shadow">Update</button>
+        </div>
+      </form>
+      <form method="dialog" class="modal-backdrop backdrop-blur-md">
+        <button>close</button>
+      </form>
+    </dialog>
   {% endfor %}
 {% endblock content %}

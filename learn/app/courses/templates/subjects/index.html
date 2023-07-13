@@ -60,7 +60,7 @@
   </div>
   <dialog id="create_chapter"
           class="modal modal-bottom sm:modal-middle transition-all duration-500 ease-in-out">
-    <form method="post" class="modal-box sm:max-w-5xl">
+    <form method="post" enctype="multipart/form-data" class="modal-box sm:max-w-5xl">
       {% csrf_token %}
       <h2 class="font-mono font-semibold text-lg">Add New Subject</h2>
       <div class="relative mb-4">
@@ -78,7 +78,7 @@
   {% for subject in subjects %}
     <dialog id="update_subject_{{ subject.pk }}"
             class="modal modal-bottom sm:modal-middle transition-all duration-500 ease-in-out">
-      <form method="post"
+      <form method="post" enctype="multipart/form-data"
             action="{% url 'courses:subject-update' pk=subject.pk %}"
             class="modal-box sm:max-w-5xl">
         {% csrf_token %}
