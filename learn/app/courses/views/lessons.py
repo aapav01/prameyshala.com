@@ -84,6 +84,7 @@ class LessonUpdateView(UpdateView):
     model = Lesson
     form_class = LessonForm
     success_url = reverse_lazy("courses:lessons")
+    template_name = "form.html"
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()

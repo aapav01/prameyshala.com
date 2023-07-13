@@ -49,6 +49,7 @@ class SubjectUpdateView(UpdateView):
     model = Subject
     form_class = SubjectForm
     success_url = reverse_lazy("courses:subjects")
+    template_name = "form.html"
 
     def form_valid(self, form):
         form.instance.slug = slugify(

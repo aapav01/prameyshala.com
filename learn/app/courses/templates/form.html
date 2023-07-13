@@ -1,0 +1,21 @@
+{% extends "layouts/dashboard.html" %}
+{% load static %}
+{% block title %}
+  Update FORM  | Pramey Shala
+{% endblock title %}
+{% block content %}
+  <div class="mt-12 mb-8 flex flex-col gap-12">
+    <form method="post" class="relative flex w-full flex-col rounded-xl bg-base-100 bg-clip-border text-base-content shadow-md">
+      <div class="relative mx-4 -mt-6 mb-4 grid px-6 py-8 overflow-hidden rounded-xl bg-gradient-to-tr from-indigo-600 to-indigo-400 bg-clip-border text-white shadow-lg shadow-indigo-500/40">
+        <h1 class="block font-sans leading-snug tracking-normal text-white antialiased text-lg font-semibold">
+          Update - {{ form.title.value }}
+        </h1>
+      </div>
+      {% csrf_token %}
+      <div class="w-full djanog-custom-forms grid grid-cols-1 md:grid-cols-2 gap-4 p-6 ">{{ form.as_div }}</div>
+      <div class="flex justify-center mb-4">
+        <button type="submit" class="btn btn-primary">Update</button>
+      </div>
+    </form>
+  </div>
+{% endblock content %}

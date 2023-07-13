@@ -70,6 +70,7 @@ class ChapterUpdateView(UpdateView):
     model = Chapter
     form_class = ChapterForm
     success_url = reverse_lazy("courses:chapters")
+    template_name = "form.html"
 
     def form_valid(self, form):
         messages.info(
