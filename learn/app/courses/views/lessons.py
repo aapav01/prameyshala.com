@@ -6,6 +6,19 @@ from django.utils.text import slugify
 from django.urls import reverse_lazy
 from ..models import Lesson
 from ..forms import LessonForm
+import requests
+import environ
+
+
+# Initialise environment variables
+env = environ.Env()
+environ.Env.read_env()
+
+headers = {
+    "accept": "application/json",
+    "content-type": "application/*+json",
+    "AccessKey": env('BUNNYCDN_ACCESS_KEY')
+}
 
 
 class LessonView(ListView):
@@ -33,6 +46,16 @@ class LessonView(ListView):
         if form.is_valid():
             instance = form.save(commit=False)
             instance.created_by = request.user
+            if instance.platform == "file":
+                url = f"https://video.bunnycdn.com/library/{env('BUNNYCDN_VIDEO_LIBRARY_ID')}/videos"
+                payload = "{\"title\":\""+instance.title + \
+                    "\",\"collectionId\":\""+instance.chapter.collectionid+"\"}"
+                response = requests.post(url, data=payload, headers=headers)
+                print(response.text)
+                if response.status_code == 200:
+                    instance.platform_video_id = response.json()['guid']
+                    messages.success(
+                        request, 'BunnyCDN Video has been created successfully.')
             instance.save()
             messages.success(
                 request, f'{instance.title} has been created successfully.')
@@ -46,6 +69,12 @@ class LessonUpdateView(UpdateView):
     model = Lesson
     form_class = LessonForm
     success_url = reverse_lazy("courses:lessons")
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        prefix = self.kwargs.get('pk')
+        kwargs['prefix'] = prefix
+        return kwargs
 
     def form_valid(self, form):
         form.instance.updated_by = self.request.user
