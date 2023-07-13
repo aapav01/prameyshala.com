@@ -28,7 +28,14 @@
     {% endblock head_link %}
   </head>
   <body class="min-h-screen bg-blue-gray-50/50">
-    <aside class="bg-white shadow-lg -translate-x-80 fixed inset-0 z-50 my-4 ml-4 h-[calc(100vh-32px)] w-72 rounded-xl transition-transform duration-300 xl:translate-x-0">
+    <aside id="sidebar" class="bg-white shadow-lg -translate-x-80 fixed inset-0 z-50 my-4 ml-4 h-[calc(100vh-32px)] w-72 rounded-xl transition-transform duration-300 xl:translate-x-0">
+      <div class="flex justify-end">
+        <button onclick="closeSidebar()" class="btn btn-square btn-ghost btn-sm mt-4 mr-4 xl:hidden">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"></path>
+          </svg>
+        </button>
+      </div>
       <div class="relative border-b border-blue-gray-50">
         <a href="{{ url }}">
           <img width="auto"
@@ -80,6 +87,22 @@
           $(this).delay(3000).fadeOut(1000);
         });
       });
+    </script>
+    <script>
+      function openSidebar() {
+        $("#sidebar").removeClass("-translate-x-80");
+        $("#sidebar").addClass("translate-x-0");
+        $("#side_btn").addClass("hidden");
+        $(".sidebar_btn_close").removeClass("hidden");
+      }
+    </script>
+    <script>
+      function closeSidebar() {
+        $("#sidebar").addClass("-translate-x-80");
+        $("#sidebar").removeClass("translate-x-0");
+        $("#side_btn").removeClass("hidden");
+        $(".sidebar_btn_close").addClass("hidden");
+      }
     </script>
     {% block body_js %}
     {% endblock body_js %}
