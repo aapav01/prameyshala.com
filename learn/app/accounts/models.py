@@ -2,6 +2,7 @@ from django.db import models
 from django.core.validators import RegexValidator
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.contrib.auth.hashers import make_password
+from django.contrib.auth.models import Group, Permission
 
 phone_validator = RegexValidator(
     r"^(\+?\d{0,4})?\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{4}\)?)?$", "The phone number provided is invalid")
@@ -38,6 +39,7 @@ class UserManager(BaseUserManager):
 class Role(models.Model):
     name = models.CharField(max_length=50, blank=False,
                             null=False, unique=True)
+    permission = models.ManyToManyField(Permission)
 
     def __str__(self):
         return self.name

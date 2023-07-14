@@ -2,13 +2,12 @@
   <a href="{% url 'core:home' %}"
      {% if request.resolver_match.url_name == 'home' %}class="active"{% endif %}
      data-ripple-light="true">
-    <i class="far fa-home"></i> Home
-  </a>
+    <i class="far fa-home"></i>Home</a>
 </li>
 <li>
   <a href="{% url 'core:user_profile' %}"
      {% if request.resolver_match.url_name == 'user_profile' %}class="active"{% endif %}
-     ata-ripple-light="true"><i class="far fa-user"></i> Profile</a>
+     data-ripple-light="true"><i class="far fa-user"></i>Profile</a>
 </li>
 <li class="p-4 font-bold">Courses</li>
 <li>
@@ -41,4 +40,10 @@
   <a href="{% url 'accounts:payments' %}"
      {% if request.resolver_match.url_name == 'payments' %}class="active"{% endif %}
      data-ripple-light="true"><i class="fa-regular fa-credit-card"></i>Payments</a>
+</li>
+<li class="p-4 font-bold">User Management</li>
+<li>
+  <a href="{% url 'accounts:roles' %}"
+     {% if request.resolver_match.url_name == 'roles' %}class="active"{% endif %}
+     data-ripple-light="true"><i class="fa-regular fa-chalkboard"></i>Roles</a>
 </li>

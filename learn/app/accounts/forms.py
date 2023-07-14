@@ -1,6 +1,7 @@
 from django import forms
 from django.forms import ModelForm
-from .models import Enrollment
+from .models import Enrollment, Role
+
 
 class UserLoginForm(forms.Form):
     phone_number = forms.CharField(max_length=50, widget=forms.TextInput(attrs={
@@ -25,4 +26,8 @@ class EnrollmentForm(ModelForm):
         exclude = ['slug']
 
 
+class RolesForm(ModelForm):
+    class Meta:
+        model = Role
+        fields = "__all__"
 
