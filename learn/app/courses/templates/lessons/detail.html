@@ -34,7 +34,8 @@
           {% if lesson.status != 'ready' and lesson.lesson_type == 'video' and lesson.platform == 'file' %}
             <div class="mb-4">
               <h2 class="font-mono font-semibold">Upload Video</h2>
-              <button class="btn btn-block bg-gradient-to-br from-accent to-accent-content border-0 shadow shadow-accent/50 text-white">
+              <button onclick="upload_video.show()"
+                      class="btn btn-block bg-gradient-to-br from-accent to-accent-content border-0 shadow shadow-accent/50 text-white">
                 <i class="far fa-upload"></i>
                 Upload Video
               </button>
@@ -108,4 +109,73 @@
       <button>close</button>
     </form>
   </dialog>
+  <dialog id="upload_video"
+          class="modal modal-bottom sm:modal-middle transition-all duration-500 ease-in-out">
+    <div class="modal-box sm:max-w-5xl">
+      <h2 class="font-mono font-semibold text-lg">
+        Upload Video for {{ lesson.title }} of {{ lesson.chapter.name }} in {{ lesson.chapter.course.name }}
+      </h2>
+      <div class="m-10">
+        <label id="fileLabel"
+               class="flex justify-center w-full h-32 px-4 transition bg-base-200 border-2 border-gray-300 border-dashed rounded-2xl appearance-none cursor-pointer hover:border-gray-400 focus:outline-none">
+          <span class="flex items-center space-x-2">
+            <i class="far fa-upload"></i>
+            <span class="font-medium text-gray-600 file_text">
+              Drop files to Attach, or
+              <span class="text-blue-600 underline">browse</span>
+            </span>
+          </span>
+          <input type="file"
+                 name="file_upload"
+                 class="hidden"
+                 accept="video/mp4,video/x-m4v,video/*">
+        </label>
+        <div class="form-control my-5">
+          <label class="label">
+            <span class="label-text">Progress</span>
+            <span id="upload_percent" class="label-text-alt">Waiting for File</span>
+          </label>
+          <progress id="upload_progress" class="progress w-full"></progress>
+        </div>
+        <div class="text-center">
+          <button id="UPLOAD_NOW" onclick="uploadfile()" class="hidden btn btn-circle bg-gradient-to-tr from-light-blue-600 to-blue-900 shadow-md shadow-blue-800/50 text-white border-0">
+            <i class="far fa-up-from-line"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+    <form method="dialog" class="modal-backdrop backdrop-blur">
+      <button>close</button>
+    </form>
+  </dialog>
 {% endblock content %}
+{% block body_js %}
+  <script type="javascript" src="{% static 'js/tus.min.js' %}"></script>
+  <script>
+    const fileInput = document.querySelector('input[name="file_upload"]');
+    const fileLabel = document.getElementById("fileLabel");
+    const filebtn = document.getElementById("UPLOAD_NOW");
+    fileInput.addEventListener("change", function () {
+      if (fileInput.files.length > 0) {
+        filebtn.classList.remove("hidden");
+        fileLabel.classList.add("border-blue-600", "bg-white");
+        fileLabel.classList.remove("bg-base-200", "border-gray-300");
+        fileLabel.querySelector(
+          ".file_text"
+        ).textContent = `Selected file: ${fileInput.files[0].name}`;
+      } else {
+        fileLabel.classList.remove("border-blue-600", "bg-white");
+        fileLabel.classList.add("bg-base-200", "border-gray-300");
+        filebtn.classList.add("hidden");
+        fileLabel.querySelector(".file_text").textContent =
+          "Drop files to Attach, or browse";
+      }
+    });
+  </script>
+  <script>
+    // make function when clicked on #UPLOAD_NOW use TUS upload to bunny cdn
+    function uploadfile() {
+      console.log('Starting upload...');
+    }
+  </script>
+{% endblock body_js %}
