@@ -5,27 +5,56 @@
 {% endblock title %}
 {% block content %}
   <div class="mt-12 mb-8 flex flex-col gap-12">
-    <div class="flex justify-between px-6">
+    <div class="flex flex-col sm:flex-row gap-2 justify-between px-6">
       <button onclick="edit_chapter.showModal()"
               class="btn bg-gradient-to-br from-green-600 to-green-900 text-white px-12 border-0 shadow-md shadow-green-500/50">
         <i class="far fa-pencil"></i>Edit Lesson
       </button>
-      <button class="btn bg-gradient-to-br from-red-600 to-orange-900 text-white px-12 border-0 shadow-md shadow-red-500/50">
+      <a href="{% url 'courses:lesson-delete' pk=lesson.pk %}"
+         onclick="if(confirm('Are you sure you want to delete {{ class.name }} from database?')) return true; else return false;"
+         class="btn bg-gradient-to-br from-red-600 to-orange-900 text-white px-12 border-0 shadow-md shadow-red-500/50">
         <i class="far fa-trash"></i>Delete Lesson
-      </button>
+      </a>
     </div>
     <div class="relative flex w-full flex-col rounded-xl bg-base-100 bg-clip-border text-base-content shadow-md">
       <div class="relative mx-4 -mt-6 mb-4 grid px-6 py-8 overflow-hidden rounded-xl bg-gradient-to-tr from-indigo-600 to-indigo-400 bg-clip-border text-white shadow-lg shadow-indigo-500/40">
         <h1 class="block font-sans leading-snug tracking-normal text-white antialiased text-lg font-semibold">{{ title }}</h1>
       </div>
       <div class="grid grid-cols-1 md:grid-cols-3 gap-4 p-6">
-        <div class="p-4 border-r-2">
-          <div class="rounded-lg">
-            <img src="/{{ lesson.thumb_url }}"
-                 alt="{{ lesson.title }}"
-                 width="auto"
-                 height="160px"
-                 class="h-40" />
+        <div class="p-4 md:border-r-2">
+          {% if lesson.thumb_url %}
+            <div class="rounded-lg">
+              <img src="/{{ lesson.thumb_url }}"
+                   alt="{{ lesson.title }}"
+                   width="auto"
+                   height="160px"
+                   class="h-40" />
+            </div>
+          {% endif %}
+          {% if lesson.status != 'ready' and lesson.lesson_type == 'video' and lesson.platform == 'file' %}
+            <div class="mb-4">
+              <h2 class="font-mono font-semibold">Upload Video</h2>
+              <button class="btn btn-block bg-gradient-to-br from-accent to-accent-content border-0 shadow shadow-accent/50 text-white">
+                <i class="far fa-upload"></i>
+                Upload Video
+              </button>
+              <p class="mx-4 my-1 bg-warning/80 text-warning-content rounded-xl text-center p-2 gap-2 text-sm">
+                <i class="fad fa-exclamation-triangle"></i>
+                Video is not uploaded yet.
+              </p>
+            </div>
+          {% endif %}
+          <div class="mb-4">
+            <h2 class="font-mono font-semibold">Title</h2>
+            <p class="text-sm">{{ lesson.title }}</p>
+          </div>
+          <div class="mb-4">
+            <h2 class="font-mono font-semibold">Lesson Type</h2>
+            <p class="text-sm capitalize">{{ lesson.lesson_type }}</p>
+          </div>
+          <div class="mb-4">
+            <h2 class="font-mono font-semibold">Lesson Duration</h2>
+            <p class="text-sm">{{ lesson.duration }}</p>
           </div>
         </div>
         <div class="p-4">
@@ -44,7 +73,7 @@
             </div>
           {% endif %}
         </div>
-        <div>
+        <div class="p-4">
           <div class="mb-4">
             <h2 class="font-mono font-semibold">Chapter</h2>
             <p class="text-sm">{{ lesson.chapter.name }}</p>
