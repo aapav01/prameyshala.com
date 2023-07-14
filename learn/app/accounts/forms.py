@@ -1,5 +1,6 @@
 from django import forms
-
+from django.forms import ModelForm
+from .models import Enrollment
 
 class UserLoginForm(forms.Form):
     phone_number = forms.CharField(max_length=50, widget=forms.TextInput(attrs={
@@ -16,3 +17,12 @@ class UserRegisterForm(forms.Form):
     email = forms.EmailField(widget=forms.EmailInput(attrs={'placeholder': 'me@example.com'}))
     password = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder': 'Password'}))
     confirm_password = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder': 'Password'}), label='Confirm Password')
+
+class EnrollmentForm(ModelForm):
+    class Meta:
+        model = Enrollment
+        fields = "__all__"
+        exclude = ['slug']
+
+
+

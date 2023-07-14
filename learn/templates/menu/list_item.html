@@ -31,3 +31,14 @@
      {% if request.resolver_match.url_name == 'lessons' %}class="active"{% endif %}
      data-ripple-light="true"><i class="fa-regular fa-chalkboard"></i>Lessons</a>
 </li>
+<li class="p-4 font-bold">Accounts</li>
+<li>
+  <a href="{% url 'accounts:enrollment' %}"
+     {% if request.resolver_match.url_name == 'enrollment' %}class="active"{% endif %}
+     data-ripple-light="true"><i class="fa-regular fa-user-plus"></i>Enrollment</a>
+</li>
+<li>
+  <a href="{% url 'accounts:payments' %}"
+     {% if request.resolver_match.url_name == 'payments' %}class="active"{% endif %}
+     data-ripple-light="true"><i class="fa-regular fa-credit-card"></i>Payments</a>
+</li>
