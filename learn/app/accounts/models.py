@@ -35,6 +35,14 @@ class UserManager(BaseUserManager):
         return self._create_user(full_name, phone_number, email, password, **extra_fields)
 
 
+class Role(models.Model):
+    name = models.CharField(max_length=50, blank=False,
+                            null=False, unique=True)
+
+    def __str__(self):
+        return self.name
+
+
 class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(max_length=100, unique=True)
     phone_number = models.CharField(max_length=16, validators=[
@@ -42,6 +50,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     full_name = models.CharField(max_length=30)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
+    roles = models.ManyToManyField(Role)
     objects = UserManager()
     USERNAME_FIELD = 'phone_number'
     REQUIRED_FIELDS = ['email', 'full_name']
