@@ -34,6 +34,8 @@ class RolesView(ListView):
             instance = form.save(commit=False)
             instance.slug = slugify(instance.name)
             instance.save()
+            permissions = form.cleaned_data['permissions']
+            instance.permissions.set(permissions)
             messages.success(
                 request, f'{instance.name} has been created successfully.')
             self.extra_context.update({'form': RolesForm})
