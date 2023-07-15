@@ -18,10 +18,10 @@ class RolesView(ListView):
         'breadcrumbs': [{'url': 'core:home', 'label': 'Dashboard'}, {'label': 'User Management'}, {'label': 'Roles'}],
         'form': form
     }
-
+    
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        for obj in context['roles']:
+        for obj in context[self.context_object_name]:
             temp_form = RolesForm(instance=obj)
             obj.form = temp_form
         return context
