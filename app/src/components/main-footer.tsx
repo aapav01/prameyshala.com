@@ -25,7 +25,7 @@ function MainFooter({}: Props) {
                 />
               </Link>
               <p className="mt-2">
-                MOTO MOTO MOTO MOTO MOTO MOTO MOTO MOTO MOTO MOTO.
+              Start learning with Prameyshala
               </p>
               <p className="mt-2 font-sans text-sm font-bold text-center">
                 Download our apps to start learning
@@ -59,11 +59,11 @@ function MainFooter({}: Props) {
                   Help & support
                 </p>
                 <ul className="mt-2">
-                  <li>User Guidelines</li>
-                  <li>Site Map</li>
-                  <li>Refund Policy</li>
+                  <li><Link href={'/privacy-policy'}>Privacy Policy</Link></li>
+                  {/* <li>Site Map</li> */}
+                  <li><Link href={'/refund-policy'}>Refund Policy</Link></li>
                   <li>Takedown Policy</li>
-                  <li>Grievance Redressal</li>
+                  <li><Link href={'/terms-and-conditions'}>Terms &amp; Conditions</Link></li>
                 </ul>
               </div>
               <div>

@@ -81,5 +81,8 @@ module.exports = {
       sans: ["Hind", "sans-serif"],
     }
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [
+    require("tailwindcss-animate"),
+    require("@tailwindcss/typography"),
+  ],
 }

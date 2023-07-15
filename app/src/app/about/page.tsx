@@ -96,7 +96,7 @@ function AboutPage({}: Props) {
                 </li>
               </ul>
               <Button variant={"default"} className="text-lg py-6">
-                Get Started For Free
+                Join For Free
               </Button>
             </div>
           </div>
