@@ -1,8 +1,7 @@
 from django.db import models
 from django.core.validators import RegexValidator
-from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin, Group
 from django.contrib.auth.hashers import make_password
-from django.contrib.auth.models import Group, Permission
 
 phone_validator = RegexValidator(
     r"^(\+?\d{0,4})?\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{4}\)?)?$", "The phone number provided is invalid")
@@ -36,13 +35,8 @@ class UserManager(BaseUserManager):
         return self._create_user(full_name, phone_number, email, password, **extra_fields)
 
 
-class Role(models.Model):
-    name = models.CharField(max_length=50, blank=False,
-                            null=False, unique=True)
-    permission = models.ManyToManyField(Permission)
-
-    def __str__(self):
-        return self.name
+class Role(Group):
+    description = models.TextField(blank=True)
 
 
 class User(AbstractBaseUser, PermissionsMixin):
@@ -52,7 +46,6 @@ class User(AbstractBaseUser, PermissionsMixin):
     full_name = models.CharField(max_length=30)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
-    roles = models.ManyToManyField(Role)
     objects = UserManager()
     USERNAME_FIELD = 'phone_number'
     REQUIRED_FIELDS = ['email', 'full_name']

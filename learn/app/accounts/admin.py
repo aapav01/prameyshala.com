@@ -1,7 +1,9 @@
 from django.contrib import admin
-from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
+from django.contrib.auth.admin import UserAdmin as BaseUserAdmin, GroupAdmin
 from django.contrib.auth.forms import UserChangeForm, UserCreationForm
-from .models import User, Enrollment, Payments
+from django.contrib.auth.models import Group
+from django.utils.translation import gettext_lazy as _
+from .models import User, Enrollment, Payments, Role
 
 class UserAdmin(BaseUserAdmin):
     form = UserChangeForm
@@ -26,6 +28,17 @@ class UserAdmin(BaseUserAdmin):
             form.base_fields['is_superuser'].disabled = True
         return form
 
+
+class RoleAdmin(GroupAdmin):
+    list_display = ('name', 'description')
+    fieldsets = (
+        (None, {'fields': ('name', 'permissions')}),
+        (_('Description'), {'fields': ('description',)}),
+    )
+
+admin.site.unregister(Group)
+
 admin.site.register(User, UserAdmin)
 admin.site.register(Enrollment)
 admin.site.register(Payments)
+admin.site.register(Role,RoleAdmin)

@@ -21,7 +21,7 @@ class RolesView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        for obj in context['roles']:
+        for obj in context[self.context_object_name]:
             temp_form = RolesForm(instance=obj)
             obj.form = temp_form
         return context
@@ -41,7 +41,6 @@ class RolesView(ListView):
         else:
             return render(request, self.template_name, self.get_context_data(**kwargs))
 
-# @permission_required('permissions.admin_permission_group')
 
 
 class RolesUpdateView(UpdateView):
@@ -57,7 +56,6 @@ class RolesUpdateView(UpdateView):
         return super().form_valid(form)
 
 
-# @permission_required('permissions.admin_permission_group')
 class RolesDeleteView(DeleteView):
     model = Role
     success_url = reverse_lazy("accounts:roles")
