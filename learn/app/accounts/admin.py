@@ -1,7 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin, GroupAdmin
 from django.contrib.auth.forms import UserChangeForm, UserCreationForm
-from .models import User, Enrollment, Payments
 from django.contrib.auth.models import Group
 from django.utils.translation import gettext_lazy as _
 from .models import User, Enrollment, Payments, Role

@@ -16,5 +16,7 @@ urlpatterns = [
     path('account/roles', login_required(RolesView.as_view()), name='roles'),
     path("account/roles/<int:pk>/", login_required(RolesUpdateView.as_view()), name="role-update"),
     path("account/roles/<int:pk>/delete/", login_required(RolesDeleteView.as_view()), name="role-delete"),
+    path("account/settings/", login_required(UserSettings.as_view()), name="user-settings"),
+    path("settings/", login_required(SettingView.as_view()), name="settings"),
 ]
 

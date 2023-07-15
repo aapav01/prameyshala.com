@@ -41,7 +41,6 @@ class RolesView(ListView):
         else:
             return render(request, self.template_name, self.get_context_data(**kwargs))
 
-# @permission_required('permissions.admin_permission_group')
 
 
 class RolesUpdateView(UpdateView):
@@ -57,7 +56,6 @@ class RolesUpdateView(UpdateView):
         return super().form_valid(form)
 
 
-# @permission_required('permissions.admin_permission_group')
 class RolesDeleteView(DeleteView):
     model = Role
     success_url = reverse_lazy("accounts:roles")

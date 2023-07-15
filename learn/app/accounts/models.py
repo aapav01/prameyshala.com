@@ -38,9 +38,6 @@ class UserManager(BaseUserManager):
 class Role(Group):
     description = models.TextField(blank=True)
 
-    def __str__(self):
-        return self.name
-
 
 class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(max_length=100, unique=True)
@@ -104,3 +101,25 @@ class Payments(models.Model):
 
     class Meta:
         db_table = 'payments'
+
+
+class Settings(models.Model):
+    name = models.CharField(max_length=255)
+    value = models.CharField(max_length=255)
+    created_at = models.DateTimeField(
+        auto_now=False, auto_now_add=True, blank=True, null=True)
+    updated_at = models.DateTimeField(auto_now=True, blank=True, null=True)
+    updated_by = models.ForeignKey(User, on_delete=models.NOT_PROVIDED,
+                                   related_name='modified_by', default=None, blank=True, null=True)
+
+    class Meta:
+        db_table = 'settings'
+
+
+class UserSettings(models.Model):
+    user_id = models.ForeignKey(User, on_delete=models.CASCADE)
+    setting_id = models.ForeignKey(Settings, on_delete=models.CASCADE)
+    value = models.CharField(max_length=255)
+    created_at = models.DateTimeField(
+        auto_now=False, auto_now_add=True, blank=True, null=True)
+    updated_at = models.DateTimeField(auto_now=True, blank=True, null=True)
