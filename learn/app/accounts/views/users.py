@@ -7,6 +7,7 @@ from django.urls import reverse_lazy
 from ..models import User, Role
 from ..forms import UsersForm
 from django.contrib.auth.models import Group
+from django.contrib.auth.hashers import make_password
 
 
 
@@ -34,12 +35,9 @@ class UsersView(ListView):
         self.extra_context.update({'form': form})
         if form.is_valid():
             instance = form.save(commit=False)
+            instance.password=make_password(instance.password)
             instance.slug = slugify(instance.full_name)
             instance.save()
-            group = form.cleaned_data['groups']
-            instance.groups.set(group)
-            permissions = form.cleaned_data['user_permissions']
-            instance.user_permissions.set(permissions)
             messages.success(
                 request, f'{instance.full_name} has been created successfully.')
             self.extra_context.update({'form': UsersForm})
