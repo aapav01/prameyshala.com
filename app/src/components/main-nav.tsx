@@ -44,7 +44,7 @@ function MainNav() {
         <div className="flex-1 flex justify-end items-center gap-1">
           <Button variant={"outline"}>Login</Button>
           <Button className="text-xs md:text-sm">
-            Get Started<span className="hidden md:flex md:ml-1">For Free</span>
+            Join<span className="hidden md:flex md:ml-1">For Free</span>
           </Button>
         </div>
       </div>
