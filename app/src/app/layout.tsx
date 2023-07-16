@@ -8,7 +8,7 @@ const hind = Hind({
 
 export const metadata = {
   title: "Pramey Shala",
-  description: "K12 Education for all",
+  description: "Start learning with Prameyshala",
 };
 
 export default function RootLayout({
