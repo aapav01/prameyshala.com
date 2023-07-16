@@ -1,0 +1,99 @@
+{% extends "layouts/dashboard.html" %}
+{% load static %}
+{% block title %}
+    {{ title }} | Pramey Shala
+{% endblock title %}
+{% block content %}
+    <div class="mt-12 mb-8 flex flex-col gap-12">
+        <div class="flex justify-between px-6">
+            <button onclick="create_user.showModal()"
+                    class="btn bg-gradient-to-br from-purple-600 to-pink-400 text-white px-12 border-0 shadow-md shadow-purple-500/50">
+                <i class="far fa-plus"></i>Add User
+            </button>
+        </div>
+        <div class="relative flex w-full flex-col rounded-xl bg-base-100 bg-clip-border text-base-content shadow-md">
+            <div class="relative mx-4 -mt-6 mb-4 grid px-6 py-8 overflow-hidden rounded-xl bg-gradient-to-tr from-indigo-600 to-indigo-400 bg-clip-border text-white shadow-lg shadow-indigo-500/40">
+                <h1 class="block font-sans leading-snug tracking-normal text-white antialiased text-lg font-semibold">{{ title }}</h1>
+            </div>
+            <div class="flex flex-col gap-4 p-6 overflow-x-auto">
+                <table class="table table-auto">
+                    <thead class="uppercase text-sm">
+                        <tr>
+                            <th class="px-4 py-3">Name</th>
+                            <th class="px-4 py-3">Role</th>
+                            <th class="px-4 py-3">Action</th>
+                        </tr>
+                    </thead>
+                    <tfoot class="border-t border-blue-gray-50 py-3 px-5 text-left font-bold uppercase text-blue-gray-400 text-sm">
+                        <tr>
+                            <th class="px-4 py-3">Name</th>
+                            <th class="px-4 py-3">Role</th>
+                            <th class="px-4 py-3">Action</th>
+                        </tr>
+                    </tfoot>
+                    <tbody>
+                        {% for user in users %}
+                            <tr class="border-b border-blue-gray-50">
+                                <td class="px-4 py-3">{{ user.full_name }}</td>
+                                <td class="px-4 py-3">{{ user.get_role }}</td>
+                                <td class="flex gap-2 px-4 py-3">
+                                    <button onclick="update_user_{{ user.pk }}.showModal()"
+                                            class="btn btn-sm btn-success btn-square">
+                                        <i class="fad fa-edit"></i>
+                                    </button>
+                                    <a href="{% url 'accounts:user-delete' pk=user.pk %}"
+                                       onclick="if(confirm('Are you sure you want to delete {{ user.full_name }} from database?')) return true; else return false;"
+                                       class="btn btn-sm btn-error btn-square"><i class="far fa-trash-alt"></i></a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <dialog id="create_user"
+            class="modal modal-bottom sm:modal-middle transition-all duration-500 ease-in-out">
+        <form method="post"
+              enctype="multipart/form-data"
+              class="modal-box sm:max-w-5xl">
+            {% csrf_token %}
+            <h2 class="font-mono font-semibold text-lg">Add New User</h2>
+            <div class="relative mb-4">
+                <div class="form-control w-full djanog-custom-forms grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {{ form.as_div }}
+            <div class="modal-action justify-between">
+                <p class="text-xs mt-auto">Press esc to close the window or outside the dialog box.</p>
+                <button type="submit" class="btn btn-success">Save</button>
+            </div>
+            </div>
+            </div>
+        </form>
+        <form method="dialog" class="modal-backdrop backdrop-blur-md">
+            <button>close</button>
+        </form>
+    </dialog>
+    {% for user in users %}
+        <dialog id="update_user_{{ user.pk }}"
+                class="modal modal-bottom sm:modal-middle transition-all duration-500 ease-in-out">
+            <form method="post"
+                  enctype="multipart/form-data"
+                  action="{% url 'accounts:user-update' pk=user.pk %}"
+                  class="modal-box sm:max-w-5xl">
+                {% csrf_token %}
+                <h2 class="font-mono font-semibold text-lg">Update - {{ user.full_name }}</h2>
+                <div class="relative mb-4">
+                    <div class="form-control w-full djanog-custom-forms grid grid-cols-1 md:grid-cols-2 gap-4">{{ user.form.as_div }}</div>
+                </div>
+                <div class="modal-action justify-between">
+                    <p class="text-xs mt-auto">Press esc to close the window or outside the dialog box.</p>
+                    <button type="submit" class="btn btn-success shadow">Update</button>
+                </div>
+            </form>
+            <form method="dialog" class="modal-backdrop backdrop-blur-md">
+                <button>close</button>
+            </form>
+        </dialog>
+    {% endfor %}
+{% endblock content %}
+
