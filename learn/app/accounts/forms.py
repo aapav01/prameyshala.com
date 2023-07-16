@@ -36,7 +36,12 @@ class RolesForm(ModelForm):
 class UsersForm(ModelForm):
     class Meta:
         model = User
-        fields = ['full_name', 'password', 'phone_number', 'email', 'groups','user_permissions', 'is_active', 'is_staff',  'is_superuser', ]
+        fields = ['full_name', 'password', 'phone_number', 'email','is_active','is_superuser', 'is_staff',   'groups','user_permissions',  ]
         exclude = ['last_login']
-
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if self.instance.pk:
+            self.fields['password'].widget = forms.HiddenInput()
+           
 
