@@ -1,6 +1,6 @@
 from django import forms
 from django.forms import ModelForm
-from .models import Enrollment, Role
+from .models import Enrollment, Role, User
 from django.contrib.auth.models import Permission, Group
 
 
@@ -32,5 +32,11 @@ class RolesForm(ModelForm):
         model = Role
         fields = "__all__"
     
+
+class UsersForm(ModelForm):
+    class Meta:
+        model = User
+        fields = ['full_name', 'password', 'phone_number', 'email', 'groups','user_permissions', 'is_active', 'is_staff',  'is_superuser', ]
+        exclude = ['last_login']
 
 
