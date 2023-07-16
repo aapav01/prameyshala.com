@@ -18,7 +18,7 @@ class RolesView(ListView):
         'breadcrumbs': [{'url': 'core:home', 'label': 'Dashboard'}, {'label': 'User Management'}, {'label': 'Roles'}],
         'form': form
     }
-
+    
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         for obj in context[self.context_object_name]:
@@ -34,6 +34,8 @@ class RolesView(ListView):
             instance = form.save(commit=False)
             instance.slug = slugify(instance.name)
             instance.save()
+            permissions = form.cleaned_data['permissions']
+            instance.permissions.set(permissions)
             messages.success(
                 request, f'{instance.name} has been created successfully.')
             self.extra_context.update({'form': RolesForm})

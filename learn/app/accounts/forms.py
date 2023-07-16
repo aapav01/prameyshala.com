@@ -1,6 +1,7 @@
 from django import forms
 from django.forms import ModelForm
-from .models import Enrollment, Role
+from .models import Enrollment, Role, User
+from django.contrib.auth.models import Permission, Group
 
 
 class UserLoginForm(forms.Form):
@@ -30,4 +31,17 @@ class RolesForm(ModelForm):
     class Meta:
         model = Role
         fields = "__all__"
+    
+
+class UsersForm(ModelForm):
+    class Meta:
+        model = User
+        fields = ['full_name', 'password', 'phone_number', 'email','is_active','is_superuser', 'is_staff',   'groups','user_permissions',  ]
+        exclude = ['last_login']
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if self.instance.pk:
+            self.fields['password'].widget = forms.HiddenInput()
+           
 

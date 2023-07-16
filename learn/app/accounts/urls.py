@@ -18,5 +18,8 @@ urlpatterns = [
     path("account/roles/<int:pk>/delete/", login_required(RolesDeleteView.as_view()), name="role-delete"),
     path("account/settings/", login_required(UserSettings.as_view()), name="user-settings"),
     path("settings/", login_required(SettingView.as_view()), name="settings"),
+    path("account/users", login_required(UsersView.as_view()), name='users'),
+    path("account/users/<int:pk>/", login_required(UsersUpdateView.as_view()), name="user-update"),
+    path("account/users/<int:pk>/delete/", login_required(UsersDeleteView.as_view()), name="user-delete"),
 ]
 

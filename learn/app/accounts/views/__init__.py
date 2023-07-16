@@ -4,3 +4,4 @@ from .enrollment import *
 from .payments import *
 from .roles import *
 from .settings import *
+from .users import *

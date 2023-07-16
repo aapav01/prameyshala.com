@@ -6,9 +6,9 @@
 {% block content %}
     <div class="mt-12 mb-8 flex flex-col gap-12">
         <div class="flex justify-between px-6">
-            <button onclick="create_role.showModal()"
+            <button onclick="create_user.showModal()"
                     class="btn bg-gradient-to-br from-purple-600 to-pink-400 text-white px-12 border-0 shadow-md shadow-purple-500/50">
-                <i class="far fa-plus"></i>Add Role
+                <i class="far fa-plus"></i>Add User
             </button>
         </div>
         <div class="relative flex w-full flex-col rounded-xl bg-base-100 bg-clip-border text-base-content shadow-md">
@@ -20,29 +20,29 @@
                     <thead class="uppercase text-sm">
                         <tr>
                             <th class="px-4 py-3">Name</th>
-                            <th class="px-4 py-3">Description</th>
+                            <th class="px-4 py-3">Role</th>
                             <th class="px-4 py-3">Action</th>
                         </tr>
                     </thead>
                     <tfoot class="border-t border-blue-gray-50 py-3 px-5 text-left font-bold uppercase text-blue-gray-400 text-sm">
                         <tr>
                             <th class="px-4 py-3">Name</th>
-                            <th class="px-4 py-3">Description</th>
+                            <th class="px-4 py-3">Role</th>
                             <th class="px-4 py-3">Action</th>
                         </tr>
                     </tfoot>
                     <tbody>
-                        {% for role in roles %}
+                        {% for user in users %}
                             <tr class="border-b border-blue-gray-50">
-                                <td class="px-4 py-3">{{ role.name }}</td>
-                                <td class="px-4 py-3">{{ role.description }}</td>
+                                <td class="px-4 py-3">{{ user.full_name }}</td>
+                                <td class="px-4 py-3">{{ user.get_role }}</td>
                                 <td class="flex gap-2 px-4 py-3">
-                                    <button onclick="update_role_{{ role.pk }}.showModal()"
+                                    <button onclick="update_user_{{ user.pk }}.showModal()"
                                             class="btn btn-sm btn-success btn-square">
                                         <i class="fad fa-edit"></i>
                                     </button>
-                                    <a href="{% url 'accounts:role-delete' pk=role.pk %}"
-                                       onclick="if(confirm('Are you sure you want to delete {{ role.name }} from database?')) return true; else return false;"
+                                    <a href="{% url 'accounts:user-delete' pk=user.pk %}"
+                                       onclick="if(confirm('Are you sure you want to delete {{ user.full_name }} from database?')) return true; else return false;"
                                        class="btn btn-sm btn-error btn-square"><i class="far fa-trash-alt"></i></a>
                                 </td>
                             </tr>
@@ -52,19 +52,18 @@
             </div>
         </div>
     </div>
-    <dialog id="create_role"
+    <dialog id="create_user"
             class="modal modal-bottom sm:modal-middle transition-all duration-500 ease-in-out">
         <form method="post"
               enctype="multipart/form-data"
               class="modal-box sm:max-w-5xl">
             {% csrf_token %}
-            <h2 class="font-mono font-semibold text-lg">Add New Role</h2>
+            <h2 class="font-mono font-semibold text-lg">Add New User</h2>
             <div class="relative mb-4">
                 <div class="form-control w-full djanog-custom-forms grid grid-cols-1 md:grid-cols-2 gap-4">
                     {{ form.as_div }}
-                    
-            </div>
-        </div>
+                    </div>
+                    </div>
             <div class="modal-action justify-between">
                 <p class="text-xs mt-auto">Press esc to close the window or outside the dialog box.</p>
                 <button type="submit" class="btn btn-success">Save</button>
@@ -74,17 +73,17 @@
             <button>close</button>
         </form>
     </dialog>
-    {% for role in roles %}
-        <dialog id="update_role_{{ role.pk }}"
+    {% for user in users %}
+        <dialog id="update_user_{{ user.pk }}"
                 class="modal modal-bottom sm:modal-middle transition-all duration-500 ease-in-out">
             <form method="post"
                   enctype="multipart/form-data"
-                  action="{% url 'accounts:role-update' pk=role.pk %}"
+                  action="{% url 'accounts:user-update' pk=user.pk %}"
                   class="modal-box sm:max-w-5xl">
                 {% csrf_token %}
-                <h2 class="font-mono font-semibold text-lg">Update - {{ role.name }}</h2>
+                <h2 class="font-mono font-semibold text-lg">Update - {{ user.full_name }}</h2>
                 <div class="relative mb-4">
-                    <div class="form-control w-full djanog-custom-forms grid grid-cols-1 md:grid-cols-2 gap-4">{{ role.form.as_div }}</div>
+                    <div class="form-control w-full djanog-custom-forms grid grid-cols-1 md:grid-cols-2 gap-4">{{ user.form.as_div }}</div>
                 </div>
                 <div class="modal-action justify-between">
                     <p class="text-xs mt-auto">Press esc to close the window or outside the dialog box.</p>

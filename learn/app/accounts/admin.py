@@ -28,7 +28,6 @@ class UserAdmin(BaseUserAdmin):
             form.base_fields['is_superuser'].disabled = True
         return form
 
-
 class RoleAdmin(GroupAdmin):
     list_display = ('name', 'description')
     fieldsets = (
