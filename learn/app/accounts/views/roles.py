@@ -18,7 +18,7 @@ class RolesView(ListView):
         'breadcrumbs': [{'url': 'core:home', 'label': 'Dashboard'}, {'label': 'User Management'}, {'label': 'Roles'}],
         'form': form
     }
-    
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         for obj in context[self.context_object_name]:
@@ -32,7 +32,6 @@ class RolesView(ListView):
         self.extra_context.update({'form': form})
         if form.is_valid():
             instance = form.save(commit=False)
-            instance.slug = slugify(instance.name)
             instance.save()
             permissions = form.cleaned_data['permissions']
             instance.permissions.set(permissions)
@@ -52,7 +51,6 @@ class RolesUpdateView(UpdateView):
     template_name = "courses/form.html"
 
     def form_valid(self, form):
-        form.instance.slug = slugify(form.instance.name)
         messages.info(
             self.request, f'{form.instance.name} has been updated successfully.')
         return super().form_valid(form)

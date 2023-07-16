@@ -10,7 +10,6 @@ from django.contrib.auth.models import Group
 from django.contrib.auth.hashers import make_password
 
 
-
 class UsersView(ListView):
     model = User
     template_name = "accounts/users/index.html"
@@ -21,7 +20,7 @@ class UsersView(ListView):
         'breadcrumbs': [{'url': 'core:home', 'label': 'Dashboard'}, {'label': 'User Management'}, {'label': 'Users'}],
         'form': form
     }
-    
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         for obj in context[self.context_object_name]:
@@ -35,8 +34,7 @@ class UsersView(ListView):
         self.extra_context.update({'form': form})
         if form.is_valid():
             instance = form.save(commit=False)
-            instance.password=make_password(instance.password)
-            instance.slug = slugify(instance.full_name)
+            instance.password = make_password(instance.password)
             instance.save()
             messages.success(
                 request, f'{instance.full_name} has been created successfully.')
@@ -46,7 +44,6 @@ class UsersView(ListView):
             return render(request, self.template_name, self.get_context_data(**kwargs))
 
 
-
 class UsersUpdateView(UpdateView):
     model = User
     form_class = UsersForm
@@ -54,7 +51,6 @@ class UsersUpdateView(UpdateView):
     template_name = "courses/form.html"
 
     def form_valid(self, form):
-        form.instance.slug = slugify(form.instance.full_name)
         messages.info(
             self.request, f'{form.instance.full_name} has been updated successfully.')
         return super().form_valid(form)
