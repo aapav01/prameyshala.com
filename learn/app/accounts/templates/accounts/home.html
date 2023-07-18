@@ -74,7 +74,7 @@
     <div class="relative flex flex-col bg-clip-border rounded-xl bg-white text-gray-700 shadow-md">
       <div class="relative bg-clip-border mx-4 rounded-xl overflow-hidden bg-gradient-to-tr from-blue-600 to-blue-400 text-white shadow-blue-500/40 shadow-lg -mt-6">
         <div class="min-h-[235px]">
-          {% comment %} chartjs mount here {% endcomment %}
+          <canvas id="user-chart"></canvas>
         </div>
       </div>
       <div class="p-6">
@@ -199,3 +199,14 @@
     </div>
   </div>
 {% endblock content %}
+{% block body_js %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"  crossorigin referrerpolicy="no-referrer"></script>
+<script type="text/javascript">
+  $.get('{% url "core:line_chart_json" %}', function(data) {
+      var ctx = $("#user-chart").get(0).getContext("2d");
+      new Chart(ctx, {
+          type: 'line', data: data
+      });
+  });
+</script>
+{% endblock body_js %}
