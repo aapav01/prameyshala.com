@@ -21,5 +21,6 @@ urlpatterns = [
     path("account/users", login_required(UsersView.as_view()), name='users'),
     path("account/users/<int:pk>/", login_required(UsersUpdateView.as_view()), name="user-update"),
     path("account/users/<int:pk>/delete/", login_required(UsersDeleteView.as_view()), name="user-delete"),
+    path('charts/monthly/users', MonthlyUserChart.as_view(), name='line_chart_json'),
 ]
 

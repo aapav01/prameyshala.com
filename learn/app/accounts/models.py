@@ -46,6 +46,9 @@ class User(AbstractBaseUser, PermissionsMixin):
     full_name = models.CharField(max_length=30)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
+    created_at = models.DateTimeField(
+        auto_now=False, auto_now_add=True, blank=True, null=True)
+    updated_at = models.DateTimeField(auto_now=True, blank=True, null=True)
     objects = UserManager()
     USERNAME_FIELD = 'phone_number'
     REQUIRED_FIELDS = ['email', 'full_name']
@@ -57,7 +60,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         if role:
             return role.name
         return None
-    
+
 
     def __str__(self):
         return self.full_name + ' - ' + self.email
