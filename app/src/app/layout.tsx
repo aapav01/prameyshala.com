@@ -1,5 +1,6 @@
 import "@/styles/globals.css";
 import { Hind } from "next/font/google";
+import Script from 'next/script'
 
 const hind = Hind({
   weight: ["300", "400", "500", "600", "700"],
@@ -86,7 +87,19 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={"antialiased " + hind.className}>{children}</body>
+      <body className={"antialiased " + hind.className}>
+        {children}
+        <Script async src="https://www.googletagmanager.com/gtag/js?id=G-48KC5W0304" />
+        <Script id="google-analytics">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+
+            gtag('config', 'G-48KC5W0304');
+          `}
+        </Script>
+      </body>
     </html>
   );
 }
