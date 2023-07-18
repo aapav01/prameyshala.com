@@ -45,7 +45,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django_browser_reload',
     'graphene_django',
-    'chartjs',
 ]
 
 MIDDLEWARE = [
