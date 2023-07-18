@@ -1,6 +1,6 @@
 import "@/styles/globals.css";
 import { Hind } from "next/font/google";
-import Script from 'next/script'
+import Script from "next/script";
 
 const hind = Hind({
   weight: ["300", "400", "500", "600", "700"],
@@ -78,6 +78,23 @@ export const metadata = {
   ],
   colorScheme: "light",
   creator: "Webkolek",
+  openGraph: {
+    title: "Pramey Shala",
+    description: "Start learning with Prameyshala",
+    url: "https://prameyshala.com",
+    siteName: "Pramey Shala",
+    locale: "en_IN",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Pramey Shala",
+    description: "Start learning with Prameyshala",
+    // siteId: '',
+    // creator: '',
+    // creatorId: '',
+  },
+  category: 'education',
 };
 
 export default function RootLayout({
@@ -89,7 +106,10 @@ export default function RootLayout({
     <html lang="en">
       <body className={"antialiased " + hind.className}>
         {children}
-        <Script async src="https://www.googletagmanager.com/gtag/js?id=G-48KC5W0304" />
+        <Script
+          async
+          src="https://www.googletagmanager.com/gtag/js?id=G-48KC5W0304"
+        />
         <Script id="google-analytics">
           {`
             window.dataLayer = window.dataLayer || [];

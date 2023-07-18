@@ -7,7 +7,6 @@ colorama==0.4.6
 cssbeautifier==1.14.8
 Django==4.2.3
 django-browser-reload==1.10.0
-django-chartjs==2.3.0
 django-environ==0.10.0
 django-graphql-jwt==0.3.4
 djlint==1.31.1
