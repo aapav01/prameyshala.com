@@ -12,7 +12,7 @@ class ChartFliterOptions(JSONView):
         year = obj.created_at.year
         if year not in years:
             years.append(year)
-    years.sort()
+    years.sort(reverse=True)
 
     extra_context = {
         "options": years
