@@ -70,11 +70,16 @@
       </div>
     </div>
   </div>
+  <form id="filterForm" class="pb-20">
+    <label class="label" for="year">Choose a year:</label>
+    <select class="select select-bordered w-56" name="year" id="year"></select>
+    <input type="submit" value="Load" name="_load" class="btn btn-sm btn-outline">
+  </form>
   <div class="mb-6 grid grid-cols-1 gap-y-12 gap-x-6 md:grid-cols-2 xl:grid-cols-3">
     <div class="relative flex flex-col bg-clip-border rounded-xl bg-white text-gray-700 shadow-md">
       <div class="relative bg-clip-border mx-4 rounded-xl overflow-hidden bg-gradient-to-tr from-blue-600 to-blue-400 text-white shadow-blue-500/40 shadow-lg -mt-6">
         <div class="min-h-[235px]">
-          {% comment %} chartjs mount here {% endcomment %}
+          <canvas id="salesChart"></canvas>
         </div>
       </div>
       <div class="p-6">
@@ -200,4 +205,76 @@
   </div>
 {% endblock content %}
 {% block body_js %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  let salesCtx = document.getElementById("salesChart").getContext("2d");
+  let salesChart = new Chart(salesCtx, {
+    type: "bar",
+    options: {
+      responsive: true,
+      title: {
+        display: false,
+        text: ""
+      }
+    }
+  });
+</script>
+<script>
+  $(document).ready(function() {
+    $.ajax({
+      url: "/chart/filter-options/",
+      type: "GET",
+      dataType: "json",
+      success: (jsonResponse) => {
+        // Load all the options
+        jsonResponse.options.forEach(option => {
+          $("#year").append(new Option(option, option));
+        });
+        // Load data for the first option
+        loadAllCharts($("#year").children().first().val());
+        console.log("Chart filter options loaded!")
+      },
+      error: () => console.log("Failed to fetch chart filter options!")
+    });
+  });
+
+  $("#filterForm").on("submit", (event) => {
+    event.preventDefault();
+
+    const year = $("#year").val();
+    loadAllCharts(year)
+  });
+
+  function loadChart(chart, endpoint) {
+    $.ajax({
+      url: endpoint,
+      type: "GET",
+      dataType: "json",
+      success: (jsonResponse) => {
+        // Extract data from the response
+        const title = jsonResponse.title;
+        const labels = jsonResponse.data.labels;
+        const datasets = jsonResponse.data.datasets;
+
+        // Reset the current chart
+        chart.data.datasets = [];
+        chart.data.labels = [];
+
+        // Load new data into the chart
+        chart.options.title.text = title;
+        chart.options.title.display = true;
+        chart.data.labels = labels;
+        datasets.forEach(dataset => {
+          chart.data.datasets.push(dataset);
+        });
+        chart.update();
+      },
+      error: () => console.log("Failed to fetch chart data from " + endpoint + "!")
+    });
+  }
+
+  function loadAllCharts(year) {
+    loadChart(salesChart, `/chart/sales/${year}/`);
+  }
+</script>
 {% endblock body_js %}
