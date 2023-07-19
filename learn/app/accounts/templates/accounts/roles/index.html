@@ -50,6 +50,19 @@
           </tbody>
         </table>
       </div>
+      <div class="p-5 flex justify-end">
+        <div class="join">
+          {% if page_obj.has_previous %}
+            <a class="join-item btn btn-primary"
+               href="?page={{ page_obj.previous_page_number }}">previous</a>
+          {% endif %}
+          <span class="join-item btn btn-disabled">Page {{ page_obj.number }} of {{ paginator.num_pages }}.</span>
+          {% if page_obj.has_next %}
+            <a class="join-item btn btn-primary"
+               href="?page={{ page_obj.next_page_number }}">next</a>
+          {% endif %}
+        </div>
+      </div>
     </div>
   </div>
   <dialog id="create_role"

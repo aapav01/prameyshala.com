@@ -31,6 +31,7 @@ class LessonView(ListView):
         'breadcrumbs': [{'url': 'core:home', 'label': 'Dashboard'}, {'label': 'Courses'}, {'label': 'Lessons'}],
         'form': form
     }
+    paginate_by = 10
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

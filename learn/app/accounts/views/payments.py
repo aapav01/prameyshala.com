@@ -18,3 +18,4 @@ class PaymentsView(ListView):
         'breadcrumbs': [{'url': 'core:home', 'label': 'Dashboard'}, {'label': 'Accounts'}, {'label': 'Payments'}],
 
     }
+    paginate_by = 10

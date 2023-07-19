@@ -9,7 +9,6 @@ from ..forms import EnrollmentForm
 
 
 class EnrollmentView(ListView):
-
     model = Enrollment
     template_name = "accounts/enrollment/index.html"
     form = EnrollmentForm
@@ -19,6 +18,7 @@ class EnrollmentView(ListView):
         'breadcrumbs': [{'url': 'core:home', 'label': 'Dashboard'}, {'label': 'Accounts'}, {'label': 'Enrollment'}],
         'form': form
     }
+    paginate_by = 10
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -40,7 +40,7 @@ class EnrollmentView(ListView):
             return redirect('accounts:enrollment')
         else:
             return render(request, self.template_name, self.get_context_data(**kwargs))
-        
+
 class EnrollmentUpdateView(UpdateView):
     model = Enrollment
     form_class = EnrollmentForm
