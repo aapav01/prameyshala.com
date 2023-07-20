@@ -38,26 +38,8 @@
       </div>
     </div>
     <div class="relative flex flex-col bg-clip-border rounded-xl bg-white text-gray-700 shadow-md">
-      <div class="bg-clip-border mx-4 rounded-xl overflow-hidden bg-gradient-to-tr from-blue-600 to-blue-400 text-white shadow-blue-500/40 shadow-lg absolute -mt-4 grid h-16 w-16 place-items-center">
-        <i class="fa-regular fa-user-plus text-center text-xl"></i>
-      </div>
-      <div class="p-4 text-right">
-        <p class="block antialiased font-sans text-sm leading-normal font-normal text-blue-gray-600">
-          Total Students Enrolled
-        </p>
-        <h4 class="block antialiased tracking-normal font-sans text-2xl font-semibold leading-snug text-blue-gray-900">
-          {{ enrollment_count }}
-        </h4>
-      </div>
-      <div class="border-t border-blue-gray-50 p-4">
-        <p class="block antialiased font-sans text-base leading-relaxed font-normal text-blue-gray-600">
-          <strong class="text-green-500">+100%</strong>&nbsp;than last week
-        </p>
-      </div>
-    </div>
-    <div class="relative flex flex-col bg-clip-border rounded-xl bg-white text-gray-700 shadow-md">
       <div class="bg-clip-border mx-4 rounded-xl overflow-hidden bg-gradient-to-tr from-purple-600 to-purple-400 text-white shadow-blue-500/40 shadow-lg absolute -mt-4 grid h-16 w-16 place-items-center">
-        <i class="fa-regular fa-user-plus text-center text-xl"></i>
+        <i class="fa-regular fa-user-plus fa-2xl"></i>
       </div>
       <div class="p-4 text-right">
         <p class="block antialiased font-sans text-sm leading-normal font-normal text-blue-gray-600">
@@ -74,11 +56,11 @@
       </div>
     </div>
     <div class="relative flex flex-col bg-clip-border rounded-xl bg-white text-gray-700 shadow-md">
-      <div class="bg-clip-border mx-4 rounded-xl overflow-hidden bg-gradient-to-tr from-pink-600 to-pink-400 text-white shadow-pink-500/40 shadow-lg absolute -mt-4 grid h-16 w-16 place-items-center">
-        <i class="fa-regular fa-users text-xl"></i>
+      <div class="bg-clip-border mx-4 rounded-xl overflow-hidden bg-gradient-to-tr from-blue-600 to-blue-400 text-white shadow-blue-500/40 shadow-lg absolute -mt-4 grid h-16 w-16 place-items-center">
+        <i class="fa-regular fa-users fa-2xl"></i>
       </div>
       <div class="p-4 text-right">
-        <p class="block antialiased font-sans text-sm leading-normal font-normal text-blue-gray-600">User Joined</p>
+        <p class="block antialiased font-sans text-sm leading-normal font-normal text-blue-gray-600">Total Users</p>
         <h4 class="block antialiased tracking-normal font-sans text-2xl font-semibold leading-snug text-blue-gray-900">
           {{ user_count }}
         </h4>
@@ -87,6 +69,63 @@
         <p class="block antialiased font-sans text-base leading-relaxed font-normal text-blue-gray-600">
           <strong class="text-green-500">+100%</strong>&nbsp;than last week
         </p>
+      </div>
+    </div>
+    <div class="relative flex flex-col bg-clip-border rounded-xl bg-white text-gray-700 shadow-md">
+      <div class="bg-clip-border mx-4 rounded-xl overflow-hidden bg-gradient-to-tr from-deep-orange-600 to-deep-orange-400 text-white shadow-deep-orange-500/40 shadow-lg absolute -mt-4 grid h-16 w-16 place-items-center">
+        <i class="far fa-screen-users fa-2xl"></i>
+      </div>
+      <div class="p-4 text-right">
+        <p class="block antialiased font-sans text-sm leading-normal font-normal text-blue-gray-600">Total Classes</p>
+        <h4 class="block antialiased tracking-normal font-sans text-4xl font-semibold leading-snug text-blue-gray-900">
+          {{ class_count }}
+        </h4>
+      </div>
+    </div>
+    <div class="relative flex flex-col bg-clip-border rounded-xl bg-white text-gray-700 shadow-md">
+      <div class="bg-clip-border mx-4 rounded-xl overflow-hidden bg-gradient-to-tr from-deep-purple-600 to-deep-purple-400 text-white shadow-deep-purple-500/40 shadow-lg absolute -mt-4 grid h-16 w-16 place-items-center">
+        <i class="fa-regular fa-books fa-2xl"></i>
+      </div>
+      <div class="p-4 text-right">
+        <p class="block antialiased font-sans text-sm leading-normal font-normal text-blue-gray-600">Total Subject</p>
+        <h4 class="block antialiased tracking-normal font-sans text-4xl font-semibold leading-snug text-blue-gray-900">
+          {{ subject_count }}
+        </h4>
+      </div>
+    </div>
+    <div class="relative flex flex-col bg-clip-border rounded-xl bg-white text-gray-700 shadow-md">
+      <div class="bg-clip-border mx-4 rounded-xl overflow-hidden bg-gradient-to-tr from-orange-600 to-orange-400 text-white shadow-deep-orange-500/40 shadow-lg absolute -mt-4 grid h-16 w-16 place-items-center">
+        <i class="fa-regular fa-book fa-2xl"></i>
+      </div>
+      <div class="p-4 text-right">
+        <p class="block antialiased font-sans text-sm leading-normal font-normal text-blue-gray-600">Total Chapters</p>
+        <h4 class="block antialiased tracking-normal font-sans text-4xl font-semibold leading-snug text-blue-gray-900">
+          {{ chapter_count }}
+        </h4>
+      </div>
+    </div>
+    <div class="relative flex flex-col bg-clip-border rounded-xl bg-white text-gray-700 shadow-md">
+      <div class="bg-clip-border mx-4 rounded-xl overflow-hidden bg-gradient-to-tr from-red-600 to-red-400 text-white shadow-red-500/40 shadow-lg absolute -mt-4 grid h-16 w-16 place-items-center">
+        <i class="fa-regular fa-chalkboard fa-2xl"></i>
+      </div>
+      <div class="p-4 text-right">
+        <p class="block antialiased font-sans text-sm leading-normal font-normal text-blue-gray-600">Total Lessons</p>
+        <h4 class="block antialiased tracking-normal font-sans text-4xl font-semibold leading-snug text-blue-gray-900">
+          {{ lesson_count }}
+        </h4>
+      </div>
+    </div>
+    <div class="relative flex flex-col bg-clip-border rounded-xl bg-white text-gray-700 shadow-md">
+      <div class="bg-clip-border mx-4 rounded-xl overflow-hidden bg-gradient-to-tr from-pink-600 to-pink-400 text-white shadow-pink-500/40 shadow-lg absolute -mt-4 grid h-16 w-16 place-items-center">
+        <i class="fa-regular fa-user-graduate fa-2xl"></i>
+      </div>
+      <div class="p-4 text-right">
+        <p class="block antialiased font-sans text-sm leading-normal font-normal text-blue-gray-600">
+          Total Students Enrolled
+        </p>
+        <h4 class="block antialiased tracking-normal font-sans text-4xl font-semibold leading-snug text-blue-gray-900">
+          {{ enrollment_count }}
+        </h4>
       </div>
     </div>
   </div>
