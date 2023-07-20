@@ -6,6 +6,7 @@ from django.utils.text import slugify
 from django.urls import reverse_lazy
 from ..models import Enrollment
 from ..forms import EnrollmentForm
+from dateutil.relativedelta import relativedelta
 
 
 class EnrollmentView(ListView):
@@ -19,6 +20,7 @@ class EnrollmentView(ListView):
         'form': form
     }
     paginate_by = 10
+    ordering=['-created_at']
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -34,6 +36,7 @@ class EnrollmentView(ListView):
         if form.is_valid():
             instance = form.save(commit=False)
             instance.slug = slugify(instance.status)
+            instance.expiration_date = instance.created_at + relativedelta(years=1)
             instance.save()
             messages.success(request, 'Enrolled successfully.')
             self.extra_context.update({'form': EnrollmentForm})
