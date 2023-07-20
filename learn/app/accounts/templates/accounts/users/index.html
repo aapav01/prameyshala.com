@@ -19,23 +19,35 @@
         <table class="table table-auto">
           <thead class="uppercase text-sm">
             <tr>
+              <th class="px-4 py-3">APP ID#</th>
               <th class="px-4 py-3">Name</th>
+              <th class="px-4 py-3">Email</th>
+              <th class="px-4 py-3">Phone</th>
               <th class="px-4 py-3">Role</th>
+              <th class="px-4 py-3">Joined on</th>
               <th class="px-4 py-3">Action</th>
             </tr>
           </thead>
           <tfoot class="border-t border-blue-gray-50 py-3 px-5 text-left font-bold uppercase text-blue-gray-400 text-sm">
             <tr>
+              <th class="px-4 py-3">APP ID#</th>
               <th class="px-4 py-3">Name</th>
+              <th class="px-4 py-3">Email</th>
+              <th class="px-4 py-3">Phone</th>
               <th class="px-4 py-3">Role</th>
+              <th class="px-4 py-3">Joined on</th>
               <th class="px-4 py-3">Action</th>
             </tr>
           </tfoot>
           <tbody>
             {% for user in users %}
               <tr class="border-b border-blue-gray-50">
+                <td class="px-4 py-3">{{ user.id }}</td>
                 <td class="px-4 py-3">{{ user.full_name }}</td>
-                <td class="px-4 py-3">{{ user.get_role }}</td>
+                <td class="px-4 py-3">{{ user.email }}</td>
+                <td class="px-4 py-3">{{ user.phone_number }}</td>
+                <td class="px-4 py-3 capitalize">{{ user.get_role }}</td>
+                <td class="px-4 py-3">{{ user.created_at }}</td>
                 <td class="flex gap-2 px-4 py-3">
                   <button onclick="update_user_{{ user.pk }}.showModal()"
                           class="btn btn-sm btn-success btn-square">

@@ -5,9 +5,9 @@ months = [datetime.date(datetime.date.today().year, month, 1)
           .strftime("%b") for month in range(1, 13)]
 
 
-colorPalette = ["#55efc4", "#81ecec", "#a29bfe",
+colorPalette = ["#ffc2ff", "#81ecec", "#a29bfe",
                 "#ffeaa7", "#fab1a0", "#ff7675", "#fd79a8"]
-colorPrimary, colorSuccess, colorDanger = "#79aec8", colorPalette[0], colorPalette[5]
+colorPrimary, colorSuccess, colorDanger = "#f5f5f5", colorPalette[0], colorPalette[5]
 
 
 def get_year_dict():
