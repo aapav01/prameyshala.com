@@ -1,6 +1,6 @@
 from django import forms
 from django.forms import ModelForm
-from .models import Classes, Subject, Chapter, Lesson
+from .models import Classes, Subject, Chapter, Lesson, Category
 
 
 class ClassesForm(ModelForm):
@@ -31,3 +31,9 @@ class LessonForm(ModelForm):
         widgets = {
             'lesson_type': forms.Select(attrs={'required': True}),
         }
+
+class CategoriesForm(ModelForm):
+    
+    class Meta:
+        model = Category
+        fields = "__all__"
