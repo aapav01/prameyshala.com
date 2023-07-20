@@ -38,7 +38,7 @@
       </div>
     </div>
     <div class="relative flex flex-col bg-clip-border rounded-xl bg-white text-gray-700 shadow-md">
-      <div class="bg-clip-border mx-4 rounded-xl overflow-hidden bg-gradient-to-tr from-purple-600 to-purple-400 text-white shadow-blue-500/40 shadow-lg absolute -mt-4 grid h-16 w-16 place-items-center">
+      <div class="bg-clip-border mx-4 rounded-xl overflow-hidden bg-gradient-to-tr from-purple-600 to-purple-400 text-white shadow-purple-500/40 shadow-lg absolute -mt-4 grid h-16 w-16 place-items-center">
         <i class="fa-regular fa-user-plus fa-2xl"></i>
       </div>
       <div class="p-4 text-right">
@@ -56,18 +56,20 @@
       </div>
     </div>
     <div class="relative flex flex-col bg-clip-border rounded-xl bg-white text-gray-700 shadow-md">
-      <div class="bg-clip-border mx-4 rounded-xl overflow-hidden bg-gradient-to-tr from-blue-600 to-blue-400 text-white shadow-blue-500/40 shadow-lg absolute -mt-4 grid h-16 w-16 place-items-center">
-        <i class="fa-regular fa-users fa-2xl"></i>
+      <div class="bg-clip-border mx-4 rounded-xl overflow-hidden bg-gradient-to-tr from-cyan-600 to-cyan-400 text-white shadow-cyan-500/40 shadow-lg absolute -mt-4 grid h-16 w-16 place-items-center">
+        <i class="fa-regular fa-user-plus fa-2xl"></i>
       </div>
       <div class="p-4 text-right">
-        <p class="block antialiased font-sans text-sm leading-normal font-normal text-blue-gray-600">Total Users</p>
+        <p class="block antialiased font-sans text-sm leading-normal font-normal text-blue-gray-600">
+          User Joined Month
+        </p>
         <h4 class="block antialiased tracking-normal font-sans text-2xl font-semibold leading-snug text-blue-gray-900">
-          {{ user_count }}
+          {{ user_this_month }}
         </h4>
       </div>
       <div class="border-t border-blue-gray-50 p-4">
         <p class="block antialiased font-sans text-base leading-relaxed font-normal text-blue-gray-600">
-          <strong class="text-green-500">+100%</strong>&nbsp;than last week
+          <strong class="text-green-500">+100%</strong>&nbsp;than last month
         </p>
       </div>
     </div>
@@ -125,6 +127,28 @@
         </p>
         <h4 class="block antialiased tracking-normal font-sans text-4xl font-semibold leading-snug text-blue-gray-900">
           {{ enrollment_count }}
+        </h4>
+      </div>
+    </div>
+    <div class="relative flex flex-col bg-clip-border rounded-xl bg-white text-gray-700 shadow-md">
+      <div class="bg-clip-border mx-4 rounded-xl overflow-hidden bg-gradient-to-tr from-blue-gray-600 to-gray-400 text-white shadow-blue-gray-500/40 shadow-lg absolute -mt-4 grid h-16 w-16 place-items-center">
+        <i class="fa-regular fa-users fa-2xl"></i>
+      </div>
+      <div class="p-4 text-right">
+        <p class="block antialiased font-sans text-sm leading-normal font-normal text-blue-gray-600">Users Joined This Year</p>
+        <h4 class="block antialiased tracking-normal font-sans text-4xl font-semibold leading-snug text-blue-gray-900">
+          {{ user_this_year }}
+        </h4>
+      </div>
+    </div>
+    <div class="relative flex flex-col bg-clip-border rounded-xl bg-white text-gray-700 shadow-md">
+      <div class="bg-clip-border mx-4 rounded-xl overflow-hidden bg-gradient-to-tr from-blue-600 to-blue-400 text-white shadow-blue-500/40 shadow-lg absolute -mt-4 grid h-16 w-16 place-items-center">
+        <i class="fa-regular fa-users fa-2xl"></i>
+      </div>
+      <div class="p-4 text-right">
+        <p class="block antialiased font-sans text-sm leading-normal font-normal text-blue-gray-600">Total Users</p>
+        <h4 class="block antialiased tracking-normal font-sans text-4xl font-semibold leading-snug text-blue-gray-900">
+          {{ user_count }}
         </h4>
       </div>
     </div>

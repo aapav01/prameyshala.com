@@ -42,6 +42,8 @@ def home(request):
     enrollment_count = Enrollment.objects.count()
     # All Over Time User
     user_count = User.objects.count()
+    user_this_month = User.objects.filter(created_at__month=month).filter(created_at__year=year).count()
+    user_this_year = User.objects.filter(created_at__year=year).count()
     # All Over Time CLasess
     class_count = Classes.objects.count()
     # All Subjects
@@ -56,6 +58,8 @@ def home(request):
         'enrollment_count_day': enrollment_count_day,
         'enrollment_count': enrollment_count,
         'user_count': user_count,
+        'user_this_month': user_this_month,
+        'user_this_year': user_this_year,
         'total_amount_day': total_amount_day,
         'total_amount_month': total_amount_month,
         'class_count': class_count,
