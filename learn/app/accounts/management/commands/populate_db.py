@@ -59,5 +59,12 @@ class Command(BaseCommand):
             users_list.append(User.objects.get_or_create(
                 full_name=full_name, phone_number=phone_number, password=password, email=email))
 
+        for user in users_list:
+            dt = pytz.utc.localize(datetime.now() - timedelta(days=random.randint(0, 1825)))
+            user[0].created_at = dt
+            user[0].updated_at = dt
+            user[0].save()
+
+
         self.stdout.write(self.style.SUCCESS(
             "Successfully populated the database."))
