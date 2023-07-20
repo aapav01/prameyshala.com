@@ -7,13 +7,12 @@ from ..util import months, colorPrimary, colorSuccess, colorDanger, generate_col
 
 
 class UserChart(JSONView):
-    year = None
     users_dict = get_year_dict()
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         year = self.kwargs.get("year")
-        users = User.objects
+        users = User.objects.filter(created_at__year=year)
         grouped_users = users.annotate(month=ExtractMonth("created_at")).values("month")\
             .annotate(count=Count("id")).order_by("month")
 
