@@ -7,7 +7,7 @@ from django.core.management.base import BaseCommand
 from django.utils.text import slugify
 
 from app.accounts.models import User, Enrollment, Payments
-from app.courses.models import Chapter, Subject, Classes, Lesson
+from app.courses.models import Chapter, Subject, Classes, Lesson, Category
 
 
 class Command(BaseCommand):
@@ -20,16 +20,20 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         standards = ["Class 9th", "Class 10th", "Class 11th", "Class 12th"]
         subjects = ["Physics", "Chemistry", "Maths", "Biology"]
+        categories = ["Physics", "Chemistry", "Maths", "Biology"]
 
         # There are 4 standards (9th, 10th, 11th, 12th)
         Classes_list = [
             Classes.objects.get_or_create(name=standard, description=standard, slug=slugify(standard)) for standard in standards
         ]
 
+        #There are 2 category of subjects (Science, Mathematics)
+        Category_list = [Category.objects.get_or_create(name=category, description=category) for category in categories]
+
         # Each standard has 4 subjects (Physics, Chemistry, Maths, Biology)
         Subject_list = [
-            Subject.objects.get_or_create(name=subject, description=subject, slug=slugify(subject+'-' + Classes_list[i][0].name),
-                                          standard=Classes_list[i][0]) for i in range(0, len(Classes_list)) for subject in subjects
+            Subject.objects.get_or_create(name=subjects[j], description=subjects[j], slug=slugify(subjects[j]+'-' + Classes_list[i][0].name),
+                                          standard=Classes_list[i][0],category=Category.objects.get(name=categories[j])) for i in range(0, len(Classes_list)) for j in range(len(subjects))
         ]
 
         amount = options["amount"] if options["amount"] else 100
