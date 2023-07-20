@@ -27,7 +27,7 @@ class Command(BaseCommand):
             Classes.objects.get_or_create(name=standard, description=standard, slug=slugify(standard)) for standard in standards
         ]
 
-        #There are 2 category of subjects (Science, Mathematics)
+        #There are 4 category of subjects (Physics, Chemistry, Maths, Biology)
         Category_list = [Category.objects.get_or_create(name=category, description=category) for category in categories]
 
         # Each standard has 4 subjects (Physics, Chemistry, Maths, Biology)
