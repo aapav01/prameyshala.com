@@ -18,10 +18,15 @@ class Classes(models.Model):
     class Meta:
         db_table = 'classes'
 
+class Category(models.Model):
+    name = models.CharField(max_length=50,blank=False, null=False)
+    description = models.TextField(max_length=255,blank=True,null=True)
+
 class Subject(models.Model):
     name = models.CharField(max_length=255)
     short = models.CharField(max_length=255, blank=True, null=True)
     description = models.TextField()
+    category = models.ForeignKey(Category,on_delete=models.CASCADE,blank=False,null=False,default="")
     slug = models.SlugField(unique=True, max_length=255)
     image = models.ImageField(upload_to='static/uploads/subjects', blank=True, null=True)
     publish_at = models.DateTimeField(auto_now_add=True, blank=True, null=True)
@@ -97,5 +102,4 @@ class Lesson(models.Model):
 
     class Meta:
         db_table = 'lessons'
-
 
