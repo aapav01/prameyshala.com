@@ -150,13 +150,15 @@
     </div>
     <div class="relative flex flex-col bg-clip-border rounded-xl bg-white text-gray-700 shadow-md">
       <div class="relative bg-clip-border mx-4 rounded-xl overflow-hidden bg-gradient-to-tr from-green-600 to-green-400 text-white shadow-green-500/40 shadow-lg -mt-6">
-        <div class="min-h-[235px]">{% comment %} chartjs mount here {% endcomment %}</div>
+        <div class="min-h-[235px]">
+          <canvas id="usersChart"></canvas>
+        </div>
       </div>
       <div class="p-6">
         <h6 class="block antialiased tracking-normal font-sans text-base font-semibold leading-relaxed text-blue-gray-900">
-          Title
+          Users Joined this Year
         </h6>
-        <p class="block antialiased font-sans text-sm leading-normal font-normal text-blue-gray-600">Details</p>
+        <p class="block antialiased font-sans text-sm leading-normal font-normal text-blue-gray-600"></p>
       </div>
       <div class="p-6 border-t border-blue-gray-50 px-6 py-5">
         <p class="antialiased font-sans text-sm leading-normal flex items-center font-normal text-blue-gray-600">
@@ -249,6 +251,17 @@
       }
     }
   });
+  let usersCtx = document.getElementById("usersChart").getContext("2d");
+  let usersChart = new Chart(usersCtx, {
+    type: "bar",
+    options: {
+      responsive: true,
+      title: {
+        display: false,
+        text: ""
+      }
+    }
+  });
 </script>
 <script>
   $(document).ready(function() {
@@ -306,6 +319,7 @@
 
   function loadAllCharts(year) {
     loadChart(salesChart, `/chart/sales/${year}/`);
+    loadChart(usersChart, `/chart/users/${year}/`);
   }
 </script>
 {% endblock body_js %}
