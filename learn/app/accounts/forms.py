@@ -24,7 +24,7 @@ class EnrollmentForm(ModelForm):
     class Meta:
         model = Enrollment
         fields = "__all__"
-        exclude = ['slug']
+        exclude = ['slug','expiration_date']
 
 
 class RolesForm(ModelForm):
