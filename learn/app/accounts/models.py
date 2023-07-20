@@ -65,14 +65,6 @@ class User(AbstractBaseUser, PermissionsMixin):
     def __str__(self):
         return self.full_name + ' - ' + self.email
 
-    @staticmethod
-    def has_perm(perm, obj=None, **kwargs):
-        return True
-
-    @staticmethod
-    def has_module_perms(app_label, **kwargs):
-        return True
-
 
 class phoneModel(models.Model):
     Mobile = models.BigIntegerField(blank=False)
