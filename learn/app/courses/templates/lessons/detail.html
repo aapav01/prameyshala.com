@@ -6,15 +6,19 @@
 {% block content %}
   <div class="mt-12 mb-8 flex flex-col gap-12">
     <div class="flex flex-col sm:flex-row gap-2 justify-between px-6">
+      {% if perms.courses.change_lesson %}
       <button onclick="edit_chapter.showModal()"
               class="btn bg-gradient-to-br from-green-600 to-green-900 text-white px-12 border-0 shadow-md shadow-green-500/50">
         <i class="far fa-pencil"></i>Edit Lesson
       </button>
+      {% endif %}
+      {% if perms.courses.delete_lesson %}
       <a href="{% url 'courses:lesson-delete' pk=lesson.pk %}"
          onclick="if(confirm('Are you sure you want to delete {{ class.name }} from database?')) return true; else return false;"
          class="btn bg-gradient-to-br from-red-600 to-orange-900 text-white px-12 border-0 shadow-md shadow-red-500/50">
         <i class="far fa-trash"></i>Delete Lesson
       </a>
+      {% endif %}
     </div>
     <div class="relative flex w-full flex-col rounded-xl bg-base-100 bg-clip-border text-base-content shadow-md">
       <div class="relative mx-4 -mt-6 mb-4 grid px-6 py-8 overflow-hidden rounded-xl bg-gradient-to-tr from-indigo-600 to-indigo-400 bg-clip-border text-white shadow-lg shadow-indigo-500/40">
@@ -87,6 +91,7 @@
       </div>
     </div>
   </div>
+  {% if perms.courses.change_lesson %}
   <dialog id="edit_chapter"
           class="modal modal-bottom sm:modal-middle transition-all duration-500 ease-in-out">
     <form method="post"
@@ -109,6 +114,7 @@
       <button>close</button>
     </form>
   </dialog>
+  {% endif %}
   <dialog id="upload_video"
           class="modal modal-bottom sm:modal-middle transition-all duration-500 ease-in-out">
     <div class="modal-box sm:max-w-5xl">

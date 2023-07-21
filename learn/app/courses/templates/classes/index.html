@@ -6,10 +6,12 @@
 {% block content %}
   <div class="mt-12 mb-8 flex flex-col gap-12">
     <div class="flex justify-between px-6">
+      {% if perms.courses.add_classes %}
       <button onclick="create_class.showModal()"
               class="btn bg-gradient-to-br from-purple-600 to-pink-400 text-white px-12 border-0 shadow-md shadow-purple-500/50">
         <i class="far fa-plus"></i>Add Class
       </button>
+      {% endif %}
     </div>
     <div class="relative flex w-full flex-col rounded-xl bg-base-100 bg-clip-border text-base-content shadow-md">
       <div class="relative mx-4 -mt-6 mb-4 grid px-6 py-8 overflow-hidden rounded-xl bg-gradient-to-tr from-indigo-600 to-indigo-400 bg-clip-border text-white shadow-lg shadow-indigo-500/40">
@@ -40,13 +42,18 @@
                 <td class="px-4 py-3">{{ class.description }}</td>
                 <td class="px-4 py-3">{{ class.slug }}</td>
                 <td class="flex gap-2 px-4 py-3">
+                  {% if perms.courses.change_classes %}
                   <button onclick="update_class_{{ class.pk }}.showModal()"
                           class="btn btn-sm btn-success btn-square">
                     <i class="fad fa-edit"></i>
                   </button>
+                  {% endif %}
+                  {% if perms.courses.delete_classes %}
                   <a href="{% url 'courses:class-delete' pk=class.pk %}"
                      onclick="if(confirm('Are you sure you want to delete {{ class.name }} from database?')) return true; else return false;"
-                     class="btn btn-sm btn-error btn-square"><i class="far fa-trash-alt"></i></a>
+                     class="btn btn-sm btn-error btn-square"><i class="far fa-trash-alt"></i>
+                  </a>
+                  {% endif %}
                 </td>
               </tr>
             {% endfor %}
@@ -68,6 +75,7 @@
       </div>
     </div>
   </div>
+  {% if perms.courses.add_classes %}
   <dialog id="create_class"
           class="modal modal-bottom sm:modal-middle transition-all duration-500 ease-in-out">
     <form method="post"
@@ -87,6 +95,8 @@
       <button>close</button>
     </form>
   </dialog>
+  {% endif %}
+  {% if perms.courses.change_classes %}
   {% for class in classes %}
     <dialog id="update_class_{{ class.pk }}"
             class="modal modal-bottom sm:modal-middle transition-all duration-500 ease-in-out">
@@ -111,4 +121,5 @@
       </form>
     </dialog>
   {% endfor %}
+  {% endif %}
 {% endblock content %}
