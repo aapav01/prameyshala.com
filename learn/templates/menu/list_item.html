@@ -58,7 +58,7 @@
 </li>
 {% endif %}
 <li class="p-4 font-bold">User Management</li>
-{% if perms.accounts.view_roles %}
+{% if perms.accounts.view_role %}
 <li>
   <a href="{% url 'accounts:roles' %}"
      {% if request.resolver_match.url_name == 'roles' %}class="active"{% endif %}
