@@ -1,10 +1,11 @@
 from django.contrib.auth.hashers import check_password
+from django.contrib.auth.backends import ModelBackend
 from django.contrib.auth import get_user_model
 from django.db.models import Q
 
 User = get_user_model()
 
-class EmailPhoneUsernameAuthenticationBackend(object):
+class EmailPhoneUsernameAuthenticationBackend(ModelBackend):
     @staticmethod
     def authenticate(request, username=None, password=None):
         try:

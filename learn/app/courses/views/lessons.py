@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.contrib import messages
 from django.shortcuts import render, redirect
 from django.views.generic import ListView, DetailView
@@ -21,7 +22,8 @@ headers = {
 }
 
 
-class LessonView(ListView):
+class LessonView(PermissionRequiredMixin, ListView):
+    permission_required = "courses.view_lesson"
     model = Lesson
     template_name = "lessons/index.html"
     form = LessonForm
@@ -65,7 +67,8 @@ class LessonView(ListView):
         else:
             return render(request, self.template_name, self.get_context_data(**kwargs))
 
-class LessonDetailView(DetailView):
+class LessonDetailView(PermissionRequiredMixin, DetailView):
+    permission_required = "courses.view_lesson"
     model = Lesson
     template_name = "lessons/detail.html"
     context_object_name = "lesson"
@@ -81,7 +84,8 @@ class LessonDetailView(DetailView):
         return context
 
 
-class LessonUpdateView(UpdateView):
+class LessonUpdateView(PermissionRequiredMixin, UpdateView):
+    permission_required = "courses.change_lesson"
     model = Lesson
     form_class = LessonForm
     success_url = reverse_lazy("courses:lessons")
@@ -100,7 +104,8 @@ class LessonUpdateView(UpdateView):
         return super().form_valid(form)
 
 
-class LessonDeleteView(DeleteView):
+class LessonDeleteView(PermissionRequiredMixin, DeleteView):
+    permission_required = "courses.delete_lesson"
     model = Lesson
     success_url = reverse_lazy("courses:lessons")
 

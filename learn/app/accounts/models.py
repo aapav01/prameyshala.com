@@ -53,15 +53,6 @@ class User(AbstractBaseUser, PermissionsMixin):
     USERNAME_FIELD = 'phone_number'
     REQUIRED_FIELDS = ['email', 'full_name']
 
-    def get_role(self):
-        role = Role.objects.filter(user=self).first()
-        if self.is_superuser:
-            return "superuser"
-        if role:
-            return role.name
-        return None
-
-
     def __str__(self):
         return self.full_name + ' - ' + self.email
 

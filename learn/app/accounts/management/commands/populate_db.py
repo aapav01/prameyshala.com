@@ -6,8 +6,11 @@ from django.contrib.auth.hashers import make_password
 from django.core.management.base import BaseCommand
 from django.utils.text import slugify
 
-from app.accounts.models import User, Enrollment, Payments
-from app.courses.models import Chapter, Subject, Classes, Lesson, Category
+from django.contrib.auth.models import Permission
+from django.contrib.contenttypes.models import ContentType
+
+from app.accounts.models import User, Enrollment, Payments, Role
+from app.courses.models import Chapter, Subject, Classes, Lesson
 
 
 class Command(BaseCommand):
@@ -45,7 +48,7 @@ class Command(BaseCommand):
 
         password = make_password('password@123')
         admin_user = User.objects.get_or_create(phone_number="9876543210", email="admin@prameyshala.com",
-                                                full_name="Admin User", password=password, is_superuser=True)
+                                                full_name="Admin User", password=password, is_staff=True, is_superuser=True)
 
         # Each subject has 10 chapters
         Chapters_list = [
@@ -53,6 +56,48 @@ class Command(BaseCommand):
                 name=f"Chapter {i}", description=f"Chapter {i}", course=subject[0], user=admin_user[0])
             for i in range(1, 11) for subject in Subject_list
         ]
+
+        teacher_group, created = Role.objects.get_or_create(name="Teacher", description="Teacher")
+        editor_group, created = Role.objects.get_or_create(name="Editor", description="Editor")
+        publisher_group, created = Role.objects.get_or_create(name="Publisher", description="Publisher")
+
+        classes_permission = Permission.objects.filter(content_type=ContentType.objects.get_for_model(Classes))
+        subject_permission = Permission.objects.filter(content_type=ContentType.objects.get_for_model(Subject))
+        chapter_permission = Permission.objects.filter(content_type=ContentType.objects.get_for_model(Chapter))
+        lesson_permission = Permission.objects.filter(content_type=ContentType.objects.get_for_model(Lesson))
+
+        for perm in lesson_permission:
+            if perm.codename == "delete_lesson":
+                publisher_group.permissions.add(perm)
+            else:
+                teacher_group.permissions.add(perm)
+                editor_group.permissions.add(perm)
+                publisher_group.permissions.add(perm)
+
+        for perm in chapter_permission:
+            if perm.codename == "delete_chapter":
+                publisher_group.permissions.add(perm)
+            elif perm.codename == "change_chapter":
+                editor_group.permissions.add(perm)
+                publisher_group.permissions.add(perm)
+            else:
+                teacher_group.permissions.add(perm)
+                editor_group.permissions.add(perm)
+                publisher_group.permissions.add(perm)
+
+        for perm in subject_permission:
+            if perm.codename == "delete_subject":
+                publisher_group.permissions.add(perm)
+            else:
+                editor_group.permissions.add(perm)
+                publisher_group.permissions.add(perm)
+
+        for perm in classes_permission:
+            if perm.codename == "delete_classes":
+                publisher_group.permissions.add(perm)
+            else:
+                editor_group.permissions.add(perm)
+                publisher_group.permissions.add(perm)
 
         users_list = []
 

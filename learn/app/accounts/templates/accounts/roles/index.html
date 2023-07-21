@@ -6,10 +6,12 @@
 {% block content %}
   <div class="mt-12 mb-8 flex flex-col gap-12">
     <div class="flex justify-between px-6">
+      {% if perms.accounts.add_role %}
       <button onclick="create_role.showModal()"
               class="btn bg-gradient-to-br from-purple-600 to-pink-400 text-white px-12 border-0 shadow-md shadow-purple-500/50">
         <i class="far fa-plus"></i>Add Role
       </button>
+      {% endif %}
     </div>
     <div class="relative flex w-full flex-col rounded-xl bg-base-100 bg-clip-border text-base-content shadow-md">
       <div class="relative mx-4 -mt-6 mb-4 grid px-6 py-8 overflow-hidden rounded-xl bg-gradient-to-tr from-indigo-600 to-indigo-400 bg-clip-border text-white shadow-lg shadow-indigo-500/40">
@@ -21,6 +23,7 @@
             <tr>
               <th class="px-4 py-3">Name</th>
               <th class="px-4 py-3">Description</th>
+              <th class="px-4 py-3">Permissions</th>
               <th class="px-4 py-3">Action</th>
             </tr>
           </thead>
@@ -28,6 +31,7 @@
             <tr>
               <th class="px-4 py-3">Name</th>
               <th class="px-4 py-3">Description</th>
+              <th class="px-4 py-3">Permissions</th>
               <th class="px-4 py-3">Action</th>
             </tr>
           </tfoot>
@@ -36,14 +40,24 @@
               <tr class="border-b border-blue-gray-50">
                 <td class="px-4 py-3">{{ role.name }}</td>
                 <td class="px-4 py-3">{{ role.description }}</td>
+                <td class="px-4 py-3">
+                  <div class="max-w-xs">
+                    {{ role.permissions.all|join:", " }}
+                  </div>
+                </td>
                 <td class="flex gap-2 px-4 py-3">
+                  {% if perms.accounts.change_role %}
                   <button onclick="update_role_{{ role.pk }}.showModal()"
                           class="btn btn-sm btn-success btn-square">
                     <i class="fad fa-edit"></i>
                   </button>
+                  {% endif %}
+                  {% if perms.accounts.delete_role %}
                   <a href="{% url 'accounts:role-delete' pk=role.pk %}"
                      onclick="if(confirm('Are you sure you want to delete {{ role.name }} from database?')) return true; else return false;"
-                     class="btn btn-sm btn-error btn-square"><i class="far fa-trash-alt"></i></a>
+                     class="btn btn-sm btn-error btn-square"><i class="far fa-trash-alt"></i>
+                  </a>
+                  {% endif %}
                 </td>
               </tr>
             {% endfor %}
@@ -65,6 +79,7 @@
       </div>
     </div>
   </div>
+  {% if perms.accounts.add_role %}
   <dialog id="create_role"
           class="modal modal-bottom sm:modal-middle transition-all duration-500 ease-in-out">
     <form method="post"
@@ -84,6 +99,8 @@
       <button>close</button>
     </form>
   </dialog>
+  {% endif %}
+  {% if perms.accounts.change_role %}
   {% for role in roles %}
     <dialog id="update_role_{{ role.pk }}"
             class="modal modal-bottom sm:modal-middle transition-all duration-500 ease-in-out">
@@ -106,4 +123,5 @@
       </form>
     </dialog>
   {% endfor %}
+  {% endif %}
 {% endblock content %}

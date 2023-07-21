@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.contrib import messages
 from django.shortcuts import render, redirect
 from django.views.generic import ListView, DetailView
@@ -8,7 +9,8 @@ from ..models import Classes
 from ..forms import ClassesForm
 
 
-class ClassesView(ListView):
+class ClassesView(PermissionRequiredMixin, ListView):
+    permission_required = "courses.view_classes"
     model = Classes
     template_name = "classes/index.html"
     form = ClassesForm
@@ -42,7 +44,8 @@ class ClassesView(ListView):
             return render(request, self.template_name, self.get_context_data(**kwargs))
 
 
-class ClassesUpdateView(UpdateView):
+class ClassesUpdateView(PermissionRequiredMixin, UpdateView):
+    permission_required = "courses.change_classes"
     model = Classes
     form_class = ClassesForm
     success_url = reverse_lazy("courses:classes")
@@ -55,7 +58,8 @@ class ClassesUpdateView(UpdateView):
         return super().form_valid(form)
 
 
-class ClassesDeleteView(DeleteView):
+class ClassesDeleteView(PermissionRequiredMixin, DeleteView):
+    permission_required = "courses.delete_classes"
     model = Classes
     success_url = reverse_lazy("courses:classes")
 

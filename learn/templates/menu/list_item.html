@@ -9,12 +9,17 @@
      {% if request.resolver_match.url_name == 'user_profile' %}class="active"{% endif %}
      data-ripple-light="true"><i class="far fa-user"></i>Profile</a>
 </li>
+{% if perms.courses %}
 <li class="p-4 font-bold">Courses</li>
+{% endif %}
+{% if perms.courses.view_classes %}
 <li>
   <a href="{% url 'courses:classes' %}"
      {% if request.resolver_match.url_name == 'classes' %}class="active"{% endif %}
      data-ripple-light="true"><i class="far fa-screen-users"></i>Classes</a>
 </li>
+{% endif %}
+{% if perms.courses.view_subject %}
 <li>
   <a href="{% url 'courses:categories' %}"
      {% if request.resolver_match.url_name == 'categories' %}class="active"{% endif %}
@@ -25,38 +30,53 @@
      {% if request.resolver_match.url_name == 'subjects' %}class="active"{% endif %}
      data-ripple-light="true"><i class="far fa-books"></i>Subjects</a>
 </li>
+{% endif %}
+{% if perms.courses.view_chapter %}
 <li>
   <a href="{% url 'courses:chapters' %}"
      {% if request.resolver_match.url_name == 'chapters' %}class="active"{% endif %}
      data-ripple-light="true"><i class="fa-regular fa-book"></i>Chapters</a>
 </li>
+{% endif %}
+{% if perms.courses.view_lesson %}
 <li>
   <a href="{% url 'courses:lessons' %}"
      {% if request.resolver_match.url_name == 'lessons' %}class="active"{% endif %}
      data-ripple-light="true"><i class="fa-regular fa-chalkboard"></i>Lessons</a>
 </li>
+{% endif %}
+{% if perms.accounts %}
 <li class="p-4 font-bold">Accounts</li>
+{% endif %}
+{% if perms.accounts.view_enrollment %}
 <li>
   <a href="{% url 'accounts:enrollment' %}"
      {% if request.resolver_match.url_name == 'enrollment' %}class="active"{% endif %}
      data-ripple-light="true"><i class="fa-regular fa-user-plus"></i>Enrollment</a>
 </li>
+{% endif %}
+{% if perms.accounts.view_payments %}
 <li>
   <a href="{% url 'accounts:payments' %}"
      {% if request.resolver_match.url_name == 'payments' %}class="active"{% endif %}
      data-ripple-light="true"><i class="fa-regular fa-credit-card"></i>Payments</a>
 </li>
+{% endif %}
 <li class="p-4 font-bold">User Management</li>
+{% if perms.accounts.view_role %}
 <li>
   <a href="{% url 'accounts:roles' %}"
      {% if request.resolver_match.url_name == 'roles' %}class="active"{% endif %}
      data-ripple-light="true"><i class="far fa-user-tag"></i>Roles</a>
 </li>
+{% endif %}
+{% if perms.accounts.view_users %}
 <li>
   <a href="{% url 'accounts:users' %}"
     {% if request.resolver_match.url_name == 'users' %}class="active"{% endif %}
      data-ripple-light="true"><i class="far fa-users"></i>Users</a>
 </li>
+{% endif %}
 <li>
   <a href="{% url 'accounts:user-settings' %}"
     {% if request.resolver_match.url_name == 'user-settings' %}class="active"{% endif %}

@@ -5,6 +5,7 @@
 {% endblock title %}
 {% block content %}
   <div class="mb-12 grid gap-y-10 gap-x-6 md:grid-cols-2 xl:grid-cols-4">
+    {% if perms.accounts.view_payments %}
     <div class="relative flex flex-col bg-clip-border rounded-xl bg-white text-gray-700 shadow-md">
       <div class="bg-clip-border mx-4 rounded-xl overflow-hidden bg-gradient-to-tr from-green-600 to-green-400 text-white shadow-green-500/40 shadow-lg absolute -mt-4 grid h-16 w-16 place-items-center">
         <i class="far fa-money-bills fa-2xl"></i>
@@ -37,6 +38,8 @@
         </p>
       </div>
     </div>
+    {% endif %}
+    {% if perms.accounts.view_enrollment %}
     <div class="relative flex flex-col bg-clip-border rounded-xl bg-white text-gray-700 shadow-md">
       <div class="bg-clip-border mx-4 rounded-xl overflow-hidden bg-gradient-to-tr from-purple-600 to-purple-400 text-white shadow-purple-500/40 shadow-lg absolute -mt-4 grid h-16 w-16 place-items-center">
         <i class="fa-regular fa-user-plus fa-2xl"></i>
@@ -55,6 +58,8 @@
         </p>
       </div>
     </div>
+    {% endif %}
+    {% if perms.accounts.view_user %}
     <div class="relative flex flex-col bg-clip-border rounded-xl bg-white text-gray-700 shadow-md">
       <div class="bg-clip-border mx-4 rounded-xl overflow-hidden bg-gradient-to-tr from-cyan-600 to-cyan-400 text-white shadow-cyan-500/40 shadow-lg absolute -mt-4 grid h-16 w-16 place-items-center">
         <i class="fa-regular fa-user-plus fa-2xl"></i>
@@ -73,6 +78,8 @@
         </p>
       </div>
     </div>
+    {% endif %}
+    {% if perms.courses.view_classes %}
     <div class="relative flex flex-col bg-clip-border rounded-xl bg-white text-gray-700 shadow-md">
       <div class="bg-clip-border mx-4 rounded-xl overflow-hidden bg-gradient-to-tr from-deep-orange-600 to-deep-orange-400 text-white shadow-deep-orange-500/40 shadow-lg absolute -mt-4 grid h-16 w-16 place-items-center">
         <i class="far fa-screen-users fa-2xl"></i>
@@ -84,6 +91,8 @@
         </h4>
       </div>
     </div>
+    {% endif %}
+    {% if perms.courses.view_subject %}
     <div class="relative flex flex-col bg-clip-border rounded-xl bg-white text-gray-700 shadow-md">
       <div class="bg-clip-border mx-4 rounded-xl overflow-hidden bg-gradient-to-tr from-deep-purple-600 to-deep-purple-400 text-white shadow-deep-purple-500/40 shadow-lg absolute -mt-4 grid h-16 w-16 place-items-center">
         <i class="fa-regular fa-books fa-2xl"></i>
@@ -95,6 +104,8 @@
         </h4>
       </div>
     </div>
+    {% endif %}
+    {% if perms.courses.view_chapter %}
     <div class="relative flex flex-col bg-clip-border rounded-xl bg-white text-gray-700 shadow-md">
       <div class="bg-clip-border mx-4 rounded-xl overflow-hidden bg-gradient-to-tr from-orange-600 to-orange-400 text-white shadow-deep-orange-500/40 shadow-lg absolute -mt-4 grid h-16 w-16 place-items-center">
         <i class="fa-regular fa-book fa-2xl"></i>
@@ -106,6 +117,8 @@
         </h4>
       </div>
     </div>
+    {% endif %}
+    {% if perms.courses.view_lesson %}
     <div class="relative flex flex-col bg-clip-border rounded-xl bg-white text-gray-700 shadow-md">
       <div class="bg-clip-border mx-4 rounded-xl overflow-hidden bg-gradient-to-tr from-red-600 to-red-400 text-white shadow-red-500/40 shadow-lg absolute -mt-4 grid h-16 w-16 place-items-center">
         <i class="fa-regular fa-chalkboard fa-2xl"></i>
@@ -117,6 +130,8 @@
         </h4>
       </div>
     </div>
+    {% endif %}
+    {% if perms.accounts.view_enrollment %}
     <div class="relative flex flex-col bg-clip-border rounded-xl bg-white text-gray-700 shadow-md">
       <div class="bg-clip-border mx-4 rounded-xl overflow-hidden bg-gradient-to-tr from-pink-600 to-pink-400 text-white shadow-pink-500/40 shadow-lg absolute -mt-4 grid h-16 w-16 place-items-center">
         <i class="fa-regular fa-user-graduate fa-2xl"></i>
@@ -130,6 +145,8 @@
         </h4>
       </div>
     </div>
+    {% endif %}
+    {% if perms.accounts.view_user %}
     <div class="relative flex flex-col bg-clip-border rounded-xl bg-white text-gray-700 shadow-md">
       <div class="bg-clip-border mx-4 rounded-xl overflow-hidden bg-gradient-to-tr from-blue-gray-600 to-gray-400 text-white shadow-blue-gray-500/40 shadow-lg absolute -mt-4 grid h-16 w-16 place-items-center">
         <i class="fa-regular fa-users fa-2xl"></i>
@@ -152,6 +169,7 @@
         </h4>
       </div>
     </div>
+    {% endif %}
   </div>
   <form id="filterForm" class="pb-20">
     <label class="label" for="year">Choose a year for graphs:</label>
@@ -159,6 +177,7 @@
     <input type="submit" value="Load" name="_load" class="btn btn-sm btn-outline">
   </form>
   <div class="mb-6 grid grid-cols-1 gap-y-12 gap-x-6 md:grid-cols-2 xl:grid-cols-3">
+    {% if perms.accounts.view_payments %}
     <div class="relative flex flex-col bg-clip-border rounded-xl bg-white text-gray-700 shadow-md">
       <div class="relative bg-clip-border mx-4 rounded-xl overflow-hidden bg-gradient-to-tr from-blue-600 to-blue-400 text-white shadow-blue-500/40 shadow-lg -mt-6">
         <div class="min-h-[235px]">
@@ -172,6 +191,8 @@
         <p class="block antialiased font-sans text-sm leading-normal font-normal text-blue-gray-600">Successfully Payment Done in the time spam</p>
       </div>
     </div>
+    {% endif %}
+    {% if perms.accounts.view_user %}
     <div class="relative flex flex-col bg-clip-border rounded-xl bg-white text-gray-700 shadow-md">
       <div class="relative bg-clip-border mx-4 rounded-xl overflow-hidden bg-gradient-to-tr from-green-600 to-green-400 text-white shadow-green-500/40 shadow-lg -mt-6">
         <div class="min-h-[235px]">
@@ -191,6 +212,7 @@
         </p>
       </div>
     </div>
+    {% endif %}
     <div class="relative flex flex-col bg-clip-border rounded-xl bg-white text-gray-700 shadow-md">
       <div class="relative bg-clip-border mx-4 rounded-xl overflow-hidden bg-gradient-to-tr from-pink-600 to-pink-400 text-white shadow-pink-500/40 shadow-lg -mt-6">
         <div class="min-h-[235px]">{% comment %} chartjs mount here {% endcomment %}</div>
@@ -264,6 +286,7 @@
 {% block body_js %}
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
+  {% if perms.accounts.view_payments %}
   let salesCtx = document.getElementById("salesChart").getContext("2d");
   let salesChart = new Chart(salesCtx, {
     type: "bar",
@@ -275,6 +298,8 @@
       }
     }
   });
+  {% endif %}
+  {% if perms.accounts.view_user %}
   let usersCtx = document.getElementById("usersChart").getContext("2d");
   let usersChart = new Chart(usersCtx, {
     type: "bar",
@@ -286,6 +311,7 @@
       }
     }
   });
+  {% endif %}
 </script>
 <script>
   $(document).ready(function() {
@@ -343,7 +369,9 @@
 
   function loadAllCharts(year) {
     loadChart(salesChart, `/chart/sales/${year}/`);
+    {% if perms.accounts.view_user %}
     loadChart(usersChart, `/chart/users/${year}/`);
+    {% endif %}
   }
 </script>
 {% endblock body_js %}

@@ -20,7 +20,10 @@
             <h5 class="block antialiased tracking-normal font-sans text-xl font-semibold leading-snug text-blue-gray-900 mb-1">
               {{ user.full_name }}
             </h5>
-            <p class="block antialiased font-sans text-sm leading-normal font-normal text-blue-gray-600">CEO / Co-Founder</p>
+            <p class="block antialiased font-sans text-sm leading-normal font-normal text-blue-gray-600">
+              {% if user.is_superuser %}<span class="badge badge-warning">Super User</span>{% endif %}
+              {{ user.groups.all|join:", " }}
+            </p>
           </div>
         </div>
       </div>

@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.contrib import messages
 from django.shortcuts import render, redirect
 from django.views.generic import ListView
@@ -20,7 +21,8 @@ headers = {
 }
 
 
-class ChapterView(ListView):
+class ChapterView(PermissionRequiredMixin, ListView):
+    permission_required = "courses.view_chapter"
     model = Chapter
     template_name = "chapters/index.html"
     form = ChapterForm
@@ -67,7 +69,8 @@ class ChapterView(ListView):
             return render(request, self.template_name, self.get_context_data(**kwargs))
 
 
-class ChapterUpdateView(UpdateView):
+class ChapterUpdateView(PermissionRequiredMixin, UpdateView):
+    permission_required = "courses.change_chapter"
     model = Chapter
     form_class = ChapterForm
     success_url = reverse_lazy("courses:chapters")
@@ -79,7 +82,8 @@ class ChapterUpdateView(UpdateView):
         return super().form_valid(form)
 
 
-class ChapterDeleteView(DeleteView):
+class ChapterDeleteView(PermissionRequiredMixin, DeleteView):
+    permission_required = "courses.delete_chapter"
     model = Chapter
     success_url = reverse_lazy("courses:chapters")
 

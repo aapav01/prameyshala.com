@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.contrib import messages
 from django.shortcuts import render, redirect
 from django.views.generic import ListView, DetailView
@@ -9,7 +10,8 @@ from ..forms import EnrollmentForm
 from dateutil.relativedelta import relativedelta
 
 
-class EnrollmentView(ListView):
+class EnrollmentView(PermissionRequiredMixin, ListView):
+    permission_required = "accounts.view_enrollment"
     model = Enrollment
     template_name = "accounts/enrollment/index.html"
     form = EnrollmentForm
@@ -44,7 +46,8 @@ class EnrollmentView(ListView):
         else:
             return render(request, self.template_name, self.get_context_data(**kwargs))
 
-class EnrollmentUpdateView(UpdateView):
+class EnrollmentUpdateView(PermissionRequiredMixin, UpdateView):
+    permission_required = "accounts.change_enrollment"
     model = Enrollment
     form_class = EnrollmentForm
     success_url = reverse_lazy("accounts:enrollment")
@@ -57,7 +60,8 @@ class EnrollmentUpdateView(UpdateView):
         return super().form_valid(form)
 
 
-class EnrollmentDeleteView(DeleteView):
+class EnrollmentDeleteView(PermissionRequiredMixin, DeleteView):
+    permission_required = "accounts.delete_enrollment"
     model = Enrollment
     success_url = reverse_lazy("accounts:enrollment")
 
