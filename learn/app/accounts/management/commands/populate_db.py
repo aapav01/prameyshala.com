@@ -69,6 +69,24 @@ class Command(BaseCommand):
             user[0].updated_at = dt
             user[0].save()
 
+        payment_method_list = ['Debit Card','UPI','Credit Card']
+
+        # Making list of random bought prices
+        bought_price_list = [random.randint(1000,10000) for i in range(0,20)]
+        
+        # Selecting random users to make them enrolled.
+        enrolled_users_list = []
+        for i in range(20):
+            random.seed(i)
+            random_user_index = random.randint(0,len(users_list)) 
+            enrolled_users_list.append(users_list[random_user_index])
+        
+        Enrollment_list = [Enrollment.objects.get_or_create(bought_price=bought_price_list[random.randint(0,len            (bought_price_list)-1)],
+                            payment_method=payment_method_list[random.randint(0,len(payment_method_list)-1)],
+                            description = "Enrolled", status="Paid", user_id=enrolled_users_list[i][0], classes_id=Classes_list[random.randint(0,len(Classes_list)-1)][0] 
+                                                            )for i in range(len(enrolled_users_list))
+                        ]
+
 
         self.stdout.write(self.style.SUCCESS(
             "Successfully populated the database."))
