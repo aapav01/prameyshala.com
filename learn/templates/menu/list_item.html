@@ -17,21 +17,21 @@
      data-ripple-light="true"><i class="far fa-screen-users"></i>Classes</a>
 </li>
 {% endif %}
-{% if perms.courses.view_subjects %}
+{% if perms.courses.view_subject %}
 <li>
   <a href="{% url 'courses:subjects' %}"
      {% if request.resolver_match.url_name == 'subjects' %}class="active"{% endif %}
      data-ripple-light="true"><i class="far fa-books"></i>Subjects</a>
 </li>
 {% endif %}
-{% if perms.courses.view_chapters %}
+{% if perms.courses.view_chapter %}
 <li>
   <a href="{% url 'courses:chapters' %}"
      {% if request.resolver_match.url_name == 'chapters' %}class="active"{% endif %}
      data-ripple-light="true"><i class="fa-regular fa-book"></i>Chapters</a>
 </li>
 {% endif %}
-{% if perms.courses.view_lessons %}
+{% if perms.courses.view_lesson %}
 <li>
   <a href="{% url 'courses:lessons' %}"
      {% if request.resolver_match.url_name == 'lessons' %}class="active"{% endif %}

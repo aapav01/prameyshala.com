@@ -71,9 +71,9 @@ class Command(BaseCommand):
                 publisher_group.permissions.add(perm)
 
         for perm in chapter_permission:
-            if perm.codename == "delete_lesson":
+            if perm.codename == "delete_chapter":
                 publisher_group.permissions.add(perm)
-            elif perm.codename == "change_lesson":
+            elif perm.codename == "change_chapter":
                 editor_group.permissions.add(perm)
                 publisher_group.permissions.add(perm)
             else:
@@ -82,14 +82,14 @@ class Command(BaseCommand):
                 publisher_group.permissions.add(perm)
 
         for perm in subject_permission:
-            if perm.codename == "delete_lesson":
+            if perm.codename == "delete_subject":
                 publisher_group.permissions.add(perm)
             else:
                 editor_group.permissions.add(perm)
                 publisher_group.permissions.add(perm)
 
         for perm in classes_permission:
-            if perm.codename == "delete_lesson":
+            if perm.codename == "delete_classes":
                 publisher_group.permissions.add(perm)
             else:
                 editor_group.permissions.add(perm)
