@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.contrib import messages
 from django.shortcuts import render, redirect
 from django.views.generic import ListView, DetailView
@@ -10,7 +11,8 @@ from django.contrib.auth.models import Group
 from django.contrib.auth.hashers import make_password
 
 
-class UsersView(ListView):
+class UsersView(PermissionRequiredMixin, ListView):
+    permission_required = "accounts.view_user"
     model = User
     template_name = "accounts/users/index.html"
     form = UsersForm
@@ -46,7 +48,8 @@ class UsersView(ListView):
             return render(request, self.template_name, self.get_context_data(**kwargs))
 
 
-class UsersUpdateView(UpdateView):
+class UsersUpdateView(PermissionRequiredMixin, UpdateView):
+    permission_required = "accounts.change_user"
     model = User
     form_class = UsersForm
     success_url = reverse_lazy("accounts:users")
@@ -58,7 +61,8 @@ class UsersUpdateView(UpdateView):
         return super().form_valid(form)
 
 
-class UsersDeleteView(DeleteView):
+class UsersDeleteView(PermissionRequiredMixin, DeleteView):
+    permission_required = "accounts.delete_user"
     model = User
     success_url = reverse_lazy("accounts:users")
 

@@ -2,13 +2,15 @@ from django.contrib import messages
 from django.shortcuts import render, redirect
 from django.views.generic import ListView, DetailView
 from django.views.generic.edit import UpdateView, DeleteView
+from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.utils.text import slugify
 from django.urls import reverse_lazy
 from ..models import Role
 from ..forms import RolesForm
 
 
-class RolesView(ListView):
+class RolesView(PermissionRequiredMixin, ListView):
+    permission_required = "accounts.view_role"
     model = Role
     template_name = "accounts/roles/index.html"
     form = RolesForm
@@ -45,7 +47,8 @@ class RolesView(ListView):
 
 
 
-class RolesUpdateView(UpdateView):
+class RolesUpdateView(PermissionRequiredMixin, UpdateView):
+    permission_required = "accounts.change_role"
     model = Role
     form_class = RolesForm
     success_url = reverse_lazy("accounts:roles")
@@ -57,7 +60,8 @@ class RolesUpdateView(UpdateView):
         return super().form_valid(form)
 
 
-class RolesDeleteView(DeleteView):
+class RolesDeleteView(PermissionRequiredMixin, DeleteView):
+    permission_required = "accounts.delete_role"
     model = Role
     success_url = reverse_lazy("accounts:roles")
 

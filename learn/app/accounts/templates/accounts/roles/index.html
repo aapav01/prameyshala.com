@@ -36,6 +36,11 @@
               <tr class="border-b border-blue-gray-50">
                 <td class="px-4 py-3">{{ role.name }}</td>
                 <td class="px-4 py-3">{{ role.description }}</td>
+                <td class="px-4 py-3">
+                  <div class="max-w-xs">
+                    {{ role.permissions.all|join:", " }}
+                  </div>
+                </td>
                 <td class="flex gap-2 px-4 py-3">
                   <button onclick="update_role_{{ role.pk }}.showModal()"
                           class="btn btn-sm btn-success btn-square">

@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.contrib import messages
 from django.shortcuts import render, redirect
 from django.views.generic import ListView, DetailView
@@ -8,8 +9,8 @@ from ..models import Payments
 
 
 
-class PaymentsView(ListView):
-
+class PaymentsView(PermissionRequiredMixin, ListView):
+    permission_required = "accounts.view_payments"
     model = Payments
     template_name = "accounts/payments/index.html"
     context_object_name = "payments"

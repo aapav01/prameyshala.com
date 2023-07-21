@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.contrib import messages
 from django.shortcuts import render, redirect
 from django.views.generic import ListView
@@ -9,7 +10,8 @@ from ..models import Subject
 from ..forms import SubjectForm
 
 
-class SubjectsView(ListView):
+class SubjectsView(PermissionRequiredMixin, ListView):
+    permission_required = "courses.view_subject"
     model = Subject
     template_name = "subjects/index.html"
     form = SubjectForm
@@ -46,7 +48,8 @@ class SubjectsView(ListView):
             return render(request, self.template_name, self.get_context_data(**kwargs))
 
 
-class SubjectUpdateView(UpdateView):
+class SubjectUpdateView(PermissionRequiredMixin, UpdateView):
+    permission_required = "courses.change_subject"
     model = Subject
     form_class = SubjectForm
     success_url = reverse_lazy("courses:subjects")
@@ -60,7 +63,8 @@ class SubjectUpdateView(UpdateView):
         return super().form_valid(form)
 
 
-class SubjectDeleteView(DeleteView):
+class SubjectDeleteView(PermissionRequiredMixin, DeleteView):
+    permission_required = "courses.delete_subject"
     model = Subject
     success_url = reverse_lazy("courses:subjects")
 
