@@ -9,7 +9,9 @@
      {% if request.resolver_match.url_name == 'user_profile' %}class="active"{% endif %}
      data-ripple-light="true"><i class="far fa-user"></i>Profile</a>
 </li>
+{% if perms.courses %}
 <li class="p-4 font-bold">Courses</li>
+{% endif %}
 {% if perms.courses.view_classes %}
 <li>
   <a href="{% url 'courses:classes' %}"
@@ -38,7 +40,9 @@
      data-ripple-light="true"><i class="fa-regular fa-chalkboard"></i>Lessons</a>
 </li>
 {% endif %}
+{% if perms.accounts %}
 <li class="p-4 font-bold">Accounts</li>
+{% endif %}
 {% if perms.accounts.view_enrollment %}
 <li>
   <a href="{% url 'accounts:enrollment' %}"
