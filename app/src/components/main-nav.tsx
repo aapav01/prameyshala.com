@@ -4,17 +4,6 @@ import React, { useRef, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "./ui/button";
-import { Label } from "./ui/label"
-import { Input } from "./ui/input";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-  DialogFooter
-} from "@/components/ui/dialog"
 
 function MainNav() {
   const stickyHeader = useRef<HTMLElement>(null);
@@ -53,36 +42,7 @@ function MainNav() {
           </Link>
         </div>
         <div className="flex-1 flex justify-end items-center gap-1">
-          <Dialog>
-      <DialogTrigger asChild>
-        <Button variant="outline">Login</Button>
-      </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
-        <DialogHeader>
-          <DialogTitle>Login</DialogTitle>
-          <DialogDescription>
-           or Create an account
-          </DialogDescription>
-        </DialogHeader>
-        <div className="grid gap-4 py-4">
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="name" className="text-right">
-             Mobile Number 
-            </Label>
-            <Input id="name" value="Mobile Number" className="col-span-3" />
-          </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="username" className="text-right">
-             OTP
-            </Label>
-            <Input id="username" value="Enter OTP Here" className="col-span-3" />
-          </div>
-        </div>
-        <DialogFooter>
-          <Button type="submit">Submit</Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
+          <Button variant={"outline"}>Login</Button>
           <Button className="text-xs md:text-sm">
             Join<span className="hidden md:flex md:ml-1">For Free</span>
           </Button>
