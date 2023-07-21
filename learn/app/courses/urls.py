@@ -18,4 +18,7 @@ urlpatterns = [
     path("lesson/<int:pk>/", login_required(LessonUpdateView.as_view()), name="lesson-update"),
     path("lesson/<int:pk>/detail/", login_required(LessonDetailView.as_view()), name="lesson-detail"),
     path("lesson/<int:pk>/delete/", login_required(LessonDeleteView.as_view()), name="lesson-delete"),
+    path('categories/', login_required(CategoriesView.as_view()), name='categories'),
+    path("categories/<int:pk>/", login_required(CategoriesUpdateView.as_view()), name="category-update"),
+    path("categories/<int:pk>/delete/", login_required(CategoriesDeleteView.as_view()), name="category-delete"),
 ]
