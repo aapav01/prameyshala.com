@@ -1,12 +1,15 @@
 from django.db import models
 from app.accounts.models import User
 from django.utils.translation import gettext_lazy as _
+from django.core.validators import MinValueValidator
 
 class Classes(models.Model):
     name = models.CharField(max_length=255)
     description = models.TextField()
     image = models.ImageField(upload_to='static/uploads/classes', blank=True, null=True)
     slug = models.SlugField(unique=True, max_length=255)
+    latest_price = models.FloatField(default=0.0, validators=[MinValueValidator(0.0)])
+    before_price = models.FloatField(default=0.0, validators=[MinValueValidator(0.0)])
     postition = models.IntegerField(blank=True, null=True)
     publish_at = models.DateTimeField(auto_now_add=True)
     created_at = models.DateTimeField(auto_now_add=True, blank=True, null=True)
@@ -21,6 +24,9 @@ class Classes(models.Model):
 class Category(models.Model):
     name = models.CharField(max_length=50,blank=False, null=False)
     description = models.TextField(max_length=255,blank=True,null=True)
+
+    def __str__(self):
+        return self.name
 
 class Subject(models.Model):
     name = models.CharField(max_length=255)
@@ -46,13 +52,13 @@ class Chapter(models.Model):
     image = models.ImageField(upload_to='static/uploads/chapters', blank=True, null=True)
     collectionid = models.CharField(
         db_column='collectionId', max_length=255, blank=True, null=True)
-    course = models.ForeignKey(Subject, on_delete=models.CASCADE)
+    subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now=False, auto_now_add=True, blank=True, null=True)
     updated_at = models.DateTimeField(auto_now=True, blank=True, null=True)
 
     def __str__(self):
-        return self.name + ' - ' + self.course.name
+        return self.name + ' - ' + self.subject.name
 
     class Meta:
         db_table = 'chapters'

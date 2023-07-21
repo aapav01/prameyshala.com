@@ -78,7 +78,7 @@ class ChapterUpdateView(PermissionRequiredMixin, UpdateView):
 
     def form_valid(self, form):
         messages.info(
-            self.request, f'{form.instance.name} of {form.instance.course.name} has been updated successfully.')
+            self.request, f'{form.instance.name} of {form.instance.subject.name} has been updated successfully.')
         return super().form_valid(form)
 
 

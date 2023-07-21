@@ -42,7 +42,7 @@
               <tr class="border-b border-blue-gray-50">
                 <td class="px-4 py-3">{{ chapter.name }}</td>
                 <td class="px-4 py-3">{{ chapter.description }}</td>
-                <td class="px-4 py-3">{{ chapter.course }}</td>
+                <td class="px-4 py-3">{{ chapter.subject }}</td>
                 <td class="px-4 py-3">{{ chapter.collectionid }}</td>
                 <td class="flex gap-2 px-4 py-3">
                   {% if perms.courses.change_chapter %}
@@ -105,7 +105,7 @@
             action="{% url 'courses:chapter-update' pk=chapter.pk %}"
             class="modal-box sm:max-w-5xl">
         {% csrf_token %}
-        <h2 class="font-mono font-semibold text-lg">Update - {{ chapter.name }} in {{ chapter.course.name }}</h2>
+        <h2 class="font-mono font-semibold text-lg">Update - {{ chapter.name }} in {{ chapter.subject.name }}</h2>
         <div class="relative mb-4">
           <div class="form-control w-full djanog-custom-forms grid grid-cols-1 md:grid-cols-2 gap-4">
             {{ chapter.form.as_div }}
