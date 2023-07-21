@@ -46,7 +46,12 @@
                 <td class="px-4 py-3">{{ user.full_name }}</td>
                 <td class="px-4 py-3">{{ user.email }}</td>
                 <td class="px-4 py-3">{{ user.phone_number }}</td>
-                <td class="px-4 py-3 capitalize">{{ user.get_role }}</td>
+                <td class="px-4 py-3 capitalize">
+                  <div class="max-w-xs">
+                    {% if user.is_superuser %}<span class="badge badge-warning">Super User</span>{% endif %}
+                    {{ user.groups.all|join:", " }}
+                  </div>
+                </td>
                 <td class="px-4 py-3">{{ user.created_at }}</td>
                 <td class="flex gap-2 px-4 py-3">
                   <button onclick="update_user_{{ user.pk }}.showModal()"
