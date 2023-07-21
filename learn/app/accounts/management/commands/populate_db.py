@@ -10,7 +10,7 @@ from django.contrib.auth.models import Permission
 from django.contrib.contenttypes.models import ContentType
 
 from app.accounts.models import User, Enrollment, Payments, Role
-from app.courses.models import Chapter, Subject, Classes, Lesson
+from app.courses.models import Chapter, Subject, Classes, Lesson, Category
 
 
 class Command(BaseCommand):

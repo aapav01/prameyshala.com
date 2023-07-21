@@ -1,6 +1,6 @@
 import graphene
 from graphene_django import DjangoObjectType
-from .models import Lesson, Subject, Classes, Chapter
+from .models import Lesson, Subject, Classes, Chapter, Category
 
 
 class ChapterType(DjangoObjectType):
@@ -14,6 +14,11 @@ class ClassesType(DjangoObjectType):
         model = Classes
         fields = "__all__"
 
+
+class CategoriesType(DjangoObjectType):
+    class Meta:
+        model = Category
+        fields = "__all__"
 
 class SubjectType(DjangoObjectType):
     class Meta:
@@ -31,6 +36,9 @@ class Query(graphene.ObjectType):
     # classes
     classes = graphene.List(ClassesType)
     standard = graphene.Field(ClassesType, id=graphene.Int(required=True))
+    # category
+    categories = graphene.List(CategoriesType)
+    category = graphene.Field(CategoriesType,id=graphene.Int(required=True))
     # subjects
     subjects = graphene.List(SubjectType)
     subject = graphene.Field(SubjectType, id=graphene.Int(required=True))
@@ -47,6 +55,13 @@ class Query(graphene.ObjectType):
 
     def resolve_standard(self, info, id):
         return Classes.objects.get(pk=id)
+
+    # categories
+    def resolve_categories(self,info):
+        return Category.objects.all()
+
+    def resolve_category(self,info,id):
+        return Category.objects.get(pk=id)
 
     # subjects
     def resolve_subjects(self, info):
