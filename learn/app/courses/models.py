@@ -49,13 +49,13 @@ class Chapter(models.Model):
     image = models.ImageField(upload_to='static/uploads/chapters', blank=True, null=True)
     collectionid = models.CharField(
         db_column='collectionId', max_length=255, blank=True, null=True)
-    course = models.ForeignKey(Subject, on_delete=models.CASCADE)
+    subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now=False, auto_now_add=True, blank=True, null=True)
     updated_at = models.DateTimeField(auto_now=True, blank=True, null=True)
 
     def __str__(self):
-        return self.name + ' - ' + self.course.name
+        return self.name + ' - ' + self.subject.name
 
     class Meta:
         db_table = 'chapters'

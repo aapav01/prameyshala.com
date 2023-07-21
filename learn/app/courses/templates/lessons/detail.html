@@ -85,7 +85,7 @@
           </div>
           <div class="mb-4">
             <h2 class="font-mono font-semibold">Course</h2>
-            <p class="text-sm">{{ lesson.chapter.course.name }}</p>
+            <p class="text-sm">{{ lesson.chapter.subject.name }}</p>
           </div>
         </div>
       </div>
@@ -100,7 +100,7 @@
           class="modal-box sm:max-w-5xl">
       {% csrf_token %}
       <h2 class="font-mono font-semibold text-lg">
-        Update - {{ lesson.title }} of {{ lesson.chapter.name }} in {{ lesson.chapter.course.name }}
+        Update - {{ lesson.title }} of {{ lesson.chapter.name }} in {{ lesson.chapter.subject.name }}
       </h2>
       <div class="relative mb-4">
         <div class="w-full djanog-custom-forms grid grid-flow-dense grid-cols-1 md:grid-cols-2 gap-4">{{ form }}</div>
@@ -119,7 +119,7 @@
           class="modal modal-bottom sm:modal-middle transition-all duration-500 ease-in-out">
     <div class="modal-box sm:max-w-5xl">
       <h2 class="font-mono font-semibold text-lg">
-        Upload Video for {{ lesson.title }} of {{ lesson.chapter.name }} in {{ lesson.chapter.course.name }}
+        Upload Video for {{ lesson.title }} of {{ lesson.chapter.name }} in {{ lesson.chapter.subject.name }}
       </h2>
       <div class="m-10">
         <label id="fileLabel"
