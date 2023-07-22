@@ -49,10 +49,14 @@ class LessonView(PermissionRequiredMixin, ListView):
         if form.is_valid():
             instance = form.save(commit=False)
             instance.created_by = request.user
+            if instance.chapter.collectionid is None:
+                collectionid = ''
+            else:
+                collectionid = instance.chapter.collectionid
             if instance.platform == "file":
                 url = f"https://video.bunnycdn.com/library/{env('BUNNYCDN_VIDEO_LIBRARY_ID')}/videos"
                 payload = "{\"title\":\""+instance.title + \
-                    "\",\"collectionId\":\""+instance.chapter.collectionid+"\"}"
+                    "\",\"collectionId\":\""+collectionid+"\"}"
                 response = requests.post(url, data=payload, headers=headers)
                 print(response.text)
                 if response.status_code == 200:
