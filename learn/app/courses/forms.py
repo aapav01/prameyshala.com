@@ -1,6 +1,7 @@
 from django import forms
 from django.forms import ModelForm
 from .models import Classes, Subject, Chapter, Lesson, Category
+from app.accounts.models import User
 
 
 class ClassesForm(ModelForm):
@@ -25,6 +26,7 @@ class ChapterForm(ModelForm):
 
 class LessonForm(ModelForm):
     template_name = "lessons/form_snippet.html"
+    teacher = forms.ModelChoiceField(queryset=User.objects.filter(groups__name='Teacher'))
     class Meta:
         model = Lesson
         exclude = ['status', 'length', 'position', 'platform_video_id', 'created_by', 'updated_by']
@@ -33,7 +35,7 @@ class LessonForm(ModelForm):
         }
 
 class CategoriesForm(ModelForm):
-    
+
     class Meta:
         model = Category
         fields = "__all__"
