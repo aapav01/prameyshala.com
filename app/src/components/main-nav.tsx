@@ -1,12 +1,14 @@
 "use client";
 
 import React, { useRef, useEffect } from "react";
+import { useSession, signIn, signOut } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "./ui/button";
 
 function MainNav() {
   const stickyHeader = useRef<HTMLElement>(null);
+  const { data: session } = useSession();
 
   useEffect(() => {
     const mainHeader = document.getElementById("mainHeader");
@@ -23,7 +25,8 @@ function MainNav() {
       }
     };
     window.addEventListener("scroll", fixedHeader);
-  }, []);
+    console.log("session", session);
+  }, [session]);
   return (
     <nav
       id="mainHeader"
@@ -42,10 +45,25 @@ function MainNav() {
           </Link>
         </div>
         <div className="flex-1 flex justify-end items-center gap-1">
-          <Button variant={"outline"}>Login</Button>
-          <Button className="text-xs md:text-sm">
-            Join<span className="hidden md:flex md:ml-1">For Free</span>
-          </Button>
+          {session ? (
+            <>
+
+              {/* @ts-expect-error  // because of user type has name and our api send fullname */}
+              <span>Hello, <span className="font-bold mr-2">{session?.user?.fullName}</span></span>
+              <Button variant={"outline"} onClick={() => signOut()}>
+                Logout
+              </Button>
+            </>
+          ) : (
+            <>
+              <Button variant={"outline"} onClick={() => signIn()}>
+                Login
+              </Button>
+              <Button className="text-xs md:text-sm">
+                Join<span className="hidden md:flex md:ml-1">For Free</span>
+              </Button>
+            </>
+          )}
         </div>
       </div>
     </nav>
