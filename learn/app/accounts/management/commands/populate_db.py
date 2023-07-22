@@ -54,7 +54,7 @@ class Command(BaseCommand):
         # Each subject has 10 chapters
         Chapters_list = [
             Chapter.objects.get_or_create(
-                name=f"Chapter {i}", description=f"Chapter {i}", course=subject[0], user=admin_user[0])
+                name=f"Chapter {i}", description=f"Chapter {i}", subject=subject[0], user=admin_user[0])
             for i in range(1, 11) for subject in Subject_list
         ]
 
