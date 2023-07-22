@@ -58,7 +58,7 @@ class Chapter(models.Model):
     updated_at = models.DateTimeField(auto_now=True, blank=True, null=True)
 
     def __str__(self):
-        return self.name + ' - ' + self.subject.name
+        return self.name + ' - ' + self.subject.name + ' - ' + self.subject.standard.name
 
     class Meta:
         db_table = 'chapters'
