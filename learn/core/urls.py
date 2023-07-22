@@ -18,6 +18,7 @@ from django.contrib import admin
 from django.urls import include, path
 from graphene_django.views import GraphQLView
 from django.views.decorators.csrf import csrf_exempt
+from .settings import DEBUG
 
 urlpatterns = [
     path("", include("app.accounts.urls", namespace="core")),
@@ -25,5 +26,9 @@ urlpatterns = [
     path("courses/", include("app.courses.urls")),
     path('admin/', admin.site.urls),
     path("graphql", csrf_exempt(GraphQLView.as_view(graphiql=True))),
-    path("__reload__/", include("django_browser_reload.urls")),
 ]
+
+if DEBUG:
+    urlpatterns += [
+        path("__reload__/", include("django_browser_reload.urls")),
+    ]
