@@ -7,17 +7,17 @@
   <div class="mt-12 mb-8 flex flex-col gap-12">
     <div class="flex flex-col sm:flex-row gap-2 justify-between px-6">
       {% if perms.courses.change_lesson %}
-      <button onclick="edit_chapter.showModal()"
-              class="btn bg-gradient-to-br from-green-600 to-green-900 text-white px-12 border-0 shadow-md shadow-green-500/50">
-        <i class="far fa-pencil"></i>Edit Lesson
-      </button>
+        <button onclick="edit_chapter.showModal()"
+                class="btn bg-gradient-to-br from-green-600 to-green-900 text-white px-12 border-0 shadow-md shadow-green-500/50">
+          <i class="far fa-pencil"></i>Edit Lesson
+        </button>
       {% endif %}
       {% if perms.courses.delete_lesson %}
-      <a href="{% url 'courses:lesson-delete' pk=lesson.pk %}"
-         onclick="if(confirm('Are you sure you want to delete {{ class.name }} from database?')) return true; else return false;"
-         class="btn bg-gradient-to-br from-red-600 to-orange-900 text-white px-12 border-0 shadow-md shadow-red-500/50">
-        <i class="far fa-trash"></i>Delete Lesson
-      </a>
+        <a href="{% url 'courses:lesson-delete' pk=lesson.pk %}"
+           onclick="if(confirm('Are you sure you want to delete {{ class.name }} from database?')) return true; else return false;"
+           class="btn bg-gradient-to-br from-red-600 to-orange-900 text-white px-12 border-0 shadow-md shadow-red-500/50">
+          <i class="far fa-trash"></i>Delete Lesson
+        </a>
       {% endif %}
     </div>
     <div class="relative flex w-full flex-col rounded-xl bg-base-100 bg-clip-border text-base-content shadow-md">
@@ -92,28 +92,28 @@
     </div>
   </div>
   {% if perms.courses.change_lesson %}
-  <dialog id="edit_chapter"
-          class="modal modal-bottom sm:modal-middle transition-all duration-500 ease-in-out">
-    <form method="post"
-          enctype="multipart/form-data"
-          action="{% url 'courses:lesson-update' pk=lesson.pk %}"
-          class="modal-box sm:max-w-5xl">
-      {% csrf_token %}
-      <h2 class="font-mono font-semibold text-lg">
-        Update - {{ lesson.title }} of {{ lesson.chapter.name }} in {{ lesson.chapter.subject.name }}
-      </h2>
-      <div class="relative mb-4">
-        <div class="w-full djanog-custom-forms grid grid-flow-dense grid-cols-1 md:grid-cols-2 gap-4">{{ form }}</div>
-      </div>
-      <div class="modal-action justify-between">
-        <p class="text-xs mt-auto">Press esc to close the window or outside the dialog box.</p>
-        <button type="submit" class="btn btn-success">Save</button>
-      </div>
-    </form>
-    <form method="dialog" class="modal-backdrop backdrop-blur-md">
-      <button>close</button>
-    </form>
-  </dialog>
+    <dialog id="edit_chapter"
+            class="modal modal-bottom sm:modal-middle transition-all duration-500 ease-in-out">
+      <form method="post"
+            enctype="multipart/form-data"
+            action="{% url 'courses:lesson-update' pk=lesson.pk %}"
+            class="modal-box sm:max-w-5xl">
+        {% csrf_token %}
+        <h2 class="font-mono font-semibold text-lg">
+          Update - {{ lesson.title }} of {{ lesson.chapter.name }} in {{ lesson.chapter.subject.name }}
+        </h2>
+        <div class="relative mb-4">
+          <div class="w-full djanog-custom-forms grid grid-flow-dense grid-cols-1 md:grid-cols-2 gap-4">{{ form }}</div>
+        </div>
+        <div class="modal-action justify-between">
+          <p class="text-xs mt-auto">Press esc to close the window or outside the dialog box.</p>
+          <button type="submit" class="btn btn-success">Save</button>
+        </div>
+      </form>
+      <form method="dialog" class="modal-backdrop backdrop-blur-md">
+        <button>close</button>
+      </form>
+    </dialog>
   {% endif %}
   <dialog id="upload_video"
           class="modal modal-bottom sm:modal-middle transition-all duration-500 ease-in-out">
@@ -144,19 +144,24 @@
           <progress id="upload_progress" class="progress w-full"></progress>
         </div>
         <div class="text-center">
-          <button id="UPLOAD_NOW" onclick="uploadfile()" class="hidden btn btn-circle bg-gradient-to-tr from-light-blue-600 to-blue-900 shadow-md shadow-blue-800/50 text-white border-0">
+          <button id="UPLOAD_NOW"
+                  onclick="uploadfile()"
+                  class="hidden btn btn-circle bg-gradient-to-tr from-light-blue-600 to-blue-900 shadow-md shadow-blue-800/50 text-white border-0">
             <i class="far fa-up-from-line"></i>
           </button>
         </div>
       </div>
     </div>
-    <form method="dialog" class="modal-backdrop backdrop-blur">
+    <form id="close_form"
+          method="dialog"
+          class="modal-backdrop backdrop-blur glass">
       <button>close</button>
     </form>
   </dialog>
 {% endblock content %}
 {% block body_js %}
-  <script type="javascript" src="{% static 'js/tus.min.js' %}"></script>
+  {% comment %} <script type="javascript" src="{% static 'js/tus.min.js' %}"></script> {% endcomment %}
+  <script src="https://cdn.jsdelivr.net/npm/tus-js-client@latest/dist/tus.js"></script>
   <script>
     const fileInput = document.querySelector('input[name="file_upload"]');
     const fileLabel = document.getElementById("fileLabel");
@@ -181,7 +186,55 @@
   <script>
     // make function when clicked on #UPLOAD_NOW use TUS upload to bunny cdn
     function uploadfile() {
-      console.log('Starting upload...');
+      console.log("Starting upload...");
+      $("#upload_progress").attr("value", 0);
+      $("#upload_percent").text("0%");
+      const file = document.querySelector('input[name="file_upload"]').files[0];
+      $("#UPLOAD_NOW")
+        .removeClass(
+          "bg-gradient-to-tr from-light-blue-600 to-blue-900 shadow-blue-800/50"
+        )
+        .addClass("btn-disabled")
+        .attr("disabled", true)
+        .html('<i class="fas fa-spinner fa-spin"></i>');
+      $("#fileLabel").addClass("hidden transition-all duration-500 ease-in-out");
+      $("#close_form").attr("disabled", true).attr("method", null).html("");
+
+      var upload = new tus.Upload(file, {
+        endpoint: "https://video.bunnycdn.com/tusupload",
+        retryDelays: [0, 3000, 5000, 10000, 20000, 60000, 60000],
+        headers: {
+          AuthorizationSignature: "{{ sha256 }}",
+          AuthorizationExpire: {{ expiration_time }},
+          VideoId: "{{ lesson.platform_video_id }}",
+          LibraryId: {{ LibraryId }},
+        },
+        metadata: {
+          filetype: file.type,
+          title: "{{ title }}",
+          collection: "{{ collectionID }}",
+        },
+        onError: function (error) {
+          console.error("Failed because: " + error);
+        },
+        onProgress: function (bytesUploaded, bytesTotal) {
+          var percentage = ((bytesUploaded / bytesTotal) * 100).toFixed(2);
+          $("#upload_progress").attr("value", percentage/100);
+          $("#upload_percent").text(percentage + "%");
+        },
+        onSuccess: function () {
+          alert('Video is Uploaded. Please wait for 5 minutes to process the video.');
+          $("#close_form").attr("disabled", false).attr("method", 'dialog').html("<button>close</button>");
+          upload_video.close();
+        },
+      });
+
+      upload.findPreviousUploads().then(function (previousUploads) {
+        if (previousUploads.length) {
+          upload.resumeFromPreviousUpload(previousUploads[0]);
+        }
+        upload.start();
+      });
     }
   </script>
 {% endblock body_js %}

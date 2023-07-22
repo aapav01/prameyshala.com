@@ -3,12 +3,13 @@ from django.contrib import messages
 from django.shortcuts import render, redirect
 from django.views.generic import ListView, DetailView
 from django.views.generic.edit import UpdateView, DeleteView
-from django.utils.text import slugify
+from django.utils.timezone import now
 from django.urls import reverse_lazy
 from ..models import Lesson
 from ..forms import LessonForm
 import requests
 import environ
+import hashlib
 
 
 # Initialise environment variables
@@ -85,6 +86,14 @@ class LessonDetailView(PermissionRequiredMixin, DetailView):
         context['breadcrumbs'][3]={'label': context['lesson'].title}
         context['title'] = context['lesson'].title
         context['form'] = LessonForm(instance=context['lesson'], prefix=context['lesson'].pk)
+        context['collectionID'] = context['lesson'].chapter.collectionid if context['lesson'].chapter.collectionid is not None else ''
+        # SHA256 signature (library_id + api_key + expiration_time + video_id)
+        expiration_time = int(now().timestamp()) + 86400
+        hash_string = env('BUNNYCDN_VIDEO_LIBRARY_ID') + env('BUNNYCDN_ACCESS_KEY') + str(expiration_time) + context['lesson'].platform_video_id
+        sha = hashlib.sha256(hash_string.encode()).hexdigest()
+        context['sha256'] = sha
+        context['expiration_time'] = expiration_time
+        context['LibraryId'] = env('BUNNYCDN_VIDEO_LIBRARY_ID', cast=int)
         return context
 
 
