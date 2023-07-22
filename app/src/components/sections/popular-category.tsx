@@ -10,14 +10,14 @@ import { getClient } from "@/lib/client";
 type Props = {};
 
 const query = gql`{
-  subjects {
+  categories{
     name,
-  }
+  	description,
+    }
 }`;
 
 export default async function PopularCategory({}: Props) {
   const { data } = await getClient().query({ query });
-  console.log('API Return data:', data);
   return (
     <section className="container py-12">
       <div className="columns-1 md:columns-3 items-center gap-3">
