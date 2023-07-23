@@ -60,8 +60,10 @@ class Query(graphene.ObjectType):
 
     # categories
 
-    def resolve_categories(self, info, popular=False):
-        return  Category.objects.filter(popular=popular).all()
+    def resolve_categories(self, info, popular=None):
+        if popular is not None:
+            return Category.objects.filter(popular=popular).all()
+        return Category.objects.all()
 
     def resolve_category(self, info, id):
         return Category.objects.get(pk=id)
