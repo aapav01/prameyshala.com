@@ -25,8 +25,9 @@ class SalesChart(JSONView):
                 "labels": list(sales_dict.keys()),
                 "datasets": [{
                     "label": "Amount (₹)",
-                    "backgroundColor": 'transparent',
+                    "backgroundColor": '#fff',
                     "borderColor": colorPrimary,
+                    "borderRadius": 100,
                     "data": list(sales_dict.values()),
                 }]
             },
