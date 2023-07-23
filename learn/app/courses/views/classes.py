@@ -5,6 +5,7 @@ from django.views.generic import ListView, DetailView
 from django.views.generic.edit import UpdateView, DeleteView
 from django.utils.text import slugify
 from django.urls import reverse_lazy
+from django.db.models import Count
 from ..models import Classes
 from ..forms import ClassesForm
 
@@ -21,6 +22,8 @@ class ClassesView(PermissionRequiredMixin, ListView):
         'form': form
     }
     paginate_by = 10
+
+    queryset = Classes.objects.annotate(enroll_count=Count("enrollment__id")).all()
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
