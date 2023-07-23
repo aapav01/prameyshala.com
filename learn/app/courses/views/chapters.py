@@ -77,6 +77,20 @@ class ChapterUpdateView(PermissionRequiredMixin, UpdateView):
     template_name = "form.html"
 
     def form_valid(self, form):
+        if form.instance.collectionid is None:
+            try:
+                payload = '{"name\":\"'+form.instance.name+'\"}'
+                response = requests.post(
+                    f"https://video.bunnycdn.com/library/{env('BUNNYCDN_VIDEO_LIBRARY_ID')}/collections", data=payload, headers=headers)
+
+                if response.status_code == 200:
+                    form.instance.collectionid = response.json()['guid']
+                else:
+                    messages.error(
+                        self.request, f'Error creating collection on BunnyCDN. {response.json()["title"]}')
+            except Exception as e:
+                print(e)
+
         messages.info(
             self.request, f'{form.instance.name} of {form.instance.subject.name} has been updated successfully.')
         return super().form_valid(form)
