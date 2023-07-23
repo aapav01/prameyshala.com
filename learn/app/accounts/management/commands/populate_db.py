@@ -117,7 +117,7 @@ class Command(BaseCommand):
 
         for user in users_list:
             dt = pytz.utc.localize(
-                datetime.now() - timedelta(days=random.randint(0, 1825)))
+                datetime.now() - timedelta(days=random.randint(0, 366)))
             user[0].created_at = dt
             user[0].updated_at = dt
             user[0].save()
