@@ -22,7 +22,7 @@ class EnrollmentView(PermissionRequiredMixin, ListView):
         'form': form
     }
     paginate_by = 10
-    ordering = ['-created_at']
+    ordering = ['-expiration_date']
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

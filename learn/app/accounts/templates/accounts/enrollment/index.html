@@ -19,26 +19,32 @@
         <table class="table table-auto">
           <thead class="uppercase text-sm">
             <tr>
-              <th class="px-4 py-3">Amount Paid</th>
-              <th class="px-4 py-3">Date/Time</th>
-              <th class="px-4 py-3">Status</th>
+              <th class="px-4 py-3">User</th>
+              <th class="px-4 py-3">Phone</th>
+              <th class="px-4 py-3">Email ID</th>
+              <th class="px-4 py-3">Class</th>
+              <th class="px-4 py-3">Expiration Date</th>
               <th class="px-4 py-3">Action</th>
             </tr>
           </thead>
           <tfoot class="border-t border-blue-gray-50 py-3 px-5 text-left font-bold uppercase text-blue-gray-400 text-sm">
             <tr>
-              <th class="px-4 py-3">Amount Paid</th>
-              <th class="px-4 py-3">Date/Time</th>
-              <th class="px-4 py-3">Status</th>
+              <th class="px-4 py-3">User</th>
+              <th class="px-4 py-3">Phone</th>
+              <th class="px-4 py-3">Email ID</th>
+              <th class="px-4 py-3">Class</th>
+              <th class="px-4 py-3">Expiration Date</th>
               <th class="px-4 py-3">Action</th>
             </tr>
           </tfoot>
           <tbody>
             {% for enrolls in enrollment %}
               <tr class="border-b border-blue-gray-50">
-                <td class="px-4 py-3">{{ enrolls.bought_price }}</td>
-                <td class="px-4 py-3">{{ enrolls.created_at }}</td>
-                <td class="px-4 py-3">{{ enrolls.status }}</td>
+                <td class="px-4 py-3">{{ enrolls.user.full_name }}</td>
+                <td class="px-4 py-3">{{ enrolls.user.phone_number }}</td>
+                <td class="px-4 py-3">{{ enrolls.user.email }}</td>
+                <td class="px-4 py-3">{{ enrolls.standard.name }}</td>
+                <td class="px-4 py-3">{{ enrolls.expiration_date }}</td>
                 <td class="flex gap-2 px-4 py-3">
                   <button onclick="update_enrolls_{{ enrolls.pk }}.showModal()"
                           class="btn btn-sm btn-success btn-square">

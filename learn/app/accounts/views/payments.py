@@ -19,3 +19,4 @@ class PaymentsView(PermissionRequiredMixin, ListView):
 
     }
     paginate_by = 10
+    ordering = ['-created_at']

@@ -12,18 +12,41 @@
       <table class="table table-auto">
         <thead class="uppercase text-sm">
           <tr>
+            <th class="px-4 py-3">User</th>
             <th class="px-4 py-3">Payment ID</th>
+            <th class="px-4 py-3">Payment Gateway</th>
             <th class="px-4 py-3">Amount Paid</th>
             <th class="px-4 py-3">Method</th>
-            <th class="px-4 py-3">Date/Time</th>
+            <th class="px-4 py-3">Status</th>
+            <th class="px-4 py-3">Created Date/Time</th>
           </tr>
         </thead>
+        <tfoot class="border-t border-blue-gray-50 py-3 px-5 text-left font-bold uppercase text-blue-gray-400 text-sm">
+          <tr>
+            <th class="px-4 py-3">User</th>
+            <th class="px-4 py-3">Payment ID</th>
+            <th class="px-4 py-3">Payment Gateway</th>
+            <th class="px-4 py-3">Amount Paid</th>
+            <th class="px-4 py-3">Method</th>
+            <th class="px-4 py-3">Status</th>
+            <th class="px-4 py-3">Created Date/Time</th>
+          </tr>
+        </tfoot>
         <tbody>
           {% for payment in payments %}
             <tr class="border-b border-blue-gray-50">
+              <td class="px-4 py-3">{{ payment.user.full_name }}</td>
               <td class="px-4 py-3">{{ payment.payment_gateway_id }}</td>
+              <td class="px-4 py-3">{{ payment.gateway }}</td>
               <td class="px-4 py-3">{{ payment.amount }}</td>
               <td class="px-4 py-3">{{ payment.method }}</td>
+              <td class="px-4 py-3 capitalize">
+                {% if payment.status == 'paid' %}
+                  <span class="badge badge-success">{{ payment.status }}</span>
+                {% else %}
+                  <span class="badge badge-warning">{{ payment.status }}</span>
+                {% endif %}
+              </td>
               <td class="px-4 py-3">{{ payment.created_at }}</td>
             </tr>
           {% endfor %}
