@@ -109,7 +109,7 @@ class Command(BaseCommand):
         users_list = []
 
         for _ in range(amount):
-            phone_number = random.randint(6000000000, 9999999999)
+            phone_number = random.randint(9999000000, 9999999999)
             full_name = random.choice(names) + " " + random.choice(surname)
             email = f"{phone_number}@example.com"
             users_list.append(User.objects.get_or_create(
@@ -117,10 +117,24 @@ class Command(BaseCommand):
 
         for user in users_list:
             dt = pytz.utc.localize(
-                datetime.now() - timedelta(days=random.randint(0, 366)))
+                datetime.now() - timedelta(days=random.randint(0, 740)))
             user[0].created_at = dt
             user[0].updated_at = dt
             user[0].save()
+
+        speical_users = []
+        for i in range(20):
+            phone_number = random.randint(8000000000, 9799999999)
+            full_name = random.choice(names) + " " + random.choice(surname)
+            email = f"{phone_number}@example.com"
+            user = User.objects.get_or_create(
+                full_name=full_name, phone_number=phone_number, password=password, email=email, is_staff=True, is_superuser=False)
+            if i < 16:
+                teacher_group.user_set.add(user[0])
+            else:
+                type_of_user = random.choice((editor_group, publisher_group))
+                type_of_user.user_set.add(user[0])
+            speical_users.append(user)
 
         payment_method_list = ['Debit Card', 'UPI', 'Credit Card']
         payment_status = ['attempted', 'paid']
@@ -132,7 +146,7 @@ class Command(BaseCommand):
             standard = random.choice(Classes_list)
             payment = Payments.objects.get_or_create(
                 gateway='FAKE DATA',
-                method=payment_method_list[random.randint(0, len(payment_method_list)-1)],
+                method=random.choice(payment_method_list),
                 status=random.choice(payment_status),
                 user=user[0],
                 amount=standard[0].latest_price,
