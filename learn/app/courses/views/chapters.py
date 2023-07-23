@@ -107,18 +107,19 @@ class ChapterDeleteView(PermissionRequiredMixin, DeleteView):
         messages.error(request, 'Chapter has been deleted successfully.')
         return self.delete(request, **kwargs)
 
-    def delete(self, request, **kwargs):
-        instance = self.get_object()
-        if instance.collectionid is not None:
+    def form_vaild(self, form):
+        if form.instance.collectionid is not None:
             try:
                 response = requests.delete(
-                    f"https://video.bunnycdn.com/library/{env('BUNNYCDN_VIDEO_LIBRARY_ID')}/collections/{instance.collectionid}", headers=headers)
+                    f"https://video.bunnycdn.com/library/{env('BUNNYCDN_VIDEO_LIBRARY_ID')}/collections/{form.instance.collectionid}", headers=headers)
                 if response.status_code == 200:
                     messages.info(
-                        request, f'Collection {instance.name} has been deleted successfully.')
+                        self.request, f'Collection {form.instance.name} has been deleted successfully.')
                 else:
                     messages.error(
-                        request, f'Error deleting collection on BunnyCDN. {response.json()["title"]}')
+                        self.request, f'Error deleting collection on BunnyCDN. {response.json()["title"]}')
             except Exception as e:
                 print(e)
-        return super().delete(request, **kwargs)
+            messages.info(
+                self.request, f'{form.instance.name} of {form.instance.subject.name} has been deleted successfully.')
+        return super().form_valid(form)
