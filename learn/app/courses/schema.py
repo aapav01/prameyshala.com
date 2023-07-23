@@ -20,6 +20,7 @@ class CategoriesType(DjangoObjectType):
         model = Category
         fields = "__all__"
 
+
 class SubjectType(DjangoObjectType):
     class Meta:
         model = Subject
@@ -38,7 +39,7 @@ class Query(graphene.ObjectType):
     standard = graphene.Field(ClassesType, id=graphene.Int(required=True))
     # category
     categories = graphene.List(CategoriesType)
-    category = graphene.Field(CategoriesType,id=graphene.Int(required=True))
+    category = graphene.Field(CategoriesType, id=graphene.Int(required=True))
     # subjects
     subjects = graphene.List(SubjectType)
     subject = graphene.Field(SubjectType, id=graphene.Int(required=True))
@@ -57,10 +58,10 @@ class Query(graphene.ObjectType):
         return Classes.objects.get(pk=id)
 
     # categories
-    def resolve_categories(self,info):
+    def resolve_categories(self, info):
         return Category.objects.all()
 
-    def resolve_category(self,info,id):
+    def resolve_category(self, info, id):
         return Category.objects.get(pk=id)
 
     # subjects

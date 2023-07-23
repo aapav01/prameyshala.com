@@ -19,6 +19,7 @@ class JSONResponseMixin:
     """
     A mixin that can be used to render a JSON response.
     """
+
     def render_to_json_response(self, context, **response_kwargs):
         return JsonResponse(data=context, encoder=ComplexEncoder, **response_kwargs)
 

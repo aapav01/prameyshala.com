@@ -13,7 +13,10 @@
         <div class="flex items-center gap-6">
           <div class="avatar">
             <div class="w-24 rounded-xl shadow-lg shadow-blue-gray-500/40">
-              <img src="https://placehold.co/600x400"  width="78px" height="78px" alt="{{ user.full_name }}" />
+              <img src="https://placehold.co/600x400"
+                   width="78px"
+                   height="78px"
+                   alt="{{ user.full_name }}" />
             </div>
           </div>
           <div>
@@ -37,7 +40,6 @@
           </div>
           <div class="p-0">
             {% comment %} <p class="block antialiased font-sans text-sm leading-normal font-normal text-blue-gray-500">
-              
             </p> {% endcomment %}
             <hr class="my-4 border-blue-gray-50">
             <ul class="flex flex-col gap-4 p-0">
@@ -49,7 +51,9 @@
               </li>
               <li class="flex items-center gap-4">
                 <p class="block antialiased font-sans text-sm leading-normal text-blue-gray-900 font-semibold capitalize">mobile:</p>
-                <p class="block antialiased font-sans text-sm leading-normal font-normal text-blue-gray-500">{{ user.phone_number }}</p>
+                <p class="block antialiased font-sans text-sm leading-normal font-normal text-blue-gray-500">
+                  {{ user.phone_number }}
+                </p>
               </li>
               <li class="flex items-center gap-4">
                 <p class="block antialiased font-sans text-sm leading-normal text-blue-gray-900 font-semibold capitalize">email:</p>

@@ -8,7 +8,6 @@ from django.urls import reverse_lazy
 from ..models import Payments
 
 
-
 class PaymentsView(PermissionRequiredMixin, ListView):
     permission_required = "accounts.view_payments"
     model = Payments

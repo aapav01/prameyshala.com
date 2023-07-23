@@ -35,7 +35,8 @@ class CategoriesView(ListView):
             instance = form.save(commit=False)
             # instance.slug = slugify(instance.name)
             instance.save()
-            messages.success(request, f'{instance.name} has been created successfully.')
+            messages.success(
+                request, f'{instance.name} has been created successfully.')
             self.extra_context.update({'form': CategoriesForm})
             return redirect('courses:categories')
         else:

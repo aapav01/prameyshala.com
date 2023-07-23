@@ -22,7 +22,7 @@ class EnrollmentView(PermissionRequiredMixin, ListView):
         'form': form
     }
     paginate_by = 10
-    ordering=['-created_at']
+    ordering = ['-created_at']
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -38,13 +38,15 @@ class EnrollmentView(PermissionRequiredMixin, ListView):
         if form.is_valid():
             instance = form.save(commit=False)
             instance.slug = slugify(instance.status)
-            instance.expiration_date = instance.created_at + relativedelta(years=1)
+            instance.expiration_date = instance.created_at + \
+                relativedelta(years=1)
             instance.save()
             messages.success(request, 'Enrolled successfully.')
             self.extra_context.update({'form': EnrollmentForm})
             return redirect('accounts:enrollment')
         else:
             return render(request, self.template_name, self.get_context_data(**kwargs))
+
 
 class EnrollmentUpdateView(PermissionRequiredMixin, UpdateView):
     permission_required = "accounts.change_enrollment"

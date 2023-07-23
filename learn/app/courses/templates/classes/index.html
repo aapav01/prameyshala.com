@@ -7,10 +7,10 @@
   <div class="mt-12 mb-8 flex flex-col gap-12">
     <div class="flex justify-between px-6">
       {% if perms.courses.add_classes %}
-      <button onclick="create_class.showModal()"
-              class="btn bg-gradient-to-br from-purple-600 to-pink-400 text-white px-12 border-0 shadow-md shadow-purple-500/50">
-        <i class="far fa-plus"></i>Add Class
-      </button>
+        <button onclick="create_class.showModal()"
+                class="btn bg-gradient-to-br from-purple-600 to-pink-400 text-white px-12 border-0 shadow-md shadow-purple-500/50">
+          <i class="far fa-plus"></i>Add Class
+        </button>
       {% endif %}
     </div>
     <div class="relative flex w-full flex-col rounded-xl bg-base-100 bg-clip-border text-base-content shadow-md">
@@ -43,39 +43,39 @@
                 <td class="px-4 py-3">{{ class.slug }}</td>
                 <td class="flex gap-2 px-4 py-3">
                   {% if perms.courses.change_classes %}
-                  <button onclick="update_class_{{ class.pk }}.showModal()"
-                          class="btn btn-sm btn-success btn-square">
-                    <i class="fad fa-edit"></i>
-                  </button>
+                    <button onclick="update_class_{{ class.pk }}.showModal()"
+                            class="btn btn-sm btn-success btn-square">
+                      <i class="fad fa-edit"></i>
+                    </button>
                   {% endif %}
                   {% if perms.courses.delete_classes %}
                   <a href="{% url 'courses:class-delete' pk=class.pk %}"
                      onclick="if(confirm('Are you sure you want to delete {{ class.name }} from database?')) return true; else return false;"
                      class="btn btn-sm btn-error btn-square"><i class="far fa-trash-alt"></i>
-                  </a>
-                  {% endif %}
-                </td>
-              </tr>
-            {% endfor %}
-          </tbody>
-        </table>
-      </div>
-      <div class="p-5 flex justify-end">
-        <div class="join">
-          {% if page_obj.has_previous %}
-            <a class="join-item btn btn-primary"
-               href="?page={{ page_obj.previous_page_number }}">previous</a>
-          {% endif %}
-          <span class="join-item btn btn-disabled">Page {{ page_obj.number }} of {{ paginator.num_pages }}.</span>
-          {% if page_obj.has_next %}
-            <a class="join-item btn btn-primary"
-               href="?page={{ page_obj.next_page_number }}">next</a>
-          {% endif %}
-        </div>
-      </div>
+                </a>
+              {% endif %}
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  <div class="p-5 flex justify-end">
+    <div class="join">
+      {% if page_obj.has_previous %}
+        <a class="join-item btn btn-primary"
+           href="?page={{ page_obj.previous_page_number }}">previous</a>
+      {% endif %}
+      <span class="join-item btn btn-disabled">Page {{ page_obj.number }} of {{ paginator.num_pages }}.</span>
+      {% if page_obj.has_next %}
+        <a class="join-item btn btn-primary"
+           href="?page={{ page_obj.next_page_number }}">next</a>
+      {% endif %}
     </div>
   </div>
-  {% if perms.courses.add_classes %}
+</div>
+</div>
+{% if perms.courses.add_classes %}
   <dialog id="create_class"
           class="modal modal-bottom sm:modal-middle transition-all duration-500 ease-in-out">
     <form method="post"
@@ -95,8 +95,8 @@
       <button>close</button>
     </form>
   </dialog>
-  {% endif %}
-  {% if perms.courses.change_classes %}
+{% endif %}
+{% if perms.courses.change_classes %}
   {% for class in classes %}
     <dialog id="update_class_{{ class.pk }}"
             class="modal modal-bottom sm:modal-middle transition-all duration-500 ease-in-out">
@@ -121,5 +121,5 @@
       </form>
     </dialog>
   {% endfor %}
-  {% endif %}
+{% endif %}
 {% endblock content %}

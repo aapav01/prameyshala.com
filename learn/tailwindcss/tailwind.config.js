@@ -19,9 +19,9 @@ module.exports = withMT({
     },
     extend: {
       backgroundImage: {
-        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-        'gradient-conic':
-          'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
+        "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
+        "gradient-conic":
+          "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
       borderRadius: {
         lg: "var(--radius)",
@@ -45,12 +45,11 @@ module.exports = withMT({
     },
   },
   plugins: [
-    require('@tailwindcss/typography'),
+    require("@tailwindcss/typography"),
     require("tailwindcss-animate"),
-    require('daisyui'),
+    require("daisyui"),
   ],
   daisyui: {
     themes: ["light"],
-  }
+  },
 });
-

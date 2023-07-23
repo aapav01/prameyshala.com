@@ -9,39 +9,45 @@ class UserLoginForm(forms.Form):
         'class': 'input input-bordered mt-2 mb-4', 'type': 'tel', 'placeholder': 'Phone Number'}),
         label='Phone Number'
     )
-    password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'input input-bordered mt-2', 'placeholder': 'Password'}))
+    password = forms.CharField(widget=forms.PasswordInput(
+        attrs={'class': 'input input-bordered mt-2', 'placeholder': 'Password'}))
+
 
 class UserRegisterForm(forms.Form):
-    full_name = forms.CharField(max_length=50, widget=forms.TextInput(attrs={'placeholder': 'Full Name'}), label='Full Name')
+    full_name = forms.CharField(max_length=50, widget=forms.TextInput(
+        attrs={'placeholder': 'Full Name'}), label='Full Name')
     phone_number = forms.CharField(max_length=50, widget=forms.TextInput(attrs={'type': 'tel', 'placeholder': 'Phone Number'}),
-        label='Phone Number'
-    )
-    email = forms.EmailField(widget=forms.EmailInput(attrs={'placeholder': 'me@example.com'}))
-    password = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder': 'Password'}))
-    confirm_password = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder': 'Password'}), label='Confirm Password')
+                                   label='Phone Number'
+                                   )
+    email = forms.EmailField(widget=forms.EmailInput(
+        attrs={'placeholder': 'me@example.com'}))
+    password = forms.CharField(widget=forms.PasswordInput(
+        attrs={'placeholder': 'Password'}))
+    confirm_password = forms.CharField(widget=forms.PasswordInput(
+        attrs={'placeholder': 'Password'}), label='Confirm Password')
+
 
 class EnrollmentForm(ModelForm):
     class Meta:
         model = Enrollment
         fields = "__all__"
-        exclude = ['slug','expiration_date']
+        exclude = ['slug', 'expiration_date']
 
 
 class RolesForm(ModelForm):
     class Meta:
         model = Role
         fields = "__all__"
-    
+
 
 class UsersForm(ModelForm):
     class Meta:
         model = User
-        fields = ['full_name', 'password', 'phone_number', 'email','is_active','is_superuser', 'is_staff',   'groups','user_permissions',  ]
+        fields = ['full_name', 'password', 'phone_number', 'email', 'is_active',
+                  'is_superuser', 'is_staff',   'groups', 'user_permissions',]
         exclude = ['last_login']
-    
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         if self.instance.pk:
             self.fields['password'].widget = forms.HiddenInput()
-           
-

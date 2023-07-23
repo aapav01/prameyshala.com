@@ -8,4 +8,3 @@ urlpatterns = [
     path("sales/<int:year>/", SalesChart.as_view(), name="chart-sales"),
     path("users/<int:year>/", UserChart.as_view(), name="chart-users"),
 ]
-

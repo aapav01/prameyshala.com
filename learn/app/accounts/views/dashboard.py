@@ -19,20 +19,25 @@ def home(request):
 
     # total_amount and Enrollment for day
     today = date.today()
-    enrollment_count_day = Enrollment.objects.filter(created_at__date=today).count()
-    total_amount_day = Enrollment.objects.filter(created_at__date=today).aggregate(Sum('bought_price'))['bought_price__sum']
+    enrollment_count_day = Enrollment.objects.filter(
+        created_at__date=today).count()
+    total_amount_day = Enrollment.objects.filter(
+        created_at__date=today).aggregate(Sum('bought_price'))['bought_price__sum']
 
     # total_amount for month
     year = datetime.now().year
     month = datetime.now().month  # Month number (1-12) of the desired month
-    total_amount_month = Enrollment.objects.filter(created_at__year=year).filter(created_at__month=month).aggregate(Sum('bought_price'))['bought_price__sum']
-    enrollment_count_month = Enrollment.objects.filter(created_at__year=year).filter(created_at__month=month).count()
+    total_amount_month = Enrollment.objects.filter(created_at__year=year).filter(
+        created_at__month=month).aggregate(Sum('bought_price'))['bought_price__sum']
+    enrollment_count_month = Enrollment.objects.filter(
+        created_at__year=year).filter(created_at__month=month).count()
 
     # All Over Time Enrollment
     enrollment_count = Enrollment.objects.count()
     # All Over Time User
     user_count = User.objects.count()
-    user_this_month = User.objects.filter(created_at__month=month).filter(created_at__year=year).count()
+    user_this_month = User.objects.filter(
+        created_at__month=month).filter(created_at__year=year).count()
     user_this_year = User.objects.filter(created_at__year=year).count()
     # All Over Time CLasess
     class_count = Classes.objects.count()

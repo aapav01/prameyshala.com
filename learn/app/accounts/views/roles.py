@@ -46,7 +46,6 @@ class RolesView(PermissionRequiredMixin, ListView):
             return render(request, self.template_name, self.get_context_data(**kwargs))
 
 
-
 class RolesUpdateView(PermissionRequiredMixin, UpdateView):
     permission_required = "accounts.change_role"
     model = Role

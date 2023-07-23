@@ -4,6 +4,7 @@ from django.shortcuts import render, redirect
 from django.views import View
 from ..models import Settings, UserSettings
 
+
 class SettingView(PermissionRequiredMixin, View):
     permission_required = "accounts.view_settings"
     template_name = 'accounts/settings.html'

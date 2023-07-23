@@ -72,24 +72,27 @@ class LessonView(PermissionRequiredMixin, ListView):
         else:
             return render(request, self.template_name, self.get_context_data(**kwargs))
 
+
 class LessonDetailView(PermissionRequiredMixin, DetailView):
     permission_required = "courses.view_lesson"
     model = Lesson
     template_name = "lessons/detail.html"
     context_object_name = "lesson"
     extra_context = {
-        'breadcrumbs': [{'url': 'core:home', 'label': 'Dashboard'},{'label': 'Courses'}, {'url': 'courses:lessons', 'label': 'Lessons'},{}],
+        'breadcrumbs': [{'url': 'core:home', 'label': 'Dashboard'}, {'label': 'Courses'}, {'url': 'courses:lessons', 'label': 'Lessons'}, {}],
     }
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['breadcrumbs'][3]={'label': context['lesson'].title}
+        context['breadcrumbs'][3] = {'label': context['lesson'].title}
         context['title'] = context['lesson'].title
-        context['form'] = LessonForm(instance=context['lesson'], prefix=context['lesson'].pk)
+        context['form'] = LessonForm(
+            instance=context['lesson'], prefix=context['lesson'].pk)
         context['collectionID'] = context['lesson'].chapter.collectionid if context['lesson'].chapter.collectionid is not None else ''
         # SHA256 signature (library_id + api_key + expiration_time + video_id)
         expiration_time = int(now().timestamp()) + 86400
-        hash_string = env('BUNNYCDN_VIDEO_LIBRARY_ID') + env('BUNNYCDN_ACCESS_KEY') + str(expiration_time) + context['lesson'].platform_video_id
+        hash_string = env('BUNNYCDN_VIDEO_LIBRARY_ID') + env('BUNNYCDN_ACCESS_KEY') + \
+            str(expiration_time) + context['lesson'].platform_video_id
         sha = hashlib.sha256(hash_string.encode()).hexdigest()
         context['sha256'] = sha
         context['expiration_time'] = expiration_time

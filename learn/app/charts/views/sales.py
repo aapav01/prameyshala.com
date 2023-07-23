@@ -17,7 +17,7 @@ class SalesChart(JSONView):
 
         for group in grouped_purchases:
             sales_dict[months[group["month"]-1]
-                            ] = round(group["average"], 2)
+                       ] = round(group["average"], 2)
 
         context.update({
             "title": f"Sales in {year}",
