@@ -38,8 +38,9 @@ class Query(graphene.ObjectType):
     classes = graphene.List(ClassesType)
     standard = graphene.Field(ClassesType, id=graphene.Int(required=True))
     # category
-    categories = graphene.List(CategoriesType)
+    categories = graphene.List(CategoriesType, popular=graphene.Boolean())
     category = graphene.Field(CategoriesType, id=graphene.Int(required=True))
+
     # subjects
     subjects = graphene.List(SubjectType)
     subject = graphene.Field(SubjectType, id=graphene.Int(required=True))
@@ -58,8 +59,9 @@ class Query(graphene.ObjectType):
         return Classes.objects.get(pk=id)
 
     # categories
-    def resolve_categories(self, info):
-        return Category.objects.all()
+
+    def resolve_categories(self, info, popular=False):
+        return  Category.objects.filter(popular=popular).all()
 
     def resolve_category(self, info, id):
         return Category.objects.get(pk=id)
