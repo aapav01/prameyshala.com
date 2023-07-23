@@ -122,6 +122,16 @@ class LessonDeleteView(PermissionRequiredMixin, DeleteView):
     model = Lesson
     success_url = reverse_lazy("courses:lessons")
 
+    def form_valid(self, form):
+        if form.instance.platform == "file":
+            url = f"https://video.bunnycdn.com/library/{env('BUNNYCDN_VIDEO_LIBRARY_ID')}/videos/{form.instance.platform_video_id}"
+            response = requests.delete(url, headers=headers)
+            print(response.text)
+            if response.status_code == 200:
+                messages.error(
+                    self.request, 'BunnyCDN Video has been deleted successfully.')
+        return super().form_valid(form)
+
     def get(self, request, **kwargs):
         messages.error(request, 'Lesson has been deleted successfully.')
         return self.delete(request, **kwargs)
