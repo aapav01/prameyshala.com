@@ -3,8 +3,8 @@
   "version": "0.1.0",
   "license": "MIT",
   "scripts": {
-    "start": "tailwindcss -i main.css -o ../static/css/main.css --watch",
-    "build": "tailwindcss -i main.css -o ../static/css/main.css --minify"
+    "start": "tailwindcss -i main.css -o ../staticfiles/css/main.css --watch",
+    "build": "tailwindcss -i main.css -o ../staticfiles/css/main.css --minify"
   },
   "devDependencies": {
     "@material-tailwind/html": "^2.0.0",
