@@ -23,21 +23,20 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         standards = ["Class 9th", "Class 10th", "Class 11th", "Class 12th"]
         subjects = ["Physics", "Chemistry", "Maths", "Biology"]
-        categories = ["Physics", "Chemistry", "Maths", "Biology"]
 
         # There are 4 standards (9th, 10th, 11th, 12th)
         Classes_list = [
-            Classes.objects.get_or_create(name=standard, description=standard, slug=slugify(standard)) for standard in standards
+            Classes.objects.get_or_create(name=standard, description=standard, slug=slugify(standard), latest_price=random.randint(1000, 10000)) for standard in standards
         ]
 
         # There are 4 category of subjects (Physics, Chemistry, Maths, Biology)
         Category_list = [Category.objects.get_or_create(
-            name=category, description=category) for category in categories]
+            name=category, description=category) for category in subjects]
 
         # Each standard has 4 subjects (Physics, Chemistry, Maths, Biology)
         Subject_list = [
             Subject.objects.get_or_create(name=subjects[j], description=subjects[j], slug=slugify(subjects[j]+'-' + Classes_list[i][0].name),
-                                          standard=Classes_list[i][0], category=Category.objects.get(name=categories[j])) for i in range(0, len(Classes_list)) for j in range(len(subjects))
+                                          standard=Classes_list[i][0], category=Category.objects.get(name=subjects[j])) for i in range(0, len(Classes_list)) for j in range(len(subjects))
         ]
 
         amount = options["amount"] if options["amount"] else 100
@@ -124,23 +123,32 @@ class Command(BaseCommand):
             user[0].save()
 
         payment_method_list = ['Debit Card', 'UPI', 'Credit Card']
-
-        # Making list of random bought prices
-        bought_price_list = [random.randint(1000, 10000) for i in range(0, 20)]
+        payment_status = ['attempted', 'paid']
 
         # Selecting random users to make them enrolled.
-        enrolled_users_list = []
-        for i in range(20):
-            random.seed(i)
-            random_user_index = random.randint(0, len(users_list))
-            enrolled_users_list.append(users_list[random_user_index])
-
-        Enrollment_list = [Enrollment.objects.get_or_create(bought_price=bought_price_list[random.randint(0, len(bought_price_list)-1)],
-                                                            payment_method=payment_method_list[random.randint(
-                                                                0, len(payment_method_list)-1)],
-                                                            description="Enrolled", status="Paid", user_id=enrolled_users_list[i][0], classes_id=Classes_list[random.randint(0, len(Classes_list)-1)][0]
-                                                            )for i in range(len(enrolled_users_list))
-                           ]
+        enrolled_list = []
+        for user in users_list:
+            new_subscription = user[0].created_at + timedelta(days=365)
+            standard = random.choice(Classes_list)
+            payment = Payments.objects.get_or_create(
+                gateway='FAKE DATA',
+                method=payment_method_list[random.randint(0, len(payment_method_list)-1)],
+                status=random.choice(payment_status),
+                user=user[0],
+                amount=standard[0].latest_price,
+                json_response='{ "fake": "data" }',
+            )
+            payment[0].created_at = user[0].created_at
+            payment[0].updated_at = user[0].created_at
+            payment[0].save()
+            if (payment[0].status == 'paid'):
+                enrollment = Enrollment.objects.get_or_create(
+                    user=user[0], standard=standard[0], payment=payment[0], expiration_date=new_subscription
+                )
+                enrollment[0].created_at = user[0].created_at
+                enrollment[0].updated_at = user[0].created_at
+                enrollment[0].save()
+                enrolled_list.append(enrollment[0])
 
         self.stdout.write(self.style.SUCCESS(
             "Successfully populated the database."))

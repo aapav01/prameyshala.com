@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import get_user_model
-from ..models import Enrollment
+from ..models import Enrollment, Payments
 from app.courses.models import Classes, Subject, Chapter, Lesson
 from django.db.models import Sum
 from datetime import date, datetime
@@ -17,18 +17,15 @@ def home(request):
                     'label': 'Dashboard'}, {'label': 'Home'}]
     context = {'title': title, 'breadcrumbs': breadcrumbs}
 
-    # total_amount and Enrollment for day
     today = date.today()
-    enrollment_count_day = Enrollment.objects.filter(
-        created_at__date=today).count()
-    total_amount_day = Enrollment.objects.filter(
-        created_at__date=today).aggregate(Sum('bought_price'))['bought_price__sum']
-
-    # total_amount for month
     year = datetime.now().year
     month = datetime.now().month  # Month number (1-12) of the desired month
-    total_amount_month = Enrollment.objects.filter(created_at__year=year).filter(
-        created_at__month=month).aggregate(Sum('bought_price'))['bought_price__sum']
+    # Today
+    enrollment_count_day = Enrollment.objects.filter(created_at__date=today).count()
+    total_amount_day = Payments.objects.filter(status='paid').filter(created_at__date=today).aggregate(Sum('amount'))['amount__sum']
+    # This Month
+    total_amount_month = Payments.objects.filter(status='paid').filter(created_at__year=year).filter(
+        created_at__month=month).aggregate(Sum('amount'))['amount__sum']
     enrollment_count_month = Enrollment.objects.filter(
         created_at__year=year).filter(created_at__month=month).count()
 

@@ -12,8 +12,8 @@ class SalesChart(JSONView):
         sales_dict = get_year_dict()
         year = self.kwargs.get("year")
         purchases = Payments.objects.filter(created_at__year=year)
-        grouped_purchases = purchases.annotate(price=F("enrollment_id__bought_price")).annotate(month=ExtractMonth("created_at"))\
-            .values("month").annotate(average=Sum("enrollment_id__bought_price")).values("month", "average").order_by("month")
+        grouped_purchases = purchases.annotate(price=F("amount")).annotate(month=ExtractMonth("created_at"))\
+            .values("month").annotate(average=Sum("amount")).values("month", "average").order_by("month")
 
         for group in grouped_purchases:
             sales_dict[months[group["month"]-1]

@@ -2,6 +2,8 @@ from django.db import models
 from django.core.validators import RegexValidator
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin, Group
 from django.contrib.auth.hashers import make_password
+from django.utils.translation import gettext_lazy as _
+from datetime import date, timedelta
 
 phone_validator = RegexValidator(
     r"^(\+?\d{0,4})?\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{4}\)?)?$", "The phone number provided is invalid")
@@ -66,38 +68,39 @@ class phoneModel(models.Model):
         return str(self.Mobile)
 
 
-class Enrollment(models.Model):
-    bought_price = models.FloatField()
-    payment_method = models.CharField(max_length=255, blank=True, null=True)
-    description = models.TextField(blank=True, null=True)
-    status = models.CharField(max_length=7)
-    user_id = models.ForeignKey(User, on_delete=models.CASCADE)
-    classes_id = models.ForeignKey('courses.Classes', on_delete=models.CASCADE)
-    created_at = models.DateTimeField(
-        auto_now=False, auto_now_add=True, blank=True, null=True)
-    updated_at = models.DateTimeField(auto_now=True, blank=True, null=True)
-    expiration_date = models.DateTimeField(
-        auto_now=False, blank=True, null=True)
-
-    class Meta:
-        db_table = 'enrollments'
-
-
 class Payments(models.Model):
+    class PaymentStatus(models.TextChoices):
+        CREATED = 'created', _('Created')
+        ATTEMPTED = 'attempted', _('Authorized/Failed')
+        SUCCESS = 'paid', _('Captured')
+
     payment_gateway_id = models.CharField(max_length=255)
     gateway = models.CharField(max_length=255)
     method = models.CharField(max_length=255)
-    currency = models.CharField(max_length=255)
+    currency = models.CharField(max_length=255, default='INR')
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     user_email = models.CharField(max_length=255, blank=True, null=True)
     amount = models.CharField(max_length=255)
+    status = models.CharField(max_length=10,
+        choices=PaymentStatus.choices, default=PaymentStatus.CREATED)
     json_response = models.TextField()
-    enrollment_id = models.ForeignKey(Enrollment, on_delete=models.CASCADE)
-    created_at = models.DateTimeField(
-        auto_now=False, auto_now_add=True, blank=True, null=True)
-    updated_at = models.DateTimeField(auto_now=True, blank=True, null=True)
+    created_at = models.DateTimeField(auto_now=False, auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
         db_table = 'payments'
+
+
+class Enrollment(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    standard = models.ForeignKey('courses.Classes', on_delete=models.CASCADE)
+    payment = models.ForeignKey(Payments, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now=False, auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    expiration_date = models.DateField(default=(date.today() + timedelta(days=365)))
+
+    class Meta:
+        db_table = 'enrollments'
 
 
 class Settings(models.Model):
