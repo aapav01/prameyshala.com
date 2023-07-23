@@ -42,9 +42,9 @@
               <td class="px-4 py-3">{{ payment.method }}</td>
               <td class="px-4 py-3 capitalize">
                 {% if payment.status == 'paid' %}
-                  <span class="badge badge-success">{{ payment.status }}</span>
+                  <span class="badge bg-success/50">{{ payment.status }}</span>
                 {% else %}
-                  <span class="badge badge-warning">{{ payment.status }}</span>
+                  <span class="badge bg-warning/50">{{ payment.status }}</span>
                 {% endif %}
               </td>
               <td class="px-4 py-3">{{ payment.created_at }}</td>
