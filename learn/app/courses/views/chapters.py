@@ -48,7 +48,8 @@ class ChapterView(PermissionRequiredMixin, ListView):
         if form.is_valid():
             instance = form.save(commit=False)
             try:
-                payload = '{"name\":\"'+instance.name+'\"}'
+                payload = '{"name\":\"'+instance.name + ' - ' + \
+                    instance.subject.name + ' - ' + instance.subject.standard.name + '\"}'
                 response = requests.post(
                     f"https://video.bunnycdn.com/library/{env('BUNNYCDN_VIDEO_LIBRARY_ID')}/collections", data=payload, headers=headers)
 
@@ -79,7 +80,8 @@ class ChapterUpdateView(PermissionRequiredMixin, UpdateView):
     def form_valid(self, form):
         if form.instance.collectionid is None:
             try:
-                payload = '{"name\":\"'+form.instance.name+'\"}'
+                payload = '{"name\":\"'+form.instance.name + ' - ' + \
+                    form.instance.subject.name + ' - ' + form.instance.subject.standard.name + '\"}'
                 response = requests.post(
                     f"https://video.bunnycdn.com/library/{env('BUNNYCDN_VIDEO_LIBRARY_ID')}/collections", data=payload, headers=headers)
 
@@ -107,13 +109,16 @@ class ChapterDeleteView(PermissionRequiredMixin, DeleteView):
 
     def delete(self, request, **kwargs):
         instance = self.get_object()
-        try:
-            response = requests.delete(
-                f"https://video.bunnycdn.com/library/{env('BUNNYCDN_VIDEO_LIBRARY_ID')}/collections/{instance.collectionid}", headers=headers)
-            messages.info(request, 'Succesfully deleting collection on BunnyCDN.')
-            if response.status_code != 200:
-                messages.error(
-                    request, f'Error deleting collection on BunnyCDN. {response.json()["title"]}')
-        except Exception as e:
-            print(e)
+        if instance.collectionid is not None:
+            try:
+                response = requests.delete(
+                    f"https://video.bunnycdn.com/library/{env('BUNNYCDN_VIDEO_LIBRARY_ID')}/collections/{instance.collectionid}", headers=headers)
+                if response.status_code == 200:
+                    messages.info(
+                        request, f'Collection {instance.name} has been deleted successfully.')
+                else:
+                    messages.error(
+                        request, f'Error deleting collection on BunnyCDN. {response.json()["title"]}')
+            except Exception as e:
+                print(e)
         return super().delete(request, **kwargs)
