@@ -24,6 +24,7 @@ class Classes(models.Model):
 class Category(models.Model):
     name = models.CharField(max_length=50,blank=False, null=False)
     description = models.TextField(max_length=255,blank=True,null=True)
+    popular = models.BooleanField(default=False)
 
     def __str__(self):
         return self.name
