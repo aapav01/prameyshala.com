@@ -11,7 +11,7 @@ class SalesChart(JSONView):
         context = super().get_context_data(**kwargs)
         sales_dict = get_year_dict()
         year = self.kwargs.get("year")
-        purchases = Payments.objects.filter(created_at__year=year)
+        purchases = Payments.objects.filter(created_at__year=year).filter(status='paid')
         grouped_purchases = purchases.annotate(price=F("amount")).annotate(month=ExtractMonth("created_at"))\
             .values("month").annotate(average=Sum("amount")).values("month", "average").order_by("month")
 
@@ -20,7 +20,6 @@ class SalesChart(JSONView):
                        ] = round(group["average"], 2)
 
         context.update({
-            "title": f"Sales in {year}",
             "data": {
                 "labels": list(sales_dict.keys()),
                 "datasets": [{

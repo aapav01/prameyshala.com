@@ -3,7 +3,7 @@ from django.db.models.functions import ExtractYear, ExtractMonth
 from app.accounts.models import User, Enrollment, Payments
 
 from .json import JSONView
-from ..util import months, colorPrimary, colorSuccess, colorDanger, generate_color_palette, get_year_dict
+from ..util import months, colorPrimary, get_year_dict
 
 
 class UserChart(JSONView):
@@ -20,7 +20,6 @@ class UserChart(JSONView):
             users_dict[months[group["month"]-1]] = group["count"]
 
         context.update({
-            "title": f"Users in {year}",
             "data": {
                 "labels": list(users_dict.keys()),
                 "datasets": [{
@@ -28,7 +27,6 @@ class UserChart(JSONView):
                     "backgroundColor": colorPrimary,
                     "borderWidth": 1,
                     "borderRadius": 100,
-                    "hoverBackgroundColor": colorSuccess,
                     "data": list(users_dict.values()),
                 }]
             },

@@ -309,9 +309,8 @@
     type: "bar",
     options: {
       responsive: true,
-      title: {
-        display: false,
-        text: ""
+      layout: {
+        padding: 10
       }
     }
   });
@@ -359,8 +358,7 @@
         chart.data.labels = [];
 
         // Load new data into the chart
-        chart.options.title.text = title;
-        chart.options.title.display = true;
+        chart.options.color = '#f9f9f9';
         chart.data.labels = labels;
         datasets.forEach(dataset => {
           chart.data.datasets.push(dataset);
