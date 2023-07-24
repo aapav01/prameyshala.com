@@ -5,24 +5,8 @@
   Learning Center | Pramey Shala
 {% endblock title %}
 {% block content %}
-  <div class="mb-12 grid gap-y-10 gap-x-6 md:grid-cols-2 xl:grid-cols-4">
-    {% if perms.accounts.view_payments %}
-      <div class="relative flex flex-col bg-clip-border rounded-xl bg-white text-gray-700 shadow-md">
-        <div class="bg-clip-border mx-4 rounded-xl overflow-hidden bg-gradient-to-tr from-green-600 to-green-400 text-white shadow-green-500/40 shadow-lg absolute -mt-4 grid h-16 w-16 place-items-center">
-          <i class="far fa-money-bills fa-2xl"></i>
-        </div>
-        <div class="p-4 text-right">
-          <p class="block antialiased font-sans text-sm leading-normal font-normal text-blue-gray-600">Current Month Sales</p>
-          <h4 class="block antialiased tracking-normal font-sans text-2xl font-semibold leading-snug text-blue-gray-900">
-            ₹ {{ total_amount_month|intcomma }}
-          </h4>
-        </div>
-        <div class="border-t border-blue-gray-50 p-4">
-          <p class="block antialiased font-sans text-base leading-relaxed font-normal text-blue-gray-600">
-            <strong class="text-green-500">+55%</strong>&nbsp;than last week
-          </p>
-        </div>
-      </div>
+  {% if perms.accounts.view_payments %}
+    <div class="mb-12 grid gap-y-10 gap-x-6 md:grid-cols-2 xl:grid-cols-3">
       <div class="relative flex flex-col bg-clip-border rounded-xl bg-white text-gray-700 shadow-md">
         <div class="bg-clip-border mx-4 rounded-xl overflow-hidden bg-gradient-to-tr from-lime-600 to-lime-400 text-white shadow-lime-500/40 shadow-lg absolute -mt-4 grid h-16 w-16 place-items-center">
           <i class="far fa-money-bill-wave fa-2xl"></i>
@@ -33,14 +17,33 @@
             ₹ {{ total_amount_day|intcomma }}
           </h4>
         </div>
-        <div class="border-t border-blue-gray-50 p-4">
-          <p class="block antialiased font-sans text-base leading-relaxed font-normal text-blue-gray-600">
-            <strong class="text-red-500">-100%</strong>&nbsp;than last yesterday
-          </p>
+      </div>
+      <div class="relative flex flex-col bg-clip-border rounded-xl bg-white text-gray-700 shadow-md">
+        <div class="bg-clip-border mx-4 rounded-xl overflow-hidden bg-gradient-to-tr from-green-600 to-green-400 text-white shadow-green-500/40 shadow-lg absolute -mt-4 grid h-16 w-16 place-items-center">
+          <i class="far fa-money-bills fa-2xl"></i>
+        </div>
+        <div class="p-4 text-right">
+          <p class="block antialiased font-sans text-sm leading-normal font-normal text-blue-gray-600">Current Month Sales</p>
+          <h4 class="block antialiased tracking-normal font-sans text-2xl font-semibold leading-snug text-blue-gray-900">
+            ₹ {{ total_amount_month|intcomma }}
+          </h4>
         </div>
       </div>
-    {% endif %}
-    {% if perms.accounts.view_enrollment %}
+      <div class="relative flex flex-col bg-clip-border rounded-xl bg-white text-gray-700 shadow-md">
+        <div class="bg-clip-border mx-4 rounded-xl overflow-hidden bg-gradient-to-tr from-green-900 to-green-700 text-white shadow-lime-500/40 shadow-lg absolute -mt-4 grid h-16 w-16 place-items-center">
+          <i class="fa-regular fa-money-bill-1-wave fa-2xl"></i>
+        </div>
+        <div class="p-4 text-right">
+          <p class="block antialiased font-sans text-sm leading-normal font-normal text-blue-gray-600">Sales This Year</p>
+          <h4 class="block antialiased tracking-normal font-sans text-2xl font-semibold leading-snug text-blue-gray-900">
+            ₹ {{ total_amount_year|intcomma }}
+          </h4>
+        </div>
+      </div>
+    </div>
+  {% endif %}
+  {% if perms.accounts.view_enrollment %}
+    <div class="mb-12 grid gap-y-10 gap-x-6 md:grid-cols-2 xl:grid-cols-4">
       <div class="relative flex flex-col bg-clip-border rounded-xl bg-white text-gray-700 shadow-md">
         <div class="bg-clip-border mx-4 rounded-xl overflow-hidden bg-gradient-to-tr from-purple-600 to-purple-400 text-white shadow-purple-500/40 shadow-lg absolute -mt-4 grid h-16 w-16 place-items-center">
           <i class="fa-regular fa-user-plus fa-2xl"></i>
@@ -49,35 +52,101 @@
           <p class="block antialiased font-sans text-sm leading-normal font-normal text-blue-gray-600">
             Students Enrolled Today
           </p>
-          <h4 class="block antialiased tracking-normal font-sans text-2xl font-semibold leading-snug text-blue-gray-900">
+          <h4 class="block antialiased tracking-normal font-sans text-4xl font-semibold leading-snug text-blue-gray-900">
             {{ enrollment_count_day }}
           </h4>
         </div>
-        <div class="border-t border-blue-gray-50 p-4">
-          <p class="block antialiased font-sans text-base leading-relaxed font-normal text-blue-gray-600">
-            <strong class="text-green-500">+100%</strong>&nbsp;than last week
+      </div>
+      <div class="relative flex flex-col bg-clip-border rounded-xl bg-white text-gray-700 shadow-md">
+        <div class="bg-clip-border mx-4 rounded-xl overflow-hidden bg-gradient-to-tr from-pink-900 to-pink-700 text-white shadow-pink-500/40 shadow-lg absolute -mt-4 grid h-16 w-16 place-items-center">
+          <i class="fa-regular fa-user-graduate fa-2xl"></i>
+        </div>
+        <div class="p-4 text-right">
+          <p class="block antialiased font-sans text-sm leading-normal font-normal text-blue-gray-600">
+            Students Enrolled This Month
           </p>
+          <h4 class="block antialiased tracking-normal font-sans text-4xl font-semibold leading-snug text-blue-gray-900">
+            {{ enrollment_count_month }}
+          </h4>
         </div>
       </div>
-    {% endif %}
-    {% if perms.accounts.view_user %}
+      <div class="relative flex flex-col bg-clip-border rounded-xl bg-white text-gray-700 shadow-md">
+        <div class="bg-clip-border mx-4 rounded-xl overflow-hidden bg-gradient-to-tr from-brown-600 to-brown-400 text-white shadow-brown-500/40 shadow-lg absolute -mt-4 grid h-16 w-16 place-items-center">
+          <i class="fa-regular fa-users-medical fa-2xl"></i>
+        </div>
+        <div class="p-4 text-right">
+          <p class="block antialiased font-sans text-sm leading-normal font-normal text-blue-gray-600">
+            Students Enrolled This Year
+          </p>
+          <h4 class="block antialiased tracking-normal font-sans text-4xl font-semibold leading-snug text-blue-gray-900">
+            {{ enrollment_count_year }}
+          </h4>
+        </div>
+      </div>
+      <div class="relative flex flex-col bg-clip-border rounded-xl bg-white text-gray-700 shadow-md">
+        <div class="bg-clip-border mx-4 rounded-xl overflow-hidden bg-gradient-to-tr from-pink-600 to-pink-400 text-white shadow-pink-500/40 shadow-lg absolute -mt-4 grid h-16 w-16 place-items-center">
+          <i class="fa-regular fa-user-graduate fa-2xl"></i>
+        </div>
+        <div class="p-4 text-right">
+          <p class="block antialiased font-sans text-sm leading-normal font-normal text-blue-gray-600">
+            Total Students Enrolled
+          </p>
+          <h4 class="block antialiased tracking-normal font-sans text-4xl font-semibold leading-snug text-blue-gray-900">
+            {{ enrollment_count }}
+          </h4>
+        </div>
+      </div>
+    </div>
+  {% endif %}
+  {% if perms.accounts.view_user %}
+    <div class="mb-12 grid gap-y-10 gap-x-6 md:grid-cols-2 xl:grid-cols-4">
+      <div class="relative flex flex-col bg-clip-border rounded-xl bg-white text-gray-700 shadow-md">
+        <div class="bg-clip-border mx-4 rounded-xl overflow-hidden bg-gradient-to-tr from-blue-900 to-blue-700 text-white shadow-blue-500/40 shadow-lg absolute -mt-4 grid h-16 w-16 place-items-center">
+          <i class="fa-regular fa-user fa-2xl"></i>
+        </div>
+        <div class="p-4 text-right">
+          <p class="block antialiased font-sans text-sm leading-normal font-normal text-blue-gray-600">User Joined Today</p>
+          <h4 class="block antialiased tracking-normal font-sans text-4xl font-semibold leading-snug text-blue-gray-900">
+            {{ user_today }}
+          </h4>
+        </div>
+      </div>
       <div class="relative flex flex-col bg-clip-border rounded-xl bg-white text-gray-700 shadow-md">
         <div class="bg-clip-border mx-4 rounded-xl overflow-hidden bg-gradient-to-tr from-cyan-600 to-cyan-400 text-white shadow-cyan-500/40 shadow-lg absolute -mt-4 grid h-16 w-16 place-items-center">
           <i class="fa-regular fa-user-plus fa-2xl"></i>
         </div>
         <div class="p-4 text-right">
           <p class="block antialiased font-sans text-sm leading-normal font-normal text-blue-gray-600">User Joined Month</p>
-          <h4 class="block antialiased tracking-normal font-sans text-2xl font-semibold leading-snug text-blue-gray-900">
+          <h4 class="block antialiased tracking-normal font-sans text-4xl font-semibold leading-snug text-blue-gray-900">
             {{ user_this_month }}
           </h4>
         </div>
-        <div class="border-t border-blue-gray-50 p-4">
-          <p class="block antialiased font-sans text-base leading-relaxed font-normal text-blue-gray-600">
-            <strong class="text-green-500">+100%</strong>&nbsp;than last month
-          </p>
+      </div>
+      <div class="relative flex flex-col bg-clip-border rounded-xl bg-white text-gray-700 shadow-md">
+        <div class="bg-clip-border mx-4 rounded-xl overflow-hidden bg-gradient-to-tr from-blue-gray-600 to-gray-400 text-white shadow-blue-gray-500/40 shadow-lg absolute -mt-4 grid h-16 w-16 place-items-center">
+          <i class="fa-regular fa-users fa-2xl"></i>
+        </div>
+        <div class="p-4 text-right">
+          <p class="block antialiased font-sans text-sm leading-normal font-normal text-blue-gray-600">Users Joined This Year</p>
+          <h4 class="block antialiased tracking-normal font-sans text-4xl font-semibold leading-snug text-blue-gray-900">
+            {{ user_this_year }}
+          </h4>
         </div>
       </div>
-    {% endif %}
+      <div class="relative flex flex-col bg-clip-border rounded-xl bg-white text-gray-700 shadow-md">
+        <div class="bg-clip-border mx-4 rounded-xl overflow-hidden bg-gradient-to-tr from-blue-600 to-blue-400 text-white shadow-blue-500/40 shadow-lg absolute -mt-4 grid h-16 w-16 place-items-center">
+          <i class="fa-regular fa-users fa-2xl"></i>
+        </div>
+        <div class="p-4 text-right">
+          <p class="block antialiased font-sans text-sm leading-normal font-normal text-blue-gray-600">Total Users</p>
+          <h4 class="block antialiased tracking-normal font-sans text-4xl font-semibold leading-snug text-blue-gray-900">
+            {{ user_count }}
+          </h4>
+        </div>
+      </div>
+    </div>
+  {% endif %}
+  <div class="mb-12 grid gap-y-10 gap-x-6 md:grid-cols-2 xl:grid-cols-4">
     {% if perms.courses.view_classes %}
       <div class="relative flex flex-col bg-clip-border rounded-xl bg-white text-gray-700 shadow-md">
         <div class="bg-clip-border mx-4 rounded-xl overflow-hidden bg-gradient-to-tr from-deep-orange-600 to-deep-orange-400 text-white shadow-deep-orange-500/40 shadow-lg absolute -mt-4 grid h-16 w-16 place-items-center">
@@ -126,45 +195,6 @@
           <p class="block antialiased font-sans text-sm leading-normal font-normal text-blue-gray-600">Total Lessons</p>
           <h4 class="block antialiased tracking-normal font-sans text-4xl font-semibold leading-snug text-blue-gray-900">
             {{ lesson_count }}
-          </h4>
-        </div>
-      </div>
-    {% endif %}
-    {% if perms.accounts.view_enrollment %}
-      <div class="relative flex flex-col bg-clip-border rounded-xl bg-white text-gray-700 shadow-md">
-        <div class="bg-clip-border mx-4 rounded-xl overflow-hidden bg-gradient-to-tr from-pink-600 to-pink-400 text-white shadow-pink-500/40 shadow-lg absolute -mt-4 grid h-16 w-16 place-items-center">
-          <i class="fa-regular fa-user-graduate fa-2xl"></i>
-        </div>
-        <div class="p-4 text-right">
-          <p class="block antialiased font-sans text-sm leading-normal font-normal text-blue-gray-600">
-            Total Students Enrolled
-          </p>
-          <h4 class="block antialiased tracking-normal font-sans text-4xl font-semibold leading-snug text-blue-gray-900">
-            {{ enrollment_count }}
-          </h4>
-        </div>
-      </div>
-    {% endif %}
-    {% if perms.accounts.view_user %}
-      <div class="relative flex flex-col bg-clip-border rounded-xl bg-white text-gray-700 shadow-md">
-        <div class="bg-clip-border mx-4 rounded-xl overflow-hidden bg-gradient-to-tr from-blue-gray-600 to-gray-400 text-white shadow-blue-gray-500/40 shadow-lg absolute -mt-4 grid h-16 w-16 place-items-center">
-          <i class="fa-regular fa-users fa-2xl"></i>
-        </div>
-        <div class="p-4 text-right">
-          <p class="block antialiased font-sans text-sm leading-normal font-normal text-blue-gray-600">Users Joined This Year</p>
-          <h4 class="block antialiased tracking-normal font-sans text-4xl font-semibold leading-snug text-blue-gray-900">
-            {{ user_this_year }}
-          </h4>
-        </div>
-      </div>
-      <div class="relative flex flex-col bg-clip-border rounded-xl bg-white text-gray-700 shadow-md">
-        <div class="bg-clip-border mx-4 rounded-xl overflow-hidden bg-gradient-to-tr from-blue-600 to-blue-400 text-white shadow-blue-500/40 shadow-lg absolute -mt-4 grid h-16 w-16 place-items-center">
-          <i class="fa-regular fa-users fa-2xl"></i>
-        </div>
-        <div class="p-4 text-right">
-          <p class="block antialiased font-sans text-sm leading-normal font-normal text-blue-gray-600">Total Users</p>
-          <h4 class="block antialiased tracking-normal font-sans text-4xl font-semibold leading-snug text-blue-gray-900">
-            {{ user_count }}
           </h4>
         </div>
       </div>
@@ -324,7 +354,7 @@
       dataType: "json",
       success: (jsonResponse) => {
         // Load all the options
-        jsonResponse.options.forEach(option => {
+        jsonResponse.options.years.forEach(option => {
           $("#year").append(new Option(option, option));
         });
         // Load data for the first option
