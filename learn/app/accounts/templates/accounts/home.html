@@ -5,6 +5,19 @@
   Learning Center | Pramey Shala
 {% endblock title %}
 {% block content %}
+  <form id="filterForm" class="-mt-10 pb-10">
+   <div class="inline-flex gap-2">
+    <label class="label" for="year">
+      <span class="label-text">Show Data from: </span>
+    </label>
+    <select class="select select-bordered w-56 select-sm" name="month" id="month"></select>
+    <select class="select select-bordered w-56 select-sm" name="year" id="year"></select>
+    <input type="submit"
+           value="Load"
+           name="_load"
+           class="btn btn-sm btn-outline">
+   </div>
+  </form>
   {% if perms.accounts.view_payments %}
     <div class="mb-12 grid gap-y-10 gap-x-6 md:grid-cols-2 xl:grid-cols-3">
       <div class="relative flex flex-col bg-clip-border rounded-xl bg-white text-gray-700 shadow-md">
@@ -13,9 +26,10 @@
         </div>
         <div class="p-4 text-right">
           <p class="block antialiased font-sans text-sm leading-normal font-normal text-blue-gray-600">Today's Sales</p>
-          <h4 class="block antialiased tracking-normal font-sans text-2xl font-semibold leading-snug text-blue-gray-900">
-            ₹ {{ total_amount_day|intcomma }}
+          <h4 id="total_amount_day"
+              class="block antialiased tracking-normal font-sans text-2xl font-semibold leading-snug text-blue-gray-900">
           </h4>
+          <p class="today text-xs text-blue-gray-300"></p>
         </div>
       </div>
       <div class="relative flex flex-col bg-clip-border rounded-xl bg-white text-gray-700 shadow-md">
@@ -24,8 +38,8 @@
         </div>
         <div class="p-4 text-right">
           <p class="block antialiased font-sans text-sm leading-normal font-normal text-blue-gray-600">Current Month Sales</p>
-          <h4 class="block antialiased tracking-normal font-sans text-2xl font-semibold leading-snug text-blue-gray-900">
-            ₹ {{ total_amount_month|intcomma }}
+          <h4 id="total_amount_month"
+              class="block antialiased tracking-normal font-sans text-2xl font-semibold leading-snug text-blue-gray-900">
           </h4>
         </div>
       </div>
@@ -35,8 +49,8 @@
         </div>
         <div class="p-4 text-right">
           <p class="block antialiased font-sans text-sm leading-normal font-normal text-blue-gray-600">Sales This Year</p>
-          <h4 class="block antialiased tracking-normal font-sans text-2xl font-semibold leading-snug text-blue-gray-900">
-            ₹ {{ total_amount_year|intcomma }}
+          <h4 id="total_amount_year"
+              class="block antialiased tracking-normal font-sans text-2xl font-semibold leading-snug text-blue-gray-900">
           </h4>
         </div>
       </div>
@@ -52,9 +66,10 @@
           <p class="block antialiased font-sans text-sm leading-normal font-normal text-blue-gray-600">
             Students Enrolled Today
           </p>
-          <h4 class="block antialiased tracking-normal font-sans text-4xl font-semibold leading-snug text-blue-gray-900">
-            {{ enrollment_count_day }}
+          <h4 id="enrollment_count_day"
+              class="block antialiased tracking-normal font-sans text-4xl font-semibold leading-snug text-blue-gray-900">
           </h4>
+          <p class="today text-xs text-blue-gray-300"></p>
         </div>
       </div>
       <div class="relative flex flex-col bg-clip-border rounded-xl bg-white text-gray-700 shadow-md">
@@ -65,8 +80,8 @@
           <p class="block antialiased font-sans text-sm leading-normal font-normal text-blue-gray-600">
             Students Enrolled This Month
           </p>
-          <h4 class="block antialiased tracking-normal font-sans text-4xl font-semibold leading-snug text-blue-gray-900">
-            {{ enrollment_count_month }}
+          <h4 id="enrollment_count_month"
+              class="block antialiased tracking-normal font-sans text-4xl font-semibold leading-snug text-blue-gray-900">
           </h4>
         </div>
       </div>
@@ -78,8 +93,8 @@
           <p class="block antialiased font-sans text-sm leading-normal font-normal text-blue-gray-600">
             Students Enrolled This Year
           </p>
-          <h4 class="block antialiased tracking-normal font-sans text-4xl font-semibold leading-snug text-blue-gray-900">
-            {{ enrollment_count_year }}
+          <h4 id="enrollment_count_year"
+              class="block antialiased tracking-normal font-sans text-4xl font-semibold leading-snug text-blue-gray-900">
           </h4>
         </div>
       </div>
@@ -91,8 +106,8 @@
           <p class="block antialiased font-sans text-sm leading-normal font-normal text-blue-gray-600">
             Total Students Enrolled
           </p>
-          <h4 class="block antialiased tracking-normal font-sans text-4xl font-semibold leading-snug text-blue-gray-900">
-            {{ enrollment_count }}
+          <h4 id="enrollment_count"
+              class="block antialiased tracking-normal font-sans text-4xl font-semibold leading-snug text-blue-gray-900">
           </h4>
         </div>
       </div>
@@ -106,9 +121,10 @@
         </div>
         <div class="p-4 text-right">
           <p class="block antialiased font-sans text-sm leading-normal font-normal text-blue-gray-600">User Joined Today</p>
-          <h4 class="block antialiased tracking-normal font-sans text-4xl font-semibold leading-snug text-blue-gray-900">
-            {{ user_today }}
+          <h4 id="user_today"
+              class="block antialiased tracking-normal font-sans text-4xl font-semibold leading-snug text-blue-gray-900">
           </h4>
+          <p class="today text-xs text-blue-gray-300"></p>
         </div>
       </div>
       <div class="relative flex flex-col bg-clip-border rounded-xl bg-white text-gray-700 shadow-md">
@@ -117,8 +133,8 @@
         </div>
         <div class="p-4 text-right">
           <p class="block antialiased font-sans text-sm leading-normal font-normal text-blue-gray-600">User Joined Month</p>
-          <h4 class="block antialiased tracking-normal font-sans text-4xl font-semibold leading-snug text-blue-gray-900">
-            {{ user_this_month }}
+          <h4 id="user_this_month"
+              class="block antialiased tracking-normal font-sans text-4xl font-semibold leading-snug text-blue-gray-900">
           </h4>
         </div>
       </div>
@@ -128,8 +144,8 @@
         </div>
         <div class="p-4 text-right">
           <p class="block antialiased font-sans text-sm leading-normal font-normal text-blue-gray-600">Users Joined This Year</p>
-          <h4 class="block antialiased tracking-normal font-sans text-4xl font-semibold leading-snug text-blue-gray-900">
-            {{ user_this_year }}
+          <h4 id="user_this_year"
+              class="block antialiased tracking-normal font-sans text-4xl font-semibold leading-snug text-blue-gray-900">
           </h4>
         </div>
       </div>
@@ -139,8 +155,8 @@
         </div>
         <div class="p-4 text-right">
           <p class="block antialiased font-sans text-sm leading-normal font-normal text-blue-gray-600">Total Users</p>
-          <h4 class="block antialiased tracking-normal font-sans text-4xl font-semibold leading-snug text-blue-gray-900">
-            {{ user_count }}
+          <h4 id="user_count"
+              class="block antialiased tracking-normal font-sans text-4xl font-semibold leading-snug text-blue-gray-900">
           </h4>
         </div>
       </div>
@@ -154,8 +170,8 @@
         </div>
         <div class="p-4 text-right">
           <p class="block antialiased font-sans text-sm leading-normal font-normal text-blue-gray-600">Total Classes</p>
-          <h4 class="block antialiased tracking-normal font-sans text-4xl font-semibold leading-snug text-blue-gray-900">
-            {{ class_count }}
+          <h4 id="class_count"
+              class="block antialiased tracking-normal font-sans text-4xl font-semibold leading-snug text-blue-gray-900">
           </h4>
         </div>
       </div>
@@ -167,8 +183,8 @@
         </div>
         <div class="p-4 text-right">
           <p class="block antialiased font-sans text-sm leading-normal font-normal text-blue-gray-600">Total Subject</p>
-          <h4 class="block antialiased tracking-normal font-sans text-4xl font-semibold leading-snug text-blue-gray-900">
-            {{ subject_count }}
+          <h4 id="subject_count"
+              class="block antialiased tracking-normal font-sans text-4xl font-semibold leading-snug text-blue-gray-900">
           </h4>
         </div>
       </div>
@@ -180,8 +196,8 @@
         </div>
         <div class="p-4 text-right">
           <p class="block antialiased font-sans text-sm leading-normal font-normal text-blue-gray-600">Total Chapters</p>
-          <h4 class="block antialiased tracking-normal font-sans text-4xl font-semibold leading-snug text-blue-gray-900">
-            {{ chapter_count }}
+          <h4 id="chapter_count"
+              class="block antialiased tracking-normal font-sans text-4xl font-semibold leading-snug text-blue-gray-900">
           </h4>
         </div>
       </div>
@@ -193,21 +209,13 @@
         </div>
         <div class="p-4 text-right">
           <p class="block antialiased font-sans text-sm leading-normal font-normal text-blue-gray-600">Total Lessons</p>
-          <h4 class="block antialiased tracking-normal font-sans text-4xl font-semibold leading-snug text-blue-gray-900">
-            {{ lesson_count }}
+          <h4 id="lesson_count"
+              class="block antialiased tracking-normal font-sans text-4xl font-semibold leading-snug text-blue-gray-900">
           </h4>
         </div>
       </div>
     {% endif %}
   </div>
-  <form id="filterForm" class="pb-20">
-    <label class="label" for="year">Choose a year for graphs:</label>
-    <select class="select select-bordered w-56" name="year" id="year"></select>
-    <input type="submit"
-           value="Load"
-           name="_load"
-           class="btn btn-sm btn-outline">
-  </form>
   <div class="mb-6 grid grid-cols-1 gap-y-12 gap-x-6 md:grid-cols-2 xl:grid-cols-3">
     {% if perms.accounts.view_payments %}
       <div class="relative flex flex-col bg-clip-border rounded-xl bg-white text-gray-700 shadow-md">
@@ -247,74 +255,6 @@
         </div>
       </div>
     {% endif %}
-    <div class="relative flex flex-col bg-clip-border rounded-xl bg-white text-gray-700 shadow-md">
-      <div class="relative bg-clip-border mx-4 rounded-xl overflow-hidden bg-gradient-to-tr from-pink-600 to-pink-400 text-white shadow-pink-500/40 shadow-lg -mt-6">
-        <div class="min-h-[235px]">{% comment %} chartjs mount here {% endcomment %}</div>
-      </div>
-      <div class="p-6">
-        <h6 class="block antialiased tracking-normal font-sans text-base font-semibold leading-relaxed text-blue-gray-900">
-          Title
-        </h6>
-        <p class="block antialiased font-sans text-sm leading-normal font-normal text-blue-gray-600">Details</p>
-      </div>
-      <div class="p-6 border-t border-blue-gray-50 px-6 py-5">
-        <p class="antialiased font-sans text-sm leading-normal flex items-center font-normal text-blue-gray-600">
-          <i class="fa-regular fa-clock text-blue-gray-400 mr-2"></i>
-          &nbsp;updated 4 min ago
-        </p>
-      </div>
-    </div>
-    <div class="relative flex flex-col bg-clip-border rounded-xl bg-white text-gray-700 shadow-md">
-      <div class="relative bg-clip-border mx-4 rounded-xl overflow-hidden bg-gradient-to-tr from-purple-600 to-purple-400 text-white shadow-purple-500/40 shadow-lg -mt-6">
-        <div class="min-h-[235px]">{% comment %} chartjs mount here {% endcomment %}</div>
-      </div>
-      <div class="p-6">
-        <h6 class="block antialiased tracking-normal font-sans text-base font-semibold leading-relaxed text-blue-gray-900">
-          Title
-        </h6>
-        <p class="block antialiased font-sans text-sm leading-normal font-normal text-blue-gray-600">Details</p>
-      </div>
-      <div class="p-6 border-t border-blue-gray-50 px-6 py-5">
-        <p class="antialiased font-sans text-sm leading-normal flex items-center font-normal text-blue-gray-600">
-          <i class="fa-regular fa-clock text-blue-gray-400 mr-2"></i>
-          &nbsp;updated 4 min ago
-        </p>
-      </div>
-    </div>
-    <div class="relative flex flex-col bg-clip-border rounded-xl bg-white text-gray-700 shadow-md">
-      <div class="relative bg-clip-border mx-4 rounded-xl overflow-hidden bg-gradient-to-tr from-amber-600 to-amber-400 text-white shadow-amber-500/40 shadow-lg -mt-6">
-        <div class="min-h-[235px]">{% comment %} chartjs mount here {% endcomment %}</div>
-      </div>
-      <div class="p-6">
-        <h6 class="block antialiased tracking-normal font-sans text-base font-semibold leading-relaxed text-blue-gray-900">
-          Title
-        </h6>
-        <p class="block antialiased font-sans text-sm leading-normal font-normal text-blue-gray-600">Details</p>
-      </div>
-      <div class="p-6 border-t border-blue-gray-50 px-6 py-5">
-        <p class="antialiased font-sans text-sm leading-normal flex items-center font-normal text-blue-gray-600">
-          <i class="fa-regular fa-clock text-blue-gray-400 mr-2"></i>
-          &nbsp;updated 4 min ago
-        </p>
-      </div>
-    </div>
-    <div class="relative flex flex-col bg-clip-border rounded-xl bg-white text-gray-700 shadow-md">
-      <div class="relative bg-clip-border mx-4 rounded-xl overflow-hidden bg-gradient-to-tr from-deep-orange-600 to-deep-orange-400 text-white shadow-deep-orange-500/40 shadow-lg -mt-6">
-        <div class="min-h-[235px]">{% comment %} chartjs mount here {% endcomment %}</div>
-      </div>
-      <div class="p-6">
-        <h6 class="block antialiased tracking-normal font-sans text-base font-semibold leading-relaxed text-blue-gray-900">
-          Title
-        </h6>
-        <p class="block antialiased font-sans text-sm leading-normal font-normal text-blue-gray-600">Details</p>
-      </div>
-      <div class="p-6 border-t border-blue-gray-50 px-6 py-5">
-        <p class="antialiased font-sans text-sm leading-normal flex items-center font-normal text-blue-gray-600">
-          <i class="fa-regular fa-clock text-blue-gray-400 mr-2"></i>
-          &nbsp;updated 4 min ago
-        </p>
-      </div>
-    </div>
   </div>
 {% endblock content %}
 {% block body_js %}
@@ -357,8 +297,12 @@
         jsonResponse.options.years.forEach(option => {
           $("#year").append(new Option(option, option));
         });
+        jsonResponse.options.months.forEach(option => {
+          $("#month").append(new Option(option, option, false, option === jsonResponse.options.current_month));
+        });
         // Load data for the first option
         loadAllCharts($("#year").children().first().val());
+        loadDashData(jsonResponse.options.current_month, $("#year").children().first().val());
         console.log("Chart filter options loaded!")
       },
       error: () => console.log("Failed to fetch chart filter options!")
@@ -369,7 +313,9 @@
     event.preventDefault();
 
     const year = $("#year").val();
-    loadAllCharts(year)
+    const month = $("#month").val();
+    loadAllCharts(year);
+    loadDashData(month, year);
   });
 
   function loadChart(chart, endpoint) {
@@ -404,6 +350,35 @@
     {% if perms.accounts.view_user %}
     loadChart(usersChart, `/chart/users/${year}/`);
     {% endif %}
+  }
+
+  function loadDashData(month, year) {
+    $.ajax({
+      url: `/chart/dashboard-data/${month}/${year}`,
+      type: "GET",
+      dataType: "json",
+      success: (jsonResponse) => {
+        // Load all the options
+        $("#total_amount_day").text("₹ "+ jsonResponse.total_amount_day);
+        $("#total_amount_month").text("₹ "+ jsonResponse.total_amount_month);
+        $("#total_amount_year").text("₹ "+ jsonResponse.total_amount_year);
+        $("#enrollment_count_day").text(jsonResponse.enrollment_count_day);
+        $("#enrollment_count_month").text(jsonResponse.enrollment_count_month);
+        $("#enrollment_count_year").text(jsonResponse.enrollment_count_year);
+        $("#enrollment_count").text(jsonResponse.enrollment_count);
+        $("#user_today").text(jsonResponse.user_today);
+        $("#user_this_month").text(jsonResponse.user_this_month);
+        $("#user_this_year").text(jsonResponse.user_this_year);
+        $("#user_count").text(jsonResponse.user_count);
+        $("#class_count").text(jsonResponse.class_count);
+        $("#subject_count").text(jsonResponse.subject_count);
+        $("#chapter_count").text(jsonResponse.chapter_count);
+        $("#lesson_count").text(jsonResponse.lesson_count);
+        $(".today").text("Today: "+jsonResponse.today);
+        console.log("Data loaded!")
+      },
+      error: () => console.log("Failed to fetch data!")
+    });
   }
   </script>
 {% endblock body_js %}
