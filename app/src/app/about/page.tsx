@@ -4,25 +4,20 @@ import { CheckCircledIcon, ArrowRightIcon } from "@radix-ui/react-icons";
 import { Button } from "@/components/ui/button";
 // NextJs
 import Image from "next/image";
+import PageHeader from "@/components/page-header";
 
 type Props = {};
 
 function AboutPage({}: Props) {
   return (
     <main className="min-h-screen">
-      <header className="py-36 bg-indigo-50 relative">
-        <div className="container text-center text-foreground">
-          <h1 className="text-3xl md:text-6xl font-bold">About Us</h1>
-          <ul className="block font-normal text-lg">
-            <li className="inline-block">
-              <a href="/" className="after:p-1 after:content-['›']">
-                Home
-              </a>
-            </li>
-            <li className="inline-block">About Us</li>
-          </ul>
-        </div>
-      </header>
+      <PageHeader
+        title={"About Us"}
+        breadcrumbs={[
+          { title: "Home", href: "/" },
+          { title: "About Us" },
+        ]}
+      />
       <section className="container py-12">
         <div className="flex flex-col lg:flex-row h-full items-center">
           <div className="w-full lg:w-1/2 p-10">

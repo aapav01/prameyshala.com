@@ -1,3 +1,4 @@
+import PageHeader from "@/components/page-header";
 import React from "react";
 
 type Props = {};
@@ -5,19 +6,13 @@ type Props = {};
 export default function RefundPolicy({}: Props) {
   return (
     <main className="min-h-screen">
-      <header className="py-36 bg-indigo-50 relative">
-        <div className="container text-center text-foreground">
-          <h1 className="text-3xl md:text-6xl font-bold">Refund Policy</h1>
-          <ul className="block font-normal text-lg">
-            <li className="inline-block mt-2">
-              <a href="/" className="after:p-1 after:content-['›']">
-                Home
-              </a>
-            </li>
-            <li className="inline-block">Refund Policy</li>
-          </ul>
-        </div>
-      </header>
+      <PageHeader
+        title={"Refund Policy"}
+        breadcrumbs={[
+          { title: "Home", href: "/" },
+          { title: "Refund Policy" },
+        ]}
+      />
       <section className="container py-12">
         <div className="prose text-lg max-w-5xl">
           <h2>Refund Policy</h2>

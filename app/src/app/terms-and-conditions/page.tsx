@@ -1,3 +1,4 @@
+import PageHeader from "@/components/page-header";
 import React from "react";
 
 type Props = {};
@@ -5,21 +6,13 @@ type Props = {};
 export default function TNC({}: Props) {
   return (
     <main className="min-h-screen">
-      <header className="py-36 bg-indigo-50 relative">
-        <div className="container text-center text-foreground">
-          <h1 className="text-3xl md:text-6xl font-bold">
-            Terms &amp; Conditions
-          </h1>
-          <ul className="block font-normal text-lg">
-            <li className="inline-block mt-2">
-              <a href="/" className="after:p-1 after:content-['›']">
-                Home
-              </a>
-            </li>
-            <li className="inline-block">Terms &amp; Conditions</li>
-          </ul>
-        </div>
-      </header>
+      <PageHeader
+        title={"Terms & Conditions"}
+        breadcrumbs={[
+          { title: "Home", href: "/" },
+          { title: "Terms & Conditions" },
+        ]}
+      />
       <section className="container py-12">
         <div className="prose text-lg max-w-5xl">
           <h2>Terms and Conditions of Prameyshala EdTech Platform</h2>
