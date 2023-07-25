@@ -13,9 +13,19 @@ type Props = {};
 const query = gql`
   {
     categories(popular: true) {
+      id
       name
       description
-      id
+      popular
+      subjectSet {
+        standard {
+          name
+          latestPrice
+          beforePrice
+          slug
+          id
+        }
+      }
     }
   }
 `;
@@ -54,9 +64,7 @@ export default async function PopularCategory({}: Props) {
           return (
             <ServiceCard
               key={category.id}
-              title={category.name}
-              description={category.description}
-              passHref="#"
+              category={category}
               icon={
                 <svg
                   className="service__icon"
