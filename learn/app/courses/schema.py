@@ -43,7 +43,7 @@ class Query(graphene.ObjectType):
 
     # subjects
     subjects = graphene.List(SubjectType)
-    subject = graphene.Field(SubjectType, id=graphene.Int(required=True))
+    subject = graphene.Field(SubjectType, slug=graphene.String(required=True))
     # chapters
     chapters = graphene.List(ChapterType)
     chapter = graphene.Field(ChapterType, id=graphene.Int(required=True))
@@ -72,8 +72,8 @@ class Query(graphene.ObjectType):
     def resolve_subjects(self, info):
         return Subject.objects.all()
 
-    def resolve_subject(self, info, id):
-        return Subject.objects.get(pk=id)
+    def resolve_subject(self, info, slug):
+        return Subject.objects.get(slug=slug)
 
     # chapters
     def resolve_chapters(self, info):
