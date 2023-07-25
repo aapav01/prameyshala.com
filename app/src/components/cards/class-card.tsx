@@ -21,7 +21,7 @@ export default function ClassCard({ standard }: Props) {
     <Card>
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
-        src={standard.image ? standard.image : "https://placehold.co/600x400"}
+        src={standard.image ? standard.image : `/class/${standard.slug}/opengraph-image`}
         alt={standard.name}
         className="rounded-t-lg p-1"
       />

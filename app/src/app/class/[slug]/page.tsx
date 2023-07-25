@@ -269,7 +269,7 @@ export default async function ClassDetail({ params }: Props) {
                 </div>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                  src="https://placehold.co/600x400"
+                  src={data.standard.image ? data.standard.image : `/class/${data.standard.slug}/opengraph-image`}
                   alt="placeholder"
                   className="rounded"
                 />
