@@ -158,7 +158,7 @@ export default async function ClassDetail({ params }: Props) {
               </TabsTrigger>
             </TabsList>
             <TabsContent className="p-4" value="description">
-              <div className="prose prose-lg">{data.standard.description}</div>
+              <div className="prose prose-lg max-w-full">{data.standard.description}</div>
             </TabsContent>
             <TabsContent className="p-4" value="curriculum">
               <Accordion
@@ -193,10 +193,10 @@ export default async function ClassDetail({ params }: Props) {
                 </AccordionItem>
               </Accordion>
             </TabsContent>
-            <TabsContent className="prose prose-lg" value="instructor">
+            <TabsContent className="prose prose-lg max-w-full" value="instructor">
               <div className="p-4">{data.standard.description}</div>
             </TabsContent>
-            <TabsContent className="prose prose-lg" value="reviews">
+            <TabsContent className="prose prose-lg max-w-full" value="reviews">
               <div className="p-4">{data.standard.description}</div>
             </TabsContent>
           </Tabs>
