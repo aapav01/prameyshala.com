@@ -105,7 +105,7 @@ export default async function AllCategories({}: Props) {
           <div className="space-y-1">
             <div className="flex justify-between">
             <h4 className="text-md font-semibold">{category?.name}</h4>
-            {category?.popular && <Badge className="bg-primary/10"><h4 className="text-sm font-semibold">Popular</h4></Badge>}
+            {category?.popular && <Badge className="bg-primary/10 text-primary"><h4 className="text-sm font-semibold">Popular</h4></Badge>}
             </div>
             <p className="text-sm">
               {category?.description}
