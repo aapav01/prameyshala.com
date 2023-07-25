@@ -36,7 +36,7 @@ class LessonType(DjangoObjectType):
 class Query(graphene.ObjectType):
     # classes
     classes = graphene.List(ClassesType)
-    standard = graphene.Field(ClassesType, id=graphene.Int(required=True))
+    standard = graphene.Field(ClassesType, slug=graphene.String(required=True))
     # category
     categories = graphene.List(CategoriesType, popular=graphene.Boolean())
     category = graphene.Field(CategoriesType, id=graphene.Int(required=True))
@@ -55,8 +55,8 @@ class Query(graphene.ObjectType):
     def resolve_classes(self, info):
         return Classes.objects.all()
 
-    def resolve_standard(self, info, id):
-        return Classes.objects.get(pk=id)
+    def resolve_standard(self, info, slug):
+        return Classes.objects.get(slug=slug)
 
     # categories
 
