@@ -6,6 +6,7 @@ import ServiceCard from "@/components/service-card";
 // GRAPHQL API - APPLOLO
 import { gql } from "@apollo/client";
 import { getClient } from "@/lib/client";
+import Link from "next/link";
 
 type Props = {};
 
@@ -38,10 +39,12 @@ export default async function PopularCategory({}: Props) {
           </p>
         </div>
         <div className="flex justify-end">
+          <Link href="/all-categories">
           <Button variant={"secondary"} className="py-6">
             All Categories
             <ArrowRightIcon className="ml-1" />
           </Button>
+          </Link>
         </div>
       </div>
       <div className="w-full mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
