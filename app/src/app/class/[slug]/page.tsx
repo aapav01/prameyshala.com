@@ -62,6 +62,8 @@ export default async function ClassDetail({ params }: Props) {
     notFound();
   }
 
+  const discount:any = (100 - (data.standard.latestPrice/data.standard.beforePrice) * 100);
+
   function getRating(rating: number) {
     const stars = [];
     for (let i = 0; i < 5; i++) {
@@ -212,19 +214,27 @@ export default async function ClassDetail({ params }: Props) {
                   alt="placeholder"
                   className="rounded"
                 />
-
               </div>
               <div className="flex justify-between mb-8">
                 <div className="text-2xl font-medium font-sans text-gray-500 px-2">
-                  <span className="text-primary">₹ 400</span>
-                  <span className=" font-thin text-lg "> / </span>
-                  <span className="font-normal text-lg line-through">
-                    ₹ 4000
+                  <span className="text-primary">
+                    ₹ {data.standard.latestPrice}
                   </span>
+                  {data.standard.latestPrice < data.standard.beforePrice && (
+                    <>
+                      <span className=" font-thin text-lg "> / </span>
+                      <span className="font-normal text-lg line-through">
+                        ₹ {data.standard.beforePrice}
+                      </span>
+                    </>
+                  )}
                 </div>
-                <div className="text-pink-500 font-bold py-1 px-4 bg-pink-100 text-center rounded uppercase">
-                  90% off
-                </div>
+                {data.standard.latestPrice < data.standard.beforePrice && (
+                  <div className="text-pink-500 font-bold py-1 px-4 bg-pink-100 text-center rounded uppercase">
+                  {parseInt(discount)}% off
+                  </div>
+                )}
+
               </div>
               <div className="mt-4">
                 <a className="text-lg font-bold">Details</a>
@@ -251,7 +261,10 @@ export default async function ClassDetail({ params }: Props) {
                 </div>
               </div>
               <div className="mt-8">
-                <Button className="text-lg py-6 hover:bg-transparent border hover:border-primary hover:text-primary" size="lg">
+                <Button
+                  className="text-lg py-6 hover:bg-transparent border hover:border-primary hover:text-primary"
+                  size="lg"
+                >
                   Enroll to the Class Now
                 </Button>
               </div>
