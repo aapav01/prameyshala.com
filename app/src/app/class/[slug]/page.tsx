@@ -62,7 +62,8 @@ export default async function ClassDetail({ params }: Props) {
     notFound();
   }
 
-  const discount:any = (100 - (data.standard.latestPrice/data.standard.beforePrice) * 100);
+  const discount: any =
+    100 - (data.standard.latestPrice / data.standard.beforePrice) * 100;
 
   function getRating(rating: number) {
     const stars = [];
@@ -158,7 +159,9 @@ export default async function ClassDetail({ params }: Props) {
               </TabsTrigger>
             </TabsList>
             <TabsContent className="p-4" value="description">
-              <div className="prose prose-lg max-w-full">{data.standard.description}</div>
+              <div className="prose prose-lg max-w-full">
+                {data.standard.description}
+              </div>
             </TabsContent>
             <TabsContent className="p-4" value="curriculum">
               <Accordion
@@ -193,11 +196,54 @@ export default async function ClassDetail({ params }: Props) {
                 </AccordionItem>
               </Accordion>
             </TabsContent>
-            <TabsContent className="prose prose-lg max-w-full" value="instructor">
-              <div className="p-4">{data.standard.description}</div>
+            <TabsContent
+              className="prose prose-lg max-w-full"
+              value="instructor"
+            >
+              {/* <div className="p-4">{data.standard.description}</div> */}
             </TabsContent>
-            <TabsContent className="prose prose-lg max-w-full" value="reviews">
-              <div className="p-4">{data.standard.description}</div>
+            <TabsContent value="reviews">
+              <div className="p-4 flex">
+                <div className="bg-white shadow-lg p-12 rounded-xl flex flex-col w-fit">
+                  <span className="text-6xl p-2 text-center">4.4</span>
+                  <div className=" inline-flex">{getRating(4.4)}</div>
+                  <span className="text-center mt-2 text-gray-500 font-bold">
+                    Rating
+                  </span>
+                </div>
+                <div className="flex flex-col w-full p-10 gap-2">
+                  <div className="inline-flex gap-2">
+                    <span className="text-xl">5</span>
+                    <StarFilledIcon className="text-yellow-500 h-5 w-5" />
+                    <div className="bg-pink-500 flex w-full h-fit p-2 rounded-xl" />
+                    <span className="text-lg">132</span>
+                  </div>
+                  <div className="inline-flex gap-2">
+                    <span className="text-xl">4</span>
+                    <StarFilledIcon className="text-yellow-500 h-5 w-5" />
+                    <div className="bg-pink-500 flex w-8/12 h-fit p-2 rounded-xl" />
+                    <span className="text-lg ml-auto">30</span>
+                  </div>
+                  <div className="inline-flex gap-2">
+                    <span className="text-xl">3</span>
+                    <StarFilledIcon className="text-yellow-500 h-5 w-5" />
+                    <div className="bg-pink-500 flex w-6/12 h-fit p-2 rounded-xl" />
+                    <span className="text-lg ml-auto">0</span>
+                  </div>
+                  <div className="inline-flex gap-2">
+                    <span className="text-xl">2</span>
+                    <StarFilledIcon className="text-yellow-500 h-5 w-5" />
+                    <div className="bg-pink-500 flex w-4/12 h-fit p-2 rounded-xl" />
+                    <span className="text-lg ml-auto">0</span>
+                  </div>
+                  <div className="inline-flex gap-2">
+                    <span className="text-xl">1</span>
+                    <StarFilledIcon className="text-yellow-500 h-5 w-5" />
+                    <div className="bg-pink-500 flex w-2/12 h-fit p-2 rounded-xl" />
+                    <span className="text-lg ml-auto">0</span>
+                  </div>
+                </div>
+              </div>
             </TabsContent>
           </Tabs>
           <div className="w-full lg:w-4/12 relative">
@@ -231,10 +277,9 @@ export default async function ClassDetail({ params }: Props) {
                 </div>
                 {data.standard.latestPrice < data.standard.beforePrice && (
                   <div className="text-pink-500 font-bold py-1 px-4 bg-pink-100 text-center rounded uppercase">
-                  {parseInt(discount)}% off
+                    {parseInt(discount)}% off
                   </div>
                 )}
-
               </div>
               <div className="mt-4">
                 <a className="text-lg font-bold">Details</a>
