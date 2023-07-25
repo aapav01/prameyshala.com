@@ -83,6 +83,15 @@
     text-underline-offset: -0.25rem;
 }
 
+.rock2-underline {
+  text-decoration: underline;
+  text-decoration-thickness: 0.5rem;
+  text-decoration-color: #8328f257;
+  text-decoration-skip: none;
+  text-decoration-skip-ink: none;
+  text-underline-offset: -0.25rem;
+}
+
 .single__service {
     padding: 30px;
     box-shadow: 0 0 50px 10px rgba(95, 45, 237, 0.1);
