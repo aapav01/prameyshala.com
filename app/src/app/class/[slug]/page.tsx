@@ -9,6 +9,7 @@ import EnrollButton from "@/components/sections/enroll-button";
 import PageHeader from "@/components/page-header";
 import React from "react";
 import { notFound } from "next/navigation";
+import { Metadata } from 'next'
 import {
   StarFilledIcon,
   FileTextIcon,
@@ -50,17 +51,29 @@ const query = gql`
   }
 `;
 
-export default async function ClassDetail({ params }: Props) {
-  let data: any = {};
+async function getData({ params }: Props) {
   try {
     const api_data = await getClient().query({
       query,
       variables: { slug: params.slug },
     });
-    data = api_data.data;
+    return api_data.data;
   } catch (error) {
-    notFound();
+    return notFound();
   }
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  // fetch data
+  const data = await getData({ params });
+
+  return {
+    title: data.standard.name + " | Pramey Shala",
+  }
+}
+
+export default async function ClassDetail({ params }: Props) {
+  const data = await getData({ params });
 
   const discount: any =
     100 - (data.standard.latestPrice / data.standard.beforePrice) * 100;
