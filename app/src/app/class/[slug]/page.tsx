@@ -5,7 +5,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { Button } from "@/components/ui/button";
+import EnrollButton from "@/components/sections/enroll-button";
 import PageHeader from "@/components/page-header";
 import React from "react";
 import { notFound } from "next/navigation";
@@ -306,12 +306,7 @@ export default async function ClassDetail({ params }: Props) {
                 </div>
               </div>
               <div className="mt-8">
-                <Button
-                  className="text-lg py-6 hover:bg-transparent border hover:border-primary hover:text-primary"
-                  size="lg"
-                >
-                  Enroll to the Class Now
-                </Button>
+                <EnrollButton standard={data.standard} />
               </div>
             </div>
           </div>
