@@ -36,6 +36,7 @@ const query = gql`
       name
       description
       image
+      slug
       latestPrice
       beforePrice
       publishAt
