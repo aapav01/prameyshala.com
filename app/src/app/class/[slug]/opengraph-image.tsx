@@ -107,7 +107,7 @@ export default async function Image({ params }: Props) {
             strokeLinejoin="round"
           />
         </svg>
-        <svg viewBox="0 0 28 28" height={500} fill="none" style={{ position: 'absolute', top: '0%', right: '5%', zIndex: -10, opacity: 0.2 }} xmlns="http://www.w3.org/2000/svg">
+        <svg viewBox="0 0 28 28" height={500} fill="none" style={{ position: 'absolute', top: '0%', right: '5%', opacity: 0.2 }} xmlns="http://www.w3.org/2000/svg">
           <path
             d="M14 1C7.37258 1 1.99999 6.37258 1.99999 13C1.99999 19.6274 7.37258 25 14 25C20.6274 25 26 19.6274 26 13C26 6.37258 20.6274 1 14 1Z"
             fill="url(#paint0)"
@@ -119,7 +119,7 @@ export default async function Image({ params }: Props) {
             </radialGradient>
           </defs>
         </svg>
-        <svg viewBox="0 0 28 28" height={500} fill="none" style={{ position: 'absolute', bottom: '-50%', left: '-20%', zIndex: -10, opacity: 0.2 }} xmlns="http://www.w3.org/2000/svg">
+        <svg viewBox="0 0 28 28" height={500} fill="none" style={{ position: 'absolute', bottom: '-50%', left: '-20%', opacity: 0.2 }} xmlns="http://www.w3.org/2000/svg">
           <path
             d="M14 1C7.37258 1 1.99999 6.37258 1.99999 13C1.99999 19.6274 7.37258 25 14 25C20.6274 25 26 19.6274 26 13C26 6.37258 20.6274 1 14 1Z"
             fill="url(#paint0)"
