@@ -49,9 +49,15 @@ class Query(graphene.ObjectType):
 
     # users
     def resolve_users(self, info):
+        user = info.context.user
+        if not user.is_authenticated:
+            raise Exception("Authentication credentials were not provided")
         return User.objects.all()
 
     def resolve_user(self, info, id):
+        user = info.context.user
+        if not user.is_authenticated:
+            raise Exception("Authentication credentials were not provided")
         return User.objects.get(pk=id)
 
     def resolve_me(self, info, **kwargs):
@@ -78,16 +84,28 @@ class Query(graphene.ObjectType):
 
     # payments
     def resolve_payments(self, info):
+        user = info.context.user
+        if not user.is_authenticated:
+            raise Exception("Authentication credentials were not provided")
         return Payments.objects.all()
 
     def resolve_payment(self, info, id):
+        user = info.context.user
+        if not user.is_authenticated:
+            raise Exception("Authentication credentials were not provided")
         return Payments.objects.get(pk=id)
 
     # enrollment
     def resolve_enrollments(self, info):
+        user = info.context.user
+        if not user.is_authenticated:
+            raise Exception("Authentication credentials were not provided")
         return Enrollment.objects.all()
 
     def resolve_enrollment(self, info, id):
+        user = info.context.user
+        if not user.is_authenticated:
+            raise Exception("Authentication credentials were not provided")
         return Enrollment.objects.get(pk=id)
 
 
