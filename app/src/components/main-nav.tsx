@@ -91,8 +91,8 @@ function MainNav() {
             </>
           ) : (
             <>
-              <Button variant={"outline"} onClick={() => signIn()}>
-                Login
+              <Button asChild variant={"outline"}>
+                <Link href={'/login'}>Login</Link>
               </Button>
               <Button asChild className="text-xs md:text-sm">
                 <Link href={'/register'}>
