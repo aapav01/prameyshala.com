@@ -94,8 +94,10 @@ function MainNav() {
               <Button variant={"outline"} onClick={() => signIn()}>
                 Login
               </Button>
-              <Button className="text-xs md:text-sm">
-                Join<span className="hidden md:flex md:ml-1">For Free</span>
+              <Button asChild className="text-xs md:text-sm">
+                <Link href={'/register'}>
+                  Join<span className="hidden md:flex md:ml-1">For Free</span>
+                </Link>
               </Button>
             </>
           )}
