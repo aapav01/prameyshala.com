@@ -1,6 +1,6 @@
 from django import forms
 from django.forms import ModelForm
-from .models import Classes, Subject, Chapter, Lesson, Category
+from .models import Classes, Subject, Chapter, Lesson, Category, Quiz, Choice, Question
 from app.accounts.models import User
 
 
@@ -42,4 +42,19 @@ class CategoriesForm(ModelForm):
 
     class Meta:
         model = Category
+        fields = "__all__"
+
+class QuizzesForm(ModelForm):
+    class Meta:
+        model = Quiz
+        fields = "__all__"
+
+class QuestionsForm(ModelForm):
+    class Meta:
+        model = Question
+        fields = "__all__"
+
+class ChoicesForm(ModelForm):
+    class Meta:
+        model = Choice
         fields = "__all__"
