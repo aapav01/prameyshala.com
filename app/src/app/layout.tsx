@@ -1,6 +1,7 @@
 import "@/styles/globals.css";
 import { Hind } from "next/font/google";
 import Script from "next/script";
+import { Toaster } from "@/components/ui/toaster"
 
 const hind = Hind({
   weight: ["300", "400", "500", "600", "700"],
@@ -106,6 +107,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={"antialiased " + hind.className}>
         {children}
+        <Toaster />
         <Script
           async
           src="https://www.googletagmanager.com/gtag/js?id=G-48KC5W0304"
