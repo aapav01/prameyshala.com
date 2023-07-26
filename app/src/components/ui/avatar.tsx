@@ -47,4 +47,14 @@ const AvatarFallback = React.forwardRef<
 ))
 AvatarFallback.displayName = AvatarPrimitive.Fallback.displayName
 
-export { Avatar, AvatarImage, AvatarFallback }
+function getInitals(name: string) {
+  let rgx = new RegExp(/(\p{L}{1})\p{L}+/, "gu");
+  // @ts-expect-error
+  let initials = [...name.matchAll(rgx)] || [];
+  initials = (
+    (initials.shift()?.[1] || "") + (initials.pop()?.[1] || "")
+  ).toUpperCase();
+  return initials;
+}
+
+export { Avatar, AvatarImage, AvatarFallback, getInitals }
