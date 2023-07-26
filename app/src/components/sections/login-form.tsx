@@ -4,6 +4,7 @@ import React from "react";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { useSearchParams } from "next/navigation";
 
 import {
   Form,
@@ -37,9 +38,10 @@ export default function LoginForm({}: Props) {
     },
   });
 
+  const searchParams = useSearchParams();
+
   function onSubmit(data: z.infer<typeof formSchema>) {
-    const urlParams = new URLSearchParams(window.location.search);
-    const callbackUrl = urlParams.get("callbackUrl");
+    const callbackUrl = searchParams.get("callbackUrl");
     signIn("credentials", {
       ...data,
       redirect: true,
