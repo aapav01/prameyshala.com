@@ -18,15 +18,10 @@ export const size = {
 export const contentType = "image/png";
 
 const query = gql`
-  query standard($slug: String!) {
+  query standard_og($slug: String!) {
     standard(slug: $slug) {
       id
       name
-      latestPrice
-      beforePrice
-      subjectSet {
-        name
-      }
     }
   }
 `;

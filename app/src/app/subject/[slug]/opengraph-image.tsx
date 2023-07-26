@@ -18,7 +18,7 @@ export const size = {
 export const contentType = "image/png";
 
 const query = gql`
-  query subject($slug: String!) {
+  query subject_og($slug: String!) {
     subject(slug: $slug) {
       id
       name
