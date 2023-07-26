@@ -5,7 +5,6 @@ import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
-import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
@@ -41,7 +40,11 @@ export default function LoginForm({}: Props) {
   function onSubmit(data: z.infer<typeof formSchema>) {
     const urlParams = new URLSearchParams(window.location.search);
     const callbackUrl = urlParams.get("callbackUrl");
-    signIn("credentials", { ...data, redirect: true, callbackUrl: callbackUrl ? callbackUrl : "/learn", })
+    signIn("credentials", {
+      ...data,
+      redirect: true,
+      callbackUrl: callbackUrl ? callbackUrl : "/learn",
+    });
   }
 
   return (
@@ -52,7 +55,9 @@ export default function LoginForm({}: Props) {
           name="username"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="font-medium text-gray-700">Phone Number</FormLabel>
+              <FormLabel className="font-medium text-gray-700">
+                Phone Number
+              </FormLabel>
               <FormControl>
                 <Input placeholder="9876543210" {...field} />
               </FormControl>
@@ -68,7 +73,9 @@ export default function LoginForm({}: Props) {
           name="password"
           render={({ field }) => (
             <FormItem className="mt-0">
-              <FormLabel className="font-medium text-gray-700" >Password</FormLabel>
+              <FormLabel className="font-medium text-gray-700">
+                Password
+              </FormLabel>
               <FormControl>
                 <Input placeholder="Password" type="password" {...field} />
               </FormControl>
