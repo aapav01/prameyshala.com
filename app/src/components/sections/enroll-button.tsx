@@ -20,7 +20,7 @@ export default function EnrollButton({ standard }: Props) {
   const makePayment = async (e: any) => {
     e.preventDefault();
     if (!session?.user) {
-      router.push("/");
+      router.push("/login?callbackUrl=" + window.location.href);
       return;
     }
     // TODO: Make API call to the serverless API
