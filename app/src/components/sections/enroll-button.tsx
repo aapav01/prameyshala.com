@@ -23,7 +23,19 @@ export default function EnrollButton({ standard }: Props) {
       router.push("/login?callbackUrl=" + window.location.href);
       return;
     }
-    // TODO: Make API call to the serverless API
+    const res = await fetch(`/class/${standard.slug}/enroll/order`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        // @ts-expect-error
+        token: session.user.token,
+        amount: standard.latestPrice
+      }),
+    });
+    const { createPayment } = await res.json();
+
     var options = {
       key: "rzp_test_3tq8ujggBnFtra",
       name: "Pramey Shala",
