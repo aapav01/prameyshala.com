@@ -39,7 +39,6 @@ function MainNav() {
       }
     };
     window.addEventListener("scroll", fixedHeader);
-    console.log("session", session);
   }, [session]);
   return (
     <nav
