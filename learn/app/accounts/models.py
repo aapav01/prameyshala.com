@@ -74,9 +74,10 @@ class Payments(models.Model):
         ATTEMPTED = 'attempted', _('Authorized/Failed')
         SUCCESS = 'paid', _('Captured')
 
-    payment_gateway_id = models.CharField(max_length=255)
+    payment_gateway_id = models.CharField(max_length=255, blank=True, null=True)
+    order_gateway_id = models.CharField(max_length=255, blank=True, null=True)
     gateway = models.CharField(max_length=255)
-    method = models.CharField(max_length=255)
+    method = models.CharField(max_length=255, blank=True, null=True)
     currency = models.CharField(max_length=255, default='INR')
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     user_email = models.CharField(max_length=255, blank=True, null=True)

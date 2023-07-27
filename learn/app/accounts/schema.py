@@ -5,9 +5,16 @@ from django.core.exceptions import ObjectDoesNotExist
 import graphene
 from graphene_django import DjangoObjectType
 from .models import User, Payments, Enrollment, phoneModel
+import environ
+import razorpay
 
 
-# This class returns the string needed to generate the key
+env = environ.Env()
+environ.Env.read_env()
+
+client = razorpay.Client(
+    auth=(env("RAZORPAY_KEY"), env("RAZORPAY_SECRET")))
+
 class generateKey:
     @staticmethod
     def returnValue(phone):
@@ -112,6 +119,18 @@ class Query(graphene.ObjectType):
 class Mutation(graphene.ObjectType):
     verify_otp = graphene.String(phone_number=graphene.String(
         required=True), otp=graphene.String(required=True))
+
+    create_payment = graphene.Field(PaymentsType, amount=graphene.Int(required=True))
+
+    def resolve_create_payment(self, info, amount):
+        response = client.order.create({
+            "amount": amount * 100,
+            "currency": "INR",
+        })
+
+        return Payments.objects.create(order_gateway_id=response['id'], gateway='razorpay',
+                                       status=response['status'], amount=(response['amount']/100), user=info.context.user,
+                                       user_email=info.context.user.email, json_response=response)
 
     @staticmethod
     def resolve_verify_otp(self, info, phone_number, otp):
