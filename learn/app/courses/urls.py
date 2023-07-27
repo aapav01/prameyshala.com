@@ -1,5 +1,5 @@
 from django.contrib.auth.decorators import login_required
-from django.urls import include, path
+from django.urls import path
 from .views import *
 
 app_name = 'courses'
@@ -32,4 +32,19 @@ urlpatterns = [
          login_required(CategoriesUpdateView.as_view()), name="category-update"),
     path("categories/<int:pk>/delete/",
          login_required(CategoriesDeleteView.as_view()), name="category-delete"),
+    path('quizzes/', login_required(QuizView.as_view()), name='quizzes'),
+    path("quizzes/<int:pk>/",
+         login_required(QuizUpdateView.as_view()), name="quiz-update"),
+    path("quizzes/<int:pk>/delete/",
+         login_required(QuizDeleteView.as_view()), name="quiz-delete"),
+    path('questions/', login_required(QuestionView.as_view()), name='questions'),
+    path("questions/<int:pk>/",
+         login_required(QuestionUpdateView.as_view()), name="question-update"),
+    path("questions/<int:pk>/delete/",
+         login_required(QuestionDeleteView.as_view()), name="question-delete"),
+    path('choices/', login_required(ChoiceView.as_view()), name='choices'),
+    path("choices/<int:pk>/",
+         login_required(ChoiceUpdateView.as_view()), name="choice-update"),
+    path("choices/<int:pk>/delete/",
+         login_required(ChoiceDeleteView.as_view()), name="choice-delete"),
 ]

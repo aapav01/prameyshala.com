@@ -34,6 +34,9 @@ class Category(models.Model):
     def __str__(self):
         return self.name
 
+    class Meta:
+        db_table = 'categories'
+
 
 class Subject(models.Model):
     name = models.CharField(max_length=255)
@@ -130,3 +133,50 @@ class Lesson(models.Model):
 
     class Meta:
         db_table = 'lessons'
+
+
+class Question(models.Model):
+    question_text = models.TextField()
+    created_at = models.DateTimeField(
+        auto_now=False, auto_now_add=True, blank=True, null=True)
+    updated_at = models.DateTimeField(auto_now=True, blank=True, null=True)
+
+    def __str__(self):
+        return self.question_text
+
+    class Meta:
+        db_table = 'questions'
+
+class Choice(models.Model):
+    question = models.ForeignKey(Question, on_delete=models.CASCADE)
+    choice_text = models.CharField(max_length=200)
+    is_correct = models.BooleanField(default=False)
+    created_at = models.DateTimeField(
+        auto_now=False, auto_now_add=True, blank=True, null=True)
+    updated_at = models.DateTimeField(auto_now=True, blank=True, null=True)
+
+    def __str__(self):
+        return self.choice_text
+
+    class Meta:
+        db_table = 'choices'
+
+class Quiz(models.Model):
+    class Type(models.TextChoices):
+        Mock = 'mock', _('Mock')
+        Practice = 'practice', _('Practice')
+
+    name = models.CharField(max_length=100)
+    type = models.CharField(max_length=20, choices=Type.choices)
+    created_at = models.DateTimeField(
+        auto_now=False, auto_now_add=True, blank=True, null=True)
+    updated_at = models.DateTimeField(auto_now=True, blank=True, null=True)
+    publish_at = models.DateTimeField(auto_now_add=True)
+    questions = models.ManyToManyField(Question)
+
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        db_table = 'quizzes'
