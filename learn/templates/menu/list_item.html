@@ -105,4 +105,7 @@
        {% if request.resolver_match.url_name == 'settings' %}class="active"{% endif %}
        data-ripple-light="true"><i class="fa-regular fa-gear"></i>General Settings</a>
   </li>
+  <li>
+    <a href="{% url 'graphql' %}"><i class="fa-regular fa-star-of-life"></i>Graphql API</a>
+  </li>
 {% endif %}

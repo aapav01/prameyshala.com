@@ -25,7 +25,7 @@ urlpatterns = [
     path("chart/", include("app.charts.urls")),
     path("courses/", include("app.courses.urls")),
     path('admin/', admin.site.urls),
-    path("graphql", csrf_exempt(GraphQLView.as_view(graphiql=True))),
+    path("graphql", csrf_exempt(GraphQLView.as_view(graphiql=True)), name="graphql"),
 ]
 
 if DEBUG:
