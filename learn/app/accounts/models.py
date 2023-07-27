@@ -98,7 +98,7 @@ class Enrollment(models.Model):
     payment = models.ForeignKey(Payments, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now=False, auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    expiration_date = models.DateField(default=(date.today() + timedelta(days=365)))
+    expiration_date = models.DateField(default=None, blank=True, null=True)
 
     class Meta:
         db_table = 'enrollments'
