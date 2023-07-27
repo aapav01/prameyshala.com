@@ -15,6 +15,8 @@ environ.Env.read_env()
 client = razorpay.Client(
     auth=(env("RAZORPAY_KEY"), env("RAZORPAY_SECRET")))
 
+client.set_app_details({"title" : "Pramey Shala", "version" : "testing-1.0.0"})
+
 class generateKey:
     @staticmethod
     def returnValue(phone):
