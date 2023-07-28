@@ -9,7 +9,8 @@ import EnrollButton from "@/components/sections/enroll-button";
 import PageHeader from "@/components/page-header";
 import React from "react";
 import { notFound } from "next/navigation";
-import { Metadata } from 'next'
+import { Metadata } from 'next';
+import { MDXRemote } from 'next-mdx-remote/rsc';
 import {
   StarFilledIcon,
   FileTextIcon,
@@ -179,7 +180,7 @@ export default async function ClassDetail({ params }: Props) {
             </TabsList>
             <TabsContent className="p-4" value="description">
               <div className="prose prose-lg max-w-full">
-                {data.standard.description}
+                <MDXRemote source={data.standard.description} />
               </div>
             </TabsContent>
             <TabsContent className="p-4" value="curriculum">
