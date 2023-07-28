@@ -135,6 +135,18 @@
           <button>close</button>
         </form>
       </dialog>
+      <script>
+        new EasyMDE({element: document.getElementById('{{ lesson.form.description.id_for_label }}')});
+      </script>
     {% endfor %}
   {% endif %}
 {% endblock content %}
+{% block head_link %}
+<link rel="stylesheet" href="https://unpkg.com/easymde/dist/easymde.min.css">
+<script src="https://unpkg.com/easymde/dist/easymde.min.js"></script>
+{% endblock head_link %}
+{% block body_js %}
+<script>
+  new EasyMDE({element: document.getElementById('{{ form.description.id_for_label }}')});
+</script>
+{% endblock body_js %}
