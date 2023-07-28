@@ -1,5 +1,6 @@
 import graphene
 from graphene_django import DjangoObjectType
+from datetime import datetime
 from .models import Lesson, Subject, Classes, Chapter, Category
 
 
@@ -53,7 +54,7 @@ class Query(graphene.ObjectType):
 
     # classes
     def resolve_classes(self, info):
-        return Classes.objects.all()
+        return Classes.objects.filter(publish_at__lte=datetime.now())
 
     def resolve_standard(self, info, slug):
         return Classes.objects.get(slug=slug)
