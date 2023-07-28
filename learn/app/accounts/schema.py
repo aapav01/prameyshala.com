@@ -1,10 +1,11 @@
 import pyotp
 import base64
-from datetime import datetime
+from datetime import datetime, timedelta
 from django.core.exceptions import ObjectDoesNotExist
 import graphene
 from graphene_django import DjangoObjectType
 from .models import User, Payments, Enrollment, phoneModel
+from app.courses.models import Classes
 import environ
 import razorpay
 
@@ -15,7 +16,6 @@ environ.Env.read_env()
 client = razorpay.Client(
     auth=(env("RAZORPAY_KEY"), env("RAZORPAY_SECRET")))
 
-client.set_app_details({"title" : "Pramey Shala", "version" : "testing-1.0.0"})
 
 class generateKey:
     @staticmethod
@@ -122,7 +122,15 @@ class Mutation(graphene.ObjectType):
     verify_otp = graphene.String(phone_number=graphene.String(
         required=True), otp=graphene.String(required=True))
 
-    create_payment = graphene.Field(PaymentsType, amount=graphene.Int(required=True))
+    create_payment = graphene.Field(
+        PaymentsType, amount=graphene.Int(required=True))
+
+    enroll_student = graphene.Field(EnrollmentType,
+                                    razorpay_payment_id=graphene.String(
+                                        required=True),
+                                    amount=graphene.Int(required=True),
+                                    ps_payment_id=graphene.Int(required=True),
+                                    ps_standard_id=graphene.Int(required=True))
 
     def resolve_create_payment(self, info, amount):
         response = client.order.create({
@@ -133,6 +141,25 @@ class Mutation(graphene.ObjectType):
         return Payments.objects.create(order_gateway_id=response['id'], gateway='razorpay',
                                        status=response['status'], amount=(response['amount']/100), user=info.context.user,
                                        user_email=info.context.user.email, json_response=response)
+
+    def resolve_enroll_student(self, info, amount,
+                               razorpay_payment_id,
+                               ps_payment_id,
+                               ps_standard_id):
+        user = info.context.user
+        if not user.is_authenticated:
+            raise Exception("Authentication credentials were not provided")
+        ps_payment = Payments.objects.get(id=ps_payment_id)
+        ps_class = Classes.objects.get(id=ps_standard_id)
+        try:
+            client.payment.capture(razorpay_payment_id, (amount * 100))
+            ps_payment.status = "paid"
+            ps_payment.save()
+            return Enrollment.objects.create(user=user, standard=ps_class, payment=ps_payment,
+                                        expiration_date=(datetime.now() + timedelta(days=365)))
+        except:
+            raise Exception("Payment Failed")
+
 
     @staticmethod
     def resolve_verify_otp(self, info, phone_number, otp):
