@@ -22,13 +22,14 @@ class ClassesView(PermissionRequiredMixin, ListView):
         'form': form
     }
     paginate_by = 10
+    ordering = ['-created_at']
 
     queryset = Classes.objects.annotate(enroll_count=Count("enrollment__id")).all()
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         for obj in context['classes']:
-            temp_form = ClassesForm(instance=obj)
+            temp_form = ClassesForm(instance=obj, prefix=obj.pk)
             obj.form = temp_form
         return context
 
@@ -54,6 +55,12 @@ class ClassesUpdateView(PermissionRequiredMixin, UpdateView):
     form_class = ClassesForm
     success_url = reverse_lazy("courses:classes")
     template_name = "form.html"
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        prefix = self.kwargs.get('pk')
+        kwargs['prefix'] = prefix
+        return kwargs
 
     def form_valid(self, form):
         form.instance.slug = slugify(form.instance.name)

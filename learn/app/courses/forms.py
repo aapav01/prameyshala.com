@@ -9,6 +9,9 @@ class ClassesForm(ModelForm):
         model = Classes
         fields = "__all__"
         exclude = ['slug']
+        widgets = {
+            'description': forms.Textarea(attrs={'class': 'editor'}),
+        }
 
 
 class SubjectForm(ModelForm):
