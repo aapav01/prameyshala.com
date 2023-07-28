@@ -57,6 +57,11 @@ async function getData({ params }: Props) {
     const api_data = await getClient().query({
       query,
       variables: { slug: params.slug },
+      context: {
+        fetchOptions: {
+          next: { revalidate: 30 },
+        },
+      },
     });
     return api_data.data;
   } catch (error) {
