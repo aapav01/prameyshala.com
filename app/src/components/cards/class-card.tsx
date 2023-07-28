@@ -11,12 +11,35 @@ import {
   PlayIcon,
 } from "@radix-ui/react-icons";
 import { Button } from "../ui/button";
+import { Skeleton } from "../ui/skeleton";
 import Link from "next/link";
 
 type Props = {
   standard: any;
   enroll?: true;
 };
+
+export function ClassCardSkeleton() {
+  return (
+    <Card>
+      <Skeleton className="h-36 w-full rounded-t-lg p-1" />
+      <CardHeader>
+      <div className="flex flex-row justify-between items-center gap-3">
+        <Skeleton className="h-4 w-full" />
+        <Skeleton className="h-6 w-6" />
+      </div>
+
+      </CardHeader>
+      <CardContent>
+      <div className="grid grid-cols-3 gap-2">
+        <Skeleton className="h-6" />
+        <Skeleton className="h-6" />
+        <Skeleton className="h-6" />
+      </div>
+      </CardContent>
+    </Card>
+  )
+}
 
 export default function ClassCard({ standard, enroll }: Props) {
   const discount: any =

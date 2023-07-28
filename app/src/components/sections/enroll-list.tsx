@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
-import ClassCard from "@/components/cards/class-card";
+import ClassCard, { ClassCardSkeleton } from "@/components/cards/class-card";
 
 type Props = {};
 
@@ -20,6 +20,7 @@ export default function EnrollList({}: Props) {
             // @ts-expect-error
             token: session?.user?.token,
           }),
+          cache: "no-cache",
         }).then((res) => {
           setLoading(false);
           return res.json();
@@ -40,6 +41,14 @@ export default function EnrollList({}: Props) {
         enrollList.map((item: any, index: number) => (
           <ClassCard key={index} standard={item.standard} enroll />
         ))}
+        {loading && (
+          <>
+            <ClassCardSkeleton />
+            <ClassCardSkeleton />
+            <ClassCardSkeleton />
+            <ClassCardSkeleton />
+          </>
+        )}
     </div>
   );
 }
