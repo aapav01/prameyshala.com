@@ -56,6 +56,8 @@ class Query(graphene.ObjectType):
     enrollments = graphene.List(EnrollmentType)
     enrollment = graphene.Field(EnrollmentType, id=graphene.Int(required=True))
 
+    my_enrollments = graphene.List(EnrollmentType)
+
     # users
     def resolve_users(self, info):
         user = info.context.user
@@ -116,6 +118,12 @@ class Query(graphene.ObjectType):
         if not user.is_authenticated:
             raise Exception("Authentication credentials were not provided")
         return Enrollment.objects.get(pk=id)
+
+    def resolve_my_enrollments(self, info):
+        user = info.context.user
+        if not user.is_authenticated:
+            raise Exception("Authentication credentials were not provided")
+        return Enrollment.objects.filter(user=user).filter(expiration_date__gte=datetime.now())
 
 
 class Mutation(graphene.ObjectType):
