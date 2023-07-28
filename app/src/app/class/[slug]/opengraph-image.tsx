@@ -17,6 +17,8 @@ export const size = {
 
 export const contentType = "image/png";
 
+export const dynamic = "force-static"
+
 const query = gql`
   query standard_og($slug: String!) {
     standard(slug: $slug) {

@@ -26,6 +26,7 @@ const query = gql`
   }
 `;
 
+export const dynamic = "force-static"
 
 async function getData({ params }: Props) {
   try {
