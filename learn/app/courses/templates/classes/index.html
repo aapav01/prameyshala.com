@@ -1,5 +1,6 @@
 {% extends "layouts/dashboard.html" %}
 {% load static %}
+{% load truncate %}
 {% block title %}
   {{ title }} | Pramey Shala
 {% endblock title %}
@@ -41,7 +42,7 @@
             {% for class in classes %}
               <tr class="border-b border-blue-gray-50">
                 <td class="px-4 py-3">{{ class.name }}</td>
-                <td class="px-4 py-3">{{ class.description }}</td>
+                <td class="px-4 py-3">{{ class.description|truncatewords_by_chars:100 }}</td>
                 <td class="px-4 py-3">{{ class.slug }}</td>
                 <td class="px-4 py-3 {% if not class.enroll_count > 0 %}bg-red-300/50{% endif %}">{{ class.enroll_count }}</td>
                 <td class="flex gap-2 px-4 py-3">
