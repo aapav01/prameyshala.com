@@ -88,7 +88,7 @@ export default async function PortalClass({ params }: Props) {
       </header>
       <section className="container py-8">
         <h2 className="text-3xl font-semibold py-3">Subjects</h2>
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 py-4 gap-4">
           {data.standard.subjectSet.map((subject: any, index: number) => (
             <SubjectCard key={index} subject={subject}/>
           ))}
