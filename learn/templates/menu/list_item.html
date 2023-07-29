@@ -43,20 +43,6 @@
        data-ripple-light="true"><i class="fa-regular fa-chalkboard"></i>Lessons</a>
   </li>
 {% endif %}
-{% if perms.courses.view_questions %}
-  <li>
-    <a href="{% url 'courses:questions' %}"
-       {% if request.resolver_match.url_name == 'questions' %}class="active"{% endif %}
-       data-ripple-light="true"><i class="fa-regular fa-question"></i>Questions</a>
-  </li>
-{% endif %}
-{% if perms.courses.view_choices %}
-  <li>
-    <a href="{% url 'courses:choices' %}"
-       {% if request.resolver_match.url_name == 'choices' %}class="active"{% endif %}
-       data-ripple-light="true"><i class="fa-regular fa-check"></i>Choices</a>
-  </li>
-{% endif %}
 {% if perms.courses.view_quizzes %}
   <li>
     <a href="{% url 'courses:quizzes' %}"
