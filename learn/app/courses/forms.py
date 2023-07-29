@@ -37,24 +37,27 @@ class LessonForm(ModelForm):
             'lesson_type': forms.Select(attrs={'required': True}),
         }
 
-
 class CategoriesForm(ModelForm):
-
     class Meta:
         model = Category
-        fields = "__all__"
-
-class QuizzesForm(ModelForm):
-    class Meta:
-        model = Quiz
         fields = "__all__"
 
 class QuestionsForm(ModelForm):
     class Meta:
         model = Question
-        fields = "__all__"
+        fields = ['question_text','figure']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['figure'].required = False
 
 class ChoicesForm(ModelForm):
     class Meta:
         model = Choice
-        fields = "__all__"
+        fields = ['choice_text','is_correct']
+
+class QuizzesForm(ModelForm):
+    template_name="quizzes/form_snippet.html"
+    class Meta:
+        model = Quiz
+        fields = ['name','type']
