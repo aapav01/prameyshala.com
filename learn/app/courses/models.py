@@ -80,8 +80,29 @@ class Chapter(models.Model):
         db_table = 'chapters'
 
 
+class Quiz(models.Model):
+    class Type(models.TextChoices):
+        Mock = 'mock', _('Mock')
+        Practice = 'practice', _('Practice')
+
+    name = models.CharField(max_length=100)
+    type = models.CharField(max_length=20, choices=Type.choices)
+    created_at = models.DateTimeField(
+        auto_now=False, auto_now_add=True, blank=True, null=True)
+    updated_at = models.DateTimeField(auto_now=True, blank=True, null=True)
+    publish_at = models.DateTimeField(auto_now_add=True)
+    time_required = models.IntegerField(blank=True, null=True)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        db_table = 'quizzes'
+
+
 class Question(models.Model):
     question_text = models.TextField()
+    quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
     created_at = models.DateTimeField(
         auto_now=False, auto_now_add=True, blank=True, null=True)
     updated_at = models.DateTimeField(auto_now=True, blank=True, null=True)
@@ -108,27 +129,6 @@ class Choice(models.Model):
 
     class Meta:
         db_table = 'choices'
-
-
-class Quiz(models.Model):
-    class Type(models.TextChoices):
-        Mock = 'mock', _('Mock')
-        Practice = 'practice', _('Practice')
-
-    name = models.CharField(max_length=100)
-    type = models.CharField(max_length=20, choices=Type.choices)
-    created_at = models.DateTimeField(
-        auto_now=False, auto_now_add=True, blank=True, null=True)
-    updated_at = models.DateTimeField(auto_now=True, blank=True, null=True)
-    publish_at = models.DateTimeField(auto_now_add=True)
-    questions = models.ManyToManyField(Question)
-    time_required = models.IntegerField(blank=True, null=True)
-
-    def __str__(self):
-        return self.name
-
-    class Meta:
-        db_table = 'quizzes'
 
 
 class Assignment(models.Model):
