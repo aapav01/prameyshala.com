@@ -1,59 +1,50 @@
-<div class="form-control">
-  <label for="{{ form.name.id_for_label }}">
-    <span class="label-text">{{ form.name.label }}</span>
-  </label>
-  {{ form.name }}
-  <label class="text-error">{{ form.name.errors }}</label>
-</div>
-<div class="form-control">
-  <label for = "{{ form.type.id_for_label }}">
-    <span class="label-text">{{ form.type.label }}</span>
-  </label>
-  {{ form.type }}
-  <label class="text-error">{{ form.type.errors }}</label>
-</div>
-<div class="form-control question1">
-  <label for="question-1">
-    <span class="label-text">Question</span>
-  </label>
-  <textarea id="question-1" name="question1" class="md:col-span-2 row-span-1 grow" required></textarea> 
-  <label class="text-error">{{ form.questions.errors }}</label>
+<div id="main_{{ form.prefix }}"
+     class="form-control w-full djanog-custom-forms grid grid-cols-1 md:grid-cols-2 gap-4">
   <div class="form-control">
-    <label for = "figure1">
-      <span class="label-text">Figure</span>
+    <label for="{{ form.name.id_for_label }}">
+      <span class="label-text">{{ form.name.label }}</span>
     </label>
-    <input type="file" name="question_figure" id="question_figure">
-    <label class="text-error">{{ form.questions.figure.errors }}</label>
-    <button type="button" class="btn btn-error text-white mt-6" id="question1" onclick="handleRemoveQuestion(this)"><i class="far fa-trash-alt"></i>Remove Question</button>
+    {{ form.name }}
+    <label class="text-error">{{ form.name.errors }}</label>
   </div>
-  <div class="form-control" id="q1">
-    <button class="btn btn-primary text-white mt-6" onclick="handleAddChoice(this)" type="button">
-      <i class="far fa-plus"></i>Add choice</button>
-      
-    </div>
+  <div class="form-control">
+    <label for="{{ form.type.id_for_label }}">
+      <span class="label-text">{{ form.type.label }}</span>
+    </label>
+    {{ form.type }}
+    <label class="text-error">{{ form.type.errors }}</label>
   </div>
-  <button type="button" class="btn bg-gradient-to-br from-purple-600 to-pink-400 text-white px-12 border-0 shadow-md shadow-purple-500/50 mt-8" onclick="handleAddQuestion(this)"><i class="far fa-plus"></i>Add Question</button>
-  <p>Total Questions:<span id="question-count">1</span></p>
+</div>
+<p class="my-2">
+  Total Questions:<span id="question-count">0</span>
+</p>
+<div class="flex items-center justify-center">
+  <button type="button"
+          class="btn bg-gradient-to-br from-purple-600 to-pink-400 text-white px-12 border-0 shadow-md shadow-purple-500/50 mt-8"
+          onclick="handleAddQuestion(this)">
+    <i class="far fa-plus"></i>Add Question
+  </button>
+</div>
 <script>
-  function addHTMLBeforeElement(htmlContent, targetElement) {
-  if (targetElement && targetElement.insertAdjacentHTML) {
-    targetElement.insertAdjacentHTML('beforebegin', htmlContent);
-  }
-}
-  let question_number = 1;
-  function handleAddChoice(e){
-    console.log(e);
-    const choiceQuestionNumber = (e.parentNode.id).slice(1);
-   const choiceHtml = `
+  let question_number = 0;
+  function handleAddChoice(e, question_number){
+  console.log(e);
+  const choiceQuestionNumber = (e.parentNode.id).slice(1);
+  const choiceHtml = `
    <div class='mt-3' data-question-number="${question_number}">
-    <input type='text' name="choice${choiceQuestionNumber}" placeholder='Enter Choice Value' required>
-    <div class='flex mt-2'><input name="is_correct-${choiceQuestionNumber}" type='checkbox' id='is_checked'>
-    <label for='is_checked'>Correct</label>
-    <button type="button"  class="btn btn-sm btn-error btn-square mt-2.9" onClick="handleRemoveChoice(this)"><i class="far fa-trash-alt"></i>
+      <input type='text' name="choice${choiceQuestionNumber}" placeholder='Enter Choice Value' required>
+      <div class='flex justify-between mt-2'>
+        <div class="inline-flex">
+          <input name="is_correct-${choiceQuestionNumber}" type='checkbox' id='is_checked'>
+          <label for='is_checked'>Correct</label>
+        </div>
+        <button type="button" class="btn btn-sm bg-gradient-to-br from-red-600 to-pink-400 text-white btn-square mt-2.9" onClick="handleRemoveChoice(this)"><i class="far fa-trash-alt"></i>
+      </div>
     </div>
-    </div>
-    `
-    addHTMLBeforeElement(choiceHtml, e);
+  `;
+    const choiceElement = document.getElementById(`q${question_number}`);
+    choiceElement.insertAdjacentHTML('beforeend', choiceHtml);
+
   }
   function handleRemoveQuestion(e){
     const remove_class = e.id;
@@ -64,32 +55,47 @@
     document.getElementById('question-count').innerText = question_number;
   }
   function handleAddQuestion(e){
-    question_number++;
     const questionHtml = `
-    <div class="form-control question${question_number}">
-  <label for="question-${question_number}">
-    <span class="label-text">Question</span>
-  </label>
-  <textarea id="question-${question_number}" name="question${question_number}" class="md:col-span-2 row-span-1 grow" required></textarea> 
-  <label class="text-error">{{ form.questions.errors }}</label>
-  <div class="form-control">
-    <label for ="figure${question_number}">
-      <span class="label-text">Figure</span>
-    </label>
-    <input type="file" name="question_figure" id="question_figure">
-    <label class="text-error">{{ form.questions.figure.errors }}</label>
-    <button type="button" class="btn btn-error text-white mt-6" id="question${question_number}" onclick="handleRemoveQuestion(this)"><i class="far fa-trash-alt"></i>Remove Question</button>
-  </div>
-  <div id="choices" class="form-control"></div>
-  <div class="form-control" id="q${question_number}"">
-    <button class="btn btn-primary text-white mt-6" id="test_add" onclick="handleAddChoice(this)" type="button">
-      <i class="far fa-plus"></i>Add choice</button>
+    <div class="question${question_number} md:col-span-2">
+      <div class="form-control">
+        <label for="question-${question_number}">
+          <span class="label-text">Question</span>
+        </label>
+        <textarea id="question-${question_number}" name="question[]" class="md:col-span-2 row-span-1 grow" required></textarea>
+        <label class="text-error">{{ form.questions.errors }}</label>
+      </div>
+      <div class="flex items-center justify-between gap-2">
+        <div class="form-control w-full">
+          <label for="figure-${question_number}">
+            <span class="label-text">Figure</span>
+          </label>
+          <input type="file"
+                 name="question_figure-${question_number}"
+                 id="question_figure-${question_number}">
+          <label class="text-error">{{ form.questions.figure.errors }}</label>
+        </div>
+        <button type="button"
+                class="btn bg-gradient-to-tr from-red-600 to-pink-800 text-white mt-6"
+                id="question${question_number}"
+                onclick="handleRemoveQuestion(this)">
+          <i class="far fa-trash-alt"></i>Remove Question
+        </button>
+      </div>
+      <div>
+        <div id="q${question_number}" class="grid grid-cols-2 gap-2"></div>
+        <div class="flex justify-end">
+          <button class="btn btn-primary text-white mt-6"
+                  onclick="handleAddChoice(this, ${question_number})"
+                  type="button">
+            <i class="far fa-plus"></i>Add choice
+          </button>
+        </div>
+      </div>
     </div>
-  </div>
-    `
-    addHTMLBeforeElement(questionHtml, e);
+    `;
+    document.getElementById('main_{{ form.prefix }}').insertAdjacentHTML('beforeend', questionHtml);
+    question_number++;
     document.getElementById('question-count').innerText = question_number;
-    
   }
   function handleRemoveChoice(e){
     e.parentNode.parentNode.remove();
