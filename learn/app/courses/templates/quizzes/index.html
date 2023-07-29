@@ -23,6 +23,7 @@
             <tr>
               <th class="px-4 py-3">Name</th>
               <th class="px-4 py-3">Type</th>
+              <th class="px-4 py-3">Questions</th>
               <th class="px-4 py-3">Action</th>
             </tr>
           </thead>
@@ -30,21 +31,18 @@
             <tr>
               <th class="px-4 py-3">Name</th>
               <th class="px-4 py-3">Type</th>
+              <th class="px-4 py-3">Questions</th>
               <th class="px-4 py-3">Action</th>
             </tr>
           </tfoot>
           <tbody>
-            {% for quiz in quizes %}
+            {% for quiz in quizzes %}
               <tr class="border-b border-blue-gray-50">
                 <td class="px-4 py-3">{{ quiz.name }}</td>
                 <td class="px-4 py-3">{{ quiz.type }}</td>
+                <td class="px-4 py-3">{{ quiz.question_count }}</td>
                 <td class="flex gap-2 px-4 py-3">
-                  {% if perms.courses.change_quizes %}
-                    <button onclick="update_quiz_{{ quiz.pk }}.showModal()"
-                            class="btn btn-sm btn-success btn-square">
-                      <i class="fad fa-edit"></i>
-                    </button>
-                  {% endif %}
+                  <a href="{% url 'courses:quiz-update' pk=quiz.pk %}" class="btn btn-sm btn-info btn-square"><i class="far fa-eye"></i></a>
                   {% if perms.courses.delete_quizes %}
                   <a href="{% url 'courses:quiz-delete' pk=quiz.pk %}"
                      onclick="if(confirm('Are you sure you want to delete {{ quiz.name }} from database?')) return true; else return false;"
@@ -92,31 +90,5 @@
       <button>close</button>
     </form>
   </dialog>
-{% endif %}
-{% if perms.courses.change_quizes %}
-  {% for quiz in quizes %}
-    <dialog id="update_quiz_{{ quiz.pk }}"
-            class="modal modal-bottom sm:modal-middle transition-all duration-500 ease-in-out">
-      <form method="post"
-            enctype="multipart/form-data"
-            action="{% url 'courses:quiz-update' pk=quiz.pk %}"
-            class="modal-box sm:max-w-5xl">
-        {% csrf_token %}
-        <h2 class="font-mono font-semibold text-lg">Update - {{ quiz.name }}</h2>
-        <div class="relative mb-4">
-          <div class="form-control w-full djanog-custom-forms grid grid-cols-1 md:grid-cols-2 gap-4">
-            {{ class.form.as_div }}
-          </div>
-        </div>
-        <div class="modal-action justify-between">
-          <p class="text-xs mt-auto">Press esc to close the window or outside the dialog box.</p>
-          <button type="submit" class="btn btn-success shadow">Update</button>
-        </div>
-      </form>
-      <form method="dialog" class="modal-backdrop backdrop-blur-md">
-        <button>close</button>
-      </form>
-    </dialog>
-  {% endfor %}
 {% endif %}
 {% endblock content %}
