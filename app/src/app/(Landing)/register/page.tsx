@@ -1,6 +1,7 @@
 import React from "react";
 import { Metadata } from "next";
 import RegisterForm from "@/components/sections/register-form";
+import Link from "next/link";
 
 type Props = {};
 
@@ -21,12 +22,12 @@ export default function RegisterPage({}: Props) {
             </h2>
             <p className="mt-1 text-gray-500">
               Or&nbsp;
-              <a
-                href="#"
+              <Link
+                href="/login"
                 className="font-medium text-indigo-600 hover:text-indigo-500"
               >
                 Sign in to your account.
-              </a>
+              </Link>
             </p>
             <RegisterForm />
           </div>

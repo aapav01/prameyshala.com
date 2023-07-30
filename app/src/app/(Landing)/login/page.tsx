@@ -22,12 +22,12 @@ export default function LoginPage({}: Props) {
             </h2>
             <p className="mt-1 text-gray-500">
               Or&nbsp;
-              <a
-                href="#"
+              <Link
+                href="/register"
                 className="font-medium text-indigo-600 hover:text-indigo-500"
               >
                 Get Started by Creating an Account.
-              </a>
+              </Link>
             </p>
             <LoginForm />
           </div>
