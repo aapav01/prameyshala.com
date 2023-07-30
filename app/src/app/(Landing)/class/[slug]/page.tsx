@@ -47,7 +47,15 @@ const query = gql`
         id
       }
       subjectSet {
+        id
         name
+        chapterSet {
+          id
+          name
+          lessonSet {
+            title
+          }
+        }
       }
     }
   }
@@ -173,7 +181,10 @@ export default async function ClassDetail({ params }: Props) {
                 <PersonIcon className="text-primary h-5 w-5 mb-1" />
                 Instructor
               </TabsTrigger>
-              <TabsTrigger className="py-4 w-2/4 md:w-1/4 text-lg gap-1" value="reviews">
+              <TabsTrigger
+                className="py-4 w-2/4 md:w-1/4 text-lg gap-1"
+                value="reviews"
+              >
                 <StarFilledIcon className="text-primary h-5 w-5 mb-1" />
                 Reviews
               </TabsTrigger>
@@ -184,37 +195,34 @@ export default async function ClassDetail({ params }: Props) {
               </div>
             </TabsContent>
             <TabsContent className="p-4" value="curriculum">
-              <Accordion
-                className="flex flex-col gap-4"
-                defaultValue="item-1"
-                type="single"
-                collapsible
-              >
-                <AccordionItem className="shadow rounded" value="item-1">
-                  <AccordionTrigger className="bg-blue-100 text-blue-950 rounded text-xl font-semibold px-4">
-                    Lesson #01
-                  </AccordionTrigger>
-                  <AccordionContent className="p-2 text-lg">
-                    Yes. It adheres to the WAI-ARIA design pattern.
-                  </AccordionContent>
-                </AccordionItem>
-                <AccordionItem className="shadow rounded" value="item-2">
-                  <AccordionTrigger className="bg-blue-100 text-blue-950 rounded text-xl font-semibold px-4">
-                    Lesson #02
-                  </AccordionTrigger>
-                  <AccordionContent className="p-2 text-lg">
-                    Yes. It adheres to the WAI-ARIA design pattern.
-                  </AccordionContent>
-                </AccordionItem>
-                <AccordionItem className="shadow rounded" value="item-3">
-                  <AccordionTrigger className="bg-blue-100 text-blue-950 rounded text-xl font-semibold px-4">
-                    Lesson #03
-                  </AccordionTrigger>
-                  <AccordionContent className="p-2 text-lg">
-                    Yes. It adheres to the WAI-ARIA design pattern.
-                  </AccordionContent>
-                </AccordionItem>
-              </Accordion>
+              {data.standard.subjectSet.map((subject: any, index_s: number) => (
+                <React.Fragment key={index_s}>
+                  <h3 className="font-sans font-semibold py-4 text-xl">{subject.name}</h3>
+                  <Accordion
+                    className="flex flex-col gap-4 py-2"
+                    defaultValue="item-1"
+                    type="single"
+                    collapsible
+                  >
+                    {subject.chapterSet.map((chapter: any, index: number) => (
+                      <AccordionItem
+                        key={index}
+                        className="shadow rounded"
+                        value={"item-"+ index_s + index}
+                      >
+                        <AccordionTrigger className="bg-blue-100 text-blue-950 rounded text-xl font-semibold px-4">
+                          {chapter.name}
+                        </AccordionTrigger>
+                        <AccordionContent className="p-2 text-lg">
+                          <ul className="list-decimal">
+                            {chapter.lessonSet.map((lesson:any, index: number) => (<li key={index}>{lesson.name}</li>))}
+                          </ul>
+                        </AccordionContent>
+                      </AccordionItem>
+                    ))}
+                  </Accordion>
+                </React.Fragment>
+              ))}
             </TabsContent>
             <TabsContent
               className="prose prose-lg max-w-full"
@@ -269,8 +277,8 @@ export default async function ClassDetail({ params }: Props) {
           <div className="w-full lg:w-4/12 relative">
             <div className="bg-white shadow lg:-mt-80 p-4 md:py-10 lg:px-6 rounded-lg flex max-sm:flex-col lg:flex-col">
               <div className="mb-6 relative h-fit">
-                <div className="absolute top-[34%] left-[39%]">
-                  <button className="shadow shadow-pink-500/50 bg-pink-600 rounded-full text-white p-6 animate-pulse">
+                <div className="absolute top-0 left-0 right-0 bottom-0 flex items-center justify-center">
+                  <button className="shadow shadow-pink-500/50 bg-pink-600 rounded-full text-white p-2 md:p-6 animate-pulse">
                     <PlayIcon className="h-10 w-10" />
                   </button>
                 </div>
