@@ -8,6 +8,7 @@ from .models import User, Payments, Enrollment, phoneModel
 from app.courses.models import Classes
 import environ
 import razorpay
+import requests
 
 
 env = environ.Env()
@@ -91,7 +92,21 @@ class Query(graphene.ObjectType):
         OTP = pyotp.HOTP(key)  # HOTP Model for OTP is created
         print(phone_number + " requested for otp which is " + OTP.at(Mobile.counter))
         # return OTP.at(Mobile.counter)
-        return "OTP Sent Successfully"
+        headers = {
+            "accept": "application/json",
+            "content-type": "application/*+json",
+            "authorization": env('FAST2SMS_API_KEY')
+        }
+        response = requests.post("https://www.fast2sms.com/dev/bulkV2", headers=headers, json={
+            "variables_values": OTP.at(Mobile.counter),
+            "numbers": phone_number,
+            "route": "otp"
+        })
+        print(response.json())
+        if response.status_code == 200:
+            return "OTP Sent Successfully"
+        else:
+            return "OTP Sending Failed"
 
     # payments
     def resolve_payments(self, info):
@@ -129,6 +144,11 @@ class Query(graphene.ObjectType):
 class Mutation(graphene.ObjectType):
     verify_otp = graphene.String(phone_number=graphene.String(
         required=True), otp=graphene.String(required=True))
+
+    register_user = graphene.Field(UserType, phone_number=graphene.String(required=True),
+                                      name=graphene.String(required=True),
+                                      email=graphene.String(required=True),
+                                      password=graphene.String(required=True))
 
     create_payment = graphene.Field(
         PaymentsType, amount=graphene.Int(required=True))
@@ -182,3 +202,23 @@ class Mutation(graphene.ObjectType):
             Mobile.isVerified = True
             Mobile.save()
             return "OTP Verified Successfully"
+        else:
+            return "OTP Verification Failed"
+
+    def resolve_register_user(self, info, phone_number, name, email, password):
+        try:
+            Mobile = phoneModel.objects.get(Mobile=phone_number)
+        except ObjectDoesNotExist:
+            return "Phone Number Not Found"
+        if Mobile.isVerified:
+            # check if user exist
+            try:
+                user = User.objects.get(phone_number=phone_number)
+                return "User Already Exists"
+            except ObjectDoesNotExist:
+                pass
+            user = User.objects.create_user(
+                phone_number=phone_number, name=name, email=email, password=password)
+            return user
+        else:
+            return "OTP Verification Failed"
