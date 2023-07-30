@@ -9,8 +9,8 @@ import EnrollButton from "@/components/sections/enroll-button";
 import PageHeader from "@/components/page-header";
 import React from "react";
 import { notFound } from "next/navigation";
-import { Metadata } from 'next';
-import { MDXRemote } from 'next-mdx-remote/rsc';
+import { Metadata } from "next";
+import { MDXRemote } from "next-mdx-remote/rsc";
 import {
   StarFilledIcon,
   FileTextIcon,
@@ -76,7 +76,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   return {
     title: data.standard.name + " | Pramey Shala",
-  }
+  };
 }
 
 export default async function ClassDetail({ params }: Props) {
@@ -121,7 +121,7 @@ export default async function ClassDetail({ params }: Props) {
           { title: data?.standard.name },
         ]}
       >
-        <div className="flex gap-2 my-4">
+        <div className="grid grid-cols-2 sm:grid-cols-4 xl:grid-cols-6 gap-2 my-4">
           {data.standard.subjectSet.map((subject: any, index: number) => (
             <div
               className="text-purple-800 bg-purple-500/20 px-3 py-1 rounded-lg font-semibold"
@@ -148,32 +148,32 @@ export default async function ClassDetail({ params }: Props) {
           </div>
         </div>
       </PageHeader>
-      <section className="py-24">
-        <div className="container w-full flex gap-3">
+      <section className="py-12 lg:py-24">
+        <div className="container w-full flex flex-col-reverse lg:flex-row gap-3">
           <Tabs defaultValue="description" className="w-full lg:w-8/12">
-            <TabsList className="py-8 w-full">
+            <TabsList className="w-full">
               <TabsTrigger
-                className="py-4 w-1/4 text-lg gap-1"
+                className="py-4 w-2/4 md:w-1/4 text-lg gap-1"
                 value="description"
               >
                 <FileIcon className="text-primary h-5 w-5 mb-1" />
                 Description
               </TabsTrigger>
               <TabsTrigger
-                className="py-4 w-1/4 text-lg gap-1"
+                className="py-4 w-2/4 md:w-1/4 text-lg gap-1"
                 value="curriculum"
               >
                 <ActivityLogIcon className="text-primary h-4 w-4 mb-1" />
                 Curriculum
               </TabsTrigger>
               <TabsTrigger
-                className="py-4 w-1/4 text-lg gap-1"
+                className="py-4 w-2/4 md:w-1/4 text-lg gap-1"
                 value="instructor"
               >
                 <PersonIcon className="text-primary h-5 w-5 mb-1" />
                 Instructor
               </TabsTrigger>
-              <TabsTrigger className="py-4 w-1/4 text-lg gap-1" value="reviews">
+              <TabsTrigger className="py-4 w-2/4 md:w-1/4 text-lg gap-1" value="reviews">
                 <StarFilledIcon className="text-primary h-5 w-5 mb-1" />
                 Reviews
               </TabsTrigger>
@@ -267,7 +267,7 @@ export default async function ClassDetail({ params }: Props) {
             </TabsContent>
           </Tabs>
           <div className="w-full lg:w-4/12 relative">
-            <div className="bg-white shadow -mt-80 py-10 px-6 rounded-lg">
+            <div className="bg-white shadow lg:-mt-80 p-4 md:py-10 lg:px-6 rounded-lg flex max-sm:flex-col lg:flex-col">
               <div className="mb-6 relative h-fit">
                 <div className="absolute top-[34%] left-[39%]">
                   <button className="shadow shadow-pink-500/50 bg-pink-600 rounded-full text-white p-6 animate-pulse">
@@ -276,57 +276,63 @@ export default async function ClassDetail({ params }: Props) {
                 </div>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                  src={data.standard.image ? data.standard.image : `/class/${data.standard.slug}/opengraph-image`}
+                  src={
+                    data.standard.image
+                      ? data.standard.image
+                      : `/class/${data.standard.slug}/opengraph-image`
+                  }
                   alt="placeholder"
                   className="rounded"
                 />
               </div>
-              <div className="flex justify-between mb-8">
-                <div className="text-2xl font-medium font-sans text-gray-500 px-2">
-                  <span className="text-primary">
-                    ₹ {data.standard.latestPrice}
-                  </span>
+              <div className="w-1/2 max-sm:w-full lg:w-full px-3">
+                <div className="flex justify-between mb-8">
+                  <div className="text-2xl font-medium font-sans text-gray-500 px-2">
+                    <span className="text-primary">
+                      ₹ {data.standard.latestPrice}
+                    </span>
+                    {data.standard.latestPrice < data.standard.beforePrice && (
+                      <>
+                        <span className=" font-thin text-lg "> / </span>
+                        <span className="font-normal text-lg line-through">
+                          ₹ {data.standard.beforePrice}
+                        </span>
+                      </>
+                    )}
+                  </div>
                   {data.standard.latestPrice < data.standard.beforePrice && (
-                    <>
-                      <span className=" font-thin text-lg "> / </span>
-                      <span className="font-normal text-lg line-through">
-                        ₹ {data.standard.beforePrice}
-                      </span>
-                    </>
+                    <div className="text-pink-500 font-bold py-1 px-4 bg-pink-100 text-center rounded uppercase">
+                      {parseInt(discount)}% off
+                    </div>
                   )}
                 </div>
-                {data.standard.latestPrice < data.standard.beforePrice && (
-                  <div className="text-pink-500 font-bold py-1 px-4 bg-pink-100 text-center rounded uppercase">
-                    {parseInt(discount)}% off
+                <div className="mt-4">
+                  <a className="text-lg font-bold">Details</a>
+                  <div className="flex justify-between border-b-2 pb-2 border-gray-200 mt-4 p-2">
+                    <span className="font-medium inline-flex gap-2">
+                      <ChatBubbleIcon className="text-primary h-5 w-5" />
+                      Language
+                    </span>
+                    <span className=" font-thin">English, Hindi</span>
                   </div>
-                )}
-              </div>
-              <div className="mt-4">
-                <a className="text-lg font-bold">Details</a>
-                <div className="flex justify-between border-b-2 pb-2 border-gray-200 mt-4 p-2">
-                  <span className="font-medium inline-flex gap-2">
-                    <ChatBubbleIcon className="text-primary h-5 w-5" />
-                    Language
-                  </span>
-                  <span className=" font-thin">English, Hindi</span>
+                  <div className="flex justify-between border-b-2 pb-2 border-gray-200 mt-4 p-2">
+                    <span className="font-medium inline-flex gap-2">
+                      <FileTextIcon className="text-primary h-5 w-5" />
+                      Lessons
+                    </span>
+                    <span className=" font-semibold">100+</span>
+                  </div>
+                  <div className="flex justify-between border-b-2 pb-2 border-gray-200 mt-4 p-2">
+                    <span className="font-medium inline-flex gap-2">
+                      <ClockIcon className="text-primary h-5 w-5" />
+                      Duration
+                    </span>
+                    <span className=" font-normal">100 Hours</span>
+                  </div>
                 </div>
-                <div className="flex justify-between border-b-2 pb-2 border-gray-200 mt-4 p-2">
-                  <span className="font-medium inline-flex gap-2">
-                    <FileTextIcon className="text-primary h-5 w-5" />
-                    Lessons
-                  </span>
-                  <span className=" font-semibold">100+</span>
+                <div className="mt-8">
+                  <EnrollButton standard={data.standard} />
                 </div>
-                <div className="flex justify-between border-b-2 pb-2 border-gray-200 mt-4 p-2">
-                  <span className="font-medium inline-flex gap-2">
-                    <ClockIcon className="text-primary h-5 w-5" />
-                    Duration
-                  </span>
-                  <span className=" font-normal">100 Hours</span>
-                </div>
-              </div>
-              <div className="mt-8">
-                <EnrollButton standard={data.standard} />
               </div>
             </div>
           </div>
