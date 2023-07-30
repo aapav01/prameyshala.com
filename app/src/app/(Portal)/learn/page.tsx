@@ -101,7 +101,7 @@ export default async function LearnPage({}: Props) {
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 py-4 gap-4">
             {enrollments.myEnrollments.map((item: any, index: number) => (
-              <ClassCard key={index} standard={item.standard} />
+              <ClassCard key={index} standard={item.standard} enroll />
             ))}
           </div>
         </div>
