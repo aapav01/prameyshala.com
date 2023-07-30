@@ -1,12 +1,13 @@
 import React from "react";
 import { Metadata } from "next";
-import AuthHeader from "@/components/sections/auth-header";
+import { getServerSession } from "next-auth/next";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+
 import ClassCard from "@/components/cards/class-card";
 
 // GRAPHQL API - APPLOLO
 import { gql } from "@apollo/client";
 import { getClient } from "@/lib/client";
-import EnrollList from "@/components/sections/enroll-list";
 
 type Props = {};
 
@@ -29,6 +30,27 @@ const query_classes = gql`
   }
 `;
 
+const query_enrollment = gql`
+  query my_ernrolments {
+    myEnrollments {
+      standard {
+        id
+        name
+        image
+        slug
+        latestPrice
+        beforePrice
+        publishAt
+        createdAt
+        updatedAt
+        subjectSet {
+          name
+        }
+      }
+    }
+  }
+`;
+
 async function getAllClasses() {
   try {
     const api_data = await getClient().query({ query: query_classes });
@@ -38,21 +60,50 @@ async function getAllClasses() {
   }
 }
 
+async function getMyEnrollments(session: { user: { token: string } }) {
+  const { data, errors } = await getClient().query({
+    query: query_enrollment,
+    context: {
+      fetchOptions: {
+        cache: "no-store",
+      },
+      headers: {
+        Authorization: `JWT ${session?.user?.token}`,
+      },
+    },
+  });
+  return data;
+}
+
 export const metadata: Metadata = {
   title: "My Learning Portal | Pramey Shala",
 };
 
 export default async function LearnPage({}: Props) {
+  const session = await getServerSession(authOptions);
   const classes = await getAllClasses();
+  // @ts-expect-error
+  const enrollments = await getMyEnrollments(session);
   return (
     <main className="min-h-screen">
-      <AuthHeader />
+      <header className="py-12 bg-indigo-50 relative">
+        <div className="container text-foreground">
+          <span className="text-xl">Welcome, </span>
+          {/* @ts-ignore */}
+          <h1 className="text-4xl font-bold">{session?.user?.fullName}</h1>
+          <p className="text-sm font-thin">{session?.user?.email}</p>
+        </div>
+      </header>
       <section className="container py-12">
         <div className="py-6">
           <h2 className="text-2xl font-medium">
             My <span className="rock2-underline">Subscriptions</span>
           </h2>
-          <EnrollList />
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 py-4 gap-4">
+            {enrollments.myEnrollments.map((item: any, index: number) => (
+              <ClassCard key={index} standard={item.standard} />
+            ))}
+          </div>
         </div>
         <div className="py-6">
           <h2 className="text-2xl font-medium">
