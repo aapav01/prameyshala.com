@@ -5,7 +5,7 @@ from django.views.generic import ListView, DetailView, CreateView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from django.db.models import Count
-from ..forms import ChoiceInlineFormSet, QuestionInlineFormSet
+from ..forms import ChoiceInlineFormSet, QuestionInlineFormSet, QuestionInlineUpdateFormSet, ChoiceInlineUpdateFormSet
 from ..models import Quiz
 
 
@@ -77,6 +77,13 @@ class QuizUpdateView(PermissionRequiredMixin, UpdateView):
             {'label': 'Create Quiz'},
         ],
     }
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['question_formset'] = QuestionInlineUpdateFormSet(instance=self.object, prefix='question_formset')
+        #TODO: add choice formset
+        # context['choice_formset'] = ChoiceInlineUpdateFormSet(instance=self.object, prefix='choice_formset')
+        return context
 
     def form_valid(self, form):
         messages.info(
