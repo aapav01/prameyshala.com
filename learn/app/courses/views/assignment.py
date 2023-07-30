@@ -7,6 +7,7 @@ from django.utils.text import slugify
 from django.urls import reverse_lazy
 from django.db.models import Count
 from ..models import Assignment, AssignmentSubmission
+from ..forms import AssignmentForm
 
 
 class AssignmentListView(PermissionRequiredMixin, ListView):
@@ -14,6 +15,7 @@ class AssignmentListView(PermissionRequiredMixin, ListView):
     context_object_name = 'assignments'
     template_name = 'assignments/index.html'
     permission_required = "courses.view_assignment"
+    form = AssignmentForm
     extra_context = {
         'title': 'Assignments',
         'breadcrumbs': [
@@ -32,6 +34,7 @@ class AssignmentDetailView(DetailView):
 
 class AssignmentUpdateView(PermissionRequiredMixin, UpdateView):
      model = Assignment
+     form_class = AssignmentForm
      permission_required = "courses.change_assignment"
      template_name = "form.html"
      success_url = reverse_lazy('courses:assigments')

@@ -1,7 +1,14 @@
 from django import forms
 from django.forms import ModelForm, inlineformset_factory
-from .models import Classes, Subject, Chapter, Lesson, Category, Quiz, Choice, Question
+from .models import Classes, Subject, Chapter, Lesson, Category, Quiz, Choice, Question, Assignment
 from app.accounts.models import User
+
+
+class AssignmentForm(ModelForm):
+    class Meta:
+        model = Assignment
+        fields = "__all__"
+        exclude = ['created_by', 'updated_by']
 
 
 class ClassesForm(ModelForm):
@@ -47,8 +54,12 @@ class CategoriesForm(ModelForm):
         fields = "__all__"
 
 
-QuestionInlineFormSet = inlineformset_factory(Quiz, Question, extra=1, fields = "__all__")
-ChoiceInlineFormSet = inlineformset_factory(Question, Choice, extra=1, fields = "__all__")
+QuestionInlineFormSet = inlineformset_factory(
+    Quiz, Question, extra=1, fields="__all__")
+ChoiceInlineFormSet = inlineformset_factory(
+    Question, Choice, extra=1, fields="__all__")
 
-QuestionInlineUpdateFormSet = inlineformset_factory(Quiz, Question, extra=0, fields = "__all__")
-ChoiceInlineUpdateFormSet = inlineformset_factory(Question, Choice, extra=0, fields = "__all__")
+QuestionInlineUpdateFormSet = inlineformset_factory(
+    Quiz, Question, extra=0, fields="__all__")
+ChoiceInlineUpdateFormSet = inlineformset_factory(
+    Question, Choice, extra=0, fields="__all__")
