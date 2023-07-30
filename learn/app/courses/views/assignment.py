@@ -23,9 +23,31 @@ class AssignmentListView(PermissionRequiredMixin, ListView):
             {'label': 'Courses'},
             {'label': 'Assignments'}
         ],
+        'form': form
     }
     paginate_by = 10
     ordering = ['-created_at']
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        for obj in context[self.context_object_name]:
+            temp_form = AssignmentForm(instance=obj)
+            obj.form = temp_form
+        return context
+
+    # create
+    def post(self, request, **kwargs):
+        form = self.form(request.POST)
+        self.extra_context.update({'form': form})
+        if form.is_valid():
+            instance = form.save(commit=False)
+            instance.save()
+            messages.success(
+                request, f'{instance.name} has been created successfully.')
+            self.extra_context.update({'form': AssignmentForm})
+            return redirect('courses:assigments')
+        else:
+            return render(request, self.template_name, self.get_context_data(**kwargs))
 
 
 class AssignmentDetailView(DetailView):

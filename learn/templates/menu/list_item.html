@@ -54,7 +54,7 @@
   <li>
     <a href="{% url 'courses:assignments' %}"
        {% if request.resolver_match.url_name == 'assignments' %}class="active"{% endif %}
-       data-ripple-light="true"><i class="fa-regular fa-circle-file"></i>Assignment</a>
+       data-ripple-light="true"><i class="fa-regular fa-file-word"></i>Assignment</a>
   </li>
 {% endif %}
 {% if perms.accounts %}<li class="p-4 font-bold">Accounts</li>{% endif %}

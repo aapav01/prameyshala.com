@@ -6,10 +6,10 @@
 {% block content %}
   <div class="mt-12 mb-8 flex flex-col gap-12">
     <div class="flex justify-between px-6">
-      {% if perms.courses.add_subject %}
-        <button onclick="create_chapter.showModal()"
+      {% if perms.courses.add_assignment %}
+        <button onclick="create_assignment.showModal()"
                 class="btn bg-gradient-to-br from-purple-600 to-pink-400 text-white px-12 border-0 shadow-md shadow-purple-500/50">
-          <i class="far fa-plus"></i>Add Subject
+          <i class="far fa-plus"></i>Add Assignment
         </button>
       {% endif %}
     </div>
@@ -21,42 +21,42 @@
         <table class="table table-auto">
           <thead class="uppercase text-sm">
             <tr>
-              <th class="px-4 py-3">Name</th>
-              <th class="px-4 py-3">Short Description</th>
-              <th class="px-4 py-3">Class</th>
-              <th class="px-4 py-3">Slug</th>
-              <th class="px-4 py-3">Publish At</th>
+              <th class="px-4 py-3">Title</th>
+              <th class="px-4 py-3">Description</th>
+              <th class="px-4 py-3">Teacher</th>
+              <th class="px-4 py-3">type</th>
+              <th class="px-4 py-3">Due On</th>
               <th class="px-4 py-3">Action</th>
             </tr>
           </thead>
           <tfoot class="border-t border-blue-gray-50 py-3 px-5 text-left font-bold uppercase text-blue-gray-400 text-sm">
             <tr>
-              <th class="px-4 py-3">Name</th>
-              <th class="px-4 py-3">Short Description</th>
-              <th class="px-4 py-3">Class</th>
-              <th class="px-4 py-3">Slug</th>
-              <th class="px-4 py-3">Publish At</th>
+              <th class="px-4 py-3">Title</th>
+              <th class="px-4 py-3">Description</th>
+              <th class="px-4 py-3">Teacher</th>
+              <th class="px-4 py-3">type</th>
+              <th class="px-4 py-3">Due On</th>
               <th class="px-4 py-3">Action</th>
             </tr>
           </tfoot>
           <tbody>
-            {% for subject in subjects %}
+            {% for assignment in assignments %}
               <tr class="border-b border-blue-gray-50">
-                <td class="px-4 py-3">{{ subject.name }}</td>
-                <td class="px-4 py-3">{{ subject.short }}</td>
-                <td class="px-4 py-3">{{ subject.standard }}</td>
-                <td class="px-4 py-3">{{ subject.slug }}</td>
-                <td class="px-4 py-3">{{ subject.publish_at }}</td>
+                <td class="px-4 py-3">{{ assignment.title }}</td>
+                <td class="px-4 py-3">{{ assignment.description }}</td>
+                <td class="px-4 py-3">{{ assignment.teacher }}</td>
+                <td class="px-4 py-3">{{ assignment.type }}</td>
+                <td class="px-4 py-3">{{ assignment.due_date }}</td>
                 <td class="flex gap-2 px-4 py-3">
-                  {% if perms.courses.change_subject %}
-                    <button onclick="update_subject_{{ subject.pk }}.showModal()"
+                  {% if perms.courses.change_assignment %}
+                    <button onclick="update_assignment_{{ assignment.pk }}.showModal()"
                             class="btn btn-sm btn-success btn-square">
                       <i class="fad fa-edit"></i>
                     </button>
                   {% endif %}
-                  {% if perms.courses.delete_subject %}
-                  <a href="{% url 'courses:subject-delete' pk=subject.pk %}"
-                     onclick="if(confirm('Are you sure you want to delete {{ class.name }} from database?')) return true; else return false;"
+                  {% if perms.courses.delete_assignment %}
+                  <a href="{% url 'courses:assignment-delete' pk=assignment.pk %}"
+                     onclick="if(confirm('Are you sure you want to delete {{ assignment.title }} from database?')) return true; else return false;"
                      class="btn btn-sm btn-error btn-square"><i class="far fa-trash-alt"></i>
                 </a>
               {% endif %}
@@ -81,14 +81,14 @@
   </div>
 </div>
 </div>
-{% if perms.courses.add_subject %}
-  <dialog id="create_chapter"
+{% if perms.courses.add_assignment %}
+  <dialog id="create_assignment"
           class="modal modal-bottom sm:modal-middle transition-all duration-500 ease-in-out">
     <form method="post"
           enctype="multipart/form-data"
           class="modal-box sm:max-w-5xl">
       {% csrf_token %}
-      <h2 class="font-mono font-semibold text-lg">Add New Subject</h2>
+      <h2 class="font-mono font-semibold text-lg">Add New Assignment</h2>
       <div class="relative mb-4">
         <div class="form-control w-full djanog-custom-forms grid grid-cols-1 md:grid-cols-2 gap-4">{{ form.as_div }}</div>
       </div>
@@ -102,19 +102,19 @@
     </form>
   </dialog>
 {% endif %}
-{% if perms.courses.change_subject %}
-  {% for subject in subjects %}
-    <dialog id="update_subject_{{ subject.pk }}"
+{% if perms.courses.change_assignment %}
+  {% for assignment in assignments %}
+    <dialog id="update_assignment_{{ assignment.pk }}"
             class="modal modal-bottom sm:modal-middle transition-all duration-500 ease-in-out">
       <form method="post"
             enctype="multipart/form-data"
-            action="{% url 'courses:subject-update' pk=subject.pk %}"
+            action="{% url 'courses:assignment-update' pk=assignment.pk %}"
             class="modal-box sm:max-w-5xl">
         {% csrf_token %}
-        <h2 class="font-mono font-semibold text-lg">Update - {{ subject.name }} of {{ subject.class }}</h2>
+        <h2 class="font-mono font-semibold text-lg">Update - {{ assignment.title }}</h2>
         <div class="relative mb-4">
           <div class="form-control w-full djanog-custom-forms grid grid-cols-1 md:grid-cols-2 gap-4">
-            {{ subject.form.as_div }}
+            {{ assignment.form.as_div }}
           </div>
         </div>
         <div class="modal-action justify-between">
