@@ -1,5 +1,5 @@
 from django import forms
-from django.forms import ModelForm
+from django.forms import ModelForm, inlineformset_factory
 from .models import Classes, Subject, Chapter, Lesson, Category, Quiz, Choice, Question
 from app.accounts.models import User
 
@@ -47,25 +47,5 @@ class CategoriesForm(ModelForm):
         fields = "__all__"
 
 
-class QuestionsForm(ModelForm):
-    class Meta:
-        model = Question
-        fields = ['question_text', 'figure']
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields['figure'].required = False
-
-
-class ChoicesForm(ModelForm):
-    class Meta:
-        model = Choice
-        fields = ['choice_text', 'is_correct']
-
-
-class QuizzesForm(ModelForm):
-    template_name = "quizzes/form_snippet.html"
-
-    class Meta:
-        model = Quiz
-        fields = ['name', 'type']
+QuestionInlineFormSet = inlineformset_factory(Quiz, Question, extra=1, fields = "__all__")
+ChoiceInlineFormSet = inlineformset_factory(Question, Choice, extra=1, fields = "__all__")

@@ -1,0 +1,163 @@
+{% extends "layouts/dashboard.html" %}
+{% load static %}
+{% block title %}
+  {{ title }}  | Pramey Shala
+{% endblock title %}
+{% block content %}
+  <div class="mt-12 mb-8 flex flex-col gap-12">
+    <div class="relative flex w-full flex-col rounded-xl bg-base-100 bg-clip-border text-base-content shadow-md">
+      <div class="relative mx-4 -mt-6 mb-4 grid px-6 py-8 overflow-hidden rounded-xl bg-gradient-to-tr from-orange-800 to-orange-400 bg-clip-border text-white shadow-lg shadow-orange-500/40">
+        <h1 class="block font-sans leading-snug tracking-normal text-white antialiased text-lg font-semibold">{{ title }}</h1>
+      </div>
+      <form method="post"
+            action="{% url 'courses:quizzes-create' %}"
+            enctype="multipart/form-data"
+            class="p-6">
+        {% csrf_token %}
+        <div id="main_{{ form.prefix }}"
+             class="form-control w-full djanog-custom-forms grid grid-cols-1 md:grid-cols-2 gap-4">
+          {{ form.as_div }}
+          <div class="md:col-span-2 question0">
+            {{ question_formset.as_div }}
+            <div>
+              <div id="q0" class="grid grid-cols-2 gap-2">
+                <input type="hidden"
+                       name="choice_formset_0-TOTAL_FORMS"
+                       value="0"
+                       id="id_choice_formset_0-TOTAL_FORMS">
+                <input type="hidden"
+                       name="choice_formset_0-INITIAL_FORMS"
+                       value="0"
+                       id="id_choice_formset_0-INITIAL_FORMS">
+                <input type="hidden"
+                       name="choice_formset_0-MIN_NUM_FORMS"
+                       value="0"
+                       id="id_choice_formset_0-MIN_NUM_FORMS">
+                <input type="hidden"
+                       name="choice_formset_0-MAX_NUM_FORMS"
+                       value="1000"
+                       id="id_choice_formset_0-MAX_NUM_FORMS">
+              </div>
+              <div class="flex justify-end">
+                <button class="btn btn-primary text-white mt-6"
+                        onclick="handleAddChoice(this, 0)"
+                        type="button">
+                  <i class="far fa-plus"></i>Add choice
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p class="mt-5">
+          Total Questions:<span id="question-count">1</span>
+        </p>
+        <div class="flex items-center justify-center">
+          <button type="button"
+                  class="btn bg-gradient-to-br from-purple-600 to-pink-400 text-white px-12 border-0 shadow-md shadow-purple-500/50 mt-8"
+                  onclick="handleAddQuestion(this)">
+            <i class="far fa-plus"></i>Add Question
+          </button>
+        </div>
+        <button class="btn btn-success my-4 shadow">Submit</button>
+      </form>
+    </div>
+  </div>
+{% endblock content %}
+{% block body_js %}
+  <script>
+  let question_number = 0;
+  function handleAddChoice(e, question_number){
+    console.log(e);
+    const choiceQuestionNumber = document.getElementById(`id_choice_formset_${question_number}-TOTAL_FORMS`).value;
+    const choiceHtml = `
+    <div class="mt-3">
+        <input type='text' name="choice_formset_${question_number}-${choiceQuestionNumber}-choice_text" placeholder='Choice ${parseInt(choiceQuestionNumber) +1}' required>
+        <div class='flex justify-between mt-2'>
+          <div class="inline-flex">
+            <input name="choice_formset_${question_number}-${choiceQuestionNumber}-is_correct" type='checkbox' id='id_choice_formset_${question_number}-${choiceQuestionNumber}-is_correct'>
+            <label for='id_choice_formset_${question_number}-${choiceQuestionNumber}-is_correct'>Correct</label>
+          </div>
+          <input type="hidden" name="choice_formset_${question_number}-${choiceQuestionNumber}-id" id="id_choice_formset_${question_number}-${choiceQuestionNumber}-id">
+          <input type="hidden" name="choice_formset_${question_number}-${choiceQuestionNumber}-question" id="id_choice_formset_${question_number}-${choiceQuestionNumber}-question">
+          <button type="button" class="btn btn-sm bg-gradient-to-br from-red-600 to-pink-400 text-white btn-square mt-2.9" onClick="handleRemoveChoice(this)"><i class="far fa-trash-alt"></i></button>
+        </div>
+      </div>
+    `;
+    const choiceElement = document.getElementById(`q${question_number}`);
+    choiceElement.insertAdjacentHTML('beforeend', choiceHtml);
+    document.getElementById(`id_choice_formset_${question_number}-TOTAL_FORMS`).value = parseInt(choiceQuestionNumber) + 1;
+
+  }
+  function handleAddQuestion(e){
+    question_number++;
+    const questionHtml = `
+    <div class="md:col-span-2 question${question_number}">
+      <div class="form-control">
+        <label for="id_question_formset-${question_number}-question_text">
+          <span class="label-text">Question</span>
+        </label>
+        <textarea id="id_question_formset-${question_number}-question_text" name="question_formset-${question_number}-question_text" required></textarea>
+        </div>
+        <div class="flex items-center justify-between gap-2">
+          <div class="form-control w-full">
+            <label for="id_question_formset-${question_number}-figure">
+              <span class="label-text">Figure</span>
+            </label>
+            <input type="file"
+                  accept="image/*"
+                  id="id_question_formset-${question_number}-figure"
+                  name="question_formset-${question_number}-figure">
+            <input type="hidden"
+                  name="question_formset-${question_number}-id"
+                  id="id_question_formset-${question_number}-id">
+            <input type="hidden"
+                  name="question_formset-${question_number}-quiz"
+                  id="id_question_formset-${question_number}-quiz">
+          </div>
+          <div class="inline-flex">
+            <label for="id_question_formset-${question_number}-DELETE">Delete:</label>
+            <input type="checkbox" name="question_formset-${question_number}-DELETE" id="id_question_formset-${question_number}-DELETE">
+            <input type="hidden" name="question_formset-${question_number}-quiz" id="id_question_formset-${question_number}-quiz">
+            <input type="hidden" name="question_formset-${question_number}-id" id="id_question_formset-${question_number}-id">
+          </div>
+        </div>
+      </div>
+      <div>
+        <div id="q${question_number}" class="grid grid-cols-2 gap-2">
+          <input type="hidden"
+                 name="choice_formset_${question_number}-TOTAL_FORMS"
+                 value="0"
+                 id="id_choice_formset_${question_number}-TOTAL_FORMS">
+          <input type="hidden"
+                 name="choice_formset_${question_number}-INITIAL_FORMS"
+                 value="0"
+                 id="id_choice_formset_${question_number}-INITIAL_FORMS">
+          <input type="hidden"
+                 name="choice_formset_${question_number}-MIN_NUM_FORMS"
+                 value="0"
+                 id="id_choice_formset_${question_number}-MIN_NUM_FORMS">
+          <input type="hidden"
+                 name="choice_formset_${question_number}-MAX_NUM_FORMS"
+                 value="1000"
+                 id="id_choice_formset_${question_number}-MAX_NUM_FORMS">
+        </div>
+        <div class="flex justify-end">
+          <button class="btn btn-primary text-white mt-6"
+                  onclick="handleAddChoice(this, ${question_number})"
+                  type="button">
+            <i class="far fa-plus"></i>Add choice
+          </button>
+        </div>
+      </div>
+    </div>
+    `;
+    document.getElementById('main_{{ form.prefix }}').insertAdjacentHTML('beforeend', questionHtml);
+    document.getElementById('question-count').innerText = question_number + 1;
+    document.getElementById(`id_question_formset-TOTAL_FORMS`).value = parseInt(question_number) + 1;
+
+  }
+  function handleRemoveChoice(e){
+    e.parentNode.parentNode.remove();
+  }
+</script>
+{% endblock body_js %}
