@@ -81,8 +81,9 @@ class QuizUpdateView(PermissionRequiredMixin, UpdateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['question_formset'] = QuestionInlineUpdateFormSet(instance=self.object, prefix='question_formset')
-        #TODO: add choice formset
-        # context['choice_formset'] = ChoiceInlineUpdateFormSet(instance=self.object, prefix='choice_formset')
+        #TODO: render this in template
+        for question in context['question_formset']:
+            question.choice_formset = ChoiceInlineUpdateFormSet(instance=question.instance, prefix='choice_formset_%s' % question.instance.pk)
         return context
 
     def form_valid(self, form):
