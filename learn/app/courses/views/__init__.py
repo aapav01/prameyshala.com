@@ -4,3 +4,4 @@ from .chapters import *
 from .lessons import *
 from .categories import *
 from .quizzes import *
+from .assignment import *

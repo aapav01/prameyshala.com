@@ -137,12 +137,17 @@ class Assignment(models.Model):
         Practice = 'practice', _('Practice')
     title = models.CharField(max_length=200)
     description = models.TextField()
-    due_date = models.DateTimeField()
-    teacher = models.ForeignKey(User, on_delete=models.CASCADE)
-    uploaded_at = models.DateTimeField(auto_now_add=True)
-    assignment_file = models.FileField(
-        upload_to='assignments/', blank=True, null=True)
+    due_date = models.DateTimeField(blank=True, null=True)
+    teacher = models.ForeignKey(
+        User, on_delete=models.CASCADE, blank=True, null=True)
+    assigment_file = models.FileField(upload_to='static/uploads/assignments', blank=True, null=True)
     type = models.CharField(max_length=20, choices=Type.choices)
+    created_by = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name='assignment_created_by')
+    updated_by = models.ForeignKey(
+        User, on_delete=models.CASCADE, blank=True, null=True, related_name='assignment_updated_by')
+    created_at = models.DateTimeField(auto_now=False, auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.title
@@ -151,8 +156,10 @@ class Assignment(models.Model):
 class AssignmentSubmission(models.Model):
     assignment = models.ForeignKey(Assignment, on_delete=models.CASCADE)
     student = models.ForeignKey(User, on_delete=models.CASCADE)
-    solution_file = models.FileField(upload_to='submissions/')
-    submitted_at = models.DateTimeField(auto_now_add=True)
+    solution_file = models.FileField(
+        upload_to='static/uploads/assignments/submissions')
+    created_at = models.DateTimeField(auto_now=False, auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True, blank=True, null=True)
 
     def __str__(self):
         return f"{self.assignment.title} - {self.student.full_name}"

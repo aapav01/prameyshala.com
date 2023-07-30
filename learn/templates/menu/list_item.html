@@ -50,6 +50,13 @@
        data-ripple-light="true"><i class="fa-regular fa-circle-question"></i>Quizzes</a>
   </li>
 {% endif %}
+{% if perms.courses.view_assignments %}
+  <li>
+    <a href="{% url 'courses:assignments' %}"
+       {% if request.resolver_match.url_name == 'assignments' %}class="active"{% endif %}
+       data-ripple-light="true"><i class="fa-regular fa-circle-file"></i>Assignment</a>
+  </li>
+{% endif %}
 {% if perms.accounts %}<li class="p-4 font-bold">Accounts</li>{% endif %}
 {% if perms.accounts.view_enrollment %}
   <li>
