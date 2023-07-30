@@ -10,7 +10,7 @@ import {
   HomeIcon,
   ExitIcon,
   VideoIcon,
-} from '@radix-ui/react-icons';
+} from "@radix-ui/react-icons";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -18,7 +18,18 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+} from "@/components/ui/dropdown-menu";
+import {
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuIndicator,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+  NavigationMenuViewport,
+  navigationMenuTriggerStyle,
+} from "@/components/ui/navigation-menu";
 
 function MainNav() {
   const stickyHeader = useRef<HTMLElement>(null);
@@ -60,41 +71,54 @@ function MainNav() {
         <div className="flex-1 flex justify-end items-center gap-1">
           {status === "loading" ? null : session ? (
             <>
-            <DropdownMenu>
-              <DropdownMenuTrigger className="p-2 rounded-full shadow shadow-primary/50 focus:outline-none">
-                <HamburgerMenuIcon className="w-4 h-4" />
-              </DropdownMenuTrigger>
-              <DropdownMenuContent>
-                {/* @ts-expect-error */}
-                <DropdownMenuLabel>{session?.user?.fullName}</DropdownMenuLabel>
-                <DropdownMenuLabel className="text-xs text-gray-400 py-0 m-0 font-thin">{session?.user?.email}</DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <Link href="/" passHref>
-                  <DropdownMenuItem>
-                    <HomeIcon className="mr-1" />
-                    Home
+              <NavigationMenu>
+                <NavigationMenuList>
+                  <NavigationMenuItem>
+                    <Link href="/" legacyBehavior passHref>
+                      <NavigationMenuLink className={navigationMenuTriggerStyle() + " gap-2"}>
+                        <HomeIcon />
+                        Home
+                      </NavigationMenuLink>
+                    </Link>
+                  </NavigationMenuItem>
+                  <NavigationMenuItem>
+                    <Link href="/learn" legacyBehavior passHref>
+                      <NavigationMenuLink className={navigationMenuTriggerStyle() + " gap-2"}>
+                        <VideoIcon />
+                        My Learning
+                      </NavigationMenuLink>
+                    </Link>
+                  </NavigationMenuItem>
+                </NavigationMenuList>
+              </NavigationMenu>
+              <DropdownMenu>
+                <DropdownMenuTrigger className="ml-3 p-2 rounded-full shadow shadow-primary/50 focus:outline-none">
+                  <HamburgerMenuIcon className="w-4 h-4" />
+                </DropdownMenuTrigger>
+                <DropdownMenuContent>
+                  <DropdownMenuLabel>
+                    {/* @ts-expect-error */}
+                    {session?.user?.fullName}
+                  </DropdownMenuLabel>
+                  <DropdownMenuLabel className="text-xs text-gray-400 py-0 m-0 font-thin">
+                    {session?.user?.email}
+                  </DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={() => signOut()}>
+                    <ExitIcon className="mr-1" />
+                    Logout
                   </DropdownMenuItem>
-                </Link>
-                <Link href="/learn" passHref>
-                  <DropdownMenuItem>
-                    <VideoIcon className="mr-1" />
-                    My Learning
-                  </DropdownMenuItem>
-                </Link>
-                <DropdownMenuItem onClick={()=>signOut()}>
-                  <ExitIcon className="mr-1" />
-                  Logout
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+                </DropdownMenuContent>
+              </DropdownMenu>
+
             </>
           ) : (
             <>
               <Button asChild variant={"outline"}>
-                <Link href={'/login'}>Login</Link>
+                <Link href={"/login"}>Login</Link>
               </Button>
               <Button asChild className="text-xs md:text-sm">
-                <Link href={'/register'}>
+                <Link href={"/register"}>
                   Join<span className="hidden md:flex md:ml-1">For Free</span>
                 </Link>
               </Button>
