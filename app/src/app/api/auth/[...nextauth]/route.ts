@@ -1,4 +1,5 @@
 import NextAuth from "next-auth";
+import type { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 // GRAPHQL API - APPLOLO
 import { DocumentNode, gql } from "@apollo/client";
@@ -14,9 +15,18 @@ const mutation: DocumentNode = gql`
   }
 `;
 
-const query: DocumentNode = gql`query ME { me { id fullName email phoneNumber } }`;
+const query: DocumentNode = gql`
+  query ME {
+    me {
+      id
+      fullName
+      email
+      phoneNumber
+    }
+  }
+`;
 
-const handler = NextAuth({
+export const authOptions: NextAuthOptions = {
   providers: [
     CredentialsProvider({
       name: "Credentials",
@@ -33,13 +43,19 @@ const handler = NextAuth({
         },
       },
       async authorize(credentials, req) {
-        const { data: auth_token } = await getClient().mutate({ mutation, variables: credentials });
+        const { data: auth_token } = await getClient().mutate({
+          mutation,
+          variables: credentials,
+        });
         if (auth_token?.tokenAuth?.token) {
-          const { data: userdata, error } = await getClient().query({query, context: {
-            headers: {
-              Authorization: `JWT ${auth_token.tokenAuth.token}`,
+          const { data: userdata, error } = await getClient().query({
+            query,
+            context: {
+              headers: {
+                Authorization: `JWT ${auth_token.tokenAuth.token}`,
+              },
             },
-          }});
+          });
           console.error(error);
           return { ...auth_token.tokenAuth, ...userdata?.me };
         }
@@ -57,10 +73,12 @@ const handler = NextAuth({
     },
   },
   pages: {
-    signIn: '/login',
+    signIn: "/login",
     // error: '/login', // Error code passed in query string as ?error=
-    newUser: '/learn' // New users will be directed here on first sign in (leave the property out if not of interest)
-  }
-});
+    newUser: "/learn", // New users will be directed here on first sign in (leave the property out if not of interest)
+  },
+};
+
+const handler = NextAuth(authOptions);
 
 export { handler as GET, handler as POST };
