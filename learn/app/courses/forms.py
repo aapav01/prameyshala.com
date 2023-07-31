@@ -9,6 +9,9 @@ class AssignmentForm(ModelForm):
         model = Assignment
         fields = "__all__"
         exclude = ['created_by', 'updated_by']
+        widgets = {
+            'due_date': forms.DateTimeInput(attrs={'type': 'datetime-local'})
+        }
 
 
 class ClassesForm(ModelForm):

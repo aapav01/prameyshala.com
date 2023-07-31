@@ -41,11 +41,12 @@ class AssignmentListView(PermissionRequiredMixin, ListView):
         self.extra_context.update({'form': form})
         if form.is_valid():
             instance = form.save(commit=False)
+            instance.created_by = request.user
             instance.save()
             messages.success(
-                request, f'{instance.name} has been created successfully.')
+                request, f'{instance.title} has been created successfully.')
             self.extra_context.update({'form': AssignmentForm})
-            return redirect('courses:assigments')
+            return redirect('courses:assignments')
         else:
             return render(request, self.template_name, self.get_context_data(**kwargs))
 
@@ -59,7 +60,7 @@ class AssignmentUpdateView(PermissionRequiredMixin, UpdateView):
      form_class = AssignmentForm
      permission_required = "courses.change_assignment"
      template_name = "form.html"
-     success_url = reverse_lazy('courses:assigments')
+     success_url = reverse_lazy('courses:assignments')
 
 
      def form_valid(self, form):
@@ -67,11 +68,15 @@ class AssignmentUpdateView(PermissionRequiredMixin, UpdateView):
         instance.updated_by = self.request.user
         instance.save()
         messages.info(
-            self.request, f'{form.instance.name} has been updated successfully.')
+            self.request, f'{form.instance.title} has been updated successfully.')
         return super().form_valid(form)
 
 
 class AssignmentDeleteView(PermissionRequiredMixin, DeleteView):
     model = Assignment
-    success_url = reverse_lazy('courses:assigments')
+    success_url = reverse_lazy('courses:assignments')
     permission_required = 'courses.delete_assignment'
+
+    def get(self, request, **kwargs):
+        messages.error(request, 'Assignment has been deleted successfully.')
+        return self.delete(request, **kwargs)
