@@ -43,11 +43,11 @@ class Subject(models.Model):
     short = models.CharField(max_length=255, blank=True, null=True)
     description = models.TextField()
     category = models.ForeignKey(
-        Category, on_delete=models.CASCADE, blank=False, null=False, default="")
+        Category, on_delete=models.CASCADE)
     slug = models.SlugField(unique=True, max_length=255)
     image = models.ImageField(
         upload_to='static/uploads/subjects', blank=True, null=True)
-    publish_at = models.DateTimeField(auto_now_add=True, blank=True, null=True)
+    publish_at = models.DateTimeField(blank=True, null=True)
     standard = models.ForeignKey(Classes, on_delete=models.CASCADE)
     created_at = models.DateTimeField(
         auto_now=False, auto_now_add=True, blank=True, null=True)

@@ -28,7 +28,10 @@ class SubjectForm(ModelForm):
     class Meta:
         model = Subject
         fields = "__all__"
-        exclude = ['publish_at', 'slug']
+        exclude = ['slug']
+        widgets = {
+            'publish_at': forms.DateTimeInput(attrs={'type': 'datetime-local'})
+        }
 
 
 class ChapterForm(ModelForm):
