@@ -7,14 +7,17 @@ import { useRouter } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
 import { toast } from "@/components/ui/use-toast";
+import Link from "next/link";
+import { ReloadIcon } from "@radix-ui/react-icons";
 
 type Props = {
   standard: any;
+  enrolled?: boolean;
 };
 
-export default function EnrollButton({ standard }: Props) {
+export default function EnrollButton({ standard, enrolled }: Props) {
   const { data: session } = useSession();
-  const [enrolled, setEnrolled] = useState(false);
+  const [disabled, setDisabled] = useState(false);
   const router = useRouter();
 
   const makePayment = async (e: any) => {
@@ -23,6 +26,7 @@ export default function EnrollButton({ standard }: Props) {
       router.push("/login?callbackUrl=" + window.location.href);
       return;
     }
+    setDisabled(true);
     const res = await fetch(`/class/${standard.slug}/enroll/order`, {
       method: "POST",
       headers: {
@@ -45,7 +49,7 @@ export default function EnrollButton({ standard }: Props) {
       image: "/apple-icon",
       order_id: createPayment.orderGatewayId,
       handler: async function (response: any) {
-        // TODO: enroll_check();
+        setDisabled(true);
         const payment_data = {
           // @ts-expect-error
           token: session.user.token,
@@ -56,16 +60,6 @@ export default function EnrollButton({ standard }: Props) {
           razorpay_order_id: response.razorpay_order_id,
           razorpay_signature: response.razorpay_signature,
         };
-        // toast({
-        //   title: "You submitted the following values:",
-        //   description: (
-        //     <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-        //       <code className="text-white">
-        //         {JSON.stringify(payment_data, null, 2)}
-        //       </code>
-        //     </pre>
-        //   ),
-        // });
         const { enrollStudent } = await fetch(
           `/class/${standard.slug}/enroll`,
           {
@@ -76,8 +70,7 @@ export default function EnrollButton({ standard }: Props) {
             body: JSON.stringify(payment_data),
           }
         ).then((res) => res.json());
-        console.log(enrollStudent);
-        router.push("/learn");
+        router.push("/learn/" + standard.slug);
         // TODO: print invoice details
         return;
       },
@@ -107,6 +100,7 @@ export default function EnrollButton({ standard }: Props) {
       // });
     });
     paymentObject.open();
+    setDisabled(false);
   };
   return (
     <>
@@ -119,11 +113,37 @@ export default function EnrollButton({ standard }: Props) {
           className="text-lg py-6 hover:bg-transparent border hover:border-primary hover:text-primary"
           size="lg"
           onClick={makePayment}
+          disabled={disabled}
         >
-          Enroll to the Class Now
+          {disabled ? (
+            <ReloadIcon className="animate-spin" />
+          ) : (
+            "Enroll to the Class Now"
+          )}
         </Button>
       )}
-      {enrolled && <Button>Let&apos;s Start</Button>}
+      {enrolled && (
+        <Link passHref href={"/learn/" + standard.slug}>
+          <Button>Let&apos;s Start</Button>
+        </Link>
+      )}
+      {disabled && (
+        <div
+          className="relative z-50"
+          aria-labelledby="modal-register"
+          role="dialog"
+          aria-modal="true"
+        >
+          <div className="fixed inset-0 bg-gray-800 bg-opacity-75 transition-opacity"></div>
+          <div className="fixed inset-0 z-10 overflow-y-auto">
+            <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+              <div className="flex justify-center items-center h-80 w-80 bg-white">
+                <ReloadIcon className="animate-spin h-16 w-16 text-primary mx-auto" />
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 }

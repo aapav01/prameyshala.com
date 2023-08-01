@@ -26,6 +26,8 @@ import {
 import { gql } from "@apollo/client";
 import { getClient } from "@/lib/client";
 
+import { getServerSession } from "next-auth/next";
+
 type Props = {
   params: { slug: string };
 };
@@ -45,6 +47,11 @@ const query = gql`
       updatedAt
       enrollmentSet {
         id
+        user {
+          id
+          email
+        }
+        expirationDate
       }
       subjectSet {
         id
@@ -89,6 +96,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function ClassDetail({ params }: Props) {
   const data = await getData({ params });
+  let enrolled = false;
+  const session = await getServerSession();
+  if (session?.user) {
+    data.standard.enrollmentSet.forEach((enrollment: any) => {
+      if (enrollment.user.email === session?.user?.email) {
+        if (new Date(enrollment.expirationDate) >= new Date()) enrolled = true;
+      }
+    });
+  }
 
   const discount: any =
     100 - (data.standard.latestPrice / data.standard.beforePrice) * 100;
@@ -339,7 +355,7 @@ export default async function ClassDetail({ params }: Props) {
                   </div>
                 </div>
                 <div className="mt-8">
-                  <EnrollButton standard={data.standard} />
+                  <EnrollButton standard={data.standard} enrolled={enrolled} />
                 </div>
               </div>
             </div>
