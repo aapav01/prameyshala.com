@@ -8,12 +8,15 @@ import { getClient } from "@/lib/client";
 import LessonCard from "@/components/cards/lessson-card";
 
 const query = gql`
-  query chatpter_detail($id: Int!) {
+  query chatpter_detail($id: ID!) {
     chapter(id: $id) {
+      id
       name
       subject {
+        id
         name
         standard {
+          id
           name
         }
       }

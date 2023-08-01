@@ -40,17 +40,17 @@ class Query(graphene.ObjectType):
     standard = graphene.Field(ClassesType, slug=graphene.String(required=True))
     # category
     categories = graphene.List(CategoriesType, popular=graphene.Boolean())
-    category = graphene.Field(CategoriesType, id=graphene.Int(required=True))
+    category = graphene.Field(CategoriesType, id=graphene.ID(required=True))
 
     # subjects
     subjects = graphene.List(SubjectType)
     subject = graphene.Field(SubjectType, slug=graphene.String(required=True))
     # chapters
     chapters = graphene.List(ChapterType)
-    chapter = graphene.Field(ChapterType, id=graphene.Int(required=True))
+    chapter = graphene.Field(ChapterType, id=graphene.ID(required=True))
     # lessons
     lessons = graphene.List(LessonType)
-    lesson = graphene.Field(LessonType, id=graphene.Int(required=True))
+    lesson = graphene.Field(LessonType, id=graphene.ID(required=True))
 
     # classes
     def resolve_classes(self, info):

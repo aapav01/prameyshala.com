@@ -22,9 +22,11 @@ const query = gql`
       name
       description
       standard {
+        id
         name
         slug
         subjectSet {
+          id
           name
           description
           slug

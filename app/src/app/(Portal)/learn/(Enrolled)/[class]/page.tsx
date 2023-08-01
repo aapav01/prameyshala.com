@@ -25,6 +25,7 @@ const query = gql`
       createdAt
       updatedAt
       subjectSet {
+        id
         name
         description
         slug

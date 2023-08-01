@@ -11,7 +11,7 @@ type Props = {
 };
 
 const query = gql`
-  query lesson_detial($id: Int!) {
+  query lesson_detial($id: ID!) {
     lesson(id: $id) {
       lessonType
       title
@@ -19,6 +19,7 @@ const query = gql`
       position
       description
       teacher {
+        id
         fullName
       }
       platform
@@ -33,6 +34,7 @@ const query = gql`
           id
           name
           standard {
+            id
             name
           }
         }
@@ -51,6 +53,14 @@ async function getData({ params }: Props) {
   } catch (error) {
     return notFound();
   }
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  // fetch data
+  const { lesson } = await getData({ params });
+  return {
+    title:  `${lesson.title} - ${lesson.chapter.name} of ${lesson.chapter.subject.name} | Pramey Shala`,
+  };
 }
 
 export default async function LessonDetail({params}: Props) {

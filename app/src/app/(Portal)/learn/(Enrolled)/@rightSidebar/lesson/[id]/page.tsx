@@ -14,7 +14,7 @@ type Props = {
 };
 
 const query = gql`
-  query lesson_detial($id: Int!) {
+  query lesson_detial($id: ID!) {
     lesson(id: $id) {
       chapter {
         id

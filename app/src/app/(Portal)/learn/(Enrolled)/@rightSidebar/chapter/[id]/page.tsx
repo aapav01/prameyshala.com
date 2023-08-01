@@ -11,13 +11,15 @@ import { ArrowLeftIcon } from "@radix-ui/react-icons";
 import ChapterCard from "@/components/cards/chapter-card";
 
 const query = gql`
-  query chatpter_detail_side($id: Int!) {
+  query chatpter_detail_side($id: ID!) {
     chapter(id: $id) {
       name
       subject {
+        id
         name
         slug
         standard {
+          id
           name
         }
         chapterSet {

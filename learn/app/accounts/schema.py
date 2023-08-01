@@ -45,17 +45,17 @@ class EnrollmentType(DjangoObjectType):
 class Query(graphene.ObjectType):
     # users
     users = graphene.List(UserType)
-    user = graphene.Field(UserType, id=graphene.Int(required=True))
+    user = graphene.Field(UserType, id=graphene.ID(required=True))
     me = graphene.Field(UserType)
     get_otp = graphene.String(phone_number=graphene.String(required=True))
 
     # payments
     payments = graphene.List(PaymentsType)
-    payment = graphene.Field(PaymentsType, id=graphene.Int(required=True))
+    payment = graphene.Field(PaymentsType, id=graphene.ID(required=True))
 
     # enrollment
     enrollments = graphene.List(EnrollmentType)
-    enrollment = graphene.Field(EnrollmentType, id=graphene.Int(required=True))
+    enrollment = graphene.Field(EnrollmentType, id=graphene.ID(required=True))
 
     my_enrollments = graphene.List(EnrollmentType)
 
@@ -157,8 +157,8 @@ class Mutation(graphene.ObjectType):
                                     razorpay_payment_id=graphene.String(
                                         required=True),
                                     amount=graphene.Int(required=True),
-                                    ps_payment_id=graphene.Int(required=True),
-                                    ps_standard_id=graphene.Int(required=True))
+                                    ps_payment_id=graphene.ID(required=True),
+                                    ps_standard_id=graphene.ID(required=True))
 
     def resolve_create_payment(self, info, amount):
         response = client.order.create({

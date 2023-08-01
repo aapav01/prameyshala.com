@@ -24,6 +24,7 @@ const query_classes = gql`
       createdAt
       updatedAt
       subjectSet {
+        id
         name
       }
     }
@@ -44,6 +45,7 @@ const query_enrollment = gql`
         createdAt
         updatedAt
         subjectSet {
+          id
           name
         }
       }

@@ -20,6 +20,7 @@ const query = gql`
       name
       description
       standard {
+        id
         name
       }
       chapterSet {
