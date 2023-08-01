@@ -2,10 +2,9 @@ import { NextRequest, NextResponse } from "next/server";
 // GRAPHQL API - APPLOLO
 import { gql } from "@apollo/client";
 import { getClient } from "@/lib/client";
-import { error } from "console";
 
 const mutation = gql`
-  mutation ps_enroll($razorpay_payment_id: String!, $amount: Int!, $payment: Int!, $standard: Int!) {
+  mutation ps_enroll($razorpay_payment_id: String!, $amount: Int!, $payment: ID!, $standard: ID!) {
   enrollStudent(
     razorpayPaymentId: $razorpay_payment_id
     amount: $amount
