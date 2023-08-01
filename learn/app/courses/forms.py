@@ -5,6 +5,9 @@ from app.accounts.models import User
 
 
 class AssignmentForm(ModelForm):
+    teacher = forms.ModelChoiceField(
+        queryset=User.objects.filter(groups__name='Teacher'))
+
     class Meta:
         model = Assignment
         fields = "__all__"
