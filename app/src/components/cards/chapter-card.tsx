@@ -8,7 +8,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { FileTextIcon, ActivityLogIcon, PlayIcon } from "@radix-ui/react-icons";
+import { FileTextIcon, ActivityLogIcon, PlayIcon, ListBulletIcon } from "@radix-ui/react-icons";
 import Link from "next/link";
 
 type Props = {
@@ -29,11 +29,11 @@ export default function ChapterCard({ chapter }: Props) {
               <span>{chapter.lessonSet.length} Lessons</span>
             </span>
             <Button
-              className="hover:shadow hover:border-0 hover:shadow-green-500/50 hover:bg-green-700 hover:text-green-200"
+              className="hover:shadow hover:border-0 hover:shadow-cyan-500/50 hover:bg-cyan-700 hover:text-cyan-200"
               size={"icon"}
               variant={"outline"}
             >
-              <PlayIcon />
+              <ListBulletIcon />
             </Button>
           </div>
         </CardContent>
