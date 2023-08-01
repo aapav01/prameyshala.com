@@ -70,6 +70,7 @@ class LessonView(PermissionRequiredMixin, ListView):
             self.extra_context.update({'form': LessonForm})
             return redirect('courses:lessons')
         else:
+            messages.error(request, f'failed to create! please see the create form for more details.')
             return super().get(request, **kwargs)
 
 

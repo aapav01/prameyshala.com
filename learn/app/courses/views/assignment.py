@@ -48,7 +48,8 @@ class AssignmentListView(PermissionRequiredMixin, ListView):
             self.extra_context.update({'form': AssignmentForm})
             return redirect('courses:assignments')
         else:
-            return render(request, self.template_name, self.get_context_data(**kwargs))
+            messages.error(request, f'failed to create! please see the create form for more details.')
+            return super().get(request, **kwargs)
 
 
 class AssignmentDetailView(DetailView):

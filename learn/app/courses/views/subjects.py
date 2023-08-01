@@ -45,7 +45,8 @@ class SubjectsView(PermissionRequiredMixin, ListView):
             self.extra_context.update({'form': SubjectForm})
             return redirect('courses:subjects')
         else:
-            return render(request, self.template_name, self.get_context_data(**kwargs))
+            messages.error(request, f'failed to create! please see the create form for more details.')
+            return super().get(request, **kwargs)
 
 
 class SubjectUpdateView(PermissionRequiredMixin, UpdateView):
