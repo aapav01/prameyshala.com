@@ -85,7 +85,7 @@ class Query(graphene.ObjectType):
 
     # lessons
     def resolve_lessons(self, info):
-        return Lesson.objects.all()
+        return Lesson.objects.filter(public=True).order_by('position')
 
     def resolve_lesson(self, info, id):
-        return Lesson.objects.get(pk=id)
+        return Lesson.objects.filter(public=True).get(pk=id)

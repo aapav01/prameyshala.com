@@ -1,11 +1,12 @@
 import React from "react";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { MDXRemote } from "next-mdx-remote/rsc";
 
 // GRAPHQL API - APPLOLO
 import { gql } from "@apollo/client";
 import { getClient } from "@/lib/client";
-import LessonSection from "@/components/sections/lesson-section";
+import VideoPlayer from "@/components/sections/video-player";
 
 type Props = {
   params: { id: string };
@@ -79,7 +80,10 @@ export default async function LessonDetail({ params }: Props) {
         </div>
       </header>
       <div className="container py-6">
-        <LessonSection lesson={lesson} />
+        <VideoPlayer lesson={lesson} />
+        <div className="prose prose-lg max-w-full">
+          <MDXRemote source={lesson.description} />
+        </div>
       </div>
     </React.Fragment>
   );
