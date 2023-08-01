@@ -70,7 +70,7 @@ class LessonView(PermissionRequiredMixin, ListView):
             self.extra_context.update({'form': LessonForm})
             return redirect('courses:lessons')
         else:
-            return render(request, self.template_name, self.get_context_data(**kwargs))
+            return super().get(request, **kwargs)
 
 
 class LessonDetailView(PermissionRequiredMixin, DetailView):

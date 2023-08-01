@@ -208,7 +208,7 @@ class Lesson(models.Model):
         VIMEO = 'vimeo', _('Vimeo')
 
     title = models.CharField(max_length=255)
-    description = models.TextField(max_length=255, blank=True, null=True)
+    description = models.TextField(blank=True, null=True)
     length = models.FloatField(blank=True, null=True)
     url = models.CharField(max_length=255, blank=True, null=True)
     thumb_url = models.ImageField(
