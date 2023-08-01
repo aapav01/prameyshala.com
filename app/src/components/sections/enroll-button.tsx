@@ -56,16 +56,16 @@ export default function EnrollButton({ standard }: Props) {
           razorpay_order_id: response.razorpay_order_id,
           razorpay_signature: response.razorpay_signature,
         };
-        toast({
-          title: "You submitted the following values:",
-          description: (
-            <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-              <code className="text-white">
-                {JSON.stringify(payment_data, null, 2)}
-              </code>
-            </pre>
-          ),
-        });
+        // toast({
+        //   title: "You submitted the following values:",
+        //   description: (
+        //     <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
+        //       <code className="text-white">
+        //         {JSON.stringify(payment_data, null, 2)}
+        //       </code>
+        //     </pre>
+        //   ),
+        // });
         const { enrollStudent } = await fetch(
           `/class/${standard.slug}/enroll`,
           {
@@ -95,16 +95,16 @@ export default function EnrollButton({ standard }: Props) {
     // @ts-expect-error
     const paymentObject = new window.Razorpay(options);
     paymentObject.on("payment.failed", function (response: any) {
-      toast({
-        title: "You submitted the following values:",
-        description: (
-          <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-            <code className="text-white">
-              {JSON.stringify(response, null, 2)}
-            </code>
-          </pre>
-        ),
-      });
+      // toast({
+      //   title: "You submitted the following values:",
+      //   description: (
+      //     <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
+      //       <code className="text-white">
+      //         {JSON.stringify(response, null, 2)}
+      //       </code>
+      //     </pre>
+      //   ),
+      // });
     });
     paymentObject.open();
   };
