@@ -14,34 +14,6 @@ type Props = {
   params: { subject: string };
 };
 
-const query_class = gql`
-  query standard($slug: String!) {
-    standard(slug: $slug) {
-      id
-      name
-      description
-      image
-      latestPrice
-      beforePrice
-      publishAt
-      createdAt
-      updatedAt
-      subjectSet {
-        name
-        description
-        slug
-        chapterSet {
-          id
-          name
-          lessonSet {
-            id
-          }
-        }
-      }
-    }
-  }
-`;
-
 const query = gql`
   query subject_data($slug: String!) {
     subject(slug: $slug) {
@@ -72,8 +44,6 @@ const query = gql`
     }
   }
 `;
-
-let class_data: any = null;
 
 async function getData({ params }: Props) {
   try {

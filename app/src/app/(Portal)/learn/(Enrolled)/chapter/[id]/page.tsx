@@ -55,7 +55,7 @@ export default async function ChapterDetail({ params }: Props) {
   const { chapter } = await getData({ params });
   return (
     <>
-      <header className="bg-purple-700 py-6 text-indigo-50 shadow-lg shadow-purple-500/50">
+      <header className="bg-cyan-700 py-6 text-indigo-50 shadow-lg shadow-cyan-500/50">
         <div className="container">
           <h1 className="text-4xl font-bold">{chapter.name}</h1>
           <span className="py-2">{chapter.subject.name} of {chapter.subject.standard.name}</span>

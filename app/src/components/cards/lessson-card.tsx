@@ -22,7 +22,7 @@ type Props = {
 export default function LessonCard({ lesson }: Props) {
   return (
     <Link href={"/learn/lesson/" + lesson.id}>
-      <Card className="animate-in duration-200 ease-in hover:-translate-y-2 hover:shadow-xl hover:shadow-purple-300/50 ">
+      <Card className="animate-in duration-200 ease-in hover:-translate-y-2 hover:shadow-xl hover:shadow-cyan-300/50 ">
         <CardHeader className="flex justify-between">
           <CardTitle>{lesson.title}</CardTitle>
         </CardHeader>
