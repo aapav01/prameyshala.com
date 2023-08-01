@@ -27,6 +27,7 @@ import { gql } from "@apollo/client";
 import { getClient } from "@/lib/client";
 
 import { getServerSession } from "next-auth/next";
+import Image from "next/image";
 
 type Props = {
   params: { slug: string };
@@ -312,8 +313,7 @@ export default async function ClassDetail({ params }: Props) {
                     <PlayIcon className="h-10 w-10" />
                   </button>
                 </div>
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
+                <Image
                   src={
                     data.standard.image
                       ? data.standard.image

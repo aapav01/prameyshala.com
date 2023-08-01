@@ -13,6 +13,7 @@ import {
 import { Button } from "../ui/button";
 import { Skeleton } from "../ui/skeleton";
 import Link from "next/link";
+import Image from "next/image";
 
 type Props = {
   standard: any;
@@ -47,8 +48,7 @@ export default function ClassCard({ standard, enroll }: Props) {
   return (
     <Link href={enroll? ("learn/" + standard.slug): ("/class/" + standard.slug)}>
       <Card className="animate-in duration-200 ease-in hover:-translate-y-2 hover:shadow-xl hover:shadow-indigo-300/50">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
+        <Image
           src={
             standard.image
               ? standard.image

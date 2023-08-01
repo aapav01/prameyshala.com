@@ -17,6 +17,7 @@ import {
   ClockIcon,
 } from "@radix-ui/react-icons";
 import Link from "next/link";
+import Image from "next/image";
 
 type Props = {
   subject: any;
@@ -32,8 +33,7 @@ export default function SubjectCard({ subject, size }: Props) {
     <Link href={"/learn/subject/" + subject.slug}>
       <Card className="animate-in duration-200 ease-in hover:-translate-y-2 hover:shadow-xl hover:shadow-indigo-300/50 ">
         {size !== "sm" && (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
+          <Image
             src={
               subject.image
                 ? subject.image
