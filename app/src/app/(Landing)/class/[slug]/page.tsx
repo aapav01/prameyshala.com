@@ -91,6 +91,20 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   return {
     title: data.standard.name + " | Pramey Shala",
+    openGraph : {
+      title: data.standard.name + " | Pramey Shala",
+      description: `Learn online with Pramey Shala.`,
+      siteName: "Pramey Shala",
+      images: [
+        {
+          url: data.standard.image ? data.standard.image : `api/og/class/${data.standard.slug}`,
+          alt: data.standard.name,
+          type: "image/png",
+          height: 400,
+          width: 630,
+        }
+      ]
+    }
   };
 }
 
@@ -303,7 +317,7 @@ export default async function ClassDetail({ params }: Props) {
                   src={
                     data.standard.image
                       ? data.standard.image
-                      : `/class/${data.standard.slug}/opengraph-image`
+                      : `/api/og/class/${data.standard.slug}`
                   }
                   alt="placeholder"
                   className="rounded"

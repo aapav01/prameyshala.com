@@ -37,7 +37,7 @@ export default function SubjectCard({ subject, size }: Props) {
             src={
               subject.image
                 ? subject.image
-                : `/subject/${subject.slug}/opengraph-image`
+                : `/api/og/subject/${subject.slug}`
             }
             width={600}
             height={400}

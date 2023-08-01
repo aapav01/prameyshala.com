@@ -52,7 +52,7 @@ export default function ClassCard({ standard, enroll }: Props) {
           src={
             standard.image
               ? standard.image
-              : `/class/${standard.slug}/opengraph-image`
+              : `/api/og/class/${standard.slug}`
           }
           alt={standard.name}
           className="rounded-t-lg p-1"
