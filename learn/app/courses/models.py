@@ -197,7 +197,6 @@ class Lesson(models.Model):
         NONE = None, _('---------')
         VIDEO = 'video', _('Video')
         DOCUMENT = 'document', _('Document')
-        AUDIO = 'audio', _('Audio')
         IMAGE = 'image', _('Image')
         TEXT = 'text', _('Text')
         QUIZ = 'quiz', _('Quiz')

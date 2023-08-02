@@ -35,7 +35,8 @@
                    class="h-40" />
             </div>
           {% endif %}
-          {% if lesson.status != 'ready' and lesson.lesson_type == 'video' and lesson.platform == 'file' %}
+          {% if lesson.lesson_type == 'video' and lesson.platform == 'file' %}
+          {% if not lesson.status == 'processing' or lesson.status == 'ready' %}
             <div class="mb-4">
               <h2 class="font-mono font-semibold">Upload Video</h2>
               <button onclick="upload_video.show()"
@@ -48,6 +49,7 @@
                 Video is not uploaded yet.
               </p>
             </div>
+            {% endif %}
           {% endif %}
           <div class="mb-4">
             <h2 class="font-mono font-semibold">Title</h2>
@@ -75,6 +77,10 @@
             <div class="mb-4">
               <h2 class="font-mono font-semibold">Video ID</h2>
               <p class="text-sm">{{ lesson.platform_video_id }}</p>
+            </div>
+            <div class="mb-4">
+              <h2 class="font-mono font-semibold">Status</h2>
+              <p class="text-sm capitalize">{{ lesson.status }}</p>
             </div>
           {% endif %}
         </div>
@@ -225,6 +231,21 @@
         onSuccess: function () {
           alert('Video is Uploaded. Please wait for 5 minutes to process the video.');
           $("#close_form").attr("disabled", false).attr("method", 'dialog').html("<button>close</button>");
+          $.ajax({
+            url: "{% url 'courses:lesson-status-update' pk=lesson.pk %}",
+            type: "POST",
+            data: {
+              csrfmiddlewaretoken: "{{ csrf_token }}",
+              status: "processing",
+            },
+            success: function (data) {
+              console.log(data);
+              location.reload();
+            },
+            error: function (error) {
+              console.log(error);
+            },
+          });
           upload_video.close();
         },
       });
