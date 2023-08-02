@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import content_2 from "@/svg/10044566_4117341.svg";
 import TestimonialMain from "@/components/testimontial-main";
 import PopularCategory from "@/components/sections/popular-category";
+import { Input } from "@/components/ui/input";
 
 
 export default function Home() {
@@ -24,6 +25,7 @@ export default function Home() {
               </h1>
               <p className="text-background text-sm md:text-xl py-1 md:py-5">
                 Enter your mobile number
+                <Input type="tel" required className="mt-2 font-sans max-w-md py-6 px-3 rounded-lg text-xl text-black" placeholder="Enter your mobile number" />
               </p>
               <div className="flex">
                 <Button
