@@ -79,8 +79,8 @@ export default async function LessonDetail({ params }: Props) {
           </span>
         </div>
       </header>
+      <VideoPlayer lesson={lesson} />
       <div className="container py-6">
-        <VideoPlayer lesson={lesson} />
         <div className="prose prose-lg max-w-full">
           <MDXRemote source={lesson.description} />
         </div>
