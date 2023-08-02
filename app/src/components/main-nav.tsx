@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import { useSession, signIn, signOut } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
@@ -34,27 +34,42 @@ import {
 function MainNav() {
   const stickyHeader = useRef<HTMLElement>(null);
   const { data: session, status } = useSession();
+  const [scrollPosition, setSrollPosition] = useState(0);
 
   useEffect(() => {
     const mainHeader = document.getElementById("mainHeader");
     let fixedTop: number =
       (stickyHeader.current?.offsetTop ? stickyHeader.current?.offsetTop : 0) +
-      100;
+      200;
     const fixedHeader = () => {
       if (window.scrollY > fixedTop) {
-        mainHeader?.classList.add("shadow-md");
+        mainHeader?.classList.add("shadow-lg");
         mainHeader?.classList.add("shadow-primary/30");
       } else {
-        mainHeader?.classList.remove("shadow-md");
+        mainHeader?.classList.remove("shadow-lg");
         mainHeader?.classList.remove("shadow-primary/30");
       }
+      if ((scrollPosition - 10) > window.scrollY) {
+        mainHeader?.classList.remove("animate-out");
+        mainHeader?.classList.add("animate-in");
+        mainHeader?.classList.add("sticky");
+      }
+      if ((scrollPosition + 10) < window.scrollY) {
+        mainHeader?.classList.remove("animate-in");
+        mainHeader?.classList.add("animate-out");
+        mainHeader?.classList.remove("sticky");
+      }
+      setSrollPosition(window.scrollY);
     };
     window.addEventListener("scroll", fixedHeader);
-  }, [session]);
+    return () => {
+      window.removeEventListener("scroll", fixedHeader);
+    };
+  }, [session, scrollPosition]);
   return (
     <nav
       id="mainHeader"
-      className="bg-background w-full z-30 animate-in duration-300 ease-in top-0 sticky"
+      className="bg-background w-full z-30 animate-in duration-300 ease-in top-0 slide-in-from-top-0"
     >
       <div className="container flex min-h-[3rem] p-6 gap-2">
         <div className="flex-1">
@@ -75,7 +90,9 @@ function MainNav() {
                 <NavigationMenuList>
                   <NavigationMenuItem>
                     <Link href="/" legacyBehavior passHref>
-                      <NavigationMenuLink className={navigationMenuTriggerStyle() + " gap-2"}>
+                      <NavigationMenuLink
+                        className={navigationMenuTriggerStyle() + " gap-2"}
+                      >
                         <HomeIcon />
                         Home
                       </NavigationMenuLink>
@@ -83,7 +100,9 @@ function MainNav() {
                   </NavigationMenuItem>
                   <NavigationMenuItem>
                     <Link href="/learn" legacyBehavior passHref>
-                      <NavigationMenuLink className={navigationMenuTriggerStyle() + " gap-2"}>
+                      <NavigationMenuLink
+                        className={navigationMenuTriggerStyle() + " gap-2"}
+                      >
                         <VideoIcon />
                         My Learning
                       </NavigationMenuLink>
@@ -110,7 +129,6 @@ function MainNav() {
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
-
             </>
           ) : (
             <>
