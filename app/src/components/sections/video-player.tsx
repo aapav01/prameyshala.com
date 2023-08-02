@@ -37,7 +37,7 @@ export default function VideoPlayer({ lesson }: Props) {
     return (
       <div style={{ position: "relative", paddingTop: "56.25%" }}>
         <iframe
-          src={`https://iframe.mediadelivery.net/embed/142755/${lesson.platformVideoId}?autoplay=true&loop=false&muted=false&preload=true`}
+          src={`https://iframe.mediadelivery.net/embed/${process.env.NEXT_PUBLIC_BUNNYCDN_VIDEO_LIBRARY_ID}/${lesson.platformVideoId}?autoplay=true&loop=false&muted=false&preload=true`}
           loading="lazy"
           style={{
             border: "none",
