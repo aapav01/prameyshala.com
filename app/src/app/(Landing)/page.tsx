@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import content_2 from "@/svg/10044566_4117341.svg";
 import TestimonialMain from "@/components/testimontial-main";
 import PopularCategory from "@/components/sections/popular-category";
-import { Input } from "@/components/ui/input";
+import SetupOtp from "@/components/sections/setup-otp";
 
 
 export default function Home() {
@@ -23,25 +23,7 @@ export default function Home() {
                 Elevate your academic performance with personalized learning
                 experiences
               </h1>
-              <p className="text-background text-sm md:text-xl py-1 md:py-5">
-                Enter your mobile number
-                <Input type="tel" required className="mt-2 font-sans max-w-md py-6 px-3 rounded-lg text-xl text-black" placeholder="Enter your mobile number" />
-              </p>
-              <div className="flex">
-                <Button
-                  variant={"white"}
-                  className="text-xs md:text-lg md:py-6"
-                >
-                  Join
-                  <span className="hidden md:flex md:ml-1">{" "}For Free</span>
-                </Button>
-                <Button
-                  variant={"ghost"}
-                  className="mx-2 text-white text-xs md:text-sm py-6"
-                >
-                  Find Out More
-                </Button>
-              </div>
+              <SetupOtp />
             </div>
             <div className="w-full lg:w-1/2">
               <div className="mx-auto items-center justify-center flex h-fit">

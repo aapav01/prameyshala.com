@@ -5,6 +5,7 @@ import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useSearchParams } from "next/navigation";
+import PhoneInput from "react-phone-number-input";
 
 import {
   Form,
@@ -61,7 +62,11 @@ export default function LoginForm({}: Props) {
                 Phone Number
               </FormLabel>
               <FormControl>
-                <Input placeholder="9876543210" {...field} />
+                <PhoneInput
+                  placeholder="Enter phone number"
+                  defaultCountry="IN"
+                  {...field}
+                />
               </FormControl>
               <FormDescription>
                 Phone Number Used to Register on Pramey Shala.

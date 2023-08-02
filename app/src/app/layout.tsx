@@ -1,7 +1,8 @@
 import "@/styles/globals.css";
+import "react-phone-number-input/style.css";
 import { Hind } from "next/font/google";
 import Script from "next/script";
-import { Toaster } from "@/components/ui/toaster"
+import { Toaster } from "@/components/ui/toaster";
 
 const hind = Hind({
   weight: ["300", "400", "500", "600", "700"],
@@ -95,7 +96,7 @@ export const metadata = {
     // creator: '',
     // creatorId: '',
   },
-  category: 'education',
+  category: "education",
 };
 
 export default function RootLayout({
