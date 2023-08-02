@@ -49,6 +49,8 @@ export default function ClassCard({ standard, enroll }: Props) {
     <Link href={enroll? ("learn/" + standard.slug): ("/class/" + standard.slug)}>
       <Card className="animate-in duration-200 ease-in hover:-translate-y-2 hover:shadow-xl hover:shadow-indigo-300/50">
         <Image
+          width={630}
+          height={400}
           src={
             standard.image
               ? standard.image

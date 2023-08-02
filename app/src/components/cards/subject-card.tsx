@@ -39,7 +39,7 @@ export default function SubjectCard({ subject, size }: Props) {
                 ? subject.image
                 : `/api/og/subject/${subject.slug}`
             }
-            width={600}
+            width={630}
             height={400}
             alt={subject.name}
             className="rounded-t-lg p-1"
