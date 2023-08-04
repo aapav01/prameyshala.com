@@ -1,6 +1,8 @@
+from django.core.paginator import Paginator
 import graphene
 from graphene_django import DjangoObjectType
 from datetime import datetime
+from app.accounts.models import User
 from .models import Lesson, Subject, Classes, Chapter, Category
 
 
@@ -34,6 +36,16 @@ class LessonType(DjangoObjectType):
         fields = "__all__"
 
 
+class PaginatedLessons(graphene.ObjectType):
+    count = graphene.Int()
+    num_pages = graphene.Int()
+    lesson = graphene.Field(LessonType)
+    has_next = graphene.Boolean()
+    has_previous = graphene.Boolean()
+    start_index = graphene.Int()
+    end_index = graphene.Int()
+
+
 class Query(graphene.ObjectType):
     # classes
     classes = graphene.List(ClassesType)
@@ -48,6 +60,8 @@ class Query(graphene.ObjectType):
     chapter = graphene.Field(ChapterType, id=graphene.ID(required=True))
     # lessons
     lesson = graphene.Field(LessonType, id=graphene.ID(required=True))
+    lesson_by_chapter_paginated = graphene.Field(
+        PaginatedLessons, chapter_id=graphene.ID(required=True), page=graphene.Int())
 
     # classes
     def resolve_classes(self, info):
@@ -67,9 +81,6 @@ class Query(graphene.ObjectType):
 
     # subjects
     def resolve_subject(self, info, slug):
-        user = info.context.user
-        if not user.is_authenticated:
-            raise Exception("Authentication credentials were not provided")
         return Subject.objects.get(slug=slug)
 
     # chapters
@@ -85,3 +96,25 @@ class Query(graphene.ObjectType):
         if not user.is_authenticated:
             raise Exception("Authentication credentials were not provided")
         return Lesson.objects.filter(public=True).get(pk=id)
+
+    def resolve_lesson_by_chapter_paginated(self, info, chapter_id, page=1):
+        user = info.context.user
+        if not user.is_authenticated:
+            raise Exception("Authentication credentials were not provided")
+        # Check if user is enrolled ( user -> enrollment -> classes )
+        # in the class (lesson < chapter < subject < class) and can access the lesson
+        # if not, raise an error
+        # if user is enrolled, return the lesson
+        if User.objects.get(pk=user.id).enrollment_set.filter(standard__subject__chapter__id=chapter_id).count() == 0:
+            raise Exception("You are not enrolled in this class")
+        # Return Lesson
+        lessons = Lesson.objects.filter(chapter=chapter_id, public=True).order_by('position')
+        paginate_lessons = Paginator(lessons, per_page=1)
+        page_obj = paginate_lessons.page(page)
+        replaced_obj = paginate_lessons
+        replaced_obj.lesson = page_obj.object_list[0]
+        replaced_obj.has_next = page_obj.has_next()
+        replaced_obj.has_previous = page_obj.has_previous()
+        replaced_obj.start_index = page_obj.start_index()
+        replaced_obj.end_index = page_obj.end_index()
+        return replaced_obj
