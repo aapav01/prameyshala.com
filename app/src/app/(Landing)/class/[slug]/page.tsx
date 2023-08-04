@@ -321,6 +321,8 @@ export default async function ClassDetail({ params }: Props) {
                   }
                   alt="placeholder"
                   className="rounded"
+                  height={630}
+                  width={400}
                 />
               </div>
               <div className="w-1/2 max-sm:w-full lg:w-full px-3">
