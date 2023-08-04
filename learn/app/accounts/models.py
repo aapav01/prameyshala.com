@@ -4,6 +4,7 @@ from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, Permis
 from django.contrib.auth.hashers import make_password
 from django.utils.translation import gettext_lazy as _
 from datetime import date, timedelta
+from phonenumber_field.modelfields import PhoneNumberField
 
 phone_validator = RegexValidator(
     r"^(\+?\d{0,4})?\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{4}\)?)?$", "The phone number provided is invalid")
@@ -17,21 +18,22 @@ class UserManager(BaseUserManager):
             raise ValueError("User must have a full name")
         if not phone_number:
             raise ValueError("User must have a phone number")
+        if password:
+            password = make_password(password)
         email = self.normalize_email(email)
         user = self.model(email=email, full_name=full_name, password=password,
                           phone_number=phone_number, **extra_fields)
         user.save(using=self._db)
         return user
 
-    def create_user(self, username, email=None, **extra_fields):
+    def create_user(self, full_name, phone_number, email, **extra_fields):
         extra_fields.setdefault("is_staff", False)
         extra_fields.setdefault("is_superuser", False)
-        return self._create_user(username, email, **extra_fields)
+        return self._create_user(full_name, phone_number, email, **extra_fields)
 
     def create_superuser(self, phone_number, email, full_name, password=None, **extra_fields):
         if not password:
             raise ValueError("User must have a password")
-        password = make_password(password)
         extra_fields.setdefault("is_staff", True)
         extra_fields.setdefault("is_superuser", True)
         return self._create_user(full_name, phone_number, email, password, **extra_fields)
@@ -43,14 +45,16 @@ class Role(Group):
 
 class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(max_length=100, unique=True)
-    phone_number = models.CharField(max_length=16, validators=[
-                                    phone_validator], unique=True)
+    phone_number = PhoneNumberField(max_length=16, unique=True)
     full_name = models.CharField(max_length=30)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     created_at = models.DateTimeField(
         auto_now=False, auto_now_add=True, blank=True, null=True)
     updated_at = models.DateTimeField(auto_now=True, blank=True, null=True)
+    country = models.CharField(max_length=64, blank=True, null=True, default='IN')
+    state = models.CharField(max_length=64, blank=True, null=True)
+    city = models.CharField(max_length=64, blank=True, null=True)
     objects = UserManager()
     USERNAME_FIELD = 'phone_number'
     REQUIRED_FIELDS = ['email', 'full_name']
@@ -60,7 +64,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 
 class phoneModel(models.Model):
-    Mobile = models.BigIntegerField(blank=False)
+    Mobile = models.CharField(blank=False, max_length=20)
     isVerified = models.BooleanField(blank=False, default=False)
     counter = models.IntegerField(default=0, blank=False)
 
