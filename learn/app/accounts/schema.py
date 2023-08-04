@@ -232,12 +232,12 @@ class Mutation(graphene.ObjectType):
         try:
             Mobile = phoneModel.objects.get(Mobile=phone_number)
         except ObjectDoesNotExist:
-            return "Phone Number Not Found"
+            return Exception("Phone Number Not Found")
         if Mobile.isVerified:
             # check if user exist
             try:
                 user = User.objects.get(phone_number=phone_number)
-                return "User Already Exists"
+                raise Exception("User Already Exists")
             except ObjectDoesNotExist:
                 pass
             try:
@@ -246,7 +246,7 @@ class Mutation(graphene.ObjectType):
                     country=country, state=state, city=city
                 )
                 return user
-            except:
-                raise Exception("User Creation Failed")
+            except Exception as e:
+                raise e
         else:
             raise Exception("OTP Verification Failed")
