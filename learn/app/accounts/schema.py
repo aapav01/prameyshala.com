@@ -104,7 +104,10 @@ class Query(graphene.ObjectType):
         })
         print(response.json())
         if response.status_code == 200:
-            return "OTP Sent Successfully"
+            res = response.json()
+            if res['return']:
+                return "OTP Sent Successfully"
+            return str(response.json())
         else:
             return "OTP Sending Failed"
 
@@ -194,7 +197,7 @@ class Mutation(graphene.ObjectType):
         try:
             Mobile = phoneModel.objects.get(Mobile=phone_number)
         except ObjectDoesNotExist:
-            return "Phone Number Not Found"
+            raise Exception("Phone Number Not Found")
         keygen = generateKey()
         key = base64.b32encode(keygen.returnValue(phone_number).encode())
         OTP = pyotp.HOTP(key)
@@ -203,7 +206,7 @@ class Mutation(graphene.ObjectType):
             Mobile.save()
             return "OTP Verified Successfully"
         else:
-            return "OTP Verification Failed"
+            raise Exception("OTP Verification Failed")
 
     def resolve_register_user(self, info, phone_number, name, email, password):
         try:
@@ -218,7 +221,8 @@ class Mutation(graphene.ObjectType):
             except ObjectDoesNotExist:
                 pass
             user = User.objects.create_user(
-                phone_number=phone_number, name=name, email=email, password=password)
+                phone_number=phone_number, full_name=name, email=email, password=password
+            )
             return user
         else:
-            return "OTP Verification Failed"
+            raise Exception("OTP Verification Failed")
