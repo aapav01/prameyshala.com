@@ -45,7 +45,7 @@ class Role(Group):
 
 class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(max_length=100, unique=True)
-    phone_number = PhoneNumberField(max_length=16, unique=True)
+    phone_number = models.CharField(max_length=16, unique=True)
     full_name = models.CharField(max_length=30)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
@@ -64,7 +64,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 
 class phoneModel(models.Model):
-    Mobile = models.CharField(blank=False, max_length=20)
+    Mobile = PhoneNumberField(blank=False, max_length=20)
     isVerified = models.BooleanField(blank=False, default=False)
     counter = models.IntegerField(default=0, blank=False)
 
