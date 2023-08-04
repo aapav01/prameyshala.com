@@ -45,7 +45,7 @@ class Role(Group):
 
 class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(max_length=100, unique=True)
-    phone_number = models.CharField(max_length=16, unique=True)
+    phone_number = models.CharField(max_length=16, validators=[phone_validator], unique=True)
     full_name = models.CharField(max_length=30)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
