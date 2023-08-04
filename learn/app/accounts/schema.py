@@ -89,11 +89,12 @@ class Query(graphene.ObjectType):
 
     @staticmethod
     def resolve_get_otp(self, info, phone_number):
+        temp = phone_number
         phone_number = PhoneNumber.from_string(phone_number)
         phone_number = phone_number.as_national
         phone_number = phone_number.replace(" ", "")[1:]
         try:
-            Mobile = phoneModel.objects.get(Mobile=PhoneNumber.from_string(phone_number))
+            Mobile = phoneModel.objects.get(Mobile=PhoneNumber.from_string(temp))
         except ObjectDoesNotExist:
             phoneModel.objects.create(Mobile=phone_number)
             Mobile = phoneModel.objects.get(Mobile=phone_number)
@@ -206,11 +207,12 @@ class Mutation(graphene.ObjectType):
 
     @staticmethod
     def resolve_verify_otp(self, info, phone_number, otp):
+        temp = phone_number
         phone_number = PhoneNumber.from_string(phone_number)
         phone_number = phone_number.as_national
         phone_number = phone_number.replace(" ", "")[1:]
         try:
-            Mobile = phoneModel.objects.get(Mobile=PhoneNumber.from_string(phone_number))
+            Mobile = phoneModel.objects.get(Mobile=PhoneNumber.from_string(temp))
         except ObjectDoesNotExist:
             raise Exception("Phone Number Not Found")
         keygen = generateKey()
