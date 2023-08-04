@@ -43,7 +43,7 @@ class RolesForm(ModelForm):
 class UsersForm(ModelForm):
     class Meta:
         model = User
-        fields = ['full_name', 'password', 'phone_number', 'email', 'is_active',
+        fields = ['full_name', 'password', 'phone_number', 'email', 'is_active', 'country', 'state', 'city',
                   'is_superuser', 'is_staff',   'groups', 'user_permissions',]
         exclude = ['last_login']
 
