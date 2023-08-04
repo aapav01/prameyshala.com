@@ -1,5 +1,7 @@
 import React from "react";
 import { notFound } from "next/navigation";
+import { getServerSession } from "next-auth/next";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 
 // GRAPHQL API - APPLOLO
 import { gql } from "@apollo/client";
@@ -29,11 +31,16 @@ const query = gql`
   }
 `;
 
-async function getData({ params }: Props) {
+async function getData({ params }: Props, session: any) {
   try {
     const api_data = await getClient().query({
       query,
       variables: { id: parseInt(params.id) },
+      context: {
+        headers: {
+          Authorization: `JWT ${session.user?.token}`,
+        },
+      }
     });
     return api_data.data;
   } catch (error) {
@@ -42,7 +49,8 @@ async function getData({ params }: Props) {
 }
 
 export default async function ChapterDetail({ params }: Props) {
-  const { lesson } = await getData({ params });
+  const session = await getServerSession(authOptions);
+  const { lesson } = await getData({ params }, session);
   return (
     <section className="max-lg:hidden max-w-sm w-full max-h-screen bg-muted overflow-y-auto shadow-inner relative">
       <header className="bg-cyan-800 py-9 text-cyan-50">

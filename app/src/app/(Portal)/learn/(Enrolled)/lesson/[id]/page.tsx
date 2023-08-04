@@ -2,6 +2,8 @@ import React from "react";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { MDXRemote } from "next-mdx-remote/rsc";
+import { getServerSession } from "next-auth/next";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 
 // GRAPHQL API - APPLOLO
 import { gql } from "@apollo/client";
@@ -45,11 +47,16 @@ const query = gql`
   }
 `;
 
-async function getData({ params }: Props) {
+async function getData({ params }: Props, session: any) {
   try {
     const api_data = await getClient().query({
       query,
       variables: { id: parseInt(params.id) },
+      context: {
+        headers: {
+          Authorization: `JWT ${session.user?.token}`,
+        },
+      }
     });
     return api_data.data;
   } catch (error) {
@@ -59,14 +66,16 @@ async function getData({ params }: Props) {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   // fetch data
-  const { lesson } = await getData({ params });
+  const session = await getServerSession(authOptions);
+  const { lesson } = await getData({ params }, session);
   return {
     title: `${lesson.title} - ${lesson.chapter.name} of ${lesson.chapter.subject.name} | Pramey Shala`,
   };
 }
 
 export default async function LessonDetail({ params }: Props) {
-  const { lesson } = await getData({ params });
+  const session = await getServerSession(authOptions);
+  const { lesson } = await getData({ params }, session);
 
   return (
     <React.Fragment>
