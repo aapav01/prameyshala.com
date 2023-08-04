@@ -20,7 +20,7 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/components/ui/use-toast";
-import PhoneInput, { formatPhoneNumber } from "react-phone-number-input";
+import PhoneInput from "react-phone-number-input";
 import {
   Select,
   SelectContent,
@@ -90,14 +90,6 @@ export default function RegisterForm({}: Props) {
   });
 
   async function onSubmit(data: z.infer<typeof formSchema>) {
-    toast({
-      title: "You submitted the following values:",
-      description: (
-        <pre className="mt-2 w-[340px] rounded-md bg-rose-900 p-4">
-          <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-        </pre>
-      ),
-    });
     const result = await fetch("/api/register", {
       method: "POST",
       body: JSON.stringify(data),
@@ -125,9 +117,8 @@ export default function RegisterForm({}: Props) {
         console.error(err);
       });
     toast({
-      title: "You submitted the following values:",
       description: (
-        <pre className="mt-2 w-[340px] rounded-md bg-rose-900 p-4">
+        <pre className="mt-2 w-[340px] rounded-md bg-green-900 p-4">
           <code className="text-white">{JSON.stringify(result, null, 2)}</code>
         </pre>
       ),
@@ -136,12 +127,9 @@ export default function RegisterForm({}: Props) {
 
   async function phoneNumberSubmit(data: z.infer<typeof phoneNumberSchema>) {
     setPhoneLoading(true);
-    let phone = formatPhoneNumber(data.phoneNumber).slice(1).replace(" ", "");
     const result = await fetch("/api/otp", {
       method: "PUT",
-      body: JSON.stringify({
-        phoneNumber: phone,
-      }),
+      body: JSON.stringify(data),
     })
       .then((res) => res.json())
       .catch((err) => {
@@ -149,7 +137,7 @@ export default function RegisterForm({}: Props) {
         setPhoneLoading(false);
       });
     if (result?.getOtp === "OTP Sent Successfully") {
-      form.setValue("phoneNumber", formatPhoneNumber(data.phoneNumber).slice(1).replace(" ", ""));
+      form.setValue("phoneNumber", data.phoneNumber);
       setStep("otp");
     }
   }

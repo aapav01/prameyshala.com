@@ -164,6 +164,9 @@ class Mutation(graphene.ObjectType):
     register_user = graphene.Field(UserType, phone_number=graphene.String(required=True),
                                       name=graphene.String(required=True),
                                       email=graphene.String(required=True),
+                                      country=graphene.String(required=True),
+                                      state=graphene.String(required=True),
+                                      city=graphene.String(required=True),
                                       password=graphene.String(required=True))
 
     create_payment = graphene.Field(
@@ -225,7 +228,7 @@ class Mutation(graphene.ObjectType):
         else:
             raise Exception("OTP Verification Failed")
 
-    def resolve_register_user(self, info, phone_number, name, email, password):
+    def resolve_register_user(self, info, phone_number, name, email, password, country, state, city):
         try:
             Mobile = phoneModel.objects.get(Mobile=phone_number)
         except ObjectDoesNotExist:
@@ -237,9 +240,13 @@ class Mutation(graphene.ObjectType):
                 return "User Already Exists"
             except ObjectDoesNotExist:
                 pass
-            user = User.objects.create_user(
-                phone_number=phone_number, full_name=name, email=email, password=password
-            )
-            return user
+            try:
+                user = User.objects.create_user(
+                    phone_number=phone_number, full_name=name, email=email, password=password,
+                    country=country, state=state, city=city
+                )
+                return user
+            except:
+                raise Exception("User Creation Failed")
         else:
             raise Exception("OTP Verification Failed")

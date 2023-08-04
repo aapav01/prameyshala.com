@@ -5,17 +5,23 @@ import { gql } from "@apollo/client";
 import { getClient } from "@/lib/client";
 
 const mutation = gql`
-  mutation register(
+  mutation reigster(
     $phoneNumber: String!
-    $name: String!
+    $fullName: String!
     $password: String!
     $email: String!
+    $country: String!
+    $state: String!
+    $city: String!
   ) {
     registerUser(
       phoneNumber: $phoneNumber
-      name: $name
+      name: $fullName
       password: $password
       email: $email
+      country: $country
+      state: $state
+      city: $city
     ) {
       id
       fullName
@@ -27,9 +33,14 @@ export async function POST(request: NextRequest) {
   if (request.body) {
     const res_data = await request.json();
     try {
-      const {data, errors} = await getClient().mutate({
+      const { data, errors } = await getClient().mutate({
         mutation,
         variables: res_data,
+        context: {
+          fetchOptions: {
+            caches: "no-cache",
+          }
+        }
       });
       if (errors) {
         console.error(errors);
