@@ -2,6 +2,9 @@ import React from "react";
 import { Metadata } from "next";
 import RegisterForm from "@/components/sections/register-form";
 import Link from "next/link";
+import { redirect } from "next/navigation";
+import { getServerSession } from "next-auth/next";
+import Image from "next/image";
 
 type Props = {};
 
@@ -11,7 +14,11 @@ export async function generateMetadata({}: Props): Promise<Metadata> {
   };
 }
 
-export default function RegisterPage({}: Props) {
+export default async function RegisterPage({}: Props) {
+  const session = await getServerSession();
+  if (session?.user && session.user?.email) {
+    redirect("/learn");
+  }
   return (
     <main className="min-h-[70vh] bg-gradient-to-t from-indigo-500 to-white">
       <div className="max-w-7xl mx-auto py-16 px-4 sm:px-6 lg:px-8">
@@ -31,12 +38,13 @@ export default function RegisterPage({}: Props) {
             </p>
             <RegisterForm />
           </div>
-          <div className="hidden lg:block relative flex-1 min-w-[55%]">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src="/opengraph-image"
+          <div className="max-lg:hidden relative flex-1 min-w-[55%]">
+            <Image
+              src="/img/openai_gen_classroom.png"
               className="inset-0 h-full w-full object-cover"
               alt="Pramey Shala"
+              width={600}
+              height={600}
             />
           </div>
         </div>

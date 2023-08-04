@@ -1,7 +1,9 @@
 import React from "react";
 import { Metadata } from "next";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import LoginForm from "@/components/sections/login-form";
+import { getServerSession } from "next-auth/next";
 
 type Props = {};
 
@@ -11,7 +13,11 @@ export async function generateMetadata({}: Props): Promise<Metadata> {
   };
 }
 
-export default function LoginPage({}: Props) {
+export default async function LoginPage({}: Props) {
+  const session = await getServerSession();
+  if (session?.user && session.user?.email) {
+    redirect("/learn");
+  }
   return (
     <main className="min-h-[70vh] bg-gradient-to-t from-indigo-500 to-white">
       <div className="max-w-7xl mx-auto py-16 px-4 sm:px-6 lg:px-8">
