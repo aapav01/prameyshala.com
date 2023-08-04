@@ -9,6 +9,7 @@ from app.courses.models import Classes
 import environ
 import razorpay
 import requests
+import graphql_jwt
 
 
 env = environ.Env()
@@ -41,6 +42,13 @@ class EnrollmentType(DjangoObjectType):
         model = Enrollment
         fields = "__all__"
 
+
+class ObtainJSONWebToken(graphql_jwt.JSONWebTokenMutation):
+    user = graphene.Field(UserType)
+
+    @classmethod
+    def resolve(cls, root, info, **kwargs):
+        return cls(user=info.context.user)
 
 class Query(graphene.ObjectType):
     # users

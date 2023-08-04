@@ -9,7 +9,7 @@ class Query(accounts.Query, courses.Query, graphene.ObjectType):
 
 
 class Mutation(accounts.Mutation, graphene.ObjectType):
-    token_auth = graphql_jwt.ObtainJSONWebToken.Field()
+    token_auth = accounts.ObtainJSONWebToken.Field()
     verify_token = graphql_jwt.Verify.Field()
     refresh_token = graphql_jwt.Refresh.Field()
 
