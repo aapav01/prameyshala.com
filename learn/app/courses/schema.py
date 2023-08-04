@@ -43,13 +43,10 @@ class Query(graphene.ObjectType):
     category = graphene.Field(CategoriesType, id=graphene.ID(required=True))
 
     # subjects
-    subjects = graphene.List(SubjectType)
     subject = graphene.Field(SubjectType, slug=graphene.String(required=True))
     # chapters
-    chapters = graphene.List(ChapterType)
     chapter = graphene.Field(ChapterType, id=graphene.ID(required=True))
     # lessons
-    lessons = graphene.List(LessonType)
     lesson = graphene.Field(LessonType, id=graphene.ID(required=True))
 
     # classes
@@ -60,7 +57,6 @@ class Query(graphene.ObjectType):
         return Classes.objects.get(slug=slug)
 
     # categories
-
     def resolve_categories(self, info, popular=None):
         if popular is not None:
             return Category.objects.filter(popular=popular).all()
@@ -70,22 +66,22 @@ class Query(graphene.ObjectType):
         return Category.objects.get(pk=id)
 
     # subjects
-    def resolve_subjects(self, info):
-        return Subject.objects.all()
-
     def resolve_subject(self, info, slug):
+        user = info.context.user
+        if not user.is_authenticated:
+            raise Exception("Authentication credentials were not provided")
         return Subject.objects.get(slug=slug)
 
     # chapters
-    def resolve_chapters(self, info):
-        return Chapter.objects.all()
-
     def resolve_chapter(self, info, id):
+        user = info.context.user
+        if not user.is_authenticated:
+            raise Exception("Authentication credentials were not provided")
         return Chapter.objects.get(pk=id)
 
     # lessons
-    def resolve_lessons(self, info):
-        return Lesson.objects.filter(public=True).order_by('position')
-
     def resolve_lesson(self, info, id):
+        user = info.context.user
+        if not user.is_authenticated:
+            raise Exception("Authentication credentials were not provided")
         return Lesson.objects.filter(public=True).get(pk=id)
