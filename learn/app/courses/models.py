@@ -8,7 +8,7 @@ class Classes(models.Model):
     name = models.CharField(max_length=255)
     description = models.TextField()
     image = models.ImageField(
-        upload_to='static/uploads/classes', blank=True, null=True)
+        upload_to='uploads/classes', blank=True, null=True)
     slug = models.SlugField(unique=True, max_length=255)
     latest_price = models.FloatField(
         default=0.0, validators=[MinValueValidator(0.0)])
@@ -46,7 +46,7 @@ class Subject(models.Model):
         Category, on_delete=models.CASCADE)
     slug = models.SlugField(unique=True, max_length=255)
     image = models.ImageField(
-        upload_to='static/uploads/subjects', blank=True, null=True)
+        upload_to='uploads/subjects', blank=True, null=True)
     publish_at = models.DateTimeField(blank=True, null=True)
     standard = models.ForeignKey(Classes, on_delete=models.CASCADE)
     created_at = models.DateTimeField(
@@ -64,11 +64,11 @@ class Chapter(models.Model):
     name = models.CharField(max_length=255)
     description = models.TextField(blank=True, null=True)
     image = models.ImageField(
-        upload_to='static/uploads/chapters', blank=True, null=True)
+        upload_to='uploads/chapters', blank=True, null=True)
     collectionid = models.CharField(
         db_column='collectionId', max_length=255, blank=True, null=True)
     subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.DO_NOTHING, blank=True, null=True)
     created_at = models.DateTimeField(
         auto_now=False, auto_now_add=True, blank=True, null=True)
     updated_at = models.DateTimeField(auto_now=True, blank=True, null=True)
@@ -139,13 +139,13 @@ class Assignment(models.Model):
     description = models.TextField()
     due_date = models.DateTimeField(blank=True, null=True)
     teacher = models.ForeignKey(
-        User, on_delete=models.CASCADE, blank=True, null=True)
+        User, on_delete=models.DO_NOTHING, blank=True, null=True)
     assigment_file = models.FileField(upload_to='uploads/assignments', blank=True, null=True)
     type = models.CharField(max_length=20, choices=Type.choices)
     created_by = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name='assignment_created_by')
+        User, on_delete=models.DO_NOTHING, related_name='assignment_created_by', blank=True, null=True)
     updated_by = models.ForeignKey(
-        User, on_delete=models.CASCADE, blank=True, null=True, related_name='assignment_updated_by')
+        User, on_delete=models.DO_NOTHING, blank=True, null=True, related_name='assignment_updated_by')
     created_at = models.DateTimeField(auto_now=False, auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -157,7 +157,7 @@ class AssignmentSubmission(models.Model):
     assignment = models.ForeignKey(Assignment, on_delete=models.CASCADE)
     student = models.ForeignKey(User, on_delete=models.CASCADE)
     solution_file = models.FileField(
-        upload_to='static/uploads/assignments/submissions')
+        upload_to='uploads/assignments/submissions')
     created_at = models.DateTimeField(auto_now=False, auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True, blank=True, null=True)
 
@@ -211,7 +211,7 @@ class Lesson(models.Model):
     length = models.FloatField(blank=True, null=True)
     url = models.CharField(max_length=255, blank=True, null=True)
     thumb_url = models.ImageField(
-        upload_to='static/uploads/lessons', blank=True, null=True)
+        upload_to='uploads/lessons', blank=True, null=True)
     public = models.BooleanField(default=False)
     position = models.IntegerField(blank=True, null=True, default=9999)
     lesson_type = models.CharField(
@@ -224,7 +224,7 @@ class Lesson(models.Model):
     teacher = models.ForeignKey(
         User, on_delete=models.DO_NOTHING, blank=True, null=True, related_name='teacher')
     created_by = models.ForeignKey(
-        User, on_delete=models.DO_NOTHING, related_name='created_by')
+        User, on_delete=models.DO_NOTHING, related_name='created_by', blank=True, null=True)
     updated_by = models.ForeignKey(
         User, on_delete=models.DO_NOTHING, blank=True, null=True, related_name='updated_by')
     chapter = models.ForeignKey(Chapter, on_delete=models.CASCADE)
