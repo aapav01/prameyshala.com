@@ -140,7 +140,7 @@ class Assignment(models.Model):
     due_date = models.DateTimeField(blank=True, null=True)
     teacher = models.ForeignKey(
         User, on_delete=models.CASCADE, blank=True, null=True)
-    assigment_file = models.FileField(upload_to='static/uploads/assignments', blank=True, null=True)
+    assigment_file = models.FileField(upload_to='uploads/assignments', blank=True, null=True)
     type = models.CharField(max_length=20, choices=Type.choices)
     created_by = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name='assignment_created_by')

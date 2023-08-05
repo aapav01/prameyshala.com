@@ -18,7 +18,6 @@ import environ
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-
 # Initialise environment variables
 env = environ.Env()
 environ.Env.read_env()
@@ -158,7 +157,11 @@ STATICFILES_DIRS = [
 
 # Define the MEDIA_ROOT setting
 MEDIA_URL = 'media/'
-MEDIA_ROOT = os.path.join(STATIC_ROOT,'media')
+if DEBUG:
+    MEDIA_ROOT = os.path.join(BASE_DIR, 'staticfiles', 'media')
+else:
+    MEDIA_ROOT = os.path.join(BASE_DIR, 'public', 'media')
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
