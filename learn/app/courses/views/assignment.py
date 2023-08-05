@@ -53,7 +53,10 @@ class AssignmentListView(PermissionRequiredMixin, ListView):
 
 
 class AssignmentDetailView(DetailView):
-    pass
+    model = Assignment
+    context_object_name = 'assignments'
+    template_name = 'assignments/detail.html'
+
 
 
 class AssignmentUpdateView(PermissionRequiredMixin, UpdateView):

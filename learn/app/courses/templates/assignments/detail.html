@@ -1,0 +1,12 @@
+{% load static %}
+<embed 
+type="application/pdf"
+src = "{{ MEDIA_ROOT }}{{ assignments.assigment_file }}"
+width="600"
+height="700"
+>
+</embed>
+<p>
+
+  {{ assignments.assigment_file }}
+</p>

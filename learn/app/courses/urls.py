@@ -2,6 +2,7 @@ from django.contrib.auth.decorators import login_required
 from django.urls import path
 from .views import *
 
+
 app_name = 'courses'
 
 urlpatterns = [
@@ -43,4 +44,6 @@ urlpatterns = [
     path("assignments/", login_required(AssignmentListView.as_view()), name="assignments"),
     path("assignment/<int:pk>", login_required(AssignmentUpdateView.as_view()), name="assignment-update"),
     path("assignment/<int:pk>/delete", login_required(AssignmentDeleteView.as_view()), name="assignment-delete"),
+    path("assignment/<int:pk>/detail", login_required(AssignmentDetailView.as_view()), name="assignment-detail"),
 ]
+
