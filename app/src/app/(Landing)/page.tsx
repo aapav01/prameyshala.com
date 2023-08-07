@@ -23,6 +23,7 @@ export default function Home() {
                 Elevate your academic performance with personalized learning
                 experiences
               </h1>
+              <p className="text-background text-3xl font-sans mb-5">Where excellence meets education.</p>
               <SetupOtp />
             </div>
             <div className="w-full lg:w-1/2">
@@ -97,30 +98,15 @@ export default function Home() {
               <span className="rock-underline">Experience</span>
             </h2>
             <div>
-              <ul className="text-lg py-5">
+              <ul className="text-lg py-5 text-justify">
                 <li className="flex items-baseline">
-                  <CheckCircledIcon className="text-primary mr-1" />
-                  Learn anytime anywhere
+                Welcome to our platform 'PrameyShala' dedicated to enhancing your learning journey. With us, you can learn at your own pace, wherever and whenever you want. Our experienced mentors are here to support you, answering your questions as you learn. Get ready for an interactive educational experience that encourages active participation.
+                </li>
+                <li className="flex items-baseline py-5">
+                Explore a wealth of knowledge through unlimited access to well-structured courses tailored to your learning needs. Monitor your progress as you move forward and gain insights into your achievements.
                 </li>
                 <li className="flex items-baseline">
-                  <CheckCircledIcon className="text-primary mr-1" />
-                  Top educators
-                </li>
-                <li className="flex items-baseline">
-                  <CheckCircledIcon className="text-primary mr-1" />
-                  Doubt solving
-                </li>
-                <li className="flex items-baseline">
-                  <CheckCircledIcon className="text-primary mr-1" />
-                  Interactive learning experience
-                </li>
-                <li className="flex items-baseline">
-                  <CheckCircledIcon className="text-primary mr-1" />
-                  Unlimited access to structured course
-                </li>
-                <li className="flex items-baseline">
-                  <CheckCircledIcon className="text-primary mr-1" />
-                  Progress Tracking
+                Join us today for free and start your path to comprehensive and rewarding learning. Your educational goals are just one click away to dive into your success.
                 </li>
               </ul>
               <Button variant={"default"} className="text-lg py-6">
@@ -129,6 +115,67 @@ export default function Home() {
             </div>
           </div>
         </div>
+      </section>
+      <section className="container py-12">
+        <div className="flex flex-col lg:flex-row h-full items-center">
+          <div className="w-full lg:w-1/2">
+            <span className="text-secondary bg-secondary/10 px-3 py-1 rounded-2xl text-sm font-semibold">
+              About Us
+            </span>
+            <h2 className="text-3xl md:text-6xl font-sans font-bold py-5">
+              Why does <span className="rock-underline" >PrameyShala</span> stand out best?
+            </h2>
+              <ul className="text-lg py-5 text-justify">
+                <li className="flex items-baseline">
+                  Are you ready to initiate a journey towards attaining academic excellence. Look no further than PrameyShala—your ultimate destination for exceptional coaching and holistic learning.
+                </li>
+                <li className="flex items-baseline py-2">
+                  Here's why PrameyShala Tutorials stand out as the best choice for your educational aspirations:
+                </li>
+                <li className="flex items-baseline">
+                  <CheckCircledIcon className="text-primary mr-1" />
+                  Expert mentors: Experienced mentors who are passionate about nurturing potential.
+                </li>
+                <li className="flex items-baseline">
+                  <CheckCircledIcon className="text-primary mr-1" />
+                  Comprehensive Curriculum: Well-rounded education focusing on critical thinking and real-world applications.
+                </li>
+                <li className="flex items-baseline">
+                  <CheckCircledIcon className="text-primary mr-1" />
+                  Personalized Attention: Small batches for individualized support and progress monitoring.
+                </li>
+                <li className="flex items-baseline">
+                  <CheckCircledIcon className="text-primary mr-1" />
+                 Innovative Teaching Methods: Engaging approaches for easy understanding of complex concepts.
+                </li>
+                <li className="flex items-baseline">
+                  <CheckCircledIcon className="text-primary mr-1" />
+                  Proven Track Record: Consistent success in competitive exams and academics.
+                </li>
+                <li className="flex items-baseline">
+                  <CheckCircledIcon className="text-primary mr-1"/>
+                  Holistic Development: Emphasis on extracurriculars, values, and character-building.
+                </li>
+              </ul>
+            </div>
+            <div className="w-full lg:w-1/2 p-10">
+            <div className="mx-auto items-center justify-center flex h-fit">
+              <Image
+                src="/img/about/about_2.png"
+                height={520}
+                width={520}
+                className="h-fit rounded-lg absolute"
+                alt="teacher"
+              />
+              <Image
+                height={544}
+                width={515}
+                src="/img/about/about_8.png"
+                alt=""
+              />
+            </div>
+          </div>
+          </div>
       </section>
       {/* Category Section */}
       <PopularCategory />

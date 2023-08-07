@@ -34,7 +34,7 @@ export default async function PopularCategory({}: Props) {
   const { data } = await getClient().query({ query });
   return (
     <section className="container py-12">
-      <div className="columns-1 md:columns-3 items-center gap-3">
+      <div className="columns-1 md:columns-1 items-center gap-3">
         <div className="md:mb-7">
           <span className="mb-5 text-primary bg-primary/10 rounded-2xl text-sm font-semibold px-3 py-1">
             Course List
@@ -44,10 +44,9 @@ export default async function PopularCategory({}: Props) {
           </h2>
         </div>
         <div>
-          <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent
-            finibus imperdiet nibh, vel varius tortor cursus ut. Integer
-            volutpat mollis scelerisque.
+          <p className="text-lg font-sans mb-5">
+           PrameShala Tutorials distinguishes itself as a leading option for core subjects by offering a thorough approach, expert mentors, and engaging techniques. With a strong focus on Chemistry, Maths, Biology, and Physics, they provide a holistic learning experience, equipping students to excel in their academic pursuits.
+           Explore our offerings in IIT, JEE, and NEET preparation, benefit from our top-notch online coaching. Seamlessly prepare for exams with our comprehensive resources, including formulas and online tutorials. Our platform caters to both 10th and 12th board examinations, covering various syllabus including CBSE, ICSE, ISC, and UP Board.
           </p>
         </div>
         <div className="flex justify-end">
@@ -59,6 +58,7 @@ export default async function PopularCategory({}: Props) {
           </Link>
         </div>
       </div>
+
       <div className="w-full mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {data?.categories.map((category: any) => {
           return (
