@@ -43,12 +43,10 @@ export default async function PopularCategory({}: Props) {
             Popular <span className="rock-underline">Subjects</span>
           </h2>
         </div>
-        <div>
-          <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent
-            finibus imperdiet nibh, vel varius tortor cursus ut. Integer
-            volutpat mollis scelerisque.
-          </p>
+        <div className="max-width-sm">
+          <p className="text-lg font-sans mb-5">
+           PrameShala Tutorials distinguishes itself as a leading option for core subjects by offering a thorough approach, expert mentors, and engaging techniques. With a strong focus on Chemistry, Maths, Biology, and Physics, they provide a holistic learning experience, equipping students to excel in their academic pursuits.
+          </p >
         </div>
         <div className="flex justify-end">
           <Link href="/subject">
@@ -59,6 +57,7 @@ export default async function PopularCategory({}: Props) {
           </Link>
         </div>
       </div>
+
       <div className="w-full mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {data?.categories.map((category: any) => {
           return (
@@ -107,6 +106,7 @@ export default async function PopularCategory({}: Props) {
           );
         })}
       </div>
+      <p className="text-lg font-sans mb-5 text-justify">Explore our offerings in IIT, JEE, and NEET preparation, benefit from our top-notch online coaching. Seamlessly prepare for exams with our comprehensive resources, including formulas and online tutorials. Our platform caters to both 10th and 12th board examinations, covering various syllabus including CBSE, ICSE, ISC, and UP Board.</p>
     </section>
   );
 }
