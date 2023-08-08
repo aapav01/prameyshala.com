@@ -66,7 +66,7 @@ class CategoriesForm(ModelForm):
 QuestionInlineFormSet = inlineformset_factory(
     Quiz, Question, extra=1, fields="__all__")
 ChoiceInlineFormSet = inlineformset_factory(
-    Question, Choice, extra=1, fields="__all__")
+    Question, Choice, extra=2, fields="__all__")
 
 QuestionInlineUpdateFormSet = inlineformset_factory(
     Quiz, Question, extra=0, fields="__all__")

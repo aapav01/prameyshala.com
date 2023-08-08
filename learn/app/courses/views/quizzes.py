@@ -38,9 +38,19 @@ class QuizCreateView(PermissionRequiredMixin, CreateView):
             {'url': 'courses:quizzes', 'label': 'Quizzes'},
             {'label': 'Create Quiz'},
         ],
-        'question_formset': QuestionInlineFormSet(prefix='question_formset'),
-        'choice_formset': ChoiceInlineFormSet(prefix='choice_formset_0'),
+        # 'question_formset': QuestionInlineFormSet(prefix='question_formset'),
+        # 'choice_formset': ChoiceInlineFormSet(prefix='choice_formset_0'),
     }
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['question_formset'] = QuestionInlineFormSet(prefix='question_formset')
+        # context['question_formset'].choice_formset = ChoiceInlineFormSet(prefix='choice_formset_0')
+        quesion_count = 0
+        for question in context['question_formset']:
+            question.choice_formset = ChoiceInlineFormSet(prefix='choice_formset_%s' % quesion_count)
+            quesion_count += 1
+        return context
 
     def form_valid(self, form):
         result = super().form_valid(form)

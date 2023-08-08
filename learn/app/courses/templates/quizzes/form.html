@@ -9,44 +9,35 @@
       <div class="relative mx-4 -mt-6 mb-4 grid px-6 py-8 overflow-hidden rounded-xl bg-gradient-to-tr from-orange-800 to-orange-400 bg-clip-border text-white shadow-lg shadow-orange-500/40">
         <h1 class="block font-sans leading-snug tracking-normal text-white antialiased text-lg font-semibold">{{ title }}</h1>
       </div>
-      <form method="post"
-            action="{% url 'courses:quizzes-create' %}"
-            enctype="multipart/form-data"
-            class="p-6">
+      <form method="post" enctype="multipart/form-data" class="p-6">
         {% csrf_token %}
         <div id="main_{{ form.prefix }}"
              class="form-control w-full djanog-custom-forms grid grid-cols-1 md:grid-cols-2 gap-4">
           {{ form.as_div }}
-          <div class="md:col-span-2 question0">
-            {{ question_formset.as_div }}
-            <div>
-              <div id="q0" class="grid grid-cols-2 gap-2">
-                <input type="hidden"
-                       name="choice_formset_0-TOTAL_FORMS"
-                       value="0"
-                       id="id_choice_formset_0-TOTAL_FORMS">
-                <input type="hidden"
-                       name="choice_formset_0-INITIAL_FORMS"
-                       value="0"
-                       id="id_choice_formset_0-INITIAL_FORMS">
-                <input type="hidden"
-                       name="choice_formset_0-MIN_NUM_FORMS"
-                       value="0"
-                       id="id_choice_formset_0-MIN_NUM_FORMS">
-                <input type="hidden"
-                       name="choice_formset_0-MAX_NUM_FORMS"
-                       value="1000"
-                       id="id_choice_formset_0-MAX_NUM_FORMS">
+          {{ question_formset.management_form }}
+          {% for question_form in question_formset %}
+            <fieldset class="md:col-span-2 question0">
+              <div>{{ question_form.as_div }}</div>
+              <div>
+                <div id="q0" class="grid grid-cols-2 gap-2">
+                  {{ question_form.choice_formset.management_form }}
+                  {% for choice_form in question_form.choice_formset %}
+                    <fieldset>
+                      <legend>Choice {{ forloop.counter }}</legend>
+                      {{ choice_form.as_p }}
+                    </fieldset>
+                  {% endfor %}
+                </div>
+                <div class="flex justify-end">
+                  <button class="btn btn-primary text-white mt-6"
+                          onclick="handleAddChoice(this, 0)"
+                          type="button">
+                    <i class="far fa-plus"></i>Add choice
+                  </button>
+                </div>
               </div>
-              <div class="flex justify-end">
-                <button class="btn btn-primary text-white mt-6"
-                        onclick="handleAddChoice(this, 0)"
-                        type="button">
-                  <i class="far fa-plus"></i>Add choice
-                </button>
-              </div>
-            </div>
-          </div>
+            </fieldset>
+          {% endfor %}
         </div>
         <p class="mt-5">
           Total Questions:<span id="question-count">1</span>
@@ -104,21 +95,27 @@
               <span class="label-text">Figure</span>
             </label>
             <input type="file"
-                  accept="image/*"
-                  id="id_question_formset-${question_number}-figure"
-                  name="question_formset-${question_number}-figure">
+                   accept="image/*"
+                   id="id_question_formset-${question_number}-figure"
+                   name="question_formset-${question_number}-figure">
             <input type="hidden"
-                  name="question_formset-${question_number}-id"
-                  id="id_question_formset-${question_number}-id">
+                   name="question_formset-${question_number}-id"
+                   id="id_question_formset-${question_number}-id">
             <input type="hidden"
-                  name="question_formset-${question_number}-quiz"
-                  id="id_question_formset-${question_number}-quiz">
+                   name="question_formset-${question_number}-quiz"
+                   id="id_question_formset-${question_number}-quiz">
           </div>
           <div class="inline-flex">
             <label for="id_question_formset-${question_number}-DELETE">Delete:</label>
-            <input type="checkbox" name="question_formset-${question_number}-DELETE" id="id_question_formset-${question_number}-DELETE">
-            <input type="hidden" name="question_formset-${question_number}-quiz" id="id_question_formset-${question_number}-quiz">
-            <input type="hidden" name="question_formset-${question_number}-id" id="id_question_formset-${question_number}-id">
+            <input type="checkbox"
+                   name="question_formset-${question_number}-DELETE"
+                   id="id_question_formset-${question_number}-DELETE">
+            <input type="hidden"
+                   name="question_formset-${question_number}-quiz"
+                   id="id_question_formset-${question_number}-quiz">
+            <input type="hidden"
+                   name="question_formset-${question_number}-id"
+                   id="id_question_formset-${question_number}-id">
           </div>
         </div>
       </div>
