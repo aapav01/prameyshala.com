@@ -34,8 +34,8 @@ export default async function PopularCategory({}: Props) {
   const { data } = await getClient().query({ query });
   return (
     <section className="container py-12">
-      <div className="columns-1 md:columns-3 items-center gap-3">
-        <div className="md:mb-7">
+      <div className="flex lg:items-center gap-3 max-lg:flex-col">
+        <div className="md:mb-7 w-fit">
           <span className="mb-5 text-primary bg-primary/10 rounded-2xl text-sm font-semibold px-3 py-1">
             Course List
           </span>
@@ -43,10 +43,14 @@ export default async function PopularCategory({}: Props) {
             Popular <span className="rock-underline">Subjects</span>
           </h2>
         </div>
-        <div className="max-width-sm">
-          <p className="text-lg font-sans mb-5">
-           PrameShala Tutorials distinguishes itself as a leading option for core subjects by offering a thorough approach, expert mentors, and engaging techniques. With a strong focus on Chemistry, Maths, Biology, and Physics, they provide a holistic learning experience, equipping students to excel in their academic pursuits.
-          </p >
+        <div className="flex-1 px-4">
+          <p>
+            PrameShala Tutorials distinguishes itself as a leading option for
+            core subjects by offering a thorough approach, expert mentors, and
+            engaging techniques. With a strong focus on Chemistry, Maths,
+            Biology, and Physics, they provide a holistic learning experience,
+            equipping students to excel in their academic pursuits.
+          </p>
         </div>
         <div className="flex justify-end">
           <Link href="/subject">
@@ -106,7 +110,13 @@ export default async function PopularCategory({}: Props) {
           );
         })}
       </div>
-      <p className="text-lg font-sans mb-5 text-justify">Explore our offerings in IIT, JEE, and NEET preparation, benefit from our top-notch online coaching. Seamlessly prepare for exams with our comprehensive resources, including formulas and online tutorials. Our platform caters to both 10th and 12th board examinations, covering various syllabus including CBSE, ICSE, ISC, and UP Board.</p>
+      <p className="text-justify">
+        Explore our offerings in IIT, JEE, and NEET preparation, benefit from
+        our top-notch online coaching. Seamlessly prepare for exams with our
+        comprehensive resources, including formulas and online tutorials. Our
+        platform caters to both 10th and 12th board examinations, covering
+        various syllabus including CBSE, ICSE, ISC, and UP Board.
+      </p>
     </section>
   );
 }
