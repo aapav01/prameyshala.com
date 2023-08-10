@@ -12,6 +12,26 @@
           <i class="far fa-plus"></i>Add Subject
         </button>
       {% endif %}
+      <form id="subject-filter-form"
+            method="get"
+            action="{% url 'courses:subjects' %}">
+        <select class="btn bg-white text-black px-6 border-1"
+                name="subject"
+                id="subject-select"
+                placeholder="All Subjects">
+          <option value="" {% if not subject_filter %}selected{% endif %}>All Subjects</option>
+          <option value="Physics"
+                  {% if subject_filter == 'Physics' %}selected{% endif %}>Physics</option>
+          <option value="Chemistry"
+                  {% if subject_filter == 'Chemistry' %}selected{% endif %}>Chemistry</option>
+          <option value="Math" {% if subject_filter == 'Math' %}selected{% endif %}>Math</option>
+          <option value="Biology"
+                  {% if subject_filter == 'Biology' %}selected{% endif %}>Biology</option>
+        </select>
+        <button class=" btn bg-gradient-to-br from-purple-600 to-pink-400 text-white px-3 border-0 shadow-md shadow-purple-500/50"
+                type="button"
+                id="clear-filter">Clear Filter</button>
+      </form>
     </div>
     <div class="relative flex w-full flex-col rounded-xl bg-base-100 bg-clip-border text-base-content shadow-md">
       <div class="relative mx-4 -mt-6 mb-4 grid px-6 py-8 overflow-hidden rounded-xl bg-gradient-to-tr from-indigo-600 to-indigo-400 bg-clip-border text-white shadow-lg shadow-indigo-500/40">
@@ -126,6 +146,27 @@
         <button>close</button>
       </form>
     </dialog>
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+    const subjectSelect = document.getElementById('subject-select');
+    const subjectForm = document.getElementById('subject-filter-form');
+    const clearFilterButton = document.getElementById('clear-filter');
+  
+    const urlParams = new URLSearchParams(window.location.search);
+    const subjectFilter = urlParams.get('subject');
+    
+    subjectSelect.value = subjectFilter || "";
+
+    subjectSelect.addEventListener('change', function () {
+        subjectForm.submit();
+    });
+    
+    clearFilterButton.addEventListener('click', function () {
+        subjectSelect.value = ''; 
+        subjectForm.submit();     
+    });
+});
+    </script>
   {% endfor %}
 {% endif %}
 {% endblock content %}

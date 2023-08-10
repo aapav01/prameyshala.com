@@ -8,6 +8,8 @@ from django.urls import reverse_lazy
 from ..models import Enrollment
 from ..forms import EnrollmentForm
 from dateutil.relativedelta import relativedelta
+from django.db.models import Q
+
 
 
 class EnrollmentView(PermissionRequiredMixin, ListView):
@@ -47,6 +49,25 @@ class EnrollmentView(PermissionRequiredMixin, ListView):
         else:
             messages.error(request, f'failed to create! please see the create form for more details.')
             return super().get(request, **kwargs)
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+
+        search_query = self.request.GET.get('search')
+        if search_query:
+            queryset = queryset.filter(
+                Q(user__full_name__icontains=search_query) |
+                Q(user__email__icontains=search_query) |
+                Q(user__phone_number__icontains=search_query)
+                )
+
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['search_query'] = self.request.GET.get('search', '')
+        return context
+
 
 
 class EnrollmentUpdateView(PermissionRequiredMixin, UpdateView):
