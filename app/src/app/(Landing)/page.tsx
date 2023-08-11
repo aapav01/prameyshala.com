@@ -150,32 +150,32 @@ export default function Home() {
             <ul className="my-4 text-justify">
               <li className="flex items-baseline">
                 <CheckCircledIcon className="text-primary mr-1" />
-                Expert mentors: Experienced mentors who are passionate about
+                <strong className="mr-1">Expert mentors:</strong>Experienced mentors who are passionate about
                 nurturing potential.
               </li>
               <li className="flex items-baseline">
                 <CheckCircledIcon className="text-primary mr-1" />
-                Comprehensive Curriculum: Well-rounded education focusing on
+                <strong className="mr-1">Comprehensive Curriculum:</strong>Well-rounded education focusing on
                 critical thinking and real-world applications.
               </li>
               <li className="flex items-baseline">
                 <CheckCircledIcon className="text-primary mr-1" />
-                Personalized Attention: Small batches for individualized support
+                <strong className="mr-1">Personalized Attention:</strong>Small batches for individualized support
                 and progress monitoring.
               </li>
               <li className="flex items-baseline">
                 <CheckCircledIcon className="text-primary mr-1" />
-                Innovative Teaching Methods: Engaging approaches for easy
+                <strong className="mr-1">Innovative Teaching Methods:</strong>Engaging approaches for easy
                 understanding of complex concepts.
               </li>
               <li className="flex items-baseline">
                 <CheckCircledIcon className="text-primary mr-1" />
-                Proven Track Record: Consistent success in competitive exams and
+                <strong className="mr-1">Proven Track Record:</strong>Consistent success in competitive exams and
                 academics.
               </li>
               <li className="flex items-baseline">
                 <CheckCircledIcon className="text-primary mr-1" />
-                Holistic Development: Emphasis on extracurriculars, values, and
+                <strong className="mr-1">Holistic Development:</strong>Emphasis on extracurriculars, values, and
                 character-building.
               </li>
             </ul>

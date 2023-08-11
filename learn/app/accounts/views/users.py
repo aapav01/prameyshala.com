@@ -9,6 +9,7 @@ from ..models import User, Role
 from ..forms import UsersForm
 from django.contrib.auth.models import Group
 from django.contrib.auth.hashers import make_password
+from django.db.models import Q
 
 
 class UsersView(PermissionRequiredMixin, ListView):
@@ -47,6 +48,26 @@ class UsersView(PermissionRequiredMixin, ListView):
         else:
             messages.error(request, f'failed to create! please see the create form for more details.')
             return super().get(request, **kwargs)
+
+
+    #search
+    def get_queryset(self):
+        queryset = super().get_queryset()
+
+        search_query = self.request.GET.get('search')
+        if search_query:
+            queryset = queryset.filter(
+                Q(full_name__icontains=search_query) |
+                Q(email__icontains=search_query) |
+                Q(phone_number__icontains=search_query) |
+                Q(groups__name__icontains=search_query)
+            )
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['search_query'] = self.request.GET.get('search', '')
+        return context
 
 
 class UsersUpdateView(PermissionRequiredMixin, UpdateView):

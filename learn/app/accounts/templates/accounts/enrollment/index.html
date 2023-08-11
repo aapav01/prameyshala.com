@@ -10,6 +10,17 @@
               class="btn bg-gradient-to-br from-purple-600 to-pink-400 text-white px-12 border-0 shadow-md shadow-purple-500/50">
         <i class="far fa-plus"></i>Add Enrollment
       </button>
+      <form method="get" class="search-form">
+        <input class=" btn bg-white text-blue-gray-400 px-6 border-0"
+               type="text"
+               name="search"
+               placeholder="Search users...">
+        <button class=" btn bg-gradient-to-br from-purple-600 to-pink-400 text-white px-6 border-0 shadow-md shadow-purple-500/50"
+                type="submit">Search</button>
+        <a class=" btn bg-gradient-to-br from-purple-600 to-pink-400 text-white px-4 border-0 shadow-md shadow-purple-500/50"
+           href="{% url 'accounts:enrollment' %}"
+           class="clear-search">Clear Search</a>
+      </form>
     </div>
     <div class="relative flex w-full flex-col rounded-xl bg-base-100 bg-clip-border text-base-content shadow-md">
       <div class="relative mx-4 -mt-6 mb-4 grid px-6 py-8 overflow-hidden rounded-xl bg-gradient-to-tr from-indigo-600 to-indigo-400 bg-clip-border text-white shadow-lg shadow-indigo-500/40">
@@ -63,12 +74,12 @@
         <div class="join">
           {% if page_obj.has_previous %}
             <a class="join-item btn btn-primary"
-               href="?page={{ page_obj.previous_page_number }}">previous</a>
+               href="?page={{ page_obj.previous_page_number }}{% if search_query %}&search={{ search_query }}{% endif %}">previous</a>
           {% endif %}
           <span class="join-item btn btn-disabled">Page {{ page_obj.number }} of {{ paginator.num_pages }}.</span>
           {% if page_obj.has_next %}
             <a class="join-item btn btn-primary"
-               href="?page={{ page_obj.next_page_number }}">next</a>
+               href="?page={{ page_obj.next_page_number }}{% if search_query %}&search={{ search_query }}{% endif %}">next</a>
           {% endif %}
         </div>
       </div>
