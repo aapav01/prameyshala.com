@@ -1,0 +1,57 @@
+{% extends "layouts/dashboard.html" %}
+{% load static %}
+{% block title %}
+{{ assignment.title }} - Assignment | Pramey Shala
+{% endblock title %}
+{% block content %}
+<div class="relative flex w-full flex-col rounded-xl bg-base-100 bg-clip-border text-base-content shadow-md">
+{% if assignment_submissions %}
+<div class="relative mx-4 -mt-6 mb-4 grid px-6 py-8 overflow-hidden rounded-xl bg-gradient-to-tr from-indigo-600 to-indigo-400 bg-clip-border text-white shadow-lg shadow-indigo-500/40">
+  <h1 class="block font-sans leading-snug tracking-normal text-white antialiased text-lg font-semibold">
+    Submissions for <span class="capitalize">{{ assignment.title }}</span>
+  </h1>
+</div>
+<div class="flex flex-col gap-4 p-6 overflow-x-auto">
+  <table class="table table-auto">
+    <thead class="uppercase text-sm">
+      <tr>
+        <th class="px-4 py-3">Student Name</th>
+        <th class="px-4 py-3">Submitted At</th>
+        <th class="px-4 py-3">Reviewed</th>
+        <th class="px-4 py-3">Action</th>
+      </tr>
+    </thead>
+    <tfoot class="border-t border-blue-gray-50 py-3 px-5 text-left font-bold uppercase text-blue-gray-400 text-sm">
+      <tr>
+        <th class="px-4 py-3">Student Name</th>
+        <th class="px-4 py-3">Submitted At</th>
+        <th class="px-4 py-3">Reviewed</th>
+        <th class="px-4 py-3">Action</th>
+      </tr>
+    </tfoot>
+    <tbody>
+      {% for submission in assignment_submissions %}
+        <tr class="border-b border-blue-gray-50">
+          <td class="px-4 py-3">{{ submission.student.full_name }}</td>
+          <td class="px-4 py-3">{{ submission.created_at }}</td>
+          <td class="px-4 py-3">{{ submission.reviewed }}</td>
+          <td class="flex gap-2 px-4 py-3">
+            {% if submission.reviewed %}
+            <h3 class="font-sans">Reviewed</h3>
+            {% else %}
+            <a href="{% url 'courses:submission-review' pk=submission.pk %}"
+            class="btn btn-info btn-sm">
+              <i class="fad fa-eye"></i>
+              Review
+              {% endif %}
+      </td>
+    </tr>
+  {% endfor %}
+</tbody>
+</table>
+</div>
+{% else %}
+    <p>No submissions found.</p>
+{% endif %}
+</div>
+{% endblock content %}

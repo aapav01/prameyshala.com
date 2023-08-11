@@ -44,10 +44,15 @@
               <tr class="border-b border-blue-gray-50">
                 <td class="px-4 py-3">{{ assignment.title }}</td>
                 <td class="px-4 py-3">{{ assignment.description }}</td>
-                <td class="px-4 py-3">{{ assignment.teacher }}</td>
+                <td class="px-4 py-3">{{ assignment.teacher.full_name }}</td>
                 <td class="px-4 py-3">{{ assignment.type }}</td>
                 <td class="px-4 py-3">{{ assignment.due_date }}</td>
                 <td class="flex gap-2 px-4 py-3">
+                  <a href="{% url 'courses:assignment-detail' pk=assignment.pk %}"
+                  class="btn btn-info btn-sm">
+                    <i class="fad fa-eye"></i>
+                    Show
+                  </a>
                   {% if perms.courses.change_assignment %}
                     <button onclick="update_assignment_{{ assignment.pk }}.showModal()"
                             class="btn btn-sm btn-success btn-square">

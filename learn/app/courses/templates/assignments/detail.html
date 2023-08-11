@@ -16,11 +16,28 @@
       </h1>
     </div>
     <div class="p-3">
+      <a href="{% url 'courses:assignment-submissions' pk=assignments.pk %}" class="btn btn-success text-white text-xs mb-2">Submitted Solutions</a>
       <h3 class="font-sans font-medium">Description</h3>
       <p>{{ assignments.description }}</p>
-      <h3 class="font-sans font-medium">Upload Path</h3>
-      <p>{{ assignments.assigment_file }}</p>
+      <h3 class="font-sans font-medium">Time Required</h3>
+      <p>{{ assignments.due_date }}</p>
+      <h3 class="font-sans font-medium">Uploaded By</h3>
+      <p>{{ assignments.teacher.full_name }}</p>
+      <h3 class="font-sans font-medium">Assignment Type</h3>
+      <p>{{ assignments.type }}</p>
+      <div class="mt-2">
+        <a href="{% url 'courses:assignments' %}" class="btn btn-error text-white text-xs mt-2">Close</a>
+      </div>
     </div>
   </div>
 </div>
 {% endblock content %}
+{% block head_link %}
+<link rel="stylesheet" href="https://unpkg.com/easymde/dist/easymde.min.css">
+<script src="https://unpkg.com/easymde/dist/easymde.min.js"></script>
+{% endblock head_link %}
+{% block body_js %}
+<script>
+  new EasyMDE({element: document.getElementById('{{ form.description.id_for_label }}')});
+</script>
+{% endblock body_js %}
