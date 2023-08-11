@@ -1,6 +1,6 @@
 from django import forms
 from django.forms import ModelForm, inlineformset_factory
-from .models import Classes, Subject, Chapter, Lesson, Category, Quiz, Choice, Question, Assignment
+from .models import Classes, Subject, Chapter, Lesson, Category, Quiz, Choice, Question, Assignment, AssignmentSubmission
 from app.accounts.models import User
 
 
@@ -15,6 +15,18 @@ class AssignmentForm(ModelForm):
         widgets = {
             'due_date': forms.DateTimeInput(attrs={'type': 'datetime-local'})
         }
+
+class AssignmentSubmissionForm(ModelForm):
+    class Meta:
+        model = AssignmentSubmission
+        fields = ['assignment','solution_file']
+
+class AssignmentReviewForm(ModelForm):
+    marks = forms.IntegerField(widget=forms.NumberInput(attrs={'required': 'required'}))
+    remarks = forms.CharField(widget=forms.TextInput(attrs={'required':'required'}))
+    class Meta:
+        model = AssignmentSubmission
+        fields = ['marks','remarks']
 
 
 class ClassesForm(ModelForm):
