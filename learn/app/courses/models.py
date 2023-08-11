@@ -2,6 +2,7 @@ from django.db import models
 from app.accounts.models import User
 from django.utils.translation import gettext_lazy as _
 from django.core.validators import MinValueValidator, MaxValueValidator
+from ..accounts.models import Enrollment
 
 
 class Classes(models.Model):
@@ -158,9 +159,14 @@ class AssignmentSubmission(models.Model):
     student = models.ForeignKey(User, on_delete=models.CASCADE)
     solution_file = models.FileField(
         upload_to='uploads/assignments/submissions')
+    reviewed = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now=False, auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True, blank=True, null=True)
-
+    marks = models.IntegerField(blank=True,
+                                null=True,
+                                validators=[MinValueValidator(0)]
+    )
+    remarks = models.TextField(blank=True,null=True)
     def __str__(self):
         return f"{self.assignment.title} - {self.student.full_name}"
 
@@ -175,6 +181,7 @@ class Grades(models.Model):
     grade = models.DecimalField(max_digits=2,
                                 decimal_places=1,
                                 validators=[MinValueValidator(0.0), MaxValueValidator(10.0)])
+    # enrollment = models.ForeignKey(Enrollment,blank=False,null=False,on_delete=models.CASCADE)
 
     def __str__(self):
         if self.assignment:
