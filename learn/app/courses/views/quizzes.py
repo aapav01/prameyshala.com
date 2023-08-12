@@ -92,8 +92,10 @@ class QuizUpdateView(PermissionRequiredMixin, UpdateView):
         context = super().get_context_data(**kwargs)
         context['question_formset'] = QuestionInlineUpdateFormSet(instance=self.object, prefix='question_formset')
         #TODO: render this in template
+        questions_count = 0
         for question in context['question_formset']:
-            question.choice_formset = ChoiceInlineUpdateFormSet(instance=question.instance, prefix='choice_formset_%s' % question.instance.pk)
+            question.choice_formset = ChoiceInlineUpdateFormSet(instance=question.instance, prefix='choice_formset_%s' % questions_count)
+            questions_count += 1
         return context
 
     def form_valid(self, form):
