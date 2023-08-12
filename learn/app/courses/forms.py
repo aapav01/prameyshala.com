@@ -22,11 +22,13 @@ class AssignmentSubmissionForm(ModelForm):
         fields = ['assignment','solution_file']
 
 class AssignmentReviewForm(ModelForm):
-    marks = forms.IntegerField(widget=forms.NumberInput(attrs={'required': 'required'}))
-    remarks = forms.CharField(widget=forms.TextInput(attrs={'required':'required'}))
     class Meta:
         model = AssignmentSubmission
         fields = ['marks','remarks']
+        widgets = {
+            'marks': forms.NumberInput(attrs={'required': True}),
+            'remarks': forms.Textarea(attrs={'required': True}),
+        }
 
 
 class ClassesForm(ModelForm):

@@ -117,7 +117,7 @@ class AssignmentSubmissionsView(PermissionRequiredMixin,ListView):
 
 class AssignmentReviewView(UpdateView):
     model = AssignmentSubmission
-    fields = ['marks','remarks']
+    form_class = AssignmentReviewForm
     context_object_name = 'submission'
     template_name = 'assignment_submissions/review.html'
 
