@@ -15,7 +15,7 @@
       <form id="subject-filter-form"
             method="get"
             action="{% url 'courses:subjects' %}">
-        <select class="btn bg-white text-black px-6 border-1"
+        <select class="select select-bordered w-64 max-w-xs"
                 name="subject"
                 id="subject-select"
                 placeholder="All Subjects">
@@ -35,7 +35,7 @@
                   value="Biology"
                   {% if subject_filter == 'Biology' %}selected{% endif %}>Biology</option>
         </select>
-        <button class=" btn bg-gradient-to-br from-purple-600 to-pink-400 text-white px-3 border-0 shadow-md shadow-purple-500/50"
+        <button class=" btn bg-gradient-to-br from-red-600 to-orange-800 text-white px-3 border-0 shadow-md shadow-orange-500/50"
                 type="button"
                 id="clear-filter">Clear Filter</button>
       </form>

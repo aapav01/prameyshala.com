@@ -45,5 +45,8 @@ urlpatterns = [
     path("assignment/<int:pk>", login_required(AssignmentUpdateView.as_view()), name="assignment-update"),
     path("assignment/<int:pk>/delete", login_required(AssignmentDeleteView.as_view()), name="assignment-delete"),
     path("assignment/<int:pk>/detail", login_required(AssignmentDetailView.as_view()), name="assignment-detail"),
+    path("assignment/<int:pk>/submissions", login_required(AssignmentSubmissionsView.as_view()), name="assignment-submissions"),
+    path("assignment/submission/<int:pk>/review", login_required(AssignmentReviewView.as_view()), name="submission-review"),
+    path("assignment/submit",login_required(AssignmentSubmitView.as_view()),name='assignment-submit'),
 ]
 

@@ -30,7 +30,7 @@
                 </div>
                 <div class="flex justify-end">
                   <button class="btn btn-primary text-white mt-6"
-                          onclick="handleAddChoice(this, 0)"
+                          onclick="handleAddChoice(this, {{ forloop.counter }})"
                           type="button">
                     <i class="far fa-plus"></i>Add choice
                   </button>
@@ -57,9 +57,14 @@
 {% block body_js %}
   <script>
   let question_number = 0;
+  $(document).ready(function(){
+    question_number = parseInt(document.getElementById('id_question_formset-TOTAL_FORMS').value);
+    document.getElementById('question-count').innerText = question_number;
+  });
   function handleAddChoice(e, question_number){
     console.log(e);
-    const choiceQuestionNumber = document.getElementById(`id_choice_formset_${question_number}-TOTAL_FORMS`).value;
+    question_number = parseInt(question_number) - 1;
+    const choiceQuestionNumber = document.getElementById(`id_choice_formset_${question_number}-TOTAL_FORMS`).value; // this one
     const choiceHtml = `
     <div class="mt-3">
         <input type='text' name="choice_formset_${question_number}-${choiceQuestionNumber}-choice_text" placeholder='Choice ${parseInt(choiceQuestionNumber) +1}' required>
