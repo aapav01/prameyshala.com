@@ -13,6 +13,33 @@
           <i class="far fa-plus"></i>Add Class
         </button>
       {% endif %}
+      <form id="class-filter-form"
+            method="get"
+            action="{% url 'courses:classes' %}">
+        <select class="select select-bordered w-32 max-w-xs"
+                name="class"
+                id="class-select"
+                placeholder="All Classes">
+          <option class="text-left"
+                  value=""
+                  {% if not class_filter %}selected{% endif %}>All Classes</option>
+          <option class="text-left"
+                  value="Class 9th"
+                  {% if class_filter == 'Class 9th' %}selected{% endif %}>Class 9th</option>
+          <option class="text-left"
+                  value="Class 10th"
+                  {% if class_filter == 'Class 10th' %}selected{% endif %}>Class 10th</option>
+          <option class="text-left"
+                  value="Class 11th"
+                  {% if class_filter == 'Class 11th' %}selected{% endif %}>Class 11th</option>
+          <option class="text-left"
+                  value="Class 12th"
+                  {% if class_filter == 'Class 12th' %}selected{% endif %}>Class 12th</option>
+        </select>
+        <button class=" btn bg-gradient-to-br from-indigo-600 to-purple-400 text-white px-3 border-0 shadow-md shadow-orange-500/50"
+                type="button"
+                id="clear-filter">Clear Filter</button>
+      </form>
     </div>
     <div class="relative flex w-full flex-col rounded-xl bg-base-100 bg-clip-border text-base-content shadow-md">
       <div class="relative mx-4 -mt-6 mb-4 grid px-6 py-8 overflow-hidden rounded-xl bg-gradient-to-tr from-indigo-600 to-indigo-400 bg-clip-border text-white shadow-lg shadow-indigo-500/40">
@@ -124,18 +151,38 @@
         <button>close</button>
       </form>
     </dialog>
-    <script>
-      new EasyMDE({element: document.getElementById('{{ class.form.description.id_for_label }}')});
-    </script>
+    <script>new EasyMDE({element: document.getElementById('{{ class.form.description.id_for_label }}')});</script>
   {% endfor %}
 {% endif %}
 {% endblock content %}
 {% block head_link %}
-<link rel="stylesheet" href="https://unpkg.com/easymde/dist/easymde.min.css">
-<script src="https://unpkg.com/easymde/dist/easymde.min.js"></script>
+  <link rel="stylesheet"
+        href="https://unpkg.com/easymde/dist/easymde.min.css">
+  <script src="https://unpkg.com/easymde/dist/easymde.min.js"></script>
 {% endblock head_link %}
 {% block body_js %}
-<script>
+  <script>
   const easyMDE = new EasyMDE({element: document.getElementById('{{ form.description.id_for_label }}')});
-</script>
+  </script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+    const classSelect = document.getElementById('class-select');
+    const classForm = document.getElementById('class-filter-form');
+    const clearFilterButton = document.getElementById('clear-filter');
+  
+    const urlParams = new URLSearchParams(window.location.search);
+    const classFilter = urlParams.get('class');
+    
+    classSelect.value = classFilter || "";
+
+    classSelect.addEventListener('change', function () {
+        classForm.submit();
+    });
+    
+    clearFilterButton.addEventListener('click', function () {
+        classSelect.value = ''; 
+        classForm.submit();     
+    });
+});
+  </script>
 {% endblock body_js %}

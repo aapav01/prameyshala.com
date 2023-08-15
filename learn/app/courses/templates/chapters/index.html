@@ -12,70 +12,159 @@
           <i class="far fa-plus"></i>Add Chapter
         </button>
       {% endif %}
+      <form id="filter-form" method="get" action="{% url 'courses:chapters' %}">
+        <select class="select select-bordered w-32 max-w-xs"
+                name="subject"
+                id="subject-select"
+                placeholder="All Subjects">
+          <option class="text-left"
+                  value=""
+                  {% if not subject_filter %}selected{% endif %}>All Subjects</option>
+          <option class="text-left"
+                  value="Physics"
+                  {% if subject_filter == 'Physics' %}selected{% endif %}>Physics</option>
+          <option class="text-left"
+                  value="Chemistry"
+                  {% if subject_filter == 'Chemistry' %}selected{% endif %}>Chemistry</option>
+          <option class="text-left"
+                  value="Math"
+                  {% if subject_filter == 'Math' %}selected{% endif %}>Maths</option>
+          <option class="text-left"
+                  value="Biology"
+                  {% if subject_filter == 'Biology' %}selected{% endif %}>Biology</option>
+        </select>
+        <select class="select select-bordered w-32 max-w-xs"
+                name="class"
+                id="class-select"
+                placeholder="All Classes">
+          <option class="text-left"
+                  value=""
+                  {% if not subject_filter %}selected{% endif %}>All Classes</option>
+          <option class="text-left"
+                  value="Class 9th"
+                  {% if subject_filter == 'Class 9th' %}selected{% endif %}>Class 9th</option>
+          <option class="text-left"
+                  value="Class 10th"
+                  {% if subject_filter == 'Class 10th' %}selected{% endif %}>Class 10th</option>
+          <option class="text-left"
+                  value="Class 11th"
+                  {% if subject_filter == 'Class 11th' %}selected{% endif %}>Class 11th</option>
+          <option class="text-left"
+                  value="Class 12th"
+                  {% if subject_filter == 'Class 12th' %}selected{% endif %}>Class 12th</option>
+        </select>
+        <select class="select select-bordered w-32 max-w-xs"
+                name="chapter"
+                id="chapter-select"
+                placeholder="All Chapter">
+          <option class="text-left"
+                  value=""
+                  {% if not subject_filter %}selected{% endif %}>All Chapters</option>
+          <option class="text-left"
+                  value="Chapter 1"
+                  {% if subject_filter == 'Chapter 1' %}selected{% endif %}>Chapter 1</option>
+          <option class="text-left"
+                  value="Chapter 2"
+                  {% if subject_filter == 'Chapter 2' %}selected{% endif %}>Chapter 2</option>
+          <option class="text-left"
+                  value="Chapter 3"
+                  {% if subject_filter == 'Chapter 3' %}selected{% endif %}>Chapter 3</option>
+          <option class="text-left"
+                  value="Chapter 4"
+                  {% if subject_filter == 'Chapter 4' %}selected{% endif %}>Chapter 4</option>
+          <option class="text-left"
+                  value="Chapter 5"
+                  {% if subject_filter == 'Chapter 5' %}selected{% endif %}>Chapter 5</option>
+          <option class="text-left"
+                  value="Chapter 6"
+                  {% if subject_filter == 'Chapter 6' %}selected{% endif %}>Chapter 6</option>
+          <option class="text-left"
+                  value="Chapter 7"
+                  {% if subject_filter == 'Chapter 7' %}selected{% endif %}>Chapter 7</option>
+          <option class="text-left"
+                  value="Chapter 8"
+                  {% if subject_filter == 'Chapter 8' %}selected{% endif %}>Chapter 8</option>
+          <option class="text-left"
+                  value="Chapter 9"
+                  {% if subject_filter == 'Chapter 9' %}selected{% endif %}>Chapter 9</option>
+          <option class="text-left"
+                  value="Chapter 10"
+                  {% if subject_filter == 'Chapter 10' %}selected{% endif %}>Chapter 10</option>
+        </select>
+      </select>
+      <button class="btn bg-gradient-to-br from-indigo-600 to-purple-400 text-white px-3 border-0 shadow-md shadow-orange-500/50"
+              type="button"
+              id="clear-filter">Clear Filter</button>
+    </form>
+  </div>
+  <div class="relative flex w-full flex-col rounded-xl bg-base-100 bg-clip-border text-base-content shadow-md">
+    <div class="relative mx-4 -mt-6 mb-4 grid px-6 py-8 overflow-hidden rounded-xl bg-gradient-to-tr from-indigo-600 to-indigo-400 bg-clip-border text-white shadow-lg shadow-indigo-500/40">
+      <h1 class="block font-sans leading-snug tracking-normal text-white antialiased text-lg font-semibold">{{ title }}</h1>
     </div>
-    <div class="relative flex w-full flex-col rounded-xl bg-base-100 bg-clip-border text-base-content shadow-md">
-      <div class="relative mx-4 -mt-6 mb-4 grid px-6 py-8 overflow-hidden rounded-xl bg-gradient-to-tr from-indigo-600 to-indigo-400 bg-clip-border text-white shadow-lg shadow-indigo-500/40">
-        <h1 class="block font-sans leading-snug tracking-normal text-white antialiased text-lg font-semibold">{{ title }}</h1>
-      </div>
-      <div class="flex flex-col gap-4 p-6 overflow-x-auto">
-        <table class="table table-auto">
-          <thead class="text-sm uppercase">
-            <tr>
-              <th class="px-4 py-3">Name</th>
-              <th class="px-4 py-3">Description</th>
-              <th class="px-4 py-3">Course</th>
-              <th class="px-4 py-3">Collection ID</th>
-              <th class="px-4 py-3">Action</th>
-            </tr>
-          </thead>
-          <tfoot class="text-sm uppercase">
-            <tr>
-              <th class="px-4 py-3">Name</th>
-              <th class="px-4 py-3">Description</th>
-              <th class="px-4 py-3">Course</th>
-              <th class="px-4 py-3">Collection ID</th>
-              <th class="px-4 py-3">Action</th>
-            </tr>
-          </tfoot>
-          <tbody>
-            {% for chapter in chapters %}
-              <tr class="border-b border-blue-gray-50">
-                <td class="px-4 py-3">{{ chapter.name }}</td>
-                <td class="px-4 py-3">{{ chapter.description }}</td>
-                <td class="px-4 py-3">{{ chapter.subject }}</td>
-                <td class="px-4 py-3">{{ chapter.collectionid }}</td>
-                <td class="flex gap-2 px-4 py-3">
-                  {% if perms.courses.change_chapter %}
-                    <button onclick="update_chapter_{{ chapter.pk }}.showModal()"
-                            class="btn btn-sm btn-success btn-square">
-                      <i class="fad fa-edit"></i>
-                    </button>
-                  {% endif %}
-                  {% if perms.courses.delete_chapter %}
-                  <a href="{% url 'courses:chapter-delete' pk=chapter.pk %}"
-                     onclick="if(confirm('Are you sure you want to delete {{ chapter.name }} from database?')) return true; else return false;"
-                     class="btn btn-sm btn-error btn-square"><i class="far fa-trash-alt"></i>
-                </a>
-              {% endif %}
-            </td>
+    <div class="flex flex-col gap-4 p-6 overflow-x-auto">
+      <table class="table table-auto">
+        <thead class="text-sm uppercase">
+          <tr>
+            <th class="px-4 py-3">Name</th>
+            <th class="px-4 py-3">Description</th>
+            <th class="px-4 py-3">Course</th>
+            <th class="px-4 py-3">Collection ID</th>
+            <th class="px-4 py-3">Action</th>
           </tr>
-        {% endfor %}
-      </tbody>
-    </table>
+        </thead>
+        <tfoot class="text-sm uppercase">
+          <tr>
+            <th class="px-4 py-3">Name</th>
+            <th class="px-4 py-3">Description</th>
+            <th class="px-4 py-3">Course</th>
+            <th class="px-4 py-3">Collection ID</th>
+            <th class="px-4 py-3">Action</th>
+          </tr>
+        </tfoot>
+        <tbody>
+          {% for chapter in chapters %}
+            <tr class="border-b border-blue-gray-50">
+              <td class="px-4 py-3">{{ chapter.name }}</td>
+              <td class="px-4 py-3">{{ chapter.description }}</td>
+              <td class="px-4 py-3">{{ chapter.subject }}</td>
+              <td class="px-4 py-3">{{ chapter.collectionid }}</td>
+              <td class="flex gap-2 px-4 py-3">
+                {% if perms.courses.change_chapter %}
+                  <button onclick="update_chapter_{{ chapter.pk }}.showModal()"
+                          class="btn btn-sm btn-success btn-square">
+                    <i class="fad fa-edit"></i>
+                  </button>
+                {% endif %}
+                {% if perms.courses.delete_chapter %}
+                <a href="{% url 'courses:chapter-delete' pk=chapter.pk %}"
+                   onclick="if(confirm('Are you sure you want to delete {{ chapter.name }} from database?')) return true; else return false;"
+                   class="btn btn-sm btn-error btn-square"><i class="far fa-trash-alt"></i>
+              </a>
+            {% endif %}
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+<div class="p-5 flex justify-end">
+  <div class="join">
+    {% if page_obj.has_previous %}
+      <a class="join-item btn btn-primary"
+         href="?page={{ page_obj.previous_page_number }}{% if subject_filter %}&subject={{ subject_filter }}{% endif %}{% if class_filter %}&class={{ class_filter }}{% endif %}{% if chapter_filter %}&chapter={{ chapter_filter }}{% endif %}">
+        Previous
+      </a>
+    {% endif %}
+    <span class="join-item btn btn-disabled">Page {{ page_obj.number }} of {{ paginator.num_pages }}.</span>
+    {% if page_obj.has_next %}
+      <a class="join-item btn btn-primary"
+         href="?page={{ page_obj.next_page_number }}{% if subject_filter %}&subject={{ subject_filter }}{% endif %}{% if class_filter %}&class={{ class_filter }}{% endif %}{% if chapter_filter %}&chapter={{ chapter_filter }}{% endif %}">
+        Next
+      </a>
+    {% endif %}
   </div>
-  <div class="p-5 flex justify-end">
-    <div class="join">
-      {% if page_obj.has_previous %}
-        <a class="join-item btn btn-primary"
-           href="?page={{ page_obj.previous_page_number }}">previous</a>
-      {% endif %}
-      <span class="join-item btn btn-disabled">Page {{ page_obj.number }} of {{ paginator.num_pages }}.</span>
-      {% if page_obj.has_next %}
-        <a class="join-item btn btn-primary"
-           href="?page={{ page_obj.next_page_number }}">next</a>
-      {% endif %}
-    </div>
-  </div>
+</div>
+</div>
 </div>
 </div>
 {% if perms.courses.add_chapter %}
@@ -123,6 +212,37 @@
         <button>close</button>
       </form>
     </dialog>
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const filterForm = document.getElementById('filter-form');
+        const subjectSelect = document.getElementById('subject-select');
+        const classSelect = document.getElementById('class-select');
+        const chapterSelect = document.getElementById('chapter-select');
+        const clearFilterButton = document.getElementById('clear-filter');
+        
+        const urlParams = new URLSearchParams(window.location.search);
+        const subjectFilter = urlParams.get('subject');
+        const classFilter = urlParams.get('class');
+        const chapterFilter = urlParams.get('chapter');
+        
+        subjectSelect.value = subjectFilter || "";
+        classSelect.value = classFilter || "";
+        chapterSelect.value = chapterFilter || "";
+        
+        filterForm.addEventListener('change', function (event) {
+            if (event.target.tagName === 'SELECT') {
+                filterForm.submit();
+            }
+        });
+
+        clearFilterButton.addEventListener('click', function () {
+            subjectSelect.value = '';
+            classSelect.value = '';
+            chapterSelect.value = '';
+            filterForm.submit();
+        });
+    });
+    </script>
   {% endfor %}
 {% endif %}
 {% endblock content %}

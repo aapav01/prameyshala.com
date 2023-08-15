@@ -43,6 +43,21 @@ class CategoriesView(ListView):
             messages.error(request, f'failed to create! please see the create form for more details.')
             return super().get(request, **kwargs)
 
+    #filter
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        subject_name = self.request.GET.get('subject')
+
+        if subject_name:
+            queryset = queryset.filter(name__icontains=subject_name)
+
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['subject_filter'] = self.request.GET.get('subject', '')
+        return context
+
 
 class CategoriesUpdateView(UpdateView):
     model = Category

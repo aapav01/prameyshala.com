@@ -1,11 +1,14 @@
+from typing import Any
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.contrib import messages
+from django.db.models.query import QuerySet
 from django.shortcuts import render, redirect
 from django.views.generic import ListView
 from django.views.generic.edit import UpdateView, DeleteView
 from django.urls import reverse_lazy
 from ..models import Chapter
 from ..forms import ChapterForm
+from django.db.models import Q
 import requests
 import environ
 
@@ -69,6 +72,33 @@ class ChapterView(PermissionRequiredMixin, ListView):
         else:
             messages.error(request, f'failed to create! please see the create form for more details.')
             return super().get(request, **kwargs)
+
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+
+        class_filter = self.request.GET.get('class')
+        chapter_filter = self.request.GET.get('chapter')
+        subject_filter = self.request.GET.get('subject')
+
+        if class_filter:
+            queryset = queryset.filter(subject__standard__name__icontains=class_filter)
+
+        if chapter_filter:
+            queryset = queryset.filter(name__iexact=chapter_filter)
+
+        if subject_filter:
+            queryset = queryset.filter(subject__name__icontains=subject_filter)
+
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['class_filter'] = self.request.GET.get('class', '')
+        context['chapter_filter'] = self.request.GET.get('chapter', '')
+        context['subject_filter'] = self.request.GET.get('subject', '')
+        return context
+
 
 
 class ChapterUpdateView(PermissionRequiredMixin, UpdateView):

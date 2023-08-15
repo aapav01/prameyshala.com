@@ -8,10 +8,25 @@
     <div class="flex justify-between px-6">
       {% if perms.courses.add_quizes %}
         <a href="{% url 'courses:quizzes-create' %}"
-                class="btn bg-gradient-to-br from-purple-600 to-pink-400 text-white px-12 border-0 shadow-md shadow-purple-500/50">
+           class="btn bg-gradient-to-br from-purple-600 to-pink-400 text-white px-12 border-0 shadow-md shadow-purple-500/50">
           <i class="far fa-plus"></i>Add Quiz
         </a>
       {% endif %}
+      <form method="get" class="search-form">
+        <input class="textarea text-blue-gray-400 px-3 border-0"
+               type="textarea"
+               name="search"
+               placeholder="Search..."
+               value="{{ request.GET.search }}">
+        <button class=" btn bg-gradient-to-br from-purple-600 to-indigo-400 text-white px-6 border-0 shadow-md shadow-purple-500/50"
+                type="submit">
+          <!-- <i class="fa-solid fa-magnifying-glass"></i> -->
+          Search
+        </button>
+        <a class=" btn bg-gradient-to-br from-blue-600 to-purple-400 text-white px-4 border-0 shadow-md shadow-purple-500/50"
+           href="{% url 'courses:quizzes' %}"
+           class="clear-search">Clear Search</a>
+      </form>
     </div>
     <div class="relative flex w-full flex-col rounded-xl bg-base-100 bg-clip-border text-base-content shadow-md">
       <div class="relative mx-4 -mt-6 mb-4 grid px-6 py-8 overflow-hidden rounded-xl bg-gradient-to-tr from-indigo-600 to-indigo-400 bg-clip-border text-white shadow-lg shadow-indigo-500/40">

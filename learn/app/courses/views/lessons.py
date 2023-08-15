@@ -1,10 +1,13 @@
+from typing import Any
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.contrib import messages
+from django.db.models.query import QuerySet
 from django.shortcuts import render, redirect
 from django.views.generic import ListView, DetailView
 from django.views.generic.edit import UpdateView, DeleteView
 from django.utils.timezone import now
 from django.urls import reverse_lazy
+from django.db.models import Q
 from ..models import Lesson
 from ..forms import LessonForm
 import requests
@@ -73,6 +76,27 @@ class LessonView(PermissionRequiredMixin, ListView):
         else:
             messages.error(request, f'failed to create! please see the create form for more details.')
             return super().get(request, **kwargs)
+
+    #search
+    def get_queryset(self):
+        queryset = super().get_queryset()
+
+        search_query = self.request.GET.get('search')
+        if search_query:
+            queryset = queryset.filter(
+                Q(title__icontains=search_query) |
+                Q(lesson_type__icontains=search_query) |
+                Q(chapter__name__icontains = search_query) |
+                Q(chapter__subject__name__icontains = search_query) |
+                Q(chapter__subject__standard__name__icontains = search_query)
+            )
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['search_query'] = self.request.GET.get('search', '')
+        return context
+
 
 
 class LessonDetailView(PermissionRequiredMixin, DetailView):

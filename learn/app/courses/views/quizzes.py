@@ -1,5 +1,7 @@
+from typing import Any
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.contrib import messages
+from django.db import models
 from django.shortcuts import render, redirect
 from django.views.generic import ListView, DetailView, CreateView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
@@ -7,6 +9,7 @@ from django.urls import reverse_lazy
 from django.db.models import Count
 from ..forms import ChoiceInlineFormSet, QuestionInlineFormSet, QuestionInlineUpdateFormSet, ChoiceInlineUpdateFormSet
 from ..models import Quiz
+from django.db.models import Q
 
 
 class QuizView(PermissionRequiredMixin, ListView):
@@ -21,6 +24,18 @@ class QuizView(PermissionRequiredMixin, ListView):
     paginate_by = 10
     ordering = ['-created_at']
     queryset = Quiz.objects.annotate(question_count=Count("question__id"))
+
+    #search
+    def get_queryset(self):
+        queryset = super().get_queryset()
+
+        search_query = self.request.GET.get('search')
+        if search_query:
+            queryset = queryset.filter(
+                Q(name__icontains=search_query) |
+                Q(type__iexact=search_query)
+            )
+        return queryset
 
 
 class QuizCreateView(PermissionRequiredMixin, CreateView):
@@ -69,6 +84,7 @@ class QuizCreateView(PermissionRequiredMixin, CreateView):
                 questions_count += 1
 
         return result
+
 
 
 class QuizUpdateView(PermissionRequiredMixin, UpdateView):

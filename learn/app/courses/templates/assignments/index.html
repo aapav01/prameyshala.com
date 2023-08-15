@@ -12,6 +12,21 @@
           <i class="far fa-plus"></i>Add Assignment
         </button>
       {% endif %}
+      <form method="get" class="search-form">
+        <input class="textarea text-blue-gray-400 px-3 border-0"
+               type="textarea"
+               name="search"
+               placeholder="Search..."
+               value="{{ request.GET.search }}">
+        <button class=" btn bg-gradient-to-br from-purple-600 to-indigo-400 text-white px-6 border-0 shadow-md shadow-purple-500/50"
+                type="submit">
+          <!-- <i class="fa-solid fa-magnifying-glass"></i> -->
+          Search
+        </button>
+        <a class=" btn bg-gradient-to-br from-blue-600 to-purple-400 text-white px-4 border-0 shadow-md shadow-purple-500/50"
+           href="{% url 'courses:assignments' %}"
+           class="clear-search">Clear Search</a>
+      </form>
     </div>
     <div class="relative flex w-full flex-col rounded-xl bg-base-100 bg-clip-border text-base-content shadow-md">
       <div class="relative mx-4 -mt-6 mb-4 grid px-6 py-8 overflow-hidden rounded-xl bg-gradient-to-tr from-indigo-600 to-indigo-400 bg-clip-border text-white shadow-lg shadow-indigo-500/40">
@@ -49,7 +64,7 @@
                 <td class="px-4 py-3">{{ assignment.due_date }}</td>
                 <td class="flex gap-2 px-4 py-3">
                   <a href="{% url 'courses:assignment-detail' pk=assignment.pk %}"
-                  class="btn btn-info btn-sm">
+                     class="btn btn-info btn-sm">
                     <i class="fad fa-eye"></i>
                     Show
                   </a>
