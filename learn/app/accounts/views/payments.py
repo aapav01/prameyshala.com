@@ -33,7 +33,8 @@ class PaymentsView(PermissionRequiredMixin, ListView):
            queryset = queryset.filter(
                Q(payment_gateway_id__icontains=search_query) |
                Q(user__full_name__icontains=search_query) |
-               Q(status__iexact=search_query)
+               Q(status__iexact=search_query) |
+               Q(method__icontains=search_query)
            )
         return queryset
 

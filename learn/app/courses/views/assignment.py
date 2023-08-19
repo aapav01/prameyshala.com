@@ -10,6 +10,8 @@ from django.urls import reverse_lazy
 from django.db.models import Count
 from ..models import Assignment, AssignmentSubmission
 from ..forms import AssignmentForm, AssignmentSubmissionForm, AssignmentReviewForm
+from django.db.models import Q
+from datetime import datetime, timedelta
 
 
 class AssignmentListView(PermissionRequiredMixin, ListView):
@@ -52,6 +54,26 @@ class AssignmentListView(PermissionRequiredMixin, ListView):
         else:
             messages.error(request, f'failed to create! please see the create form for more details.')
             return super().get(request, **kwargs)
+
+    #searchquery
+    def get_queryset(self):
+        queryset = super().get_queryset()
+
+        search_query = self.request.GET.get('search')
+        if search_query:
+            queryset = queryset.filter(
+                Q(title__icontains=search_query) |
+                Q(type__icontains=search_query) |
+                Q(teacher__full_name__icontains=search_query)
+            )
+
+
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['search_query'] = self.request.GET.get('search', '')
+        return context
 
 
 class AssignmentDetailView(DetailView):

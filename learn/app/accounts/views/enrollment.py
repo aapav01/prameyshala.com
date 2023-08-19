@@ -58,8 +58,10 @@ class EnrollmentView(PermissionRequiredMixin, ListView):
             queryset = queryset.filter(
                 Q(user__full_name__icontains=search_query) |
                 Q(user__email__icontains=search_query) |
-                Q(user__phone_number__icontains=search_query)
-                )
+                Q(user__phone_number__icontains=search_query)|
+                Q(standard__name__icontains=search_query)
+            )
+
 
         return queryset
 

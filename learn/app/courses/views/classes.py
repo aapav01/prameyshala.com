@@ -8,6 +8,7 @@ from django.urls import reverse_lazy
 from django.db.models import Count
 from ..models import Classes
 from ..forms import ClassesForm
+from django.db.models import Q
 
 
 class ClassesView(PermissionRequiredMixin, ListView):
@@ -48,6 +49,20 @@ class ClassesView(PermissionRequiredMixin, ListView):
         else:
             messages.error(request, f'failed to create! please see the create form for more details.')
             return super().get(request, **kwargs)
+
+    #searchquery
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        class_name = self.request.GET.get('class')
+
+        if class_name:
+            queryset = queryset.filter(name__icontains=class_name)
+
+        return queryset
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['class_filter'] = self.request.GET.get('class', '')
+        return context
 
 
 class ClassesUpdateView(PermissionRequiredMixin, UpdateView):

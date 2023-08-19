@@ -11,13 +11,14 @@
         <i class="far fa-plus"></i>Add Enrollment
       </button>
       <form method="get" class="search-form">
-        <input class=" btn bg-white text-blue-gray-400 px-6 border-0"
+        <input class=" textarea bg-white text-blue-gray-400 px-6 border-0"
                type="text"
                name="search"
-               placeholder="Search users...">
-        <button class=" btn bg-gradient-to-br from-purple-600 to-pink-400 text-white px-6 border-0 shadow-md shadow-purple-500/50"
+               placeholder="Search..."
+               value="{{ request.GET.search }}">
+        <button class=" btn bg-gradient-to-br from-purple-600 to-indigo-400 text-white px-6 border-0 shadow-md shadow-purple-500/50"
                 type="submit">Search</button>
-        <a class=" btn bg-gradient-to-br from-purple-600 to-pink-400 text-white px-4 border-0 shadow-md shadow-purple-500/50"
+        <a class=" btn bg-gradient-to-br from-blue-600 to-purple-400 text-white px-4 border-0 shadow-md shadow-purple-500/50"
            href="{% url 'accounts:enrollment' %}"
            class="clear-search">Clear Search</a>
       </form>
