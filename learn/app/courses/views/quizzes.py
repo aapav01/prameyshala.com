@@ -100,24 +100,37 @@ class QuizUpdateView(PermissionRequiredMixin, UpdateView):
             {'url': 'core:home', 'label': 'Dashboard'},
             {'label': 'Courses'},
             {'url': 'courses:quizzes', 'label': 'Quizzes'},
-            {'label': 'Create Quiz'},
+            {'label': 'Edit Quiz'},
         ],
     }
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['question_formset'] = QuestionInlineUpdateFormSet(instance=self.object, prefix='question_formset')
-        #TODO: render this in template
+        if self.request.method == 'POST':
+            context['question_formset'] = QuestionInlineUpdateFormSet(self.request.POST, instance=self.object, prefix='question_formset')
+        else:
+            context['question_formset'] = QuestionInlineUpdateFormSet(instance=self.object, prefix='question_formset')
+
         questions_count = 0
         for question in context['question_formset']:
-            question.choice_formset = ChoiceInlineUpdateFormSet(instance=question.instance, prefix='choice_formset_%s' % questions_count)
+            if self.request.method == 'POST':
+                question.choice_formset = ChoiceInlineUpdateFormSet(self.request.POST, instance=question.instance, prefix='choice_formset_%s' % questions_count)
+            else:
+                question.choice_formset = ChoiceInlineUpdateFormSet(instance=question.instance, prefix='choice_formset_%s' % questions_count)
             questions_count += 1
         return context
 
     def form_valid(self, form):
-        messages.info(
-            self.request, f'{form.instance.name} has been updated successfully.')
-        return super().form_valid(form)
+        context = self.get_context_data()
+        question_formset = context['question_formset']
+
+        if question_formset.is_valid():
+            self.object = form.save()
+            question_formset.instance = self.object
+            question_formset.save()
+            return redirect(self.success_url)
+        else:
+            return self.render_to_response(self.get_context_data(form=form))
 
 
 class QuizDeleteView(PermissionRequiredMixin, DeleteView):
