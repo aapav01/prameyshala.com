@@ -42,6 +42,7 @@ class LessonView(PermissionRequiredMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        context['search_query'] = self.request.GET.get('search', '')
         for obj in context[self.context_object_name]:
             temp_form = LessonForm(instance=obj, prefix=obj.pk)
             obj.form = temp_form
@@ -74,10 +75,11 @@ class LessonView(PermissionRequiredMixin, ListView):
             self.extra_context.update({'form': LessonForm})
             return redirect('courses:lessons')
         else:
-            messages.error(request, f'failed to create! please see the create form for more details.')
+            messages.error(
+                request, f'failed to create! please see the create form for more details.')
             return super().get(request, **kwargs)
 
-    #search
+    # search
     def get_queryset(self):
         queryset = super().get_queryset()
 
@@ -86,17 +88,11 @@ class LessonView(PermissionRequiredMixin, ListView):
             queryset = queryset.filter(
                 Q(title__icontains=search_query) |
                 Q(lesson_type__icontains=search_query) |
-                Q(chapter__name__icontains = search_query) |
-                Q(chapter__subject__name__icontains = search_query) |
-                Q(chapter__subject__standard__name__icontains = search_query)
+                Q(chapter__name__icontains=search_query) |
+                Q(chapter__subject__name__icontains=search_query) |
+                Q(chapter__subject__standard__name__icontains=search_query)
             )
         return queryset
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['search_query'] = self.request.GET.get('search', '')
-        return context
-
 
 
 class LessonDetailView(PermissionRequiredMixin, DetailView):
