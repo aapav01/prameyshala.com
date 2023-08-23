@@ -19,7 +19,7 @@ class UsersView(PermissionRequiredMixin, ListView):
     form = UsersForm
     context_object_name = "users"
     extra_context = {
-        'title': 'users',
+        'title': 'Users',
         'breadcrumbs': [{'url': 'core:home', 'label': 'Dashboard'}, {'label': 'User Management'}, {'label': 'Users'}],
         'form': form
     }
