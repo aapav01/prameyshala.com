@@ -28,6 +28,7 @@ class UsersView(PermissionRequiredMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        context['search_query'] = self.request.GET.get('search', '')
         for obj in context[self.context_object_name]:
             temp_form = UsersForm(instance=obj)
             obj.form = temp_form
@@ -63,11 +64,6 @@ class UsersView(PermissionRequiredMixin, ListView):
                 Q(groups__name__icontains=search_query)
             )
         return queryset
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['search_query'] = self.request.GET.get('search', '')
-        return context
 
 
 class UsersUpdateView(PermissionRequiredMixin, UpdateView):

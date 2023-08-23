@@ -11,16 +11,15 @@
         <i class="far fa-plus"></i>Add User
       </button>
       <form method="get" class="search-form">
-        <input class=" btn bg-white text-blue-gray-400 px-6 border-0"
+        <input class="input input-bordered"
                type="text"
                name="search"
                placeholder="Search users..."
                value="{{ request.GET.search }}">
-        <button class=" btn bg-gradient-to-br from-purple-600 to-indigo-400 text-white px-6 border-0 shadow-md shadow-purple-500/50"
+        <button class="btn bg-gradient-to-br from-purple-600 to-indigo-400 text-white px-6 border-0 shadow-md shadow-indigo-500/50"
                 type="submit">Search</button>
-        <a class=" btn bg-gradient-to-br from-blue-600 to-purple-400 text-white px-4 border-0 shadow-md shadow-purple-500/50"
-           href="{% url 'accounts:users' %}"
-           class="clear-search">Clear Search</a>
+        <a class=" btn bg-gradient-to-br from-deep-orange-600 to-orange-400 text-white px-4 border-0 shadow-md shadow-deep-orange-500/50"
+           href="{% url 'accounts:users' %}" >Clear Search</a>
       </form>
     </div>
     <div class="relative flex w-full flex-col rounded-xl bg-base-100 bg-clip-border text-base-content shadow-md">
