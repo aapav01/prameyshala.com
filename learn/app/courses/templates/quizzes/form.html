@@ -85,7 +85,6 @@
 
   }
   function handleAddQuestion(e){
-    question_number++;
     const questionHtml = `
     <div class="md:col-span-2 question${question_number}">
       <div class="form-control">
@@ -145,7 +144,7 @@
         </div>
         <div class="flex justify-end">
           <button class="btn btn-primary text-white mt-6"
-                  onclick="handleAddChoice(this, ${question_number})"
+                  onclick="handleAddChoice(this, ${parseInt(question_number) + 1})"
                   type="button">
             <i class="far fa-plus"></i>Add choice
           </button>
@@ -154,9 +153,9 @@
     </div>
     `;
     document.getElementById('main_{{ form.prefix }}').insertAdjacentHTML('beforeend', questionHtml);
-    document.getElementById('question-count').innerText = question_number + 1;
-    document.getElementById(`id_question_formset-TOTAL_FORMS`).value = parseInt(question_number) + 1;
-
+    question_number++;
+    document.getElementById('question-count').innerText = question_number;
+    document.getElementById(`id_question_formset-TOTAL_FORMS`).value = parseInt(question_number);
   }
   function handleRemoveChoice(e){
     e.parentNode.parentNode.remove();
