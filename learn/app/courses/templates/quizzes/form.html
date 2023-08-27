@@ -123,8 +123,8 @@
           </div>
         </div>
       </div>
-      <div>
-        <div id="q${question_number}" class="grid grid-cols-2 gap-2">
+      <div id="choice_${parseInt(question_number) + 1}" class="md:col-span-2">
+        <div id="q${parseInt(question_number) + 1}" class="grid grid-cols-2 gap-2">
           <input type="hidden"
                  name="choice_formset_${question_number}-TOTAL_FORMS"
                  value="0"
