@@ -13,7 +13,7 @@
         </button>
       {% endif %}
       <form id="filter-form" method="get" action="{% url 'courses:chapters' %}">
-        <select class="select select-bordered w-32 max-w-xs"
+        <select class="select select-bordered max-w-xs"
                 name="subject"
                 id="subject-select"
                 placeholder="All Subjects">
@@ -33,7 +33,7 @@
                   value="Biology"
                   {% if subject_filter == 'Biology' %}selected{% endif %}>Biology</option>
         </select>
-        <select class="select select-bordered w-32 max-w-xs"
+        <select class="select select-bordered max-w-xs"
                 name="class"
                 id="class-select"
                 placeholder="All Classes">
@@ -53,7 +53,7 @@
                   value="Class 12th"
                   {% if subject_filter == 'Class 12th' %}selected{% endif %}>Class 12th</option>
         </select>
-        <select class="select select-bordered w-32 max-w-xs"
+        <select class="select select-bordered max-w-xs"
                 name="chapter"
                 id="chapter-select"
                 placeholder="All Chapter">
