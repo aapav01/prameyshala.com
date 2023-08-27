@@ -157,7 +157,7 @@ export default function PrivacyPolicy({}: Props) {
             If you have any questions, concerns, or requests regarding this
             Policy or our privacy practices, please contact us at:
             <br />
-            <address>prameyshala@gmail.com</address>
+            <address><a href="mailto:info@prameyshala.com">info@prameyshala.com</a></address>
             We will endeavour to respond to your inquiries in a timely manner.
           </p>
           <p>

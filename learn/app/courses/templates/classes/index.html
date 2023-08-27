@@ -16,27 +16,17 @@
       <form id="class-filter-form"
             method="get"
             action="{% url 'courses:classes' %}">
-        <select class="select select-bordered w-32 max-w-xs"
+        <select class="select select-bordered max-w-xs"
                 name="class"
                 id="class-select"
                 placeholder="All Classes">
-          <option class="text-left"
-                  value=""
-                  {% if not class_filter %}selected{% endif %}>All Classes</option>
-          <option class="text-left"
-                  value="Class 9th"
-                  {% if class_filter == 'Class 9th' %}selected{% endif %}>Class 9th</option>
-          <option class="text-left"
-                  value="Class 10th"
-                  {% if class_filter == 'Class 10th' %}selected{% endif %}>Class 10th</option>
-          <option class="text-left"
-                  value="Class 11th"
-                  {% if class_filter == 'Class 11th' %}selected{% endif %}>Class 11th</option>
-          <option class="text-left"
-                  value="Class 12th"
-                  {% if class_filter == 'Class 12th' %}selected{% endif %}>Class 12th</option>
+          <option value="" {% if not class_filter %}selected{% endif %}>All Classes</option>
+          <option value="Class 9th" {% if class_filter == 'Class 9th' %}selected{% endif %}>Class 9th</option>
+          <option value="Class 10th" {% if class_filter == 'Class 10th' %}selected{% endif %}>Class 10th</option>
+          <option value="Class 11th" {% if class_filter == 'Class 11th' %}selected{% endif %}>Class 11th</option>
+          <option value="Class 12th" {% if class_filter == 'Class 12th' %}selected{% endif %}>Class 12th</option>
         </select>
-        <button class=" btn bg-gradient-to-br from-indigo-600 to-purple-400 text-white px-3 border-0 shadow-md shadow-orange-500/50"
+        <button class=" btn bg-gradient-to-br from-indigo-600 to-purple-400 text-white px-3 border-0 shadow-md shadow-purple-500/50"
                 type="button"
                 id="clear-filter">Clear Filter</button>
       </form>

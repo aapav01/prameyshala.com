@@ -64,7 +64,7 @@ export default function RefundPolicy({}: Props) {
           <strong>Refund Process:</strong>
           <p>
             a. To initiate a refund request, users must contact our customer
-            support team by sending an email to prameyshala@gmail.com or by
+            support team by sending an email to <a href="mailto:info@prameyshala.com">info@prameyshala.com</a> or by
             submitting a refund request through our website within the specified
             time frame.
           </p>
@@ -109,7 +109,7 @@ export default function RefundPolicy({}: Props) {
           </p>
           <p>
             If you have any questions or require further assistance, please
-            contact our customer support team at prameyshala@gmail.com.
+            contact our customer support team at <a href="mailto:info@prameyshala.com">info@prameyshala.com</a>.
           </p>
           <p>Thank you for choosing Prameyshala!</p>
         </div>

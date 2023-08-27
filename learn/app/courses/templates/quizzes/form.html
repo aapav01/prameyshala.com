@@ -16,10 +16,10 @@
           {{ form.as_div }}
           {{ question_formset.management_form }}
           {% for question_form in question_formset %}
-            <fieldset class="md:col-span-2 question0">
+            <fieldset class="md:col-span-2">
               <div>{{ question_form.as_div }}</div>
               <div>
-                <div id="q0" class="grid grid-cols-2 gap-2">
+                <div id="q{{ forloop.counter }}" class="grid grid-cols-2 gap-2">
                   {{ question_form.choice_formset.management_form }}
                   {% for choice_form in question_form.choice_formset %}
                     <fieldset>
@@ -79,15 +79,14 @@
         </div>
       </div>
     `;
-    const choiceElement = document.getElementById(`q${question_number}`);
+    const choiceElement = document.getElementById(`q${question_number + 1}`);
     choiceElement.insertAdjacentHTML('beforeend', choiceHtml);
     document.getElementById(`id_choice_formset_${question_number}-TOTAL_FORMS`).value = parseInt(choiceQuestionNumber) + 1;
 
   }
   function handleAddQuestion(e){
-    question_number++;
     const questionHtml = `
-    <div class="md:col-span-2 question${question_number}">
+    <div class="md:col-span-2">
       <div class="form-control">
         <label for="id_question_formset-${question_number}-question_text">
           <span class="label-text">Question</span>
@@ -124,8 +123,8 @@
           </div>
         </div>
       </div>
-      <div>
-        <div id="q${question_number}" class="grid grid-cols-2 gap-2">
+      <div id="choice_${parseInt(question_number) + 1}" class="md:col-span-2">
+        <div id="q${parseInt(question_number) + 1}" class="grid grid-cols-2 gap-2">
           <input type="hidden"
                  name="choice_formset_${question_number}-TOTAL_FORMS"
                  value="0"
@@ -145,7 +144,7 @@
         </div>
         <div class="flex justify-end">
           <button class="btn btn-primary text-white mt-6"
-                  onclick="handleAddChoice(this, ${question_number})"
+                  onclick="handleAddChoice(this, ${parseInt(question_number) + 1})"
                   type="button">
             <i class="far fa-plus"></i>Add choice
           </button>
@@ -154,9 +153,9 @@
     </div>
     `;
     document.getElementById('main_{{ form.prefix }}').insertAdjacentHTML('beforeend', questionHtml);
-    document.getElementById('question-count').innerText = question_number + 1;
-    document.getElementById(`id_question_formset-TOTAL_FORMS`).value = parseInt(question_number) + 1;
-
+    question_number++;
+    document.getElementById('question-count').innerText = question_number;
+    document.getElementById(`id_question_formset-TOTAL_FORMS`).value = parseInt(question_number);
   }
   function handleRemoveChoice(e){
     e.parentNode.parentNode.remove();

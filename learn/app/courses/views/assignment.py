@@ -34,6 +34,7 @@ class AssignmentListView(PermissionRequiredMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        context['search_query'] = self.request.GET.get('search', '')
         for obj in context[self.context_object_name]:
             temp_form = AssignmentForm(instance=obj)
             obj.form = temp_form
@@ -41,7 +42,7 @@ class AssignmentListView(PermissionRequiredMixin, ListView):
 
     # create
     def post(self, request, **kwargs):
-        form = self.form(request.POST,request.FILES)
+        form = self.form(request.POST, request.FILES)
         self.extra_context.update({'form': form})
         if form.is_valid():
             instance = form.save(commit=False)
@@ -52,10 +53,11 @@ class AssignmentListView(PermissionRequiredMixin, ListView):
             self.extra_context.update({'form': AssignmentForm})
             return redirect('courses:assignments')
         else:
-            messages.error(request, f'failed to create! please see the create form for more details.')
+            messages.error(
+                request, f'failed to create! please see the create form for more details.')
             return super().get(request, **kwargs)
 
-    #searchquery
+    # searchquery
     def get_queryset(self):
         queryset = super().get_queryset()
 
@@ -67,13 +69,7 @@ class AssignmentListView(PermissionRequiredMixin, ListView):
                 Q(teacher__full_name__icontains=search_query)
             )
 
-
         return queryset
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['search_query'] = self.request.GET.get('search', '')
-        return context
 
 
 class AssignmentDetailView(DetailView):
@@ -82,16 +78,14 @@ class AssignmentDetailView(DetailView):
     template_name = 'assignments/detail.html'
 
 
-
 class AssignmentUpdateView(PermissionRequiredMixin, UpdateView):
-     model = Assignment
-     form_class = AssignmentForm
-     permission_required = "courses.change_assignment"
-     template_name = "form.html"
-     success_url = reverse_lazy('courses:assignments')
+    model = Assignment
+    form_class = AssignmentForm
+    permission_required = "courses.change_assignment"
+    template_name = "form.html"
+    success_url = reverse_lazy('courses:assignments')
 
-
-     def form_valid(self, form):
+    def form_valid(self, form):
         instance = form.save(commit=False)
         instance.updated_by = self.request.user
         instance.save()
@@ -109,7 +103,8 @@ class AssignmentDeleteView(PermissionRequiredMixin, DeleteView):
         messages.error(request, 'Assignment has been deleted successfully.')
         return self.delete(request, **kwargs)
 
-class AssignmentSubmissionsView(PermissionRequiredMixin,ListView):
+
+class AssignmentSubmissionsView(PermissionRequiredMixin, ListView):
     model = AssignmentSubmission
     context_object_name = "assignment_submissions"
     template_name = "assignment_submissions/index.html"
@@ -129,13 +124,15 @@ class AssignmentSubmissionsView(PermissionRequiredMixin,ListView):
     ordering = ['-created_at']
 
     def get_queryset(self):
-        queryset = AssignmentSubmission.objects.filter(assignment__id=self.kwargs['pk'])
+        queryset = AssignmentSubmission.objects.filter(
+            assignment__id=self.kwargs['pk'])
         return queryset
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['assignment'] = Assignment.objects.get(pk=self.kwargs['pk'])
         return context
+
 
 class AssignmentReviewView(UpdateView):
     model = AssignmentSubmission
@@ -165,14 +162,14 @@ class AssignmentReviewView(UpdateView):
         )
         return self.render_to_response(self.get_context_data(form=form))
 
+
 class AssignmentSubmitView(CreateView):
     model = AssignmentSubmission
-    fields = ['assignment','solution_file']
-    template_name="submit/index.html"
+    fields = ['assignment', 'solution_file']
+    template_name = "submit/index.html"
     form = AssignmentSubmissionForm
     success_url = reverse_lazy('courses:assignments')
 
     def form_valid(self, form):
         form.instance.student = self.request.user
         return super().form_valid(form)
-

@@ -175,7 +175,7 @@ export default function TNC({}: Props) {
           </p>
           <p>
             If you have any questions or concerns about these Terms and
-            Conditions, please contact us at [insert contact details].
+            Conditions, please contact us at <a href="mailto:info@prameyshala.com">info@prameyshala.com</a>.
           </p>
           <p>
             By using the Prameyshala EdTech Platform, you acknowledge that you

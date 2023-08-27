@@ -121,16 +121,21 @@ class QuizUpdateView(PermissionRequiredMixin, UpdateView):
         return context
 
     def form_valid(self, form):
-        context = self.get_context_data()
-        question_formset = context['question_formset']
-
+        result = super().form_valid(form)
+        messages.info(
+            self.request, f'{form.instance.name} has been updated successfully.')
+        question_formset = QuestionInlineUpdateFormSet(self.request.POST, instance=self.object, prefix='question_formset')
         if question_formset.is_valid():
-            self.object = form.save()
-            question_formset.instance = self.object
-            question_formset.save()
-            return redirect(self.success_url)
-        else:
-            return self.render_to_response(self.get_context_data(form=form))
+            questions = question_formset.save()
+            questions_count = 0
+            for question in questions:
+                choice_formset = ChoiceInlineUpdateFormSet(
+                    self.request.POST, instance=question, prefix='choice_formset_%s' % questions_count)
+                if choice_formset.is_valid():
+                    choice_formset.save()
+                questions_count += 1
+
+        return result
 
 
 class QuizDeleteView(PermissionRequiredMixin, DeleteView):

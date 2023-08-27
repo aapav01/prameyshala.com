@@ -11,7 +11,6 @@ from dateutil.relativedelta import relativedelta
 from django.db.models import Q
 
 
-
 class EnrollmentView(PermissionRequiredMixin, ListView):
     permission_required = "accounts.view_enrollment"
     model = Enrollment
@@ -28,6 +27,7 @@ class EnrollmentView(PermissionRequiredMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        context['search_query'] = self.request.GET.get('search', '')
         for obj in context['enrollment']:
             temp_form = EnrollmentForm(instance=obj)
             obj.form = temp_form
@@ -47,7 +47,8 @@ class EnrollmentView(PermissionRequiredMixin, ListView):
             self.extra_context.update({'form': EnrollmentForm})
             return redirect('accounts:enrollment')
         else:
-            messages.error(request, f'failed to create! please see the create form for more details.')
+            messages.error(
+                request, f'failed to create! please see the create form for more details.')
             return super().get(request, **kwargs)
 
     def get_queryset(self):
@@ -58,18 +59,11 @@ class EnrollmentView(PermissionRequiredMixin, ListView):
             queryset = queryset.filter(
                 Q(user__full_name__icontains=search_query) |
                 Q(user__email__icontains=search_query) |
-                Q(user__phone_number__icontains=search_query)|
+                Q(user__phone_number__icontains=search_query) |
                 Q(standard__name__icontains=search_query)
             )
 
-
         return queryset
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['search_query'] = self.request.GET.get('search', '')
-        return context
-
 
 
 class EnrollmentUpdateView(PermissionRequiredMixin, UpdateView):
