@@ -39,10 +39,10 @@ class PaymentQuery(graphene.ObjectType):
 
 
 class PaymentMutation(graphene.ObjectType):
-    create_payment = graphene.Field(
+    create_payment_razorpay = graphene.Field(
         PaymentsType, amount=graphene.Int(required=True))
 
-    def resolve_create_payment(self, info, amount):
+    def resolve_create_payment_razorpay(self, info, amount):
         response = client.order.create({
             "amount": amount * 100,
             "currency": "INR",
