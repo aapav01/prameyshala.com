@@ -47,7 +47,7 @@ class Command(BaseCommand):
                    "Kumar", "Mahajan", "Mehra", "Patel", "Rao", "Reddy", "Sharma", "Singh", "Verma", "Yadav", "Sharma"]
 
         password = make_password('password@123')
-        admin_user = User.objects.get_or_create(phone_number="9876543210", email="admin@prameyshala.com",
+        admin_user = User.objects.get_or_create(phone_number="+919876543210", email="admin@prameyshala.com",
                                                 full_name="Admin User", password=password, is_staff=True, is_superuser=True)
 
         # Each subject has 10 chapters
@@ -124,7 +124,7 @@ class Command(BaseCommand):
 
         speical_users = []
         for i in range(20):
-            phone_number = random.randint(8000000000, 9799999999)
+            phone_number = "+91" + str(random.randint(8000000000, 9799999999))
             full_name = random.choice(names) + " " + random.choice(surname)
             email = f"{phone_number}@example.com"
             user = User.objects.get_or_create(
