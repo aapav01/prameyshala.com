@@ -4,6 +4,7 @@ from django.shortcuts import render, redirect
 from django.views.generic import ListView, DetailView
 from django.views.generic.edit import UpdateView, DeleteView
 from django.utils.text import slugify
+from django.utils.timezone import now
 from django.urls import reverse_lazy
 from ..models import Enrollment
 from ..forms import EnrollmentForm
@@ -39,9 +40,7 @@ class EnrollmentView(PermissionRequiredMixin, ListView):
         self.extra_context.update({'form': form})
         if form.is_valid():
             instance = form.save(commit=False)
-            instance.slug = slugify(instance.status)
-            instance.expiration_date = instance.created_at + \
-                relativedelta(years=1)
+            instance.expiration_date = now() + relativedelta(years=1)
             instance.save()
             messages.success(request, 'Enrolled successfully.')
             self.extra_context.update({'form': EnrollmentForm})
