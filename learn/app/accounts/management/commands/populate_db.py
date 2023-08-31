@@ -109,7 +109,7 @@ class Command(BaseCommand):
         users_list = []
 
         for _ in range(amount):
-            phone_number = random.randint(9999000000, 9999999999)
+            phone_number = "+91" + str(random.randint(9999000000, 9999999999))
             full_name = random.choice(names) + " " + random.choice(surname)
             email = f"{phone_number}@example.com"
             users_list.append(User.objects.get_or_create(
