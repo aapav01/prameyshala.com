@@ -29,6 +29,7 @@ class ClassesView(PermissionRequiredMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        context['class_filter'] = self.request.GET.get('class', '')
         for obj in context['classes']:
             temp_form = ClassesForm(instance=obj, prefix=obj.pk)
             obj.form = temp_form
@@ -50,7 +51,7 @@ class ClassesView(PermissionRequiredMixin, ListView):
             messages.error(request, f'failed to create! please see the create form for more details.')
             return super().get(request, **kwargs)
 
-    #searchquery
+    # searchquery
     def get_queryset(self):
         queryset = super().get_queryset()
         class_name = self.request.GET.get('class')
@@ -59,11 +60,6 @@ class ClassesView(PermissionRequiredMixin, ListView):
             queryset = queryset.filter(name__icontains=class_name)
 
         return queryset
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['class_filter'] = self.request.GET.get('class', '')
-        return context
-
 
 class ClassesUpdateView(PermissionRequiredMixin, UpdateView):
     permission_required = "courses.change_classes"
