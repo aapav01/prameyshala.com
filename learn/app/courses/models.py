@@ -149,6 +149,7 @@ class Assignment(models.Model):
         User, on_delete=models.DO_NOTHING, blank=True, null=True, related_name='assignment_updated_by')
     created_at = models.DateTimeField(auto_now=False, auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    chapter = models.ForeignKey(Chapter,default=None,blank=False, null=False,on_delete=models.CASCADE)
 
     def __str__(self):
         return self.title
@@ -181,7 +182,7 @@ class Grades(models.Model):
     grade = models.DecimalField(max_digits=2,
                                 decimal_places=1,
                                 validators=[MinValueValidator(0.0), MaxValueValidator(10.0)])
-    # enrollment = models.ForeignKey(Enrollment,blank=False,null=False,on_delete=models.CASCADE)
+    enrollment = models.ForeignKey(Enrollment,default=None,blank=False,null=False,on_delete=models.CASCADE)
 
     def __str__(self):
         if self.assignment:
