@@ -20,18 +20,10 @@
           <option class="text-left"
                   value=""
                   {% if not subject_filter %}selected{% endif %}>All Subjects</option>
-          <option class="text-left"
-                  value="Physics"
-                  {% if subject_filter == 'Physics' %}selected{% endif %}>Physics</option>
-          <option class="text-left"
-                  value="Chemistry"
-                  {% if subject_filter == 'Chemistry' %}selected{% endif %}>Chemistry</option>
-          <option class="text-left"
-                  value="Math"
-                  {% if subject_filter == 'Math' %}selected{% endif %}>Maths</option>
-          <option class="text-left"
-                  value="Biology"
-                  {% if subject_filter == 'Biology' %}selected{% endif %}>Biology</option>
+          {% for subject in all_subjects %}
+            <option class="text-left" value={{ subject.name }} {% if subject_filter == subject.name %}selected{% endif %}>{{ subject.name }}
+            </option>
+          {% endfor %}
         </select>
         <select class="select select-bordered max-w-xs"
                 name="class"
@@ -39,61 +31,27 @@
                 placeholder="All Classes">
           <option class="text-left"
                   value=""
-                  {% if not subject_filter %}selected{% endif %}>All Classes</option>
-          <option class="text-left"
-                  value="Class 9th"
-                  {% if subject_filter == 'Class 9th' %}selected{% endif %}>Class 9th</option>
-          <option class="text-left"
-                  value="Class 10th"
-                  {% if subject_filter == 'Class 10th' %}selected{% endif %}>Class 10th</option>
-          <option class="text-left"
-                  value="Class 11th"
-                  {% if subject_filter == 'Class 11th' %}selected{% endif %}>Class 11th</option>
-          <option class="text-left"
-                  value="Class 12th"
-                  {% if subject_filter == 'Class 12th' %}selected{% endif %}>Class 12th</option>
+                  {% if not class_filter %}selected{% endif %}>All Classes</option>
+          {% for class in all_classes %}
+            <option class="text-left"
+                    value="{{ class.slug }}"
+                    {% if class_filter == class.slug %}selected{% endif %}>{{ class.name }}</option>
+          {% endfor %}
         </select>
-        <select class="select select-bordered max-w-xs"
-                name="chapter"
-                id="chapter-select"
-                placeholder="All Chapter">
-          <option class="text-left"
-                  value=""
-                  {% if not subject_filter %}selected{% endif %}>All Chapters</option>
-          <option class="text-left"
-                  value="Chapter 1"
-                  {% if subject_filter == 'Chapter 1' %}selected{% endif %}>Chapter 1</option>
-          <option class="text-left"
-                  value="Chapter 2"
-                  {% if subject_filter == 'Chapter 2' %}selected{% endif %}>Chapter 2</option>
-          <option class="text-left"
-                  value="Chapter 3"
-                  {% if subject_filter == 'Chapter 3' %}selected{% endif %}>Chapter 3</option>
-          <option class="text-left"
-                  value="Chapter 4"
-                  {% if subject_filter == 'Chapter 4' %}selected{% endif %}>Chapter 4</option>
-          <option class="text-left"
-                  value="Chapter 5"
-                  {% if subject_filter == 'Chapter 5' %}selected{% endif %}>Chapter 5</option>
-          <option class="text-left"
-                  value="Chapter 6"
-                  {% if subject_filter == 'Chapter 6' %}selected{% endif %}>Chapter 6</option>
-          <option class="text-left"
-                  value="Chapter 7"
-                  {% if subject_filter == 'Chapter 7' %}selected{% endif %}>Chapter 7</option>
-          <option class="text-left"
-                  value="Chapter 8"
-                  {% if subject_filter == 'Chapter 8' %}selected{% endif %}>Chapter 8</option>
-          <option class="text-left"
-                  value="Chapter 9"
-                  {% if subject_filter == 'Chapter 9' %}selected{% endif %}>Chapter 9</option>
-          <option class="text-left"
-                  value="Chapter 10"
-                  {% if subject_filter == 'Chapter 10' %}selected{% endif %}>Chapter 10</option>
-        </select>
-        <button class="btn bg-gradient-to-br from-indigo-600 to-purple-400 text-white px-3 border-0 shadow-md shadow-purple-500/50"
-                type="button"
-                id="clear-filter">Clear Filter</button>
+        <input type="text"
+               class="input input-bordered max-w-xs"
+               name="chapter"
+               id="chapter-search"
+               placeholder="Search Chapters"
+               value="{{ chapter_filter }}">
+        <button class="btn btn-square bg-gradient-to-br from-purple-600 to-indigo-400 text-white px-6 border-0 shadow-md shadow-indigo-500/50"
+                type="submit">
+          <i class="fa-regular fa-magnifying-glass"></i>
+        </button>
+        <a class="btn btn-square bg-gradient-to-br from-deep-orange-600 to-orange-800 text-white px-4 border-0 shadow-md shadow-deep-orange-500/50"
+           href="{% url 'courses:chapters' %}"
+           type="button"
+           id="'clear-filter"><i class="fa-regular fa-x"></i></a>
       </form>
     </div>
     <div class="relative flex w-full flex-col rounded-xl bg-base-100 bg-clip-border text-base-content shadow-md">
@@ -211,37 +169,39 @@
           <button>close</button>
         </form>
       </dialog>
-      <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const filterForm = document.getElementById('filter-form');
-        const subjectSelect = document.getElementById('subject-select');
-        const classSelect = document.getElementById('class-select');
-        const chapterSelect = document.getElementById('chapter-select');
-        const clearFilterButton = document.getElementById('clear-filter');
-        
-        const urlParams = new URLSearchParams(window.location.search);
-        const subjectFilter = urlParams.get('subject');
-        const classFilter = urlParams.get('class');
-        const chapterFilter = urlParams.get('chapter');
-        
-        subjectSelect.value = subjectFilter || "";
-        classSelect.value = classFilter || "";
-        chapterSelect.value = chapterFilter || "";
-        
-        filterForm.addEventListener('change', function (event) {
-            if (event.target.tagName === 'SELECT') {
-                filterForm.submit();
-            }
-        });
-
-        clearFilterButton.addEventListener('click', function () {
-            subjectSelect.value = '';
-            classSelect.value = '';
-            chapterSelect.value = '';
-            filterForm.submit();
-        });
-    });
-      </script>
     {% endfor %}
   {% endif %}
 {% endblock content %}
+{% block body_js %}
+  <script>
+      document.addEventListener('DOMContentLoaded', function () {
+          const filterForm = document.getElementById('filter-form');
+          const subjectSelect = document.getElementById('subject-select');
+          const classSelect = document.getElementById('class-select');
+          const chapterSearch = document.getElementById('chapter-search');  
+          const clearFilterButton = document.getElementById('clear-filter');
+
+          const urlParams = new URLSearchParams(window.location.search);
+          const subjectFilter = urlParams.get('subject');
+          const classFilter = urlParams.get('class');
+          const chapterFilter = urlParams.get('chapter');  
+
+          subjectSelect.value = subjectFilter || "";
+          classSelect.value = classFilter || "";
+          chapterSearch.value = chapterFilter || "";  
+
+          filterForm.addEventListener('change', function (event) {
+              if (event.target.tagName === 'SELECT' || event.target.tagName === 'INPUT') {  
+                  filterForm.submit();
+              }
+          });
+
+          clearFilterButton.addEventListener('click', function () {
+              subjectSelect.value = '';
+              classSelect.value = '';
+              chapterSearch.value = ''; 
+              filterForm.submit();
+          });
+      });
+  </script>
+{% endblock body_js %}

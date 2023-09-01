@@ -13,22 +13,18 @@
           <i class="far fa-plus"></i>Add Class
         </button>
       {% endif %}
-      <form id="class-filter-form"
-            method="get"
-            action="{% url 'courses:classes' %}">
-        <select class="select select-bordered max-w-xs"
-                name="class"
-                id="class-select"
-                placeholder="All Classes">
-          <option value="" {% if not class_filter %}selected{% endif %}>All Classes</option>
-          <option value="Class 9th" {% if class_filter == 'Class 9th' %}selected{% endif %}>Class 9th</option>
-          <option value="Class 10th" {% if class_filter == 'Class 10th' %}selected{% endif %}>Class 10th</option>
-          <option value="Class 11th" {% if class_filter == 'Class 11th' %}selected{% endif %}>Class 11th</option>
-          <option value="Class 12th" {% if class_filter == 'Class 12th' %}selected{% endif %}>Class 12th</option>
-        </select>
-        <button class=" btn bg-gradient-to-br from-indigo-600 to-purple-400 text-white px-3 border-0 shadow-md shadow-purple-500/50"
-                type="button"
-                id="clear-filter">Clear Filter</button>
+      <form method="get" class="bg-white shadow-sm p-2 rounded-xl">
+        <input class="input input-bordered"
+               type="text"
+               name="search"
+               placeholder="Search..."
+               value="{{ request.GET.search }}">
+        <button class="btn btn-square bg-gradient-to-br from-purple-600 to-indigo-400 text-white px-6 border-0 shadow-md shadow-indigo-500/50"
+                type="submit">
+          <i class="fa-regular fa-magnifying-glass"></i>
+        </button>
+        <a class="btn btn-square bg-gradient-to-br from-deep-orange-600 to-orange-800 text-white px-4 border-0 shadow-md shadow-deep-orange-500/50"
+           href="{% url 'courses:classes' %}"><i class="fa-regular fa-x"></i></a>
       </form>
     </div>
     <div class="relative flex w-full flex-col rounded-xl bg-base-100 bg-clip-border text-base-content shadow-md">
@@ -85,12 +81,12 @@
     <div class="join">
       {% if page_obj.has_previous %}
         <a class="join-item btn btn-primary"
-           href="?page={{ page_obj.previous_page_number }}">previous</a>
+           href="?page={{ page_obj.previous_page_number }}{% if search_query %}&search={{ search_query }}{% endif %}">previous</a>
       {% endif %}
       <span class="join-item btn btn-disabled">Page {{ page_obj.number }} of {{ paginator.num_pages }}.</span>
       {% if page_obj.has_next %}
         <a class="join-item btn btn-primary"
-           href="?page={{ page_obj.next_page_number }}">next</a>
+           href="?page={{ page_obj.next_page_number }}{% if search_query %}&search={{ search_query }}{% endif %}">next</a>
       {% endif %}
     </div>
   </div>
@@ -150,29 +146,3 @@
         href="https://unpkg.com/easymde/dist/easymde.min.css">
   <script src="https://unpkg.com/easymde/dist/easymde.min.js"></script>
 {% endblock head_link %}
-{% block body_js %}
-  <script>
-  const easyMDE = new EasyMDE({element: document.getElementById('{{ form.description.id_for_label }}')});
-  </script>
-  <script>
-    document.addEventListener('DOMContentLoaded', function () {
-    const classSelect = document.getElementById('class-select');
-    const classForm = document.getElementById('class-filter-form');
-    const clearFilterButton = document.getElementById('clear-filter');
-  
-    const urlParams = new URLSearchParams(window.location.search);
-    const classFilter = urlParams.get('class');
-    
-    classSelect.value = classFilter || "";
-
-    classSelect.addEventListener('change', function () {
-        classForm.submit();
-    });
-    
-    clearFilterButton.addEventListener('click', function () {
-        classSelect.value = ''; 
-        classForm.submit();     
-    });
-});
-  </script>
-{% endblock body_js %}
