@@ -34,11 +34,14 @@ const query = gql`
           fullName
         }
         quiz {
+          id
           name
           type
           questionSet {
+            id
             questionText
             choiceSet {
+              id
               choiceText
             }
           }

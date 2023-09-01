@@ -22,6 +22,7 @@ const query = gql`
   query page_lesson_side($chapter: ID!, $page: Int) {
     lessonByChapterPaginated(chapterId: $chapter, page: $page) {
       lesson {
+        id
         chapter {
           id
           name
