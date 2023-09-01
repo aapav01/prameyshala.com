@@ -9,6 +9,7 @@ import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { gql } from "@apollo/client";
 import { getClient } from "@/lib/client";
 import VideoPlayer from "@/components/sections/video-player";
+import Quiz from "@/components/sections/quiz";
 
 type Props = {
   params: {
@@ -32,6 +33,19 @@ const query = gql`
           id
           fullName
         }
+        quiz {
+          id
+          name
+          type
+          questionSet {
+            id
+            questionText
+            choiceSet {
+              id
+              choiceText
+            }
+          }
+				}
         platform
         platformVideoId
         url
@@ -104,6 +118,7 @@ export default async function LessonDetail({ params }: Props) {
         </div>
       </header>
       <VideoPlayer lesson={lesson} />
+      <Quiz lesson={lesson} />
       <div className="container py-6">
         <div className="prose prose-lg max-w-full">
           <MDXRemote source={lesson.description} />

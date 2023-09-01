@@ -1,10 +1,11 @@
 import graphene
 import graphql_jwt
 import app.accounts.schema as accounts
+import app.blog.schema as blog
 import app.courses.schema as courses
 
 
-class Query(accounts.Query, courses.Query, graphene.ObjectType):
+class Query(accounts.Query, blog.Query, courses.Query, graphene.ObjectType):
     pass
 
 

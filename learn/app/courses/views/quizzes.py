@@ -1,5 +1,7 @@
+from typing import Any
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.contrib import messages
+from django.db import models
 from django.shortcuts import render, redirect
 from django.views.generic import ListView, DetailView, CreateView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
@@ -7,6 +9,7 @@ from django.urls import reverse_lazy
 from django.db.models import Count
 from ..forms import ChoiceInlineFormSet, QuestionInlineFormSet, QuestionInlineUpdateFormSet, ChoiceInlineUpdateFormSet
 from ..models import Quiz
+from django.db.models import Q
 
 
 class QuizView(PermissionRequiredMixin, ListView):
@@ -21,6 +24,18 @@ class QuizView(PermissionRequiredMixin, ListView):
     paginate_by = 10
     ordering = ['-created_at']
     queryset = Quiz.objects.annotate(question_count=Count("question__id"))
+
+    #search
+    def get_queryset(self):
+        queryset = super().get_queryset()
+
+        search_query = self.request.GET.get('search')
+        if search_query:
+            queryset = queryset.filter(
+                Q(name__icontains=search_query) |
+                Q(type__iexact=search_query)
+            )
+        return queryset
 
 
 class QuizCreateView(PermissionRequiredMixin, CreateView):
@@ -71,6 +86,7 @@ class QuizCreateView(PermissionRequiredMixin, CreateView):
         return result
 
 
+
 class QuizUpdateView(PermissionRequiredMixin, UpdateView):
     permission_required = "courses.change_quizzes"
     model = Quiz
@@ -99,9 +115,21 @@ class QuizUpdateView(PermissionRequiredMixin, UpdateView):
         return context
 
     def form_valid(self, form):
+        result = super().form_valid(form)
         messages.info(
             self.request, f'{form.instance.name} has been updated successfully.')
-        return super().form_valid(form)
+        question_formset = QuestionInlineUpdateFormSet(self.request.POST, instance=self.object, prefix='question_formset')
+        if question_formset.is_valid():
+            questions = question_formset.save()
+            questions_count = 0
+            for question in questions:
+                choice_formset = ChoiceInlineUpdateFormSet(
+                    self.request.POST, instance=question, prefix='choice_formset_%s' % questions_count)
+                if choice_formset.is_valid():
+                    choice_formset.save()
+                questions_count += 1
+
+        return result
 
 
 class QuizDeleteView(PermissionRequiredMixin, DeleteView):

@@ -4,6 +4,7 @@ import Link from "next/link";
 
 import AppStore from "@/svg/app-store.svg";
 import PlayStore from "@/svg/play-store.svg";
+import { EnvelopeClosedIcon } from "@radix-ui/react-icons";
 
 type Props = {};
 
@@ -68,7 +69,15 @@ function MainFooter({}: Props) {
               </div>
               <div>
                 <p className="font-sans font-bold text-indigo-100">About us</p>
-                <p className="text-sm">Call us and we will answer all your questions about us.</p>
+                <p className="text-sm">Contact us and we will answer all your questions about us.</p>
+                <p className="mt-2">
+                  <a href="mailto:contact@prameyshala.com">
+                    <EnvelopeClosedIcon className="inline-block h-8 w-8 mr-2" />
+                    <span className="text-lg underline underline-offset-4">
+                      contact@prameyshala.com
+                    </span>
+                  </a>
+                </p>
               </div>
             </div>
           </div>

@@ -12,6 +12,19 @@
           <i class="far fa-plus"></i>Add Assignment
         </button>
       {% endif %}
+      <form method="get" class="bg-white shadow-sm p-2 rounded-xl">
+        <input class="input input-bordered"
+               type="text"
+               name="search"
+               placeholder="Search..."
+               value="{{ request.GET.search }}">
+        <button class="btn btn-square bg-gradient-to-br from-purple-600 to-indigo-400 text-white px-6 border-0 shadow-md shadow-indigo-500/50"
+                type="submit">
+          <i class="fa-regular fa-magnifying-glass"></i>
+        </button>
+        <a class="btn btn-square bg-gradient-to-br from-deep-orange-600 to-orange-800 text-white px-4 border-0 shadow-md shadow-deep-orange-500/50"
+           href="{% url 'courses:assignments' %}"><i class="fa-regular fa-x"></i></a>
+      </form>
     </div>
     <div class="relative flex w-full flex-col rounded-xl bg-base-100 bg-clip-border text-base-content shadow-md">
       <div class="relative mx-4 -mt-6 mb-4 grid px-6 py-8 overflow-hidden rounded-xl bg-gradient-to-tr from-indigo-600 to-indigo-400 bg-clip-border text-white shadow-lg shadow-indigo-500/40">
@@ -52,7 +65,7 @@
                 <td class="px-4 py-3">{{ assignment.due_date }}</td>
                 <td class="flex gap-2 px-4 py-3">
                   <a href="{% url 'courses:assignment-detail' pk=assignment.pk %}"
-                  class="btn btn-info btn-sm">
+                     class="btn btn-info btn-sm">
                     <i class="fad fa-eye"></i>
                     Show
                   </a>

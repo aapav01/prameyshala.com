@@ -3,7 +3,7 @@ import graphene
 from graphene_django import DjangoObjectType
 from datetime import datetime
 from app.accounts.models import User
-from .models import Lesson, Subject, Classes, Chapter, Category
+from .models import Lesson, Subject, Classes, Chapter, Category, Quiz, Question, Choice
 
 
 class ChapterType(DjangoObjectType):
@@ -33,6 +33,21 @@ class SubjectType(DjangoObjectType):
 class LessonType(DjangoObjectType):
     class Meta:
         model = Lesson
+        fields = "__all__"
+
+class QuizType(DjangoObjectType):
+    class Meta:
+        model = Quiz
+        fields = "__all__"
+
+class QuestionType(DjangoObjectType):
+    class Meta:
+        model = Question
+        fields = "__all__"
+
+class ChoiceType(DjangoObjectType):
+    class Meta:
+        model = Choice
         fields = "__all__"
 
 

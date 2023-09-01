@@ -1,3 +1,4 @@
+import React from "react";
 import Image from "next/image";
 import { CheckCircledIcon } from "@radix-ui/react-icons";
 // Components
@@ -7,6 +8,7 @@ import content_2 from "@/svg/10044566_4117341.svg";
 import TestimonialMain from "@/components/testimontial-main";
 import PopularCategory from "@/components/sections/popular-category";
 import SetupOtp from "@/components/sections/setup-otp";
+import Link from "next/link";
 
 export default function Home() {
   return (
@@ -118,11 +120,12 @@ export default function Home() {
                 rewarding learning. Your educational goals are just one click
                 away to dive into your success.
               </p>
-
             </div>
-            <Button variant={"default"} className="text-lg py-6">
+            <Link href="/register">
+              <Button variant={"default"} className="text-lg py-6">
                 Join Now
               </Button>
+            </Link>
           </div>
         </div>
       </section>
@@ -147,36 +150,52 @@ export default function Home() {
                 choice for your educational aspirations:
               </p>
             </div>
-            <ul className="my-4 text-justify">
+            <ul className="my-4">
               <li className="flex items-baseline">
                 <CheckCircledIcon className="text-primary mr-1" />
-                <strong className="mr-1">Expert mentors:</strong>Experienced mentors who are passionate about
-                nurturing potential.
+                <p>
+                  <strong className="mr-1">Expert mentors:</strong>
+                  Experienced mentors who are passionate about nurturing
+                  potential.
+                </p>
               </li>
               <li className="flex items-baseline">
                 <CheckCircledIcon className="text-primary mr-1" />
-                <strong className="mr-1">Comprehensive Curriculum:</strong>Well-rounded education focusing on
-                critical thinking and real-world applications.
+                <p>
+                  <strong className="mr-1">Comprehensive Curriculum:</strong>
+                  Well-rounded education focusing on critical thinking and
+                  real-world applications.
+                </p>
               </li>
               <li className="flex items-baseline">
                 <CheckCircledIcon className="text-primary mr-1" />
-                <strong className="mr-1">Personalized Attention:</strong>Small batches for individualized support
-                and progress monitoring.
+                <p>
+                  <strong className="mr-1">Personalized Attention:</strong>
+                  Small batches for individualized support and progress
+                  monitoring.
+                </p>
               </li>
               <li className="flex items-baseline">
                 <CheckCircledIcon className="text-primary mr-1" />
-                <strong className="mr-1">Innovative Teaching Methods:</strong>Engaging approaches for easy
-                understanding of complex concepts.
+                <p>
+                  <strong className="mr-1">Innovative Teaching Methods:</strong>
+                  Engaging approaches for easy understanding of complex
+                  concepts.
+                </p>
               </li>
               <li className="flex items-baseline">
                 <CheckCircledIcon className="text-primary mr-1" />
-                <strong className="mr-1">Proven Track Record:</strong>Consistent success in competitive exams and
-                academics.
+                <p>
+                  <strong className="mr-1">Proven Track Record:</strong>
+                  Consistent success in competitive exams and academics.
+                </p>
               </li>
               <li className="flex items-baseline">
                 <CheckCircledIcon className="text-primary mr-1" />
-                <strong className="mr-1">Holistic Development:</strong>Emphasis on extracurriculars, values, and
-                character-building.
+                <p>
+                  <strong className="mr-1">Holistic Development:</strong>
+                  Emphasis on extracurriculars, values, and character-building.
+                </p>
               </li>
             </ul>
           </div>
@@ -200,7 +219,9 @@ export default function Home() {
         </div>
       </section>
       {/* Category Section */}
-      <PopularCategory />
+      <React.Suspense>
+        <PopularCategory />
+      </React.Suspense>
       <section className="py-28 bg-gradient-to-b from-transparent to-primary/10 testmonialarea">
         <TestimonialMain />
       </section>

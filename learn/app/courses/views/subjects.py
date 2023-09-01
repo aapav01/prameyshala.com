@@ -48,6 +48,7 @@ class SubjectsView(PermissionRequiredMixin, ListView):
             messages.error(request, f'failed to create! please see the create form for more details.')
             return super().get(request, **kwargs)
 
+    #filter
     def get_queryset(self):
         queryset = super().get_queryset()
         subject_name = self.request.GET.get('subject')
@@ -59,8 +60,6 @@ class SubjectsView(PermissionRequiredMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['search_query'] = self.request.GET.get('search', '')
-        context['role_filter'] = self.request.GET.get('role', '')
         context['subject_filter'] = self.request.GET.get('subject', '')
         return context
 

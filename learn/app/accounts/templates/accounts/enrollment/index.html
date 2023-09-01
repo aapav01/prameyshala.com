@@ -10,16 +10,18 @@
               class="btn bg-gradient-to-br from-purple-600 to-pink-400 text-white px-12 border-0 shadow-md shadow-purple-500/50">
         <i class="far fa-plus"></i>Add Enrollment
       </button>
-      <form method="get" class="search-form">
-        <input class=" btn bg-white text-blue-gray-400 px-6 border-0"
+      <form method="get" class="bg-white shadow-sm p-2 rounded-xl">
+        <input class="input input-bordered"
                type="text"
                name="search"
-               placeholder="Search users...">
-        <button class=" btn bg-gradient-to-br from-purple-600 to-pink-400 text-white px-6 border-0 shadow-md shadow-purple-500/50"
-                type="submit">Search</button>
-        <a class=" btn bg-gradient-to-br from-purple-600 to-pink-400 text-white px-4 border-0 shadow-md shadow-purple-500/50"
-           href="{% url 'accounts:enrollment' %}"
-           class="clear-search">Clear Search</a>
+               placeholder="Search..."
+               value="{{ request.GET.search }}">
+        <button class="btn btn-square bg-gradient-to-br from-purple-600 to-indigo-400 text-white px-6 border-0 shadow-md shadow-indigo-500/50"
+                type="submit">
+          <i class="fa-regular fa-magnifying-glass"></i>
+        </button>
+        <a class="btn btn-square bg-gradient-to-br from-deep-orange-600 to-orange-800 text-white px-4 border-0 shadow-md shadow-deep-orange-500/50"
+           href="{% url 'accounts:users' %}"><i class="fa-regular fa-x"></i></a>
       </form>
     </div>
     <div class="relative flex w-full flex-col rounded-xl bg-base-100 bg-clip-border text-base-content shadow-md">
