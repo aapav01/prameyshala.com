@@ -29,7 +29,6 @@ class ClassesView(PermissionRequiredMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['class_filter'] = self.request.GET.get('class', '')
         for obj in context['classes']:
             temp_form = ClassesForm(instance=obj, prefix=obj.pk)
             obj.form = temp_form
@@ -54,10 +53,10 @@ class ClassesView(PermissionRequiredMixin, ListView):
     # searchquery
     def get_queryset(self):
         queryset = super().get_queryset()
-        class_name = self.request.GET.get('class')
 
-        if class_name:
-            queryset = queryset.filter(name__icontains=class_name)
+        search_query = self.request.GET.get('search')
+        if search_query:
+            queryset = queryset.filter(name__icontains=search_query)
 
         return queryset
 

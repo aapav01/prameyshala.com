@@ -6,7 +6,7 @@ from django.shortcuts import render, redirect
 from django.views.generic import ListView
 from django.views.generic.edit import UpdateView, DeleteView
 from django.urls import reverse_lazy
-from ..models import Chapter
+from ..models import Chapter, Subject, Classes
 from ..forms import ChapterForm
 from django.db.models import Q
 import requests
@@ -36,12 +36,16 @@ class ChapterView(PermissionRequiredMixin, ListView):
         'form': form
     }
     paginate_by = 10
+    ordering = ['-created_at']
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         for obj in context[self.context_object_name]:
             temp_form = ChapterForm(instance=obj)
             obj.form = temp_form
+        context['class_filter'] = self.request.GET.get('class', '')
+        context['chapter_filter'] = self.request.GET.get('chapter', '')
+        context['subject_filter'] = self.request.GET.get('subject', '')
         return context
 
     # create
@@ -81,24 +85,22 @@ class ChapterView(PermissionRequiredMixin, ListView):
         chapter_filter = self.request.GET.get('chapter')
         subject_filter = self.request.GET.get('subject')
 
+        all_subjects = Subject.objects.all().values('name').distinct()
+        self.extra_context.update({'all_subjects': all_subjects})
+
+        all_classes = Classes.objects.all()
+        self.extra_context.update({'all_classes': all_classes})
+
         if class_filter:
-            queryset = queryset.filter(subject__standard__name__icontains=class_filter)
+            queryset = queryset.filter(subject__slug__icontains=class_filter)
 
         if chapter_filter:
-            queryset = queryset.filter(name__iexact=chapter_filter)
+            queryset = queryset.filter(name__icontains=chapter_filter)
 
         if subject_filter:
             queryset = queryset.filter(subject__name__icontains=subject_filter)
 
         return queryset
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['class_filter'] = self.request.GET.get('class', '')
-        context['chapter_filter'] = self.request.GET.get('chapter', '')
-        context['subject_filter'] = self.request.GET.get('subject', '')
-        return context
-
 
 
 class ChapterUpdateView(PermissionRequiredMixin, UpdateView):

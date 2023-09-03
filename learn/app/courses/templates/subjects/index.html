@@ -12,9 +12,7 @@
           <i class="far fa-plus"></i>Add Subject
         </button>
       {% endif %}
-      <form id="subject-filter-form"
-            method="get"
-            action="{% url 'courses:subjects' %}">
+      <form id="filter-form" method="get" action="{% url 'courses:subjects' %}">
         <select class="select select-bordered max-w-xs"
                 name="subject"
                 id="subject-select"
@@ -22,18 +20,22 @@
           <option class="text-left"
                   value=""
                   {% if not subject_filter %}selected{% endif %}>All Subjects</option>
+          {% for subject in all_subjects %}
+            <option class="text-left" value={{ subject.name }} {% if subject_filter == subject.name %}selected{% endif %}>{{ subject.name }}
+            </option>
+          {% endfor %}
+        </select>
+        <select class="select select-bordered max-w-xs"
+                name="class"
+                id="class-select"
+                placeholder="">
           <option class="text-left"
-                  value="Physics"
-                  {% if subject_filter == 'Physics' %}selected{% endif %}>Physics</option>
-          <option class="text-left"
-                  value="Chemistry"
-                  {% if subject_filter == 'Chemistry' %}selected{% endif %}>Chemistry</option>
-          <option class="text-left"
-                  value="Math"
-                  {% if subject_filter == 'Math' %}selected{% endif %}>Maths</option>
-          <option class="text-left"
-                  value="Biology"
-                  {% if subject_filter == 'Biology' %}selected{% endif %}>Biology</option>
+                  value=""
+                  {% if not class_filter %}selected{% endif %}>All Classes</option>
+          {% for class in all_classes %}
+            <option class="text-left" value={{ class.standard__slug }} {% if class_filter == class.standard__slug %}selected{% endif %}>{{ class.standard__name }}
+            </option>
+          {% endfor %}
         </select>
         <button class="btn bg-gradient-to-br from-indigo-600 to-purple-400 text-white px-3 border-0 shadow-md shadow-purple-500/50"
                 type="button"
@@ -97,12 +99,12 @@
     <div class="join">
       {% if page_obj.has_previous %}
         <a class="join-item btn btn-primary"
-           href="?page={{ page_obj.previous_page_number }}">previous</a>
+           href="?page={{ page_obj.previous_page_number }}&subject={{ subject_filter }}&class={{ class_filter }}">previous</a>
       {% endif %}
       <span class="join-item btn btn-disabled">Page {{ page_obj.number }} of {{ paginator.num_pages }}.</span>
       {% if page_obj.has_next %}
         <a class="join-item btn btn-primary"
-           href="?page={{ page_obj.next_page_number }}">next</a>
+           href="?page={{ page_obj.next_page_number }}&subject={{ subject_filter }}&class={{ class_filter }}">next</a>
       {% endif %}
     </div>
   </div>
@@ -153,49 +155,33 @@
         <button>close</button>
       </form>
     </dialog>
-    <script>
-    document.addEventListener('DOMContentLoaded', function () {
-    const subjectSelect = document.getElementById('subject-select');
-    const subjectForm = document.getElementById('subject-filter-form');
-    const clearFilterButton = document.getElementById('clear-filter');
-  
-    const urlParams = new URLSearchParams(window.location.search);
-    const subjectFilter = urlParams.get('subject');
-    
-    subjectSelect.value = subjectFilter || "";
-
-    subjectSelect.addEventListener('change', function () {
-        subjectForm.submit();
-    });
-    
-    clearFilterButton.addEventListener('click', function () {
-        subjectSelect.value = ''; 
-        subjectForm.submit();     
-    });
-});
-    </script>
   {% endfor %}
 {% endif %}
 {% endblock content %}
 {% block body_js %}
   <script>
-        document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function () {
+        const filterForm = document.getElementById('filter-form');
         const subjectSelect = document.getElementById('subject-select');
-        const subjectForm = document.getElementById('subject-filter-form');
+        const classSelect = document.getElementById('class-select');
         const clearFilterButton = document.getElementById('clear-filter');
-      
+        
         const urlParams = new URLSearchParams(window.location.search);
         const subjectFilter = urlParams.get('subject');
-        
+        const classFilter = urlParams.get('class');
         subjectSelect.value = subjectFilter || "";
-
-        subjectSelect.addEventListener('change', function () {
-            subjectForm.submit();
-        });
+        classSelect.value = classFilter || "";
         
+        filterForm.addEventListener('change', function (event) {
+            if (event.target.tagName === 'SELECT') {
+                filterForm.submit();
+            }
+        });
+
         clearFilterButton.addEventListener('click', function () {
-            subjectSelect.value = ''; 
-            subjectForm.submit();     
+            subjectSelect.value = '';
+            classSelect.value = '';
+            filterForm.submit();
         });
     });
   </script>

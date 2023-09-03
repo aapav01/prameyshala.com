@@ -100,17 +100,23 @@ class QuizUpdateView(PermissionRequiredMixin, UpdateView):
             {'url': 'core:home', 'label': 'Dashboard'},
             {'label': 'Courses'},
             {'url': 'courses:quizzes', 'label': 'Quizzes'},
-            {'label': 'Create Quiz'},
+            {'label': 'Edit Quiz'},
         ],
     }
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['question_formset'] = QuestionInlineUpdateFormSet(instance=self.object, prefix='question_formset')
-        #TODO: render this in template
+        if self.request.method == 'POST':
+            context['question_formset'] = QuestionInlineUpdateFormSet(self.request.POST, instance=self.object, prefix='question_formset')
+        else:
+            context['question_formset'] = QuestionInlineUpdateFormSet(instance=self.object, prefix='question_formset')
+
         questions_count = 0
         for question in context['question_formset']:
-            question.choice_formset = ChoiceInlineUpdateFormSet(instance=question.instance, prefix='choice_formset_%s' % questions_count)
+            if self.request.method == 'POST':
+                question.choice_formset = ChoiceInlineUpdateFormSet(self.request.POST, instance=question.instance, prefix='choice_formset_%s' % questions_count)
+            else:
+                question.choice_formset = ChoiceInlineUpdateFormSet(instance=question.instance, prefix='choice_formset_%s' % questions_count)
             questions_count += 1
         return context
 

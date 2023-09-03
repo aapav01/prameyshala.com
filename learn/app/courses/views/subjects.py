@@ -22,12 +22,16 @@ class SubjectsView(PermissionRequiredMixin, ListView):
         'form': form
     }
     paginate_by = 10
+    ordering = ['-created_at']
+
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         for obj in context[self.context_object_name]:
             temp_form = SubjectForm(instance=obj)
             obj.form = temp_form
+        context['subject_filter'] = self.request.GET.get('subject', '')
+        context['class_filter'] = self.request.GET.get('class', '')
         return context
 
     # create
@@ -51,17 +55,21 @@ class SubjectsView(PermissionRequiredMixin, ListView):
     #filter
     def get_queryset(self):
         queryset = super().get_queryset()
-        subject_name = self.request.GET.get('subject')
+        subject_filter = self.request.GET.get('subject')
+        class_filter = self.request.GET.get('class')
 
-        if subject_name:
-            queryset = queryset.filter(name__icontains=subject_name)
+        all_subjects = Subject.objects.all().values('name').distinct()
+        self.extra_context.update({'all_subjects': all_subjects})
+
+        all_classes = Subject.objects.all().values('standard__name', 'standard__slug').distinct()
+        self.extra_context.update({'all_classes': all_classes})
+
+        if subject_filter:
+            queryset = queryset.filter(name__icontains=subject_filter)
+        if class_filter:
+            queryset = queryset.filter(standard__slug__icontains=class_filter)
 
         return queryset
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['subject_filter'] = self.request.GET.get('subject', '')
-        return context
 
 class SubjectUpdateView(PermissionRequiredMixin, UpdateView):
     permission_required = "courses.change_subject"

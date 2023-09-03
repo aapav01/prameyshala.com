@@ -10,18 +10,18 @@
               class="btn bg-gradient-to-br from-purple-600 to-pink-400 text-white px-12 border-0 shadow-md shadow-purple-500/50">
         <i class="far fa-plus"></i>Add Category
       </button>
-      <form id="subject-filter-form"
+      <form id="category-filter-form"
             method="get"
             action="{% url 'courses:categories' %}">
         <select class="select select-bordered max-w-xs"
-                name="subject"
-                id="subject-select"
+                name="category"
+                id="category-select"
                 placeholder="All Categories">
-          <option value="" {% if not subject_filter %}selected{% endif %}>All Categories</option>
-          <option value="Physics" {% if subject_filter == 'Physics' %}selected{% endif %}>Physics</option>
-          <option value="Chemistry" {% if subject_filter == 'Chemistry' %}selected{% endif %}>Chemistry</option>
-          <option value="Math" {% if subject_filter == 'Math' %}selected{% endif %}>Maths</option>
-          <option value="Biology" {% if subject_filter == 'Biology' %}selected{% endif %}>Biology</option>
+          <option value="" {% if not category_filter %}selected{% endif %}>All Categories</option>
+          {% for category in allcategories %}
+            <option class="text-left" value={{ category.name }} {% if category_filter == category.name %}selected{% endif %}>{{ category.name }}
+            </option>
+          {% endfor %}
         </select>
         <button class=" btn bg-gradient-to-br from-indigo-600 to-purple-400 text-white px-3 border-0 shadow-md shadow-purple-500/50"
                 type="button"
@@ -71,12 +71,12 @@
         <div class="join">
           {% if page_obj.has_previous %}
             <a class="join-item btn btn-primary"
-               href="?page={{ page_obj.previous_page_number }}">previous</a>
+               href="?page={{ page_obj.previous_page_number }}&category={{ category_filter }}">previous</a>
           {% endif %}
           <span class="join-item btn btn-disabled">Page {{ page_obj.number }} of {{ paginator.num_pages }}.</span>
           {% if page_obj.has_next %}
             <a class="join-item btn btn-primary"
-               href="?page={{ page_obj.next_page_number }}">next</a>
+               href="?page={{ page_obj.next_page_number }}&category={{ category_filter }}">next</a>
           {% endif %}
         </div>
       </div>
@@ -129,22 +129,22 @@
 {% block body_js %}
   <script>
         document.addEventListener('DOMContentLoaded', function () {
-        const subjectSelect = document.getElementById('subject-select');
-        const subjectForm = document.getElementById('subject-filter-form');
+        const categorySelect = document.getElementById('category-select');
+        const categoryForm = document.getElementById('category-filter-form');
         const clearFilterButton = document.getElementById('clear-filter');
       
         const urlParams = new URLSearchParams(window.location.search);
-        const subjectFilter = urlParams.get('subject');
+        const categoryFilter = urlParams.get('category');
         
-        subjectSelect.value = subjectFilter || "";
+        categorySelect.value = categoryFilter || "";
 
-        subjectSelect.addEventListener('change', function () {
-            subjectForm.submit();
+        categorySelect.addEventListener('change', function () {
+            categoryForm.submit();
         });
         
         clearFilterButton.addEventListener('click', function () {
-            subjectSelect.value = ''; 
-            subjectForm.submit();     
+            categorySelect.value = ''; 
+            categoryForm.submit();     
         });
     });
   </script>

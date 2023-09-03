@@ -25,6 +25,7 @@ class CategoriesView(ListView):
         for obj in context[self.context_object_name]:
             temp_form = CategoriesForm(instance=obj)
             obj.form = temp_form
+        context['category_filter'] = self.request.GET.get('category', '')
         return context
 
     # create
@@ -46,17 +47,12 @@ class CategoriesView(ListView):
     #filter
     def get_queryset(self):
         queryset = super().get_queryset()
-        subject_name = self.request.GET.get('subject')
-
-        if subject_name:
-            queryset = queryset.filter(name__icontains=subject_name)
-
+        category_name = self.request.GET.get('category')
+        allcategories = Category.objects.all().values('name').distinct()
+        self.extra_context.update({'allcategories': allcategories})
+        if category_name:
+            queryset = queryset.filter(name__icontains=category_name)
         return queryset
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['subject_filter'] = self.request.GET.get('subject', '')
-        return context
 
 
 class CategoriesUpdateView(UpdateView):
