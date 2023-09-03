@@ -1,61 +1,66 @@
 {% extends "layouts/dashboard.html" %}
 {% load static %}
 {% block title %}
-{{ assignment.title }} - Assignment | Pramey Shala
+  {{ assignment.title }} - Assignment | Pramey Shala
 {% endblock title %}
 {% block content %}
-<div class="relative flex w-full flex-col rounded-xl bg-base-100 bg-clip-border text-base-content shadow-md">
-  <div class="relative mx-4 -mt-6 mb-4 grid px-6 py-8 overflow-hidden rounded-xl bg-gradient-to-tr from-indigo-600 to-indigo-400 bg-clip-border text-white shadow-lg shadow-indigo-500/40">
-    <h1 class="block font-sans leading-snug tracking-normal text-white antialiased text-lg font-semibold">
-      Submissions for <span class="capitalize">{{ assignment.title }}</span>
-    </h1>
+  <div class="relative flex w-full flex-col rounded-xl bg-base-100 bg-clip-border text-base-content shadow-md">
+    <div class="relative mx-4 -mt-6 mb-4 grid px-6 py-8 overflow-hidden rounded-xl bg-gradient-to-tr from-indigo-600 to-indigo-400 bg-clip-border text-white shadow-lg shadow-indigo-500/40">
+      <h1 class="block font-sans leading-snug tracking-normal text-white antialiased text-lg font-semibold">
+        Submissions for <span class="capitalize">{{ assignment.title }}</span>
+      </h1>
+    </div>
+    {% if assignment_submissions %}
+      <div class="flex flex-col gap-4 p-6 overflow-x-auto">
+        <table class="table table-auto">
+          <thead class="uppercase text-sm">
+            <tr>
+              <th class="px-4 py-3">Student Name</th>
+              <th class="px-4 py-3">Submitted At</th>
+              <th class="px-4 py-3">Reviewed</th>
+              <th class="px-4 py-3">Action</th>
+            </tr>
+          </thead>
+          <tfoot class="border-t border-blue-gray-50 py-3 px-5 text-left font-bold uppercase text-blue-gray-400 text-sm">
+            <tr>
+              <th class="px-4 py-3">Student Name</th>
+              <th class="px-4 py-3">Submitted At</th>
+              <th class="px-4 py-3">Reviewed</th>
+              <th class="px-4 py-3">Action</th>
+            </tr>
+          </tfoot>
+          <tbody>
+            {% for submission in assignment_submissions %}
+              <tr class="border-b border-blue-gray-50">
+                <td class="px-4 py-3">{{ submission.student.full_name }}</td>
+                <td class="px-4 py-3">{{ submission.created_at }}</td>
+                <td class="px-4 py-3">
+                  {% if submission.reviewed %}
+                    <div class="text-xl mx-4 text-green-500">
+                      <i class="fa-solid fa-circle-check"></i>
+                    </div>
+                  {% else %}
+                    <div class="text-xl mx-4 text-red-400">
+                      <i class="fa-solid fa-circle-xmark"></i>
+                    </div>
+                  {% endif %}
+                </td>
+                <td class="flex gap-2 px-4 py-3">
+                  <a href="{% url 'courses:submission-review' pk=submission.pk %}"
+                     class="btn btn-success btn-sm">
+                    <i class="fa-solid fa-file-search"></i>
+                    Review
+                  </a>
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    {% else %}
+      <div class="text-center font-bold">
+        <p>No submissions found.</p>
+      </div>
+    {% endif %}
   </div>
-  {% if assignment_submissions %}
-<div class="flex flex-col gap-4 p-6 overflow-x-auto">
-  <table class="table table-auto">
-    <thead class="uppercase text-sm">
-      <tr>
-        <th class="px-4 py-3">Student Name</th>
-        <th class="px-4 py-3">Submitted At</th>
-        <th class="px-4 py-3">Reviewed</th>
-        <th class="px-4 py-3">Action</th>
-      </tr>
-    </thead>
-    <tfoot class="border-t border-blue-gray-50 py-3 px-5 text-left font-bold uppercase text-blue-gray-400 text-sm">
-      <tr>
-        <th class="px-4 py-3">Student Name</th>
-        <th class="px-4 py-3">Submitted At</th>
-        <th class="px-4 py-3">Reviewed</th>
-        <th class="px-4 py-3">Action</th>
-      </tr>
-    </tfoot>
-    <tbody>
-      {% for submission in assignment_submissions %}
-        <tr class="border-b border-blue-gray-50">
-          <td class="px-4 py-3">{{ submission.student.full_name }}</td>
-          <td class="px-4 py-3">{{ submission.created_at }}</td>
-          <td class="px-4 py-3">
-            {% if submission.reviewed %}
-            <div class="text-xl mx-4"><i class="fa-solid fa-circle-check" style="color: #22d11f;"></i></div>
-            {% else %}
-           <div class="text-xl mx-4"><i class="fa-solid fa-circle-xmark" style="color: #f04242;"></i></div>
-            {% endif %}
-          </td>
-          <td class="flex gap-2 px-4 py-3">
-            <a href="{% url 'courses:submission-review' pk=submission.pk %}"
-            class="btn btn-success btn-sm">
-            <i class="fa-solid fa-file-search"></i>
-              Review
-      </td>
-    </tr>
-  {% endfor %}
-</tbody>
-</table>
-</div>
-{% else %}
-<div class="text-center font-bold">
-  <p>No submissions found.</p>
-</div>
-{% endif %}
-</div>
 {% endblock content %}
