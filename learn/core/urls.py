@@ -19,13 +19,14 @@ from django.urls import include, path
 from graphene_django.views import GraphQLView
 from django.views.decorators.csrf import csrf_exempt
 from .settings import DEBUG
+from graphene_file_upload.django import FileUploadGraphQLView
 
 urlpatterns = [
     path("", include("app.accounts.urls", namespace="core")),
     path("chart/", include("app.charts.urls")),
     path("courses/", include("app.courses.urls")),
     path('admin/', admin.site.urls),
-    path("graphql", csrf_exempt(GraphQLView.as_view(graphiql=True)), name="graphql"),
+    path("graphql", csrf_exempt(FileUploadGraphQLView.as_view(graphiql=True)), name="graphql"),
 ]
 
 if DEBUG:

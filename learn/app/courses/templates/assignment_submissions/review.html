@@ -27,9 +27,24 @@
       {% csrf_token %}
         <div class="form-control djanog-custom-forms w-full">
         <div class="flex flex-col font-sans font-medium">
-          {{ form.as_div }}
+          <div>
+            <label for="{{ form.marks.id_for_label }}">
+              <span class="label-text">{{ form.marks.label }}</span>
+            </label>
+            {{ form.marks }}
+            <label class="text-error">{{ form.marks.errors }}</label>
+          </div>
+          <div>
+            <label for="{{ form.marks.id_for_label }}">
+              <span class="label-text">{{ form.remarks.label }}</span>
+            </label>
+            {{ form.remarks }}
+            <label class="text-error">{{ form.remarks.errors }}</label>
+          </div>
+          {% if not submission.reviewed %}
           <button type="submit" class="btn btn-success text-white">Submit Review</button>
-            <a href="{% url 'courses:assignments' %}" class="btn btn-error text-white text-xs mt-2">Close</a>
+          {% endif %}  
+          <a href="{% url 'courses:assignments' %}" class="btn btn-error text-white text-xs mt-2">Close</a>
         </div>
       </div>
       </form>
@@ -37,6 +52,7 @@
   </div>
 </div>
 {% endblock content %}
+
 {% block head_link %}
 <link rel="stylesheet" href="https://unpkg.com/easymde/dist/easymde.min.css">
 <script src="https://unpkg.com/easymde/dist/easymde.min.js"></script>
@@ -45,4 +61,12 @@
 <script>
   new EasyMDE({element: document.getElementById('{{ form.description.id_for_label }}')});
 </script>
+<script>
+  const marks_field = document.getElementById("{{ form.marks.id_for_label }}");
+  const remarks_field = document.getElementById("{{ form.remarks.id_for_label }}")
+  if("{{ submission.reviewed }}"){
+    marks_field.disabled = true;
+    remarks_field.disabled = true;
+  }
+  </script>
 {% endblock body_js %}
