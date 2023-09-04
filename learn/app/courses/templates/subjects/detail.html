@@ -20,7 +20,7 @@
       </div>
       <div>
         {% if perms.courses.change_subject %}
-          <button onclick="update_chapter.showModal()"
+          <button onclick="update_subject.showModal()"
                   class="btn border-0 bg-gradient-to-tr from-orange-800 to-yellow-800 shadow-md shadow-yellow-900/50 text-white">
             Edit Chapter - {{ title }}
           </button>
@@ -125,19 +125,28 @@
       </form>
     </dialog>
   {% endif %}
+  {% if perms.courses.change_subject %}
+    <dialog id="update_subject"
+            class="modal modal-bottom sm:modal-middle transition-all duration-500 ease-in-out">
+      <form method="post"
+            enctype="multipart/form-data"
+            action="{% url 'courses:subject-update' pk=subject.pk %}"
+            class="modal-box sm:max-w-5xl">
+        {% csrf_token %}
+        <h2 class="font-mono font-semibold text-lg">Update - {{ subject.name }} of {{ subject.standard }}</h2>
+        <div class="relative mb-4">
+          <div class="form-control w-full djanog-custom-forms grid grid-cols-1 md:grid-cols-2 gap-4">
+            {{ form.as_div }}
+          </div>
+        </div>
+        <div class="modal-action justify-between">
+          <p class="text-xs mt-auto">Press esc to close the window or outside the dialog box.</p>
+          <button type="submit" class="btn btn-success shadow">Update</button>
+        </div>
+      </form>
+      <form method="dialog" class="modal-backdrop backdrop-blur-md">
+        <button>close</button>
+      </form>
+    </dialog>
+{% endif %}
 {% endblock content %}
-{% comment %} 
-name = models.CharField(max_length=255)
-    short = models.CharField(max_length=255, blank=True, null=True)
-    description = models.TextField()
-    category = models.ForeignKey(
-        Category, on_delete=models.CASCADE)
-    slug = models.SlugField(unique=True, max_length=255)
-    image = models.ImageField(
-        upload_to='uploads/subjects', blank=True, null=True)
-    publish_at = models.DateTimeField(blank=True, null=True)
-    standard = models.ForeignKey(Classes, on_delete=models.CASCADE)
-    created_at = models.DateTimeField(
-        auto_now=False, auto_now_add=True, blank=True, null=True)
-    updated_at = models.DateTimeField(auto_now=True, blank=True, null=True)
-{% endcomment %}

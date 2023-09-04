@@ -100,6 +100,7 @@ class SubjectDetailView(PermissionRequiredMixin, DetailView):
         context = super().get_context_data(**kwargs)
         context['title'] = f"{self.object.name}"
         context['breadcrumbs'][3] = {'label': f"{self.object.name}"}
+        context['form'] = SubjectForm(instance=self.object)
         context['chapters'] = self.object.chapter_set.all()
         return context
 
