@@ -8,7 +8,7 @@ from django.utils.text import slugify
 from django.urls import reverse_lazy
 from django.db.models import Count
 from ..models import Classes
-from ..forms import ClassesForm
+from ..forms import ClassesForm, ClassSubjectForm
 from django.db.models import Q
 
 
@@ -71,6 +71,7 @@ class ClassesDetailView(PermissionRequiredMixin, DetailView):
     context_object_name = "standard"
     extra_context = {
         'breadcrumbs': [{'url': 'core:home', 'label': 'Dashboard'}, {'label': 'Courses'}, {'url': 'courses:classes', 'label': 'Classes'}, {}],
+        'form_subject': ClassSubjectForm
     }
 
     def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
@@ -80,6 +81,23 @@ class ClassesDetailView(PermissionRequiredMixin, DetailView):
         context['form'] = ClassesForm(instance=self.object, prefix=self.object.pk)
         context['subjects'] = self.object.subject_set.all()
         return context
+
+    def post(self, request, **kwargs):
+        form = ClassSubjectForm(request.POST)
+        self.extra_context.update({'form_subject': form})
+        if form.is_valid():
+            instance = form.save(commit=False)
+            instance.standard = self.get_object()
+            instance.slug = slugify(
+                instance.standard.name + '_' + instance.name)
+            instance.save()
+            messages.success(
+                request, f'{instance.name} has been created successfully.')
+            self.extra_context.update({'form': ClassSubjectForm})
+            return redirect('courses:class-detail', pk=self.get_object().pk)
+        else:
+            messages.error(request, f'failed to create! please see the create form for more details.')
+            return super().get(request, **kwargs)
 
 
 class ClassesUpdateView(PermissionRequiredMixin, UpdateView):

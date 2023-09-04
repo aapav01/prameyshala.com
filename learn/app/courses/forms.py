@@ -16,15 +16,17 @@ class AssignmentForm(ModelForm):
             'due_date': forms.DateTimeInput(attrs={'type': 'datetime-local'})
         }
 
+
 class AssignmentSubmissionForm(ModelForm):
     class Meta:
         model = AssignmentSubmission
-        fields = ['assignment','solution_file']
+        fields = ['assignment', 'solution_file']
+
 
 class AssignmentReviewForm(ModelForm):
     class Meta:
         model = AssignmentSubmission
-        fields = ['marks','remarks']
+        fields = ['marks', 'remarks']
         widgets = {
             'marks': forms.NumberInput(attrs={'required': True}),
             'remarks': forms.Textarea(attrs={'required': True}),
@@ -38,6 +40,15 @@ class ClassesForm(ModelForm):
         exclude = ['slug']
         widgets = {
             'description': forms.Textarea(attrs={'class': 'editor'}),
+        }
+
+
+class ClassSubjectForm(ModelForm):
+    class Meta:
+        model = Subject
+        exclude = ['slug', 'standard']
+        widgets = {
+            'publish_at': forms.DateTimeInput(attrs={'type': 'datetime-local'})
         }
 
 
