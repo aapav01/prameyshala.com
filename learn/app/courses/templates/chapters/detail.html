@@ -12,16 +12,15 @@
   <div class="mt-12 mb-8 flex flex-col gap-12">
     <div class="flex justify-between px-6">
       <div>
-        {% if perms.courses.add_chapter %}
-          <button onclick="create_chapter.showModal()"
-                  class="btn btn-outline border-cyan-800 text-cyan-800 hover:bg-cyan-800 hover:text-white hover:border-cyan-800">
-            Add Chapter
+        {% comment %} {% if perms.courses.add_chapter %}
+          <button onclick="create_chapter.showModal()" class="btn btn-outline border-purple-800 text-purple-800 hover:bg-purple-400 hover:text-white hover:border-purple-400">
+            Add Lesson
           </button>
-        {% endif %}
+        {% endif %} {% endcomment %}
       </div>
       <div>
-        {% if perms.courses.change_subject %}
-          <button onclick="update_subject.showModal()"
+        {% if perms.courses.change_chapter %}
+          <button onclick="update_chapter.showModal()"
                   class="btn border-0 bg-gradient-to-tr from-orange-800 to-yellow-800 shadow-md shadow-yellow-900/50 text-white">
             Edit Chapter - {{ title }}
           </button>
@@ -29,15 +28,15 @@
       </div>
     </div>
     <div class="relative flex w-full flex-col rounded-xl bg-base-100 bg-clip-border text-base-content shadow-md">
-      <div class="relative mx-4 -mt-6 mb-4 grid px-6 py-8 overflow-hidden rounded-xl bg-gradient-to-tr from-green-600 to-green-400 bg-clip-border text-white shadow-lg shadow-green-500/40">
+      <div class="relative mx-4 -mt-6 mb-4 grid px-6 py-8 overflow-hidden rounded-xl bg-gradient-to-tr from-cyan-600 to-cyan-400 bg-clip-border text-white shadow-lg shadow-cyan-500/40">
         <h1 class="block font-sans leading-snug tracking-normal text-white antialiased text-lg font-semibold">{{ title }}</h1>
       </div>
-      {% if subject.image %}
+      {% if chapter.image %}
         <div class="my-2 px-6 flex flex-col justify-center items-center">
           <img height=""
                width=""
-               src="{% static 'media/' %}{{ subject.image }}"
-               alt="{{ subject.name }}"
+               src="{% static 'media/' %}{{ chapter.image }}"
+               alt="{{ chapter.name }}"
                class="w-96 rounded-lg shadow-md">
           <span class="font-bold">Image</span>
         </div>
@@ -45,63 +44,55 @@
       <div class="grid grid-cols-2 p-6 mb-6 grid-flow-dense gap-2">
         <div>
           <span class="font-bold">Name</span>
-          <p class="text-lg">{{ subject.name }}</p>
-        </div>
-        <div>
-          <span class="font-bold">Short Description</span>
-          <p class="text-lg">{{ subject.short }}</p>
+          <p class="text-lg">{{ chapter.name }}</p>
         </div>
         <div>
           <span class="font-bold">Description</span>
-          <p class="text-lg">{{ subject.description }}</p>
+          <p class="text-lg">{{ chapter.description }}</p>
         </div>
         <div>
-          <span class="font-bold">Category</span>
-          <p class="text-lg">{{ subject.category }}</p>
+          <span class="font-bold">Collection ID</span>
+          <p class="text-lg">{{ chapter.collectionid }}</p>
         </div>
         <div>
-          <span class="font-bold">Slug</span>
-          <p class="text-lg">{{ subject.slug }}</p>
-        </div>
-        <div>
-          <span class="font-bold">Publish At</span>
-          <p class="text-lg">{{ subject.publish_at }}</p>
-        </div>
-        <div>
-          <span class="font-bold">Standard</span>
-          <p class="text-lg">{{ subject.standard }}</p>
+          <span class="font-bold">Subject</span>
+          <p class="text-lg">{{ chapter.subject }}</p>
         </div>
         <div>
           <span class="font-bold">Created At</span>
-          <p class="text-lg">{{ subject.created_at }}</p>
+          <p class="text-lg">{{ chapter.created_at }}</p>
         </div>
         <div>
           <span class="font-bold">Updated At</span>
-          <p class="text-lg">{{ subject.updated_at }}</p>
+          <p class="text-lg">{{ chapter.updated_at }}</p>
         </div>
       </div>
     </div>
-    <h2 class="text-xl font-sans font-bold">Chapters in {{ title }}</h2>
+    <h2 class="text-xl font-sans font-bold">Lessons in {{ title }}</h2>
     <div class="grid grid-cols-1 md:grid-cols-3 gap-x-4 gap-y-10">
-      {% for chapter in chapters %}
+      {% for lesson in lessons %}
         <div class="relative flex w-full flex-col rounded-xl bg-base-100 bg-clip-border text-base-content shadow-md">
-          <div class="mx-4 -mt-6 mb-4 px-4 py-4 overflow-hidden rounded-xl bg-gradient-to-tr from-cyan-600 to-cyan-400 bg-clip-border text-white shadow-lg shadow-cyan-500/40">
+          <div class="mx-4 -mt-6 mb-4 px-4 py-4 overflow-hidden rounded-xl bg-gradient-to-tr from-purple-600 to-purple-400 bg-clip-border text-white shadow-lg shadow-purple-500/40">
             <h3 class="block font-sans leading-snug tracking-normal text-white antialiased text-lg font-semibold">
-              {{ chapter.name }}
+              {{ lesson.title }}
             </h3>
           </div>
           <div class="grid grid-cols-2 p-4 gap-2">
             <div>
               <span class="font-bold">Name</span>
-              <p class="text-lg">{{ chapter.name }}</p>
+              <p class="text-lg">{{ lesson.title }}</p>
             </div>
             <div>
+              <span class="font-bold">Type</span>
+              <p class="text-lg">{{ lesson.lesson_type }}</p>
+            </div>
+            <div class="col-span-2">
               <span class="font-bold">Description</span>
-              <p class="text-lg">{{ chapter.description }}</p>
+              <p class="text-lg">{{ lesson.description }}</p>
             </div>
-            <div>
-              <span class="font-bold">Platform</span>
-              <p class="text-lg">{{ chapter.platform }}</p>
+            <div class="col-span-2">
+              <span class="font-bold">Chapter</span>
+              <p class="text-lg">{{ lesson.chapter }}</p>
             </div>
             <div>
               <span class="font-bold">Created At</span>
@@ -113,8 +104,8 @@
             </div>
           </div>
           <div class="w-full flex justify-end p-3">
-            <a href="{% url 'courses:chapter-detail' pk=chapter.pk %}"
-             class="btn btn-sm bg-cyan-700 text-white border-0 shadow shadow-cyan-900/50 hover:shadow-none hover:bg-cyan-800 hover:text-white">
+            <a href="{% url 'courses:lesson-detail' pk=lesson.pk %}"
+               class="btn btn-sm bg-purple-700 text-white border-0 shadow shadow-purple-900/50 hover:shadow-none hover:bg-purple-800 hover:text-white">
               View
             </a>
           </div>
@@ -122,38 +113,15 @@
       {% endfor %}
     </div>
   </div>
-  {% if perms.courses.add_chapter %}
-    <dialog id="create_chapter"
+  {% if perms.courses.change_chapter %}
+    <dialog id="update_chapter"
             class="modal modal-bottom sm:modal-middle transition-all duration-500 ease-in-out">
       <form method="post"
             enctype="multipart/form-data"
+            action="{% url 'courses:chapter-update' pk=chapter.pk %}"
             class="modal-box sm:max-w-5xl">
         {% csrf_token %}
-        <h2 class="font-mono font-semibold text-lg">Add New Chapter</h2>
-        <div class="relative mb-4">
-          <div class="form-control w-full djanog-custom-forms grid grid-cols-1 md:grid-cols-2 gap-4">
-            {{ form_chapter.as_div }}
-          </div>
-        </div>
-        <div class="modal-action justify-between">
-          <p class="text-xs mt-auto">Press esc to close the window or outside the dialog box.</p>
-          <button type="submit" class="btn btn-success">Add</button>
-        </div>
-      </form>
-      <form method="dialog" class="modal-backdrop backdrop-blur-md">
-        <button>close</button>
-      </form>
-    </dialog>
-  {% endif %}
-  {% if perms.courses.change_subject %}
-    <dialog id="update_subject"
-            class="modal modal-bottom sm:modal-middle transition-all duration-500 ease-in-out">
-      <form method="post"
-            enctype="multipart/form-data"
-            action="{% url 'courses:subject-update' pk=subject.pk %}"
-            class="modal-box sm:max-w-5xl">
-        {% csrf_token %}
-        <h2 class="font-mono font-semibold text-lg">Update - {{ subject.name }} of {{ subject.standard }}</h2>
+        <h2 class="font-mono font-semibold text-lg">Update - {{ chapter.name }} in {{ chapter.subject.name }}</h2>
         <div class="relative mb-4">
           <div class="form-control w-full djanog-custom-forms grid grid-cols-1 md:grid-cols-2 gap-4">{{ form.as_div }}</div>
         </div>
