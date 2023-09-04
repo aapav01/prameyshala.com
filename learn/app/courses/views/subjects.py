@@ -1,13 +1,27 @@
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.contrib import messages
 from django.shortcuts import render, redirect
-from django.views.generic import ListView
+from django.views.generic import ListView, DetailView
 from django.views.generic.edit import UpdateView, DeleteView
 from django.utils import timezone
 from django.utils.text import slugify
 from django.urls import reverse_lazy
 from ..models import Subject
-from ..forms import SubjectForm
+from ..forms import SubjectForm, SubjectChatperForm
+import requests
+import environ
+
+
+# Initialise environment variables
+env = environ.Env()
+environ.Env.read_env()
+
+headers = {
+    "accept": "application/json",
+    "content-type": "application/*+json",
+    "AccessKey": env('BUNNYCDN_ACCESS_KEY')
+}
+
 
 
 class SubjectsView(PermissionRequiredMixin, ListView):
@@ -70,6 +84,54 @@ class SubjectsView(PermissionRequiredMixin, ListView):
             queryset = queryset.filter(standard__slug__icontains=class_filter)
 
         return queryset
+
+
+class SubjectDetailView(PermissionRequiredMixin, DetailView):
+    permission_required = "courses.view_subject"
+    model = Subject
+    template_name = "subjects/detail.html"
+    context_object_name = "subject"
+    extra_context = {
+        'breadcrumbs': [{'url': 'core:home', 'label': 'Dashboard'}, {'label': 'Courses'}, {'url': 'courses:subjects', 'label': 'Subjects'}, {}],
+        'form_chapter': SubjectChatperForm,
+    }
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = f"{self.object.name}"
+        context['breadcrumbs'][3] = {'label': f"{self.object.name}"}
+        context['chapters'] = self.object.chapter_set.all()
+        return context
+
+    def post(self, request, **kwargs):
+        form = SubjectChatperForm(request.POST)
+        self.extra_context.update({'form_chapter': form})
+        if form.is_valid():
+            instance = form.save(commit=False)
+            instance.subject = self.get_object()
+            try:
+                payload = '{"name\":\"'+instance.name + ' - ' + \
+                    instance.subject.name + ' - ' + instance.subject.standard.name + '\"}'
+                response = requests.post(
+                    f"https://video.bunnycdn.com/library/{env('BUNNYCDN_VIDEO_LIBRARY_ID')}/collections", data=payload, headers=headers)
+
+                if response.status_code == 200:
+                    instance.collectionid = response.json()['guid']
+                else:
+                    messages.error(
+                        request, f'Error creating collection on BunnyCDN. {response.json()["title"]}')
+            except Exception as e:
+                print(e)
+            instance.user = request.user
+            instance.save()
+            messages.success(
+                request, f'{instance.name} has been created successfully.')
+            self.extra_context.update({'form_chapter': SubjectChatperForm})
+            return redirect('courses:subject-detail', pk=self.get_object().pk)
+        else:
+            messages.error(request, f'failed to create! please see the create form for more details.')
+            return super().get(request, **kwargs)
+
 
 class SubjectUpdateView(PermissionRequiredMixin, UpdateView):
     permission_required = "courses.change_subject"

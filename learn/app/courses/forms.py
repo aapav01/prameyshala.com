@@ -61,6 +61,11 @@ class SubjectForm(ModelForm):
             'publish_at': forms.DateTimeInput(attrs={'type': 'datetime-local'})
         }
 
+class SubjectChatperForm(ModelForm):
+    class Meta:
+        model = Chapter
+        exclude = ['collectionid', 'user', 'subject']
+
 
 class ChapterForm(ModelForm):
     class Meta:
