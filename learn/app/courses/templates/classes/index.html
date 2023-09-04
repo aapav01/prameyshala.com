@@ -59,11 +59,12 @@
                 <td class="px-4 py-3">{{ class.slug }}</td>
                 <td class="px-4 py-3 {% if not class.enroll_count > 0 %}bg-red-300/50{% endif %}">{{ class.enroll_count }}</td>
                 <td class="flex gap-2 px-4 py-3">
-                  <a href="{% url 'courses:class-detail' pk=class.pk %}"
-                  class="btn btn-sm bg-gradient-conic from-yellow-800 to-blue-400 shadow shadow-blue-900/50 border-0">
-                    <i class="far fa-eye"></i>
-                    One View
-                  </a>
+                  {% if perms.courses.view_classes %}
+                    <a href="{% url 'courses:class-detail' pk=class.pk %}"
+                       class="btn btn-sm btn-square bg-yellow-800 shadow shadow-yellow-900/50 border-0 hover:bg-yellow-600">
+                      <i class="far fa-eye"></i>
+                    </a>
+                  {% endif %}
                   {% if perms.courses.change_classes %}
                     <button onclick="update_class_{{ class.pk }}.showModal()"
                             class="btn btn-sm btn-success btn-square">
