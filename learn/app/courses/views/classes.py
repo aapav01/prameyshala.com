@@ -1,3 +1,4 @@
+from typing import Any
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.contrib import messages
 from django.shortcuts import render, redirect
@@ -25,7 +26,8 @@ class ClassesView(PermissionRequiredMixin, ListView):
     paginate_by = 10
     ordering = ['-created_at']
 
-    queryset = Classes.objects.annotate(enroll_count=Count("enrollment__id")).all()
+    queryset = Classes.objects.annotate(
+        enroll_count=Count("enrollment__id")).all()
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -47,7 +49,8 @@ class ClassesView(PermissionRequiredMixin, ListView):
             self.extra_context.update({'form': ClassesForm})
             return redirect('courses:classes')
         else:
-            messages.error(request, f'failed to create! please see the create form for more details.')
+            messages.error(
+                request, f'failed to create! please see the create form for more details.')
             return super().get(request, **kwargs)
 
     # searchquery
@@ -59,6 +62,25 @@ class ClassesView(PermissionRequiredMixin, ListView):
             queryset = queryset.filter(name__icontains=search_query)
 
         return queryset
+
+
+class ClassesDetailView(PermissionRequiredMixin, DetailView):
+    permission_required = "courses.view_classes"
+    model = Classes
+    template_name = "classes/detail.html"
+    context_object_name = "standard"
+    extra_context = {
+        'breadcrumbs': [{'url': 'core:home', 'label': 'Dashboard'}, {'label': 'Courses'}, {'url': 'courses:classes', 'label': 'Classes'}, {}],
+    }
+
+    def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
+        context = super().get_context_data(**kwargs)
+        context['title'] = f"{self.object.name}"
+        context['breadcrumbs'][3] = {'label': f"{self.object.name}"}
+        context['form'] = ClassesForm(instance=self.object, prefix=self.object.pk)
+        context['subjects'] = self.object.subject_set.all()
+        return context
+
 
 class ClassesUpdateView(PermissionRequiredMixin, UpdateView):
     permission_required = "courses.change_classes"

@@ -7,7 +7,8 @@ app_name = 'courses'
 
 urlpatterns = [
     path('classes/', login_required(ClassesView.as_view()), name='classes'),
-    path("classes/<int:pk>/", login_required(ClassesUpdateView.as_view()),
+    path('classes/<int:pk>/', login_required(ClassesDetailView.as_view()), name='class-detail'),
+    path("classes/<int:pk>/edit", login_required(ClassesUpdateView.as_view()),
          name="class-update"),
     path("classes/<int:pk>/delete/",
          login_required(ClassesDeleteView.as_view()), name="class-delete"),
