@@ -1,0 +1,57 @@
+<div class="form-control">
+  <label for="{{ form.title.id_for_label }}">
+    <span class="label-text">{{ form.title.label }}</span>
+  </label>
+  {{ form.title }}
+  <label class="text-error">{{ form.title.errors }}</label>
+</div>
+<div class='form-control'>
+  <label for="for.subtitle.id_for_label">
+    <span class="label-text">{{ form.subtitle.label }}</span>
+  </label>
+  {{ form.subtitle }}
+  <label class="text-error">{{ form.subtitle.errors }}</label>
+</div>
+<div class="form-control md:col-span-2">
+  <label for="form.description.id_for_label">
+    <span class="label-text">{{ form.description.label }}</span>
+  </label>
+  <textarea name="{{ form.description.html_name }}"
+            id="{{ form.description.id_for_label }}">{{ form.description.value }}</textarea>
+  <label class="text-error">{{ form.subtitle.errors }}</label>
+</div>
+<div class="form-control">
+  <label for="{{ form.meta_description.id_for_label }}">
+    <span class="label-text">{{ form.meta_description.label }}</span>
+  </label>
+  {{ form.meta_description }}
+  <label class="text-error">{{ form.meta_description.errors }}</label>
+</div>
+<div>
+  <label for="for.publish_date.id_for_label">
+    <span class="label-text">{{ form.publish_date.label }}</span>
+  </label>
+  {{ form.publish_date }}
+  <label class="text-error">{{ form.publish_date.errors }}</label>
+</div>
+<div>
+  <label for="for.published.id_for_label">
+    <span class="label-text">{{ form.published.label }}</span>
+  </label>
+  {{ form.published }}
+  <label class="text-error">{{ form.published.errors }}</label>
+</div>
+<div>
+  <label for="for.author.id_for_label">
+    <span class="label-text">{{ form.author.label }}</span>
+  </label>
+  {{ form.author }}
+  <label class="text-error">{{ form.author.errors }}</label>
+</div>
+<div>
+  <label for="for.tags.id_for_label">
+    <span class="label-text">{{ form.tags.label }}</span>
+  </label>
+  {{ form.tags }}
+  <label class="text-error">{{ form.tags.errors }}</label>
+</div>

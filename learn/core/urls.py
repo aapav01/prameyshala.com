@@ -24,6 +24,7 @@ urlpatterns = [
     path("", include("app.accounts.urls", namespace="core")),
     path("chart/", include("app.charts.urls")),
     path("courses/", include("app.courses.urls")),
+    path("blog/", include("app.blog.urls")),
     path('admin/', admin.site.urls),
     path("graphql", csrf_exempt(GraphQLView.as_view(graphiql=True)), name="graphql"),
 ]
