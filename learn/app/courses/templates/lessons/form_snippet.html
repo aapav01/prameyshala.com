@@ -33,6 +33,13 @@
   {{ form.quiz }}
   <label class="text-error">{{ form.quiz.errors }}</label>
 </div>
+<div id="assignment_div_{{ form.prefix }}" class="form-control hidden">
+  <label for="{{ form.assignment.id_for_label }}">
+    <span class="label-text">{{ form.assignment.label }}</span>
+  </label>
+  {{ form.assignment }}
+  <label class="text-error">{{ form.assignment.errors }}</label>
+</div>
 <div id="platform_div_{{ form.prefix }}" class="form-control hidden">
   <label for="{{ form.platform.id_for_label }}">
     <span class="label-text">{{ form.platform.label }}</span>
@@ -77,8 +84,13 @@
         $("#platform_div_{{ form.prefix }}").removeClass("hidden");
       }else if (lessonType === "quiz") {
         $("#quiz_div_{{ form.prefix }}").removeClass("hidden");
-      } else {
+      }
+      else if (lessonType === "assignment") {
+        $("#assignment_div_{{ form.prefix }}").removeClass("hidden");
+      } 
+      else {
         $("#quiz_div_{{ form.prefix }}").addClass("hidden");
+        $("#assignment_div_{{ form.prefix }}").addClass("hidden");
         $("#platform_div_{{ form.prefix }}").addClass("hidden");
         $("{{ form.platform.id_for_label }}").val("");
       }
