@@ -92,20 +92,22 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   return {
     title: data.standard.name + " | Pramey Shala",
-    openGraph : {
+    openGraph: {
       title: data.standard.name + " | Pramey Shala",
       description: `Learn online with Pramey Shala.`,
       siteName: "Pramey Shala",
       images: [
         {
-          url: data.standard.image ? data.standard.image : `api/og/class/${data.standard.slug}`,
+          url: data.standard.image
+            ? data.standard.image
+            : `api/og/class/${data.standard.slug}`,
           alt: data.standard.name,
           type: "image/png",
           height: 400,
           width: 630,
-        }
-      ]
-    }
+        },
+      ],
+    },
   };
 }
 
@@ -228,7 +230,9 @@ export default async function ClassDetail({ params }: Props) {
             <TabsContent className="p-4" value="curriculum">
               {data.standard.subjectSet.map((subject: any, index_s: number) => (
                 <React.Fragment key={index_s}>
-                  <h3 className="font-sans font-semibold py-4 text-xl">{subject.name}</h3>
+                  <h3 className="font-sans font-semibold py-4 text-xl">
+                    {subject.name}
+                  </h3>
                   <Accordion
                     className="flex flex-col gap-4 py-2"
                     defaultValue="item-1"
@@ -239,14 +243,18 @@ export default async function ClassDetail({ params }: Props) {
                       <AccordionItem
                         key={index}
                         className="shadow rounded"
-                        value={"item-"+ index_s + index}
+                        value={"item-" + index_s + index}
                       >
                         <AccordionTrigger className="bg-blue-100 text-blue-950 rounded text-xl font-semibold px-4">
                           {chapter.name}
                         </AccordionTrigger>
                         <AccordionContent className="p-2 text-lg">
                           <ul className="list-decimal">
-                            {chapter.lessonSet.map((lesson:any, index: number) => (<li key={index}>{lesson.name}</li>))}
+                            {chapter.lessonSet.map(
+                              (lesson: any, index: number) => (
+                                <li key={index}>{lesson.name}</li>
+                              )
+                            )}
                           </ul>
                         </AccordionContent>
                       </AccordionItem>
@@ -313,17 +321,24 @@ export default async function ClassDetail({ params }: Props) {
                     <PlayIcon className="h-10 w-10" />
                   </button>
                 </div>
-                <Image
-                  src={
-                    data.standard.image
-                      ? data.standard.image
-                      : `/api/og/class/${data.standard.slug}`
-                  }
-                  alt="placeholder"
-                  className="rounded"
-                  height={630}
-                  width={400}
-                />
+                {data.standard.image ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    className="rounded-t-lg p-1"
+                    width={630}
+                    height={400}
+                    src={`${process.env.NEXT_PUBLIC_MEDIA_CDN}/static/media/${data.standard.image}`}
+                    alt={data.standard.name}
+                  />
+                ) : (
+                  <Image
+                    src={`/api/og/class/${data.standard.slug}`}
+                    alt={data.standard.name}
+                    className="rounded"
+                    height={630}
+                    width={400}
+                  />
+                )}
               </div>
               <div className="w-1/2 max-sm:w-full lg:w-full px-3">
                 <div className="flex justify-between mb-8">
