@@ -75,6 +75,29 @@ export default function Assignment({ file }: Props) {
       >
         <Page pageNumber={pageNumber} />
       </Document>
+      <div className=" border-t-2 mt-2 pt-4">
+        <div className="flex justify-between items-center">
+          <p className="p-1">
+            Page {pageNumber || (numPages ? 1 : "--")} of {numPages || "--"}
+          </p>
+          <div className="flex gap-2">
+            <Button
+              type="button"
+              disabled={pageNumber <= 1}
+              onClick={previousPage}
+            >
+              Previous
+            </Button>
+            <Button
+              type="button"
+              disabled={pageNumber >= numPages}
+              onClick={nextPage}
+            >
+              Next
+            </Button>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
