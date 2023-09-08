@@ -63,7 +63,7 @@ export default async function ChapterDetail({ params }: Props) {
   const { lessonByChapterPaginated } = await getData({ params }, session);
   const lesson = await lessonByChapterPaginated.lesson;
   return (
-    <section className="max-lg:hidden max-w-sm w-full max-h-screen bg-muted overflow-y-auto shadow-inner relative">
+    <section className="max-lg:hidden max-w-sm w-full min-h-screen max-h-full bg-muted overflow-y-auto shadow-inner relative">
       <header className="bg-cyan-800 py-9 text-cyan-50">
         <div className="container">
           <Link
