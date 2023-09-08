@@ -120,16 +120,14 @@ class Query(graphene.ObjectType):
             raise Exception("Authentication credentials were not provided")
         return Lesson.objects.filter(public=True).get(pk=id)
 
-    def resolve_lesson_by_chapter_paginated(self, info, chapter_id, page=1):
+    def resolve_lesson_by_chapter_paginated(self, info, chapter_id, page=None):
         user = info.context.user
         if not user.is_authenticated:
             raise Exception("Authentication credentials were not provided")
-        # Check if user is enrolled ( user -> enrollment -> classes )
-        # in the class (lesson < chapter < subject < class) and can access the lesson
-        # if not, raise an error
-        # if user is enrolled, return the lesson
         if User.objects.get(pk=user.id).enrollment_set.filter(standard__subject__chapter__id=chapter_id).count() == 0:
             raise Exception("You are not enrolled in this class")
+        if not page:
+            page = 1
         # Return Lesson
         lessons = Lesson.objects.filter(chapter=chapter_id, public=True).order_by('position')
         paginate_lessons = Paginator(lessons, per_page=1)
