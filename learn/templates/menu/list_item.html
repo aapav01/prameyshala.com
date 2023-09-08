@@ -9,6 +9,21 @@
      {% if request.resolver_match.url_name == 'user_profile' %}class="active"{% endif %}
      data-ripple-light="true"><i class="far fa-user"></i>Profile</a>
 </li>
+{% if perms.blog %}<li class="p-4 font-bold">Blog</li>{% endif %}
+{% if perms.blog.view_posts %}
+  <li>
+    <a href="{% url 'blog:posts' %}"
+       {% if request.resolver_match.url_name == 'posts' %}class="active"{% endif %}
+       data-ripple-light="true"><i class="fa-light fa-blog"></i></i>Posts</a>
+  </li>
+{% endif %}
+{% if perms.blog.view_tags %}
+  <li>
+    <a href="{% url 'blog:tags' %}"
+       {% if request.resolver_match.url_name == 'tags' %}class="active"{% endif %}
+       data-ripple-light="true"><i class="fa-solid fa-hashtag"></i>Tags</a>
+  </li>
+{% endif %}
 {% if perms.courses %}<li class="p-4 font-bold">Courses</li>{% endif %}
 {% if perms.courses.view_classes %}
   <li>
