@@ -56,7 +56,7 @@ export const authOptions: NextAuthOptions = {
               },
             },
           });
-          console.error(error);
+          if(error) console.error(error);
           return { ...auth_token.tokenAuth, ...userdata?.me };
         }
         return null;
