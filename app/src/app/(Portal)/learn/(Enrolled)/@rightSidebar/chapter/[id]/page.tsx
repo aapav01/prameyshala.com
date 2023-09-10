@@ -1,6 +1,4 @@
 import React from "react";
-import { Metadata } from "next";
-import { notFound } from "next/navigation";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 
@@ -53,13 +51,14 @@ async function getData({ params }: Props, session: any) {
     });
     return api_data.data;
   } catch (error) {
-    return notFound();
+    return null;
   }
 }
 
 export default async function ChapterDetail({ params }: Props) {
   const session = await getServerSession(authOptions);
   const { chapter } = await getData({ params }, session);
+  if (!chapter) return null;
   return (
     <section className="max-lg:hidden max-w-sm w-full max-h-screen bg-muted overflow-y-auto shadow-inner relative">
       <header className="bg-purple-800 py-9 text-purple-50">
