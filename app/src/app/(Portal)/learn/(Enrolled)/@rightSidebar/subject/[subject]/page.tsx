@@ -58,6 +58,7 @@ async function getData({ params }: Props) {
     });
     return api_data.data;
   } catch (error) {
+    console.error(error);
     return null;
   }
 }

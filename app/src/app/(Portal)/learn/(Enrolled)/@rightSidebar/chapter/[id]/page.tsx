@@ -51,6 +51,7 @@ async function getData({ params }: Props, session: any) {
     });
     return api_data.data;
   } catch (error) {
+    console.error(error);
     return null;
   }
 }
