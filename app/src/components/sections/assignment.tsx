@@ -1,10 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { Document, Page, pdfjs } from "react-pdf";
 
-import "react-pdf/dist/Page/AnnotationLayer.css";
-import "react-pdf/dist/Page/TextLayer.css";
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider"
 import { Label } from "../ui/label";
@@ -12,11 +9,6 @@ import { Label } from "../ui/label";
 type Props = {
   file: string;
 };
-
-pdfjs.GlobalWorkerOptions.workerSrc = new URL(
-  "pdfjs-dist/build/pdf.worker.min.js",
-  import.meta.url
-).toString();
 
 export default function Assignment({ file }: Props) {
   const [numPages, setNumPages] = useState<number>(1);
@@ -81,13 +73,7 @@ export default function Assignment({ file }: Props) {
         <h2 className="text-2xl font-bold font-sans">Assignment</h2>
         <NavigationBar />
       </div>
-      <Document
-        className={"flex flex-col items-center"}
-        file={source_file}
-        onLoadSuccess={onDocumentLoadSuccess}
-      >
-        <Page scale={scale[0]} pageNumber={pageNumber} />
-      </Document>
+      {/* Render PDF Here */}
       <div className=" border-t-2 mt-2 pt-4">
         <NavigationBar />
       </div>
