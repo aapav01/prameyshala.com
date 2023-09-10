@@ -123,7 +123,7 @@ function MainNav() {
                     {session?.user?.email}
                   </DropdownMenuLabel>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={() => signOut({ callbackUrl: `${process.env.NEXTAUTH_URL || ""}/login` })}>
+                  <DropdownMenuItem onClick={() => signOut({ redirect: false, callbackUrl: `${process.env.NEXTAUTH_URL}/login` })}>
                     <ExitIcon className="mr-1" />
                     Logout
                   </DropdownMenuItem>
