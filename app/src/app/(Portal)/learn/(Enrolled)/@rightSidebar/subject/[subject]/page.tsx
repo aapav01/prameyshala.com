@@ -64,6 +64,8 @@ async function getData({ params }: Props) {
 }
 
 export default async function SideSubjects({ params }: Props) {
+  return null;
+  // TODO: Fix this, causing error in production
   const data = await getData({ params });
   if (!data) return null;
   return (
