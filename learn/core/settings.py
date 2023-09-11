@@ -164,7 +164,7 @@ MEDIA_URL = 'media/'
 if DEBUG:
     MEDIA_ROOT = os.path.join(BASE_DIR, 'staticfiles', 'media')
 else:
-    MEDIA_ROOT = os.path.join(BASE_DIR, 'public', 'media')
+    MEDIA_ROOT = os.path.join(BASE_DIR, 'public', 'static', 'media')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
