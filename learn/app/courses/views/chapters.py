@@ -6,7 +6,7 @@ from django.shortcuts import render, redirect
 from django.views.generic import ListView
 from django.views.generic.edit import UpdateView, DeleteView
 from django.urls import reverse_lazy
-from ..models import Chapter, Subject, Classes
+from ..models import Chapter
 from ..forms import ChapterForm
 from django.db.models import Q
 import requests
@@ -85,14 +85,14 @@ class ChapterView(PermissionRequiredMixin, ListView):
         chapter_filter = self.request.GET.get('chapter')
         subject_filter = self.request.GET.get('subject')
 
-        all_subjects = Subject.objects.all().values('name').distinct()
+        all_subjects = Chapter.objects.all().values('subject__name').distinct()
         self.extra_context.update({'all_subjects': all_subjects})
 
-        all_classes = Classes.objects.all()
+        all_classes = Chapter.objects.all().values('subject__standard__name').distinct()
         self.extra_context.update({'all_classes': all_classes})
 
         if class_filter:
-            queryset = queryset.filter(subject__slug__icontains=class_filter)
+            queryset = queryset.filter(subject__standard__name__icontains=class_filter)
 
         if chapter_filter:
             queryset = queryset.filter(name__icontains=chapter_filter)
