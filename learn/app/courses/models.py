@@ -138,7 +138,7 @@ class Assignment(models.Model):
         Practice = 'practice', _('Practice')
     title = models.CharField(max_length=200)
     description = models.TextField()
-    due_date = models.DateTimeField(blank=True, null=True)
+    time_required = models.TimeField(blank=True, null=True)
     teacher = models.ForeignKey(
         User, on_delete=models.DO_NOTHING, blank=True, null=True)
     assigment_file = models.FileField(upload_to='uploads/assignments', blank=True, null=True)
@@ -149,6 +149,7 @@ class Assignment(models.Model):
         User, on_delete=models.DO_NOTHING, blank=True, null=True, related_name='assignment_updated_by')
     created_at = models.DateTimeField(auto_now=False, auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    chapter = models.ForeignKey(Chapter,default=None,blank=False, null=False,on_delete=models.CASCADE)
 
     def __str__(self):
         return self.title
@@ -181,7 +182,7 @@ class Grades(models.Model):
     grade = models.DecimalField(max_digits=2,
                                 decimal_places=1,
                                 validators=[MinValueValidator(0.0), MaxValueValidator(10.0)])
-    # enrollment = models.ForeignKey(Enrollment,blank=False,null=False,on_delete=models.CASCADE)
+    enrollment = models.ForeignKey(Enrollment,default=None,blank=False,null=False,on_delete=models.CASCADE)
 
     def __str__(self):
         if self.assignment:
@@ -207,6 +208,7 @@ class Lesson(models.Model):
         IMAGE = 'image', _('Image')
         TEXT = 'text', _('Text')
         QUIZ = 'quiz', _('Quiz')
+        ASSIGNMENT = 'assignment', _('Assignment')
 
     class SupportPlatform(models.TextChoices):
         FILE = 'file', _('File')
@@ -222,7 +224,7 @@ class Lesson(models.Model):
     public = models.BooleanField(default=False)
     position = models.IntegerField(blank=True, null=True, default=9999)
     lesson_type = models.CharField(
-        db_column='type', max_length=8, choices=LessonType.choices, default=None)
+        db_column='type', max_length=12, choices=LessonType.choices, default=None)
     status = models.CharField(
         max_length=10, choices=UploadStatus.choices, default=UploadStatus.CREATED)
     platform = models.CharField(
@@ -240,6 +242,8 @@ class Lesson(models.Model):
     updated_at = models.DateTimeField(auto_now=True, blank=True, null=True)
     quiz = models.ForeignKey(
         Quiz, on_delete=models.CASCADE, blank=True, null=True)
+    assignment = models.ForeignKey(
+        Assignment,on_delete=models.CASCADE, blank=True, null=True)
 
     def __str__(self):
         return self.title

@@ -1,5 +1,6 @@
 import React from "react";
 import { Metadata } from "next";
+import dynamic from "next/dynamic";
 import { notFound } from "next/navigation";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import { getServerSession } from "next-auth/next";
@@ -10,6 +11,10 @@ import { gql } from "@apollo/client";
 import { getClient } from "@/lib/client";
 import VideoPlayer from "@/components/sections/video-player";
 import Quiz from "@/components/sections/quiz";
+// import Assignment from "@/components/sections/assignment";
+const Assignment = dynamic(() => import("@/components/sections/assignment"), {
+  ssr: false
+});
 
 type Props = {
   params: {
@@ -34,15 +39,25 @@ const query = gql`
           fullName
         }
         quiz {
+          id
           name
           type
           questionSet {
+            id
             questionText
             choiceSet {
+              id
               choiceText
             }
           }
 				}
+        assignment {
+          id
+          title
+          description
+          timeRequired
+          assigmentFile
+        }
         platform
         platformVideoId
         url
@@ -98,8 +113,22 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
+function LessonType({ lesson }: { lesson: any }) {
+  switch (lesson.lessonType) {
+    case "VIDEO":
+      return <VideoPlayer lesson={lesson} />;
+    case "QUIZ":
+      return <Quiz lesson={lesson} />;
+    case "ASSIGNMENT":
+      return <Assignment file={lesson.assignment.assigmentFile} />;
+    default:
+      return <div>Unknown Lesson Type</div>;
+  }
+}
+
 export default async function LessonDetail({ params }: Props) {
   const session = await getServerSession(authOptions);
+  // TODO: Create lessonByChapterPaginated type
   const { lessonByChapterPaginated } = await getData({ params }, session);
   const lesson = await lessonByChapterPaginated.lesson;
 
@@ -114,8 +143,7 @@ export default async function LessonDetail({ params }: Props) {
           </span>
         </div>
       </header>
-      <VideoPlayer lesson={lesson} />
-      <Quiz lesson={lesson} />
+      <LessonType lesson={lesson} />
       <div className="container py-6">
         <div className="prose prose-lg max-w-full">
           <MDXRemote source={lesson.description} />

@@ -3,7 +3,7 @@ from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.contrib import messages
 from django.db.models.query import QuerySet
 from django.shortcuts import render, redirect
-from django.views.generic import ListView
+from django.views.generic import ListView, DetailView
 from django.views.generic.edit import UpdateView, DeleteView
 from django.urls import reverse_lazy
 from ..models import Chapter
@@ -74,9 +74,9 @@ class ChapterView(PermissionRequiredMixin, ListView):
             self.extra_context.update({'form': ChapterForm})
             return redirect('courses:chapters')
         else:
-            messages.error(request, f'failed to create! please see the create form for more details.')
+            messages.error(
+                request, f'failed to create! please see the create form for more details.')
             return super().get(request, **kwargs)
-
 
     def get_queryset(self):
         queryset = super().get_queryset()
@@ -101,6 +101,23 @@ class ChapterView(PermissionRequiredMixin, ListView):
             queryset = queryset.filter(subject__name__icontains=subject_filter)
 
         return queryset
+
+
+class ChapterDetailView(PermissionRequiredMixin, DetailView):
+    permission_required = "courses.view_chapter"
+    model = Chapter
+    template_name = "chapters/detail.html"
+    extra_context = {
+        'breadcrumbs': [{'url': 'core:home', 'label': 'Dashboard'}, {'label': 'Courses'}, {'url': 'courses:chapters', 'label': 'Chapters'}, {}],
+    }
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = f"{self.object.name}"
+        context['breadcrumbs'][3] = {'label': f"{self.object.name}"}
+        context['lessons'] = self.object.lesson_set.all()
+        context['form'] = ChapterForm(instance=self.object)
+        return context
 
 
 class ChapterUpdateView(PermissionRequiredMixin, UpdateView):

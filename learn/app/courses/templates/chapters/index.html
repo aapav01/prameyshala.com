@@ -91,6 +91,12 @@
                 <td class="px-4 py-3">{{ chapter.subject }}</td>
                 <td class="px-4 py-3">{{ chapter.collectionid }}</td>
                 <td class="flex gap-2 px-4 py-3">
+                  {% if perms.courses.view_chapter %}
+                    <a href="{% url 'courses:chapter-detail' pk=chapter.pk %}"
+                       class="btn btn-sm btn-square bg-yellow-800 shadow shadow-yellow-900/50 border-0 hover:bg-yellow-600">
+                      <i class="far fa-eye"></i>
+                    </a>
+                  {% endif %}
                   {% if perms.courses.change_chapter %}
                     <button onclick="update_chapter_{{ chapter.pk }}.showModal()"
                             class="btn btn-sm btn-success btn-square">

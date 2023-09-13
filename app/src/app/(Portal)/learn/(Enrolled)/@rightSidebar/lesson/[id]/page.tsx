@@ -44,13 +44,15 @@ async function getData({ params }: Props, session: any) {
     });
     return api_data.data;
   } catch (error) {
-    return notFound();
+    console.error(error);
+    return null;
   }
 }
 
 export default async function ChapterDetail({ params }: Props) {
   const session = await getServerSession(authOptions);
   const { lesson } = await getData({ params }, session);
+  if (!lesson) return null;
   return (
     <section className="max-lg:hidden max-w-sm w-full max-h-screen bg-muted overflow-y-auto shadow-inner relative">
       <header className="bg-cyan-800 py-9 text-cyan-50">

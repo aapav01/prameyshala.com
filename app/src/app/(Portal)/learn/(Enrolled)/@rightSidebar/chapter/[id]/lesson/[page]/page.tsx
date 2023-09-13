@@ -1,5 +1,4 @@
 import React from "react";
-import { notFound } from "next/navigation";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 
@@ -22,6 +21,7 @@ const query = gql`
   query page_lesson_side($chapter: ID!, $page: Int) {
     lessonByChapterPaginated(chapterId: $chapter, page: $page) {
       lesson {
+        id
         chapter {
           id
           name
@@ -53,16 +53,18 @@ async function getData({ params }: Props, session: any) {
 
     return api_data.data;
   } catch (error) {
-    console.log(error);
+    console.error(error);
+    return null;
   }
 }
 
 export default async function ChapterDetail({ params }: Props) {
   const session = await getServerSession(authOptions);
   const { lessonByChapterPaginated } = await getData({ params }, session);
+  if (!lessonByChapterPaginated) return null;
   const lesson = await lessonByChapterPaginated.lesson;
   return (
-    <section className="max-lg:hidden max-w-sm w-full max-h-screen bg-muted overflow-y-auto shadow-inner relative">
+    <section className="max-lg:hidden max-w-sm w-full min-h-screen max-h-full bg-muted overflow-y-auto shadow-inner relative">
       <header className="bg-cyan-800 py-9 text-cyan-50">
         <div className="container">
           <Link

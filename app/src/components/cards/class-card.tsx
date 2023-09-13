@@ -7,9 +7,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import {
-  PlayIcon,
-} from "@radix-ui/react-icons";
+import { PlayIcon } from "@radix-ui/react-icons";
 import { Button } from "../ui/button";
 import { Skeleton } from "../ui/skeleton";
 import Link from "next/link";
@@ -25,40 +23,46 @@ export function ClassCardSkeleton() {
     <Card>
       <Skeleton className="h-36 w-full rounded-t-lg p-1" />
       <CardHeader>
-      <div className="flex flex-row justify-between items-center gap-3">
-        <Skeleton className="h-4 w-full" />
-        <Skeleton className="h-6 w-6" />
-      </div>
-
+        <div className="flex flex-row justify-between items-center gap-3">
+          <Skeleton className="h-4 w-full" />
+          <Skeleton className="h-6 w-6" />
+        </div>
       </CardHeader>
       <CardContent>
-      <div className="grid grid-cols-3 gap-2">
-        <Skeleton className="h-6" />
-        <Skeleton className="h-6" />
-        <Skeleton className="h-6" />
-      </div>
+        <div className="grid grid-cols-3 gap-2">
+          <Skeleton className="h-6" />
+          <Skeleton className="h-6" />
+          <Skeleton className="h-6" />
+        </div>
       </CardContent>
     </Card>
-  )
+  );
 }
 
 export default function ClassCard({ standard, enroll }: Props) {
   const discount: any =
     100 - (standard.latestPrice / standard.beforePrice) * 100;
   return (
-    <Link href={enroll? ("learn/" + standard.slug): ("/class/" + standard.slug)}>
+    <Link href={enroll ? "learn/" + standard.slug : "/class/" + standard.slug}>
       <Card className="animate-in duration-200 ease-in hover:-translate-y-2 hover:shadow-xl hover:shadow-indigo-300/50">
-        <Image
-          width={630}
-          height={400}
-          src={
-            standard.image
-              ? standard.image
-              : `/api/og/class/${standard.slug}`
-          }
-          alt={standard.name}
-          className="rounded-t-lg p-1"
-        />
+        {standard.image ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            className="rounded-t-lg p-1"
+            width={630}
+            height={400}
+            src={`${process.env.NEXT_PUBLIC_MEDIA_CDN}/static/media/${standard.image}`}
+            alt={standard.name}
+          />
+        ) : (
+          <Image
+            width={630}
+            height={400}
+            src={`/api/og/class/${standard.slug}`}
+            alt={standard.name}
+            className="rounded-t-lg p-1"
+          />
+        )}
         <CardHeader>
           <div className="flex flex-row justify-between items-center">
             <CardTitle className="text-lg">{standard.name}</CardTitle>

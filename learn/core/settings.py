@@ -32,6 +32,7 @@ DEBUG = env('DEBUG', default=False, cast=bool)
 
 ALLOWED_HOSTS = ['*']
 
+CORS_ALLOW_ALL_ORIGINS = True
 
 # Application definition
 
@@ -49,11 +50,13 @@ INSTALLED_APPS = [
     'django_browser_reload',
     'graphene_django',
     'phonenumber_field',
+    "corsheaders",
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    "corsheaders.middleware.CorsMiddleware",
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -161,7 +164,7 @@ MEDIA_URL = 'media/'
 if DEBUG:
     MEDIA_ROOT = os.path.join(BASE_DIR, 'staticfiles', 'media')
 else:
-    MEDIA_ROOT = os.path.join(BASE_DIR, 'public', 'media')
+    MEDIA_ROOT = os.path.join(BASE_DIR, 'public', 'static', 'media')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field

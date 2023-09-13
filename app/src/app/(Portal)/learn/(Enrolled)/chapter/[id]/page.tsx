@@ -7,7 +7,7 @@ import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 // GRAPHQL API - APPLOLO
 import { gql } from "@apollo/client";
 import { getClient } from "@/lib/client";
-import LessonCard from "@/components/cards/lessson-card";
+import LessonCard2 from "@/components/cards/lessson-card-2";
 
 const query = gql`
   query chatpter_detail($id: ID!) {
@@ -26,6 +26,9 @@ const query = gql`
         id
         title
         lessonType
+        chapter {
+          id
+        }
       }
     }
   }
@@ -53,8 +56,8 @@ async function getData({ params }: Props, session: any) {
       context: {
         headers: {
           Authorization: `JWT ${session.user.token}`,
-        }
-      }
+        },
+      },
     });
     return api_data.data;
   } catch (error) {
@@ -76,8 +79,8 @@ export default async function ChapterDetail({ params }: Props) {
         </div>
       </header>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 px-4 py-6 gap-4">
-        {chapter.lessonSet.map((lesson: any) => (
-          <LessonCard key={lesson.id} lesson={lesson} />
+        {chapter.lessonSet.map((lesson: any, index: number) => (
+          <LessonCard2 key={lesson.id} lesson={lesson} page={index + 1} />
         ))}
       </div>
     </>

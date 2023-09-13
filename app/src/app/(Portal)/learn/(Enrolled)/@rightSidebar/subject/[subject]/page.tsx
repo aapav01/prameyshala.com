@@ -1,11 +1,9 @@
 import React from "react";
-import { notFound } from "next/navigation";
 
 // GRAPHQL API - APPLOLO
 import { gql } from "@apollo/client";
 import { getClient } from "@/lib/client";
 import SubjectCard from "@/components/cards/subject-card";
-import { BackButton } from "@/components/web3/back";
 import { Button } from "@/components/ui/button";
 import { ArrowLeftIcon } from "@radix-ui/react-icons";
 import Link from "next/link";
@@ -60,12 +58,14 @@ async function getData({ params }: Props) {
     });
     return api_data.data;
   } catch (error) {
-    return notFound();
+    console.error(error);
+    return null;
   }
 }
 
 export default async function SideSubjects({ params }: Props) {
   const data = await getData({ params });
+  if (!data) return null;
   return (
     <section className="max-lg:hidden max-w-sm w-full max-h-screen bg-muted overflow-y-auto shadow-inner relative">
       <header className="bg-indigo-800 py-6 h-24 text-indigo-50">

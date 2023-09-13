@@ -77,6 +77,10 @@
                 <td class="px-4 py-3">{{ subject.slug }}</td>
                 <td class="px-4 py-3">{{ subject.publish_at }}</td>
                 <td class="flex gap-2 px-4 py-3">
+                  {% if perms.courses.view_subject %}
+                    <a href="{% url 'courses:subject-detail' pk=subject.pk %}"
+                       class="btn btn-square btn-sm bg-yellow-800 hover:bg-yellow-600"><i class="far fa-eye"></i></a>
+                  {% endif %}
                   {% if perms.courses.change_subject %}
                     <button onclick="update_subject_{{ subject.pk }}.showModal()"
                             class="btn btn-sm btn-success btn-square">
