@@ -1,10 +1,51 @@
 import React from 'react';
+import { MDXRemote } from "next-mdx-remote/rsc";
 
 import PageHeader from "@/components/page-header";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { InstagramLogoIcon, LinkedInLogoIcon, TwitterLogoIcon } from '@radix-ui/react-icons';
 
-const BlogList = () => {
+// GRAPHQL API - APPLOLO
+import { gql } from "@apollo/client";
+import { getClient } from "@/lib/client";
+
+type Props = {
+  params: { slug: string };
+};
+
+const query = gql`
+  query GetPostBySlug($slug: String!) {
+  postBySlug(slug: $slug) {
+    title
+    subtitle
+    slug
+    publishDate
+    dateCreated
+    dateModified
+    description
+    id
+    metaDescription
+    published
+    author {
+      user {
+        fullName
+      }
+    }
+    tags {
+      name
+    }
+  }
+}
+`;
+
+export default async function postBySlug({ params }: Props) {
+  const { data } = await getClient().query({
+    query,
+    variables: { slug: params.slug },
+  });
+  const publishDate = new Date(data.postBySlug.publishDate);
+  const formattedDate = publishDate.toISOString().split('T')[0];
 
   return (
 
@@ -21,36 +62,28 @@ const BlogList = () => {
 
           {/* Posts Section */}
           <section className="w-full md:w-2/3 flex flex-col items-center px-3">
-
             <article className="flex flex-col shadow my-4">
               <a href="#" className="hover:opacity-75">
-                <img src="https://placehold.co/1000x600" />
+                <img src="https://shorturl.at/TU015" />
               </a>
               <div className="bg-white flex flex-col justify-start p-6">
-                <a href="#" className="text-blue-700 text-sm font-bold uppercase pb-4">Technology</a>
-                <a href="#" className="text-3xl font-bold hover:text-gray-700 pb-4">Lorem Ipsum Dolor Sit Amet Dolor Sit Amet</a>
+                <a href="#" className="text-blue-700 text-sm font-bold uppercase pb-4">{data.postBySlug.subtitle}</a>
+                <a href="#" className="text-3xl font-bold hover:text-gray-700 pb-4">{data.postBySlug.title}</a>
                 <p className="text-sm pb-8">
-                  By <a href="#" className="font-semibold hover:text-gray-800">David Grzyb</a>, Published on April 25th, 2020
+                  By <a href="#" className="font-semibold hover:text-gray-800">{data.postBySlug.author.user.fullName}</a>, Published on {formattedDate}
                 </p>
-                <h1 className="text-2xl font-bold pb-3">Introduction</h1>
-                <p className="pb-3">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur vel neque non libero suscipit suscipit eu eu urna. Proin bibendum urna mattis ante malesuada ultrices. Etiam in turpis vitae elit dictum aliquet. Donec mattis risus in turpis dapibus, eget tempus sem tincidunt. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. In est enim, imperdiet sed ornare quis, pellentesque vel risus. Nunc vitae vestibulum turpis. Quisque eget eleifend urna. Etiam et vulputate purus, ut egestas sem. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Duis quis neque non urna venenatis mollis et at massa. Pellentesque sem lacus, malesuada vel hendrerit molestie, mollis vel elit.</p>
-                <h1 className="text-2xl font-bold pb-3">Heading</h1>
-                <p className="pb-3">Vivamus nec facilisis elit, quis congue justo. In non augue ex. Aenean pretium facilisis hendrerit. Sed sed imperdiet dui. Etiam faucibus a diam sed vehicula. Nullam commodo lacus tincidunt, tincidunt orci sed, dapibus leo. Vivamus vulputate quis risus a ultricies. Aliquam luctus id tellus non condimentum. Aenean maximus viverra ipsum eget vestibulum. Morbi ut tincidunt sem, efficitur volutpat tortor. Donec scelerisque, ipsum eu efficitur semper, neque turpis sodales quam, in aliquam elit lacus varius lorem. Ut ut diam id leo efficitur malesuada eget in velit. Pellentesque tristique orci nunc, vitae fermentum nibh luctus eu. Mauris condimentum justo sed ipsum egestas varius.</p>
-                <p className="pb-3">Sed sagittis odio a volutpat feugiat. Cras aliquam varius justo, a rhoncus ante bibendum id. Nulla maximus nisl sed enim maximus, ut dictum lectus hendrerit. Fusce venenatis tincidunt eros. Phasellus quis augue vulputate ipsum pellentesque fringilla. Morbi nec tempor felis. Maecenas sollicitudin pellentesque dui, sit amet scelerisque mauris elementum nec. Cras ante metus, mattis in malesuada in, fermentum a nunc. Suspendisse potenti. Sed tempor lacus sed commodo dignissim. Quisque dictum, dolor auctor iaculis cursus, ipsum urna porttitor ex, sed consequat nisi tellus eget ante. Duis molestie mollis eros, eu sollicitudin mauris lobortis quis.</p>
-                <p className="pb-3">Vivamus sed neque nec massa scelerisque imperdiet eget id sapien. Fusce elementum mi id malesuada luctus. Proin quis lorem id leo porta interdum non ac nisl. Integer nulla sem, ultrices sed neque eget, blandit condimentum metus. Aliquam eget malesuada sapien. Curabitur aliquet orci sit amet ex tincidunt convallis. Mauris urna mi, consequat mattis mollis a, dignissim eget sem. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Nam facilisis sem diam, viverra consequat metus consequat vel. Cras a mi eu ex luctus malesuada quis eu ante. Aliquam erat volutpat.</p>
-                <h1 className="text-2xl font-bold pb-3">Conclusion</h1>
-                <p className="pb-3">Donec vulputate auctor leo lobortis congue. Sed elementum pharetra turpis. Nulla at condimentum odio. Vestibulum ullamcorper enim eget porttitor bibendum. Proin eros nibh, maximus vitae nisi a, blandit ultricies lectus. Vivamus eu maximus lacus. Maecenas imperdiet iaculis neque, vitae efficitur felis vestibulum sagittis. Nunc a eros aliquet, egestas tortor hendrerit, posuere diam. Proin laoreet, ligula non eleifend bibendum, orci nulla luctus ipsum, dignissim convallis quam dolor et nulla.</p>
+                <MDXRemote source={data.postBySlug.description}></MDXRemote>
               </div>
             </article>
 
             <div className="w-full flex pt-6">
-              <a href="#" className="w-1/2 bg-white shadow hover:shadow-md text-left p-6">
-                <p className="text-lg text-blue-800 font-bold flex items-center"><i className="fas fa-arrow-left pr-1"></i> Previous</p>
-                <p className="pt-2">Lorem Ipsum Dolor Sit Amet Dolor Sit Amet</p>
+              <a href="" className="w-1/2 bg-white shadow hover:shadow-md text-left p-6">
+                <p className="text-lg text-blue-800 font-bold flex items-center"><i className="fas fa-arrow-left pr-1"></i>Previous</p>
+                <p className="pt-2"></p>
               </a>
-              <a href="#" className="w-1/2 bg-white shadow hover:shadow-md text-right p-6">
+              <a href="" className="w-1/2 bg-white shadow hover:shadow-md text-right p-6">
                 <p className="text-lg text-blue-800 font-bold flex items-center justify-end">Next <i className="fas fa-arrow-right pl-1"></i></p>
-                <p className="pt-2">Lorem Ipsum Dolor Sit Amet Dolor Sit Amet</p>
+                <p className="pt-2"></p>
               </a>
             </div>
 
@@ -67,7 +100,7 @@ const BlogList = () => {
                   className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-blue-500"
                 />
                 <Button variant={"secondary"} className="text-lg mt-5 py-3">
-                    Search
+                  Search
                 </Button>
               </div>
             </div>
@@ -76,15 +109,15 @@ const BlogList = () => {
             <div className="w-full bg-white shadow flex flex-col my-4 p-6">
               <p className="text-xl font-semibold pb-3">Popular Tags</p>
               <div className="flex flex-wrap">
-                <a href="#" className="bg-gray-200 text-gray-700 full px-3 py-1 m-1 hover:bg-blue-500 hover:text-white">
-                  Tag1
-                </a>
-                <a href="#" className="bg-gray-200 text-gray-700 full px-3 py-1 m-1 hover:bg-blue-500 hover:text-white">
-                  Tag2
-                </a>
-                <a href="#" className="bg-gray-200 text-gray-700 full px-3 py-1 m-1 hover:bg-blue-500 hover:text-white">
-                  Tag3
-                </a>
+                {data?.postBySlug.tags.map((tag: any) => (
+                  <a
+                    key={tag.name}
+                    href="#"
+                    className="bg-gray-200 text-gray-700 full px-3 py-1 m-1 hover:bg-blue-500 hover:text-white"
+                  >
+                    {tag.name}
+                  </a>
+                ))}
               </div>
             </div>
 
@@ -92,12 +125,13 @@ const BlogList = () => {
               <p className="text-xl font-semibold pb-3">Follow Us</p>
               <div className="flex">
                 <a href="#" className="text-blue-700 hover:underline pr-2">
+                  {<InstagramLogoIcon className='h-8 w-8' />}
                 </a>
                 <a href="#" className="text-blue-700 hover:underline pr-2">
-                  <i className="fab fa-twitter"></i>
+                  <TwitterLogoIcon className='h-8 w-8' />
                 </a>
                 <a href="#" className="text-blue-700 hover:underline pr-2">
-                  <i className="fab fa-instagram"></i>
+                  <LinkedInLogoIcon className='h-8 w-8' />
                 </a>
 
               </div>
@@ -109,7 +143,7 @@ const BlogList = () => {
 
     </main>
 
- )
+  )
 }
 
-export default BlogList;
+

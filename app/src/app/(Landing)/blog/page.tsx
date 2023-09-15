@@ -3,24 +3,51 @@ import React from 'react';
 import PageHeader from "@/components/page-header";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { InstagramLogoIcon, LinkedInLogoIcon, TwitterLogoIcon} from '@radix-ui/react-icons';
 
-const BlogList = () => {
-  const blogs = [
+// GRAPHQL API - APPLOLO
+import { gql } from "@apollo/client";
+import { getClient } from "@/lib/client";
+
+
+type Props = {
+  params: { slug: string };
+};
+
+const query = gql`
     {
-      id: 1,
-      title: 'Sample Blog Post 1',
-      date: 'September 8, 2023',
-      author: 'John Doe',
-      excerpt: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit...',
-    },
-    {
-      id: 2,
-      title: 'Sample Blog Post 2',
-      date: 'September 7, 2023',
-      author: 'Jane Smith',
-      excerpt: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit...',
-    },
-  ];
+  allPosts {
+    dateCreated
+    dateModified
+    description
+    id
+    publishDate
+    published
+    title
+    subtitle
+    slug
+    author {
+      user {
+        fullName
+      }
+    }
+    tags {
+      name
+    }
+  }
+}`;
+
+
+export default async function AllPosts({ params }: Props) {
+  const { data } = await getClient().query({
+    query,
+    variables: { slug: params.slug },
+      context: {
+        fetchOptions: {
+          next: { revalidate: 30 },
+        },
+      },
+   });
 
   return (
 
@@ -37,34 +64,36 @@ const BlogList = () => {
 
           {/* Posts Section */}
           <section className="w-full rounded-none md:w-2/3 flex flex-col items-center px-3">
-            {blogs.map((blog) => (
-
-              <div className="flex flex-col shadow my-4" key={blog.id}>
-                <a href="#" className="hover:opacity-75">
-                  <img src="https://placehold.co/1000x600" alt={blog.title} />
-                </a>
-                <div className="bg-white flex flex-col justify-start p-6">
-                  <a href="#" className="text-blue-700 text-sm font-bold uppercase pb-4">
-                    Category
+            {data?.allPosts.map((post: any) => {
+              const publishDate = new Date(post.publishDate);
+              const formattedDate = publishDate.toISOString().split('T')[0];
+              return (
+                <div className="flex flex-col shadow my-4" key={post.id}>
+                  <a href="#" className="hover:opacity-75">
+                    <img src="https://shorturl.at/TU015" alt={post.title} />
                   </a>
-                  <a href="#" className="text-3xl font-bold hover:text-gray-700 pb-4">
-                    {blog.title}
-                  </a>
-                  <p className="text-sm pb-3">
-                    By <a href="#" className="font-semibold hover:text-gray-800">
-                      {blog.author}
-                    </a>, Published on {blog.date}
-                  </p>
-                  <p className="pb-6">
-                    {blog.excerpt}
-                  </p>
-                  <a href="#" className="uppercase text-gray-800 hover:text-black">
-                    Read More <i className="fas fa-arrow-right"></i>
-                  </a>
+                  <div className="bg-white flex flex-col justify-start p-6">
+                    <a href="#" className="text-blue-700 text-sm font-bold uppercase pb-4">
+                      {post.subtitle}
+                    </a>
+                    <a href={`/blog/${post.slug}`} className="text-3xl font-bold hover:text-gray-700 pb-4">
+                      {post.title}
+                    </a>
+                    <p className="text-sm pb-3">
+                      By{' '}
+                      <a href="#" className="font-semibold hover:text-gray-800">
+                        {post.author.user.fullName}
+                      </a>
+                      , Published on {formattedDate}
+                    </p>
+                    <p className="pb-6">{post.excerpt}</p>
+                    <a href={`/blog/${post.slug}`} className="uppercase text-gray-800 hover:text-black" >
+                      Read More.
+                    </a>
+                  </div>
                 </div>
-              </div>
-
-            ))}
+              );
+            })}
 
             {/* #Pagination  */}
             <div className="flex items-center py-8">
@@ -86,7 +115,7 @@ const BlogList = () => {
                   className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-blue-500"
                 />
                 <Button variant={"secondary"} className="text-lg mt-5 py-3">
-                    Search
+                  Search
                 </Button>
               </div>
             </div>
@@ -111,12 +140,13 @@ const BlogList = () => {
               <p className="text-xl font-semibold pb-3">Follow Us</p>
               <div className="flex">
                 <a href="#" className="text-blue-700 hover:underline pr-2">
+                  <InstagramLogoIcon className='h-8 w-8' />
                 </a>
                 <a href="#" className="text-blue-700 hover:underline pr-2">
-                  <i className="fab fa-twitter"></i>
+                  {<TwitterLogoIcon className='h-8 w-8' />}
                 </a>
                 <a href="#" className="text-blue-700 hover:underline pr-2">
-                  <i className="fab fa-instagram"></i>
+                  {<LinkedInLogoIcon className='h-8 w-8' />}
                 </a>
 
               </div>
@@ -128,7 +158,5 @@ const BlogList = () => {
 
     </main>
 
- )
+  )
 }
-
-export default BlogList;
