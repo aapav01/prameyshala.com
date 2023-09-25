@@ -83,7 +83,23 @@ class LessonView(PermissionRequiredMixin, ListView):
     def get_queryset(self):
         queryset = super().get_queryset()
 
+        class_filter = self.request.GET.get('class')
+        subject_filter = self.request.GET.get('subject')
         search_query = self.request.GET.get('search')
+
+        all_subjects = Lesson.objects.all().values('chapter__subject__name').distinct()
+        self.extra_context.update({'all_subjects': all_subjects})
+
+        all_classes = Lesson.objects.all().values('chapter__subject__standard__name').distinct()
+        self.extra_context.update({'all_classes': all_classes})
+
+
+        if class_filter:
+            queryset = queryset.filter(chapter__subject__standard__name__icontains=class_filter)
+
+        if subject_filter:
+            queryset = queryset.filter(chapter__subject__name__icontains=subject_filter)
+
         if search_query:
             queryset = queryset.filter(
                 Q(title__icontains=search_query) |
@@ -92,8 +108,8 @@ class LessonView(PermissionRequiredMixin, ListView):
                 Q(chapter__subject__name__icontains=search_query) |
                 Q(chapter__subject__standard__name__icontains=search_query)
             )
-        return queryset
 
+        return queryset
 
 class LessonDetailView(PermissionRequiredMixin, DetailView):
     permission_required = "courses.view_lesson"

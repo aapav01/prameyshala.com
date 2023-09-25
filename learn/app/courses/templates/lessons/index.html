@@ -13,18 +13,51 @@
           <i class="far fa-plus"></i>Add Lesson
         </button>
       {% endif %}
-      <form method="get" class="bg-white shadow-sm p-2 rounded-xl">
-        <input class="input input-bordered"
-               type="text"
+      <form id="filter-form" method="get" action="{% url 'courses:lessons' %}">
+        <select class="select select-bordered max-w-xs"
+                name="subject"
+                id="subject-select"
+                placeholder="All Subjects">
+          <option class="text-left"
+                  value=""
+                  {% if not subject_filter %}selected{% endif %}>All Subjects</option>
+          {% for subject in all_subjects %}
+            <option class="text-left"
+                    value="{{ subject.chapter__subject__name }}"
+                    {% if subject_filter == subject.chapter__subject__name %}selected{% endif %}>
+              {{ subject.chapter__subject__name }}
+            </option>
+          {% endfor %}
+        </select>
+        <select class="select select-bordered max-w-xs"
+                name="class"
+                id="class-select"
+                placeholder="All Classes">
+          <option class="text-left"
+                  value=""
+                  {% if not class_filter %}selected{% endif %}>All Classes</option>
+          {% for class in all_classes %}
+            <option class="text-left"
+                    value="{{ class.chapter__subject__standard__name }}"
+                    {% if class_filter == class.chapter__subject__standard__name %}selected{% endif %}>
+              {{ class.chapter__subject__standard__name }}
+            </option>
+          {% endfor %}
+        </select>
+        <input type="text"
+               class="input input-bordered max-w-xs"
                name="search"
+               id="search-query"
                placeholder="Search..."
-               value="{{ request.GET.search }}">
+               value="{{ search_query }}">
         <button class="btn btn-square bg-gradient-to-br from-purple-600 to-indigo-400 text-white px-6 border-0 shadow-md shadow-indigo-500/50"
                 type="submit">
           <i class="fa-regular fa-magnifying-glass"></i>
         </button>
         <a class="btn btn-square bg-gradient-to-br from-deep-orange-600 to-orange-800 text-white px-4 border-0 shadow-md shadow-deep-orange-500/50"
-           href="{% url 'courses:lessons' %}"><i class="fa-regular fa-x"></i></a>
+           href="{% url 'courses:lessons' %}"
+           type="button"
+           id="'clear-filter"><i class="fa-regular fa-x"></i></a>
       </form>
     </div>
     <div class="relative flex w-full flex-col rounded-xl bg-base-100 bg-clip-border text-base-content shadow-md">
@@ -160,4 +193,35 @@
 {% endblock head_link %}
 {% block body_js %}
   <script>new EasyMDE({element: document.getElementById('{{ form.description.id_for_label }}')});</script>
+  <script>
+      document.addEventListener('DOMContentLoaded', function () {
+          const filterForm = document.getElementById('filter-form');
+          const subjectSelect = document.getElementById('subject-select');
+          const classSelect = document.getElementById('class-select');
+          const chapterSearch = document.getElementById('search-query');  
+          const clearFilterButton = document.getElementById('clear-filter');
+
+          const urlParams = new URLSearchParams(window.location.search);
+          const subjectFilter = urlParams.get('subject');
+          const classFilter = urlParams.get('class');
+          const chapterFilter = urlParams.get('search_query');  
+
+          subjectSelect.value = subjectFilter || "";
+          classSelect.value = classFilter || "";
+          chapterSearch.value = chapterFilter || "";  
+
+          filterForm.addEventListener('change', function (event) {
+              if (event.target.tagName === 'SELECT' || event.target.tagName === 'INPUT') {  
+                  filterForm.submit();
+              }
+          });
+
+          clearFilterButton.addEventListener('click', function () {
+              subjectSelect.value = '';
+              classSelect.value = '';
+              chapterSearch.value = ''; 
+              filterForm.submit();
+          });
+      });
+  </script>
 {% endblock body_js %}

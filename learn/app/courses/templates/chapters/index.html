@@ -21,7 +21,10 @@
                   value=""
                   {% if not subject_filter %}selected{% endif %}>All Subjects</option>
           {% for subject in all_subjects %}
-            <option class="text-left" value={{ subject.name }} {% if subject_filter == subject.name %}selected{% endif %}>{{ subject.name }}
+            <option class="text-left"
+                    value="{{ subject.subject__name }}"
+                    {% if subject_filter == subject.subject__name %}selected{% endif %}>
+              {{ subject.subject__name }}
             </option>
           {% endfor %}
         </select>
@@ -34,8 +37,10 @@
                   {% if not class_filter %}selected{% endif %}>All Classes</option>
           {% for class in all_classes %}
             <option class="text-left"
-                    value="{{ class.slug }}"
-                    {% if class_filter == class.slug %}selected{% endif %}>{{ class.name }}</option>
+                    value="{{ class.subject__standard__name }}"
+                    {% if class_filter == class.subject__standard__name %}selected{% endif %}>
+              {{ class.subject__standard__name }}
+            </option>
           {% endfor %}
         </select>
         <input type="text"
