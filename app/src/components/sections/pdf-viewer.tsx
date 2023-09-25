@@ -8,9 +8,11 @@ import "react-pdf/dist/Page/TextLayer.css";
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider"
 import { Label } from "../ui/label";
+import { log } from "console";
 
 type Props = {
-  file: string;
+  file: string,
+  type: string;
 };
 
 pdfjs.GlobalWorkerOptions.workerSrc = new URL(
@@ -18,10 +20,10 @@ pdfjs.GlobalWorkerOptions.workerSrc = new URL(
   import.meta.url
 ).toString();
 
-export default function Assignment({ file }: Props) {
+export default function Assignment({ file,type }: Props) {
   const [numPages, setNumPages] = useState<number>(1);
   const [pageNumber, setPageNumber] = useState<number>(1);
-  const [scale, setScale] = useState<number[]>([1.5]);
+  const [scale, setScale] = useState<number[]>([1]);
 
   function onDocumentLoadSuccess({ numPages }: { numPages: number }): void {
     setNumPages(numPages);
@@ -74,19 +76,20 @@ export default function Assignment({ file }: Props) {
   if (process.env.NODE_ENV === "development") {
     var source_file = `/static/media/${file}`;
   }
-
+  source_file = `/${file.substring(20)}`;
+  // console.log(document.querySelectorAll<HTMLElement>("react-pdf__Document")[0].clientWidth);
   return (
     <div className="m-4 p-4 rounded-2xl shadow-xl border-2">
       <div className=" border-b-2 mb-2 pb-4">
-        <h2 className="text-2xl font-bold font-sans">Assignment</h2>
+        <h2 className="text-2xl font-bold font-sans">{type}</h2>
         <NavigationBar />
       </div>
       <Document
-        className={"flex flex-col items-center"}
+        className={"flex flex-col items-center overflow-x-scroll"}
         file={source_file}
         onLoadSuccess={onDocumentLoadSuccess}
       >
-        <Page scale={scale[0]} pageNumber={pageNumber} />
+        <Page scale={scale[0]} pageNumber={pageNumber}/>
       </Document>
       <div className=" border-t-2 mt-2 pt-4">
         <NavigationBar />
