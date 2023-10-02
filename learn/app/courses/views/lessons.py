@@ -129,6 +129,8 @@ class LessonDetailView(PermissionRequiredMixin, DetailView):
         context['collectionID'] = context['lesson'].chapter.collectionid if context['lesson'].chapter.collectionid is not None else ''
         # SHA256 signature (library_id + api_key + expiration_time + video_id)
         expiration_time = int(now().timestamp()) + 86400
+        if context['lesson'].platform_video_id is None and context['lesson'].platform != "file":
+            context['lesson'].platform_video_id = ''
         hash_string = env('BUNNYCDN_VIDEO_LIBRARY_ID') + env('BUNNYCDN_ACCESS_KEY') + \
             str(expiration_time) + context['lesson'].platform_video_id
         sha = hashlib.sha256(hash_string.encode()).hexdigest()
