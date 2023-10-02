@@ -33,9 +33,7 @@ const query = gql`
       subtitle
       slug
       author {
-        user {
-          fullName
-        }
+        fullName
       }
       tags {
         name
