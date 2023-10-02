@@ -138,7 +138,7 @@ class Assignment(models.Model):
         Practice = 'practice', _('Practice')
     title = models.CharField(max_length=200)
     description = models.TextField()
-    time_required = models.TimeField(blank=True, null=True)
+    time_required = models.IntegerField(blank=True, null=True)
     teacher = models.ForeignKey(
         User, on_delete=models.DO_NOTHING, blank=True, null=True)
     assigment_file = models.FileField(upload_to='uploads/assignments', blank=True, null=True)
