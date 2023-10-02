@@ -5,7 +5,7 @@ from graphene_file_upload.scalars import Upload
 from datetime import datetime
 from app.accounts.models import User
 from .models import Lesson, Subject, Classes, Chapter, Category, Quiz, Question, Choice
-from .models import Lesson, Subject, Classes, Chapter, Category, Assignment,AssignmentSubmission
+from .models import Lesson, Subject, Classes, Chapter, Category, Assignment,AssignmentSubmission, Lesson_Progress
 
 
 class ChapterType(DjangoObjectType):
@@ -56,6 +56,10 @@ class AssignmentType(DjangoObjectType):
         model = Assignment
         fields = "__all__"
 
+class ProgressType(DjangoObjectType):
+    class Meta:
+        model = Lesson_Progress
+        fields = "__all__"
 
 class PaginatedLessons(graphene.ObjectType):
     count = graphene.Int()
@@ -85,6 +89,8 @@ class Query(graphene.ObjectType):
         PaginatedLessons, chapter_id=graphene.ID(required=True), page=graphene.Int())
     #assignment
     assignment = graphene.List(AssignmentType, chapter=graphene.String(required=False))
+    # progress
+    progress = graphene.List(ProgressType, lesson = graphene.ID(required=True))
 
     # classes
     def resolve_classes(self, info):
@@ -148,6 +154,11 @@ class Query(graphene.ObjectType):
             return Assignment.objects.get(chapter__subject__name=chapter)
         return Assignment.objects.all()
 
+    def resolve_progress(self,info,lesson=None):
+        user = info.context.user
+        if not user.is_authenticated:
+            raise Exception("Authentication credentials were not provided")
+        return Lesson_Progress.objects.get(lesson=lesson)
 
 class CreateAssignmentSubmission(graphene.Mutation):
     success = graphene.Boolean()
@@ -165,5 +176,26 @@ class CreateAssignmentSubmission(graphene.Mutation):
         submission.save()
         return CreateAssignmentSubmission(success=True)
 
+class CreateProgress(graphene.Mutation):
+    success = graphene.Boolean()
+    class Arguments:
+        progress = graphene.Float(required=True)
+        lesson_id = graphene.Int(required=True)
+    def mutate(root, info, progress, lesson_id):
+        user = info.context.user
+        if not user.is_authenticated:
+            raise Exception("Authentication credentials were not provided")
+        completed = False
+        if progress == 1.0:
+            completed = True
+        progress_record = Lesson_Progress(
+            student_id = user.id,
+            progress = progress,
+            lesson_id = lesson_id,
+            lesson_completed = completed
+        )
+        progress_record.save()
+        return CreateProgress(success=True)
 class Mutation(graphene.ObjectType):
     create_submission = CreateAssignmentSubmission.Field()
+    create_progress = CreateProgress.Field()

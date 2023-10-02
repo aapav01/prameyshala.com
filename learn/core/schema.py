@@ -9,10 +9,12 @@ class Query(accounts.Query, blog.Query, courses.Query, graphene.ObjectType):
     pass
 
 
-class Mutation(accounts.Mutation, graphene.ObjectType):
+class Mutation(accounts.Mutation,courses.Mutation, graphene.ObjectType):
     token_auth = accounts.ObtainJSONWebToken.Field()
     verify_token = graphql_jwt.Verify.Field()
     refresh_token = graphql_jwt.Refresh.Field()
+    create_progress = courses.CreateProgress.Field()
+
 
 
 schema = graphene.Schema(query=Query, mutation=Mutation)
