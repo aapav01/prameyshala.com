@@ -13,10 +13,17 @@
         <div class="flex items-center gap-6">
           <div class="avatar">
             <div class="w-24 rounded-xl shadow-lg shadow-blue-gray-500/40">
+              {% if user.photo %}
+              <img src="{% static 'media/' %}{{ user.photo }}"
+                   width="78px"
+                   height="78px"
+                   alt="{{ user.full_name }}" />
+              {% else %}
               <img src="https://placehold.co/600x400"
                    width="78px"
                    height="78px"
                    alt="{{ user.full_name }}" />
+              {% endif %}
             </div>
           </div>
           <div>
@@ -45,7 +52,7 @@
             <ul class="flex flex-col gap-4 p-0">
               <li class="flex items-center gap-4">
                 <p class="block antialiased font-sans text-sm leading-normal text-blue-gray-900 font-semibold capitalize">
-                  first name:
+                  First Name:
                 </p>
                 <p class="block antialiased font-sans text-sm leading-normal font-normal text-blue-gray-500">{{ user.full_name }}</p>
               </li>
@@ -59,13 +66,25 @@
                 <p class="block antialiased font-sans text-sm leading-normal text-blue-gray-900 font-semibold capitalize">email:</p>
                 <p class="block antialiased font-sans text-sm leading-normal font-normal text-blue-gray-500">{{ user.email }}</p>
               </li>
+              <li class="flex items-center gap-4">
+                <p class="block antialiased font-sans text-sm leading-normal text-blue-gray-900 font-semibold capitalize">City:</p>
+                <p class="block antialiased font-sans text-sm leading-normal font-normal text-blue-gray-500">{{ user.city }}</p>
+              </li>
+              <li class="flex items-center gap-4">
+                <p class="block antialiased font-sans text-sm leading-normal text-blue-gray-900 font-semibold capitalize">State:</p>
+                <p class="block antialiased font-sans text-sm leading-normal font-normal text-blue-gray-500">{{ user.state }}</p>
+              </li>
+              <li class="flex items-center gap-4">
+                <p class="block antialiased font-sans text-sm leading-normal text-blue-gray-900 font-semibold capitalize">Country:</p>
+                <p class="block antialiased font-sans text-sm leading-normal font-normal text-blue-gray-500">{{ user.country }}</p>
+              </li>
             </ul>
           </div>
         </div>
         <div class="shadow p-4 rounded-xl">
           <div class="relative bg-clip-border overflow-hidden bg-transparent text-gray-700 shadow-none mx-0 mt-0 flex items-center justify-between gap-4">
             <h6 class="block antialiased tracking-normal font-sans text-base font-semibold leading-relaxed text-blue-gray-900 mb-3">
-              Platform Settings
+              Update Password
             </h6>
           </div>
           <div class="text-lg">Comming Soon</div>
@@ -76,13 +95,24 @@
           Your Enrolled Courses
         </h6>
         <p class="block antialiased font-sans text-sm leading-normal font-normal text-blue-gray-500">
-          You have enrolled in 4 courses
+          You have enrolled in {{ user.enrollment_set.get_queryset|length }} courses
         </p>
         <div class="mt-6 grid grid-cols-1 gap-12 md:grid-cols-2 xl:grid-cols-4">
-          <div class="card shadow p-4"></div>
-          <div class="card shadow p-4"></div>
-          <div class="card shadow p-4"></div>
-          <div class="card shadow p-4"></div>
+          {% for enrolled in user.enrollment_set.get_queryset %}
+            <div class="card shadow p-4 gap-2">
+              <span class="text-xl font-bold">{{ enrolled.standard.name }}</span>
+              <ul class="flex flex-col gap-2 p-0">
+                <li class="flex items-center gap-2">
+                  <p class="block antialiased font-sans text-sm leading-normal text-blue-gray-900 font-semibold capitalize">Created At:</p>
+                  <p class="block antialiased font-sans text-sm leading-normal font-normal text-blue-gray-500">{{ enrolled.created_at }}</p>
+                </li>
+                <li class="flex items-center gap-2">
+                  <p class="block antialiased font-sans text-sm leading-normal text-blue-gray-900 font-semibold capitalize">Expiration Date:</p>
+                  <p class="block antialiased font-sans text-sm leading-normal font-normal text-blue-gray-500">{{ enrolled.expiration_date }}</p>
+                </li>
+              </ul>
+            </div>
+          {% endfor %}
         </div>
       </div>
     </div>

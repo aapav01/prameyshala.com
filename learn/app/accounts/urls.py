@@ -6,7 +6,7 @@ app_name = 'accounts'
 
 urlpatterns = [
     path('', home, name='home'),
-    path('account/profile', profile, name='user_profile'),
+    path('account/profile', UserProfile.as_view(), name='user_profile'),
     path("account/", include("django.contrib.auth.urls")),
     path('account/register/', UserRegisterView.as_view(), name='register'),
     path('account/enrollment/',
@@ -26,6 +26,8 @@ urlpatterns = [
     path("settings/", login_required(SettingView.as_view()), name="settings"),
     path("account/users", login_required(UsersView.as_view()), name='users'),
     path("account/users/<int:pk>/",
+         login_required(UsersDetailView.as_view()), name="user-detail"),
+    path("account/users/<int:pk>/edit",
          login_required(UsersUpdateView.as_view()), name="user-update"),
     path("account/users/<int:pk>/delete/",
          login_required(UsersDeleteView.as_view()), name="user-delete"),

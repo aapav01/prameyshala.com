@@ -66,6 +66,17 @@ class UsersView(PermissionRequiredMixin, ListView):
         return queryset
 
 
+class UsersDetailView(DetailView):
+    permission_required = "accounts.view_user"
+    model = User
+    template_name = "accounts/users/profile.html"
+    context_object_name = "user"
+    extra_context = {
+        'title': 'User Details',
+        'breadcrumbs': [{'url': 'core:home', 'label': 'Dashboard'}, {'label': 'User Management'}, {'label': 'Users', 'url': 'accounts:users'}, {'label': 'User Details'}],
+    }
+
+
 class UsersUpdateView(PermissionRequiredMixin, UpdateView):
     permission_required = "accounts.change_user"
     model = User
