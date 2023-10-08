@@ -12,7 +12,7 @@ import { getClient } from "@/lib/client";
 import VideoPlayer from "@/components/sections/video-player";
 import Quiz from "@/components/sections/quiz";
 // import Assignment from "@/components/sections/assignment";
-const Assignment = dynamic(() => import("@/components/sections/assignment"), {
+const Assignment = dynamic(() => import("@/components/sections/pdf-viewer"), {
   ssr: false
 });
 
@@ -120,7 +120,7 @@ function LessonType({ lesson }: { lesson: any }) {
     case "QUIZ":
       return <Quiz lesson={lesson} />;
     case "ASSIGNMENT":
-      return <Assignment file={lesson.assignment.assigmentFile} />;
+      return <Assignment file={lesson.assignment.assigmentFile} type={lesson.lessonType} lessonId={lesson.id}/>;
     default:
       return <div>Unknown Lesson Type</div>;
   }

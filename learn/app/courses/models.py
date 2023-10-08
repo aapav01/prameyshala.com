@@ -250,3 +250,15 @@ class Lesson(models.Model):
 
     class Meta:
         db_table = 'lessons'
+
+class Lesson_Progress(models.Model):
+    student = models.ForeignKey(
+        User,on_delete=models.CASCADE, blank=False, null=False
+    )
+    lesson = models.ForeignKey(
+        Lesson,on_delete=models.CASCADE,blank=False,null=False
+    )
+    progress = models.FloatField(default=0,
+                                 validators=[MinValueValidator(0.0), MaxValueValidator(1.0)],
+                                 blank=False,null=False)
+    lesson_completed = models.BooleanField(default=False, blank=True, null=True)
