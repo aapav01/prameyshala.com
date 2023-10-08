@@ -180,28 +180,30 @@ class CreateProgress(graphene.Mutation):
     success = graphene.Boolean()
     class Arguments:
         progress = graphene.Float(required=True)
-        lesson_id = graphene.ID(required=True)
-    def mutate(root, info, progress, lesson_id):
+        lessonID = graphene.ID(required=True)
+    def mutate(root, info, progress, lessonID):
         user = info.context.user
         if not user.is_authenticated:
             raise Exception("Authentication credentials were not provided")
         completed = False
         if progress == 1.0:
             completed = True
-        if not Lesson_Progress.objects.filter(lesson__id=lesson_id).exists():
+        if not Lesson_Progress.objects.filter(lesson__id=lessonID).exists():
+
             progress_record = Lesson_Progress(
                 student_id = user.id,
                 progress = progress,
-                lesson_id = lesson_id,
+                lesson_id = lessonID,
                 lesson_completed = completed
             )
             progress_record.save()
         else:
-            progress_instance = Lesson_Progress.objects.get(lesson__id=lesson_id)
-            progress_instance.progress=progress
-            if not progress_instance.lesson_completed and completed:
-                progress_instance.lesson_completed=completed
-            progress_instance.save()
+            progress_instance = Lesson_Progress.objects.get(lesson__id=lessonID)
+            if not progress_instance.lesson_completed:
+                progress_instance.progress=progress
+                if completed:
+                    progress_instance.lesson_completed=completed
+                progress_instance.save()
         return CreateProgress(success=True)
 class Mutation(graphene.ObjectType):
     create_submission = CreateAssignmentSubmission.Field()
