@@ -110,7 +110,7 @@ export default function Assignment({ file,type,lessonId }: Props) {
   if (process.env.NODE_ENV === "development") {
     var source_file = `/static/media/${file}`;
   }
-  source_file = `/${file.substring(20)}`;
+  //source_file = `/${file.substring(20)}`;
   return (
     <div className="m-4 p-4 rounded-2xl shadow-xl border-2">
       <div className=" border-b-2 mb-2 pb-4">
