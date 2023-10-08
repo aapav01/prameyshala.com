@@ -120,7 +120,7 @@ function LessonType({ lesson }: { lesson: any }) {
     case "QUIZ":
       return <Quiz lesson={lesson} />;
     case "ASSIGNMENT":
-      return <Assignment file={lesson.assignment.assigmentFile} type={lesson.lessonType}/>;
+      return <Assignment file={lesson.assignment.assigmentFile} type={lesson.lessonType} lessonId={lesson.id}/>;
     default:
       return <div>Unknown Lesson Type</div>;
   }
