@@ -13,7 +13,6 @@ class Mutation(accounts.Mutation,courses.Mutation, graphene.ObjectType):
     token_auth = accounts.ObtainJSONWebToken.Field()
     verify_token = graphql_jwt.Verify.Field()
     refresh_token = graphql_jwt.Refresh.Field()
-    create_progress = courses.CreateProgress.Field()
 
 
 
