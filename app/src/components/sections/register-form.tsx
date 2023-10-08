@@ -72,6 +72,8 @@ export default function RegisterForm({}: Props) {
   const [cities, setCities] = useState<Array<any>>([]);
   // Navigation
   const router = useRouter();
+  // Erorr
+  const [error, setErorr] = useState<any>(null);
 
   // Forms
   const form = useForm<z.infer<typeof formSchema>>({
@@ -95,10 +97,15 @@ export default function RegisterForm({}: Props) {
       body: JSON.stringify(data),
     })
       .then((res) => {
-        router.push("/login");
-        return res.json();
+        const data = res.json();
+        if (res.status === 200) router.push("/login");
+        else setErorr(data);
+        return;
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        console.log(err);
+        setErorr(err);
+      });
   }
 
   async function otpSubmit(data: z.infer<typeof otpSchema>) {
@@ -110,19 +117,38 @@ export default function RegisterForm({}: Props) {
       }),
     })
       .then((res) => {
-        setStep("register");
-        return res.json();
+        const data = res.json();
+        if (res.status === 200) {
+          toast({
+            description: (
+              <pre className="mt-2 w-[340px] rounded-md bg-green-900 p-4">
+                <code className="text-white">
+                  OTP verified
+                </code>
+              </pre>
+            ),
+          });
+          setStep("register");
+        } else {
+          toast({
+            description: (
+              <pre className="mt-2 w-[340px] rounded-md bg-red-900 p-4">
+                <code className="text-white">OTP Verification Failed</code>
+              </pre>
+            ),
+          });
+        }
       })
       .catch((err) => {
         console.error(err);
+        toast({
+          description: (
+            <pre className="mt-2 w-[340px] rounded-md bg-red-900 p-4">
+              <code className="text-white">Failed to Verify OTP</code>
+            </pre>
+          ),
+        });
       });
-    toast({
-      description: (
-        <pre className="mt-2 w-[340px] rounded-md bg-green-900 p-4">
-          <code className="text-white">{JSON.stringify(result, null, 2)}</code>
-        </pre>
-      ),
-    });
   }
 
   async function phoneNumberSubmit(data: z.infer<typeof phoneNumberSchema>) {
@@ -327,28 +353,6 @@ export default function RegisterForm({}: Props) {
                   </FormItem>
                 )}
               />
-              {/* <FormField
-                control={form.control}
-                name="phoneNumber"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="font-medium text-gray-700">
-                      Phone Number
-                    </FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder="+91 9876543210"
-                        type="tel"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormDescription className="text-xs">
-                      Phone Number will be used to log on to Pramey Shala.
-                    </FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              /> */}
               <FormField
                 control={form.control}
                 name="password"

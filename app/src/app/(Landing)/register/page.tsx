@@ -17,6 +17,7 @@ export async function generateMetadata({}: Props): Promise<Metadata> {
 export default async function RegisterPage({}: Props) {
   const session = await getServerSession();
   if (session?.user && session.user?.email) {
+    console.log("User is already logged in");
     redirect("/learn");
   }
   return (
