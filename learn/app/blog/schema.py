@@ -1,11 +1,9 @@
 import graphene
 from graphene_django import DjangoObjectType
+from app.accounts.schema import UserType
+from app.accounts.models import User
 
-from .models import Profile, Post, Tag
-
-class AuthorType(DjangoObjectType):
-    class Meta:
-        model = Profile
+from .models import Post, Tag
 
 class PostType(DjangoObjectType):
     class Meta:
@@ -17,7 +15,7 @@ class TagType(DjangoObjectType):
 
 class Query(graphene.ObjectType):
     all_posts = graphene.List(PostType)
-    author_by_username = graphene.Field(AuthorType, username=graphene.String())
+    author_by_username = graphene.Field(UserType, username=graphene.String())
     post_by_slug = graphene.Field(PostType, slug=graphene.String())
     posts_by_author = graphene.List(PostType, username=graphene.String())
     posts_by_tag = graphene.List(PostType, tag=graphene.String())
@@ -30,7 +28,7 @@ class Query(graphene.ObjectType):
         )
 
     def resolve_author_by_username(root, info, username):
-        return Profile.objects.select_related("user").get(
+        return User.objects.select_related("user").get(
             user__username=username
         )
 

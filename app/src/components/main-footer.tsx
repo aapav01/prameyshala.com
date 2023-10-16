@@ -29,7 +29,7 @@ function MainFooter({}: Props) {
               Start learning with Prameyshala
               </p>
               <p className="mt-2 font-sans text-sm font-bold text-center">
-                Download our apps to start learning
+                Download our apps to start learning. (Coming Soon)
               </p>
               <div className="flex flex-row gap-2 p-1">
                 <Image
@@ -51,8 +51,7 @@ function MainFooter({}: Props) {
                 <p className="font-sans font-bold text-indigo-100">Usefull Links</p>
                 <ul className="mt-2">
                   <li><a href="/about">About Us</a></li>
-                  <li>Careers</li>
-                  <li>Blogs</li>
+                  <li><a href="/blog">Insight</a></li>
                 </ul>
               </div>
               <div>

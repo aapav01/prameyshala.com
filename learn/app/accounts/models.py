@@ -55,6 +55,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     country = models.CharField(max_length=64, blank=True, null=True, default='IN')
     state = models.CharField(max_length=64, blank=True, null=True)
     city = models.CharField(max_length=64, blank=True, null=True)
+    photo = models.ImageField(upload_to='uploads/profile_pics', blank=True, null=True)
     objects = UserManager()
     USERNAME_FIELD = 'phone_number'
     REQUIRED_FIELDS = ['email', 'full_name']

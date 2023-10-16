@@ -228,40 +228,51 @@ export default async function ClassDetail({ params }: Props) {
               </div>
             </TabsContent>
             <TabsContent className="p-4" value="curriculum">
-              {data.standard.subjectSet.map((subject: any, index_s: number) => (
-                <React.Fragment key={index_s}>
-                  <h3 className="font-sans font-semibold py-4 text-xl">
-                    {subject.name}
-                  </h3>
-                  <Accordion
-                    className="flex flex-col gap-4 py-2"
-                    defaultValue="item-1"
-                    type="single"
-                    collapsible
-                  >
-                    {subject.chapterSet.map((chapter: any, index: number) => (
-                      <AccordionItem
-                        key={index}
-                        className="shadow rounded"
-                        value={"item-" + index_s + index}
-                      >
-                        <AccordionTrigger className="bg-blue-100 text-blue-950 rounded text-xl font-semibold px-4">
-                          {chapter.name}
-                        </AccordionTrigger>
-                        <AccordionContent className="p-2 text-lg">
-                          <ul className="list-decimal">
-                            {chapter.lessonSet.map(
-                              (lesson: any, index: number) => (
-                                <li key={index}>{lesson.name}</li>
-                              )
-                            )}
-                          </ul>
-                        </AccordionContent>
-                      </AccordionItem>
-                    ))}
-                  </Accordion>
-                </React.Fragment>
-              ))}
+              {data.standard.subjectSet.map((subject: any, index_s: number) => {
+                // check if subject has any lessons
+                let hasLessons = false;
+                subject.chapterSet.forEach((chapter: any) => {
+                  if (chapter.lessonSet.length > 0) hasLessons = true;
+                });
+                if (!hasLessons) return null;
+                return (
+                  <React.Fragment key={index_s}>
+                    <h3 className="font-sans font-semibold py-4 text-xl">
+                      {subject.name}
+                    </h3>
+                    <Accordion
+                      className="flex flex-col gap-4 py-2"
+                      defaultValue="item-1"
+                      type="single"
+                      collapsible
+                    >
+                      {subject.chapterSet.map((chapter: any, index: number) => {
+                        if (chapter.lessonSet.length === 0) return null;
+                        return (
+                          <AccordionItem
+                            key={index}
+                            className="shadow rounded"
+                            value={"item-" + index_s + index}
+                          >
+                            <AccordionTrigger className="bg-blue-100 text-blue-950 rounded text-xl font-semibold px-4">
+                              {chapter.name}
+                            </AccordionTrigger>
+                            <AccordionContent className="p-2 text-lg prose">
+                              <ol>
+                                {chapter.lessonSet.map(
+                                  (lesson: any, index: number) => (
+                                    <li key={index}>{lesson.title}</li>
+                                  )
+                                )}
+                              </ol>
+                            </AccordionContent>
+                          </AccordionItem>
+                        );
+                      })}
+                    </Accordion>
+                  </React.Fragment>
+                );
+              })}
             </TabsContent>
             <TabsContent
               className="prose prose-lg max-w-full"

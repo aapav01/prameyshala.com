@@ -51,3 +51,9 @@ class UsersForm(ModelForm):
         super().__init__(*args, **kwargs)
         if self.instance.pk:
             self.fields['password'].widget = forms.HiddenInput()
+
+class UserProfile(ModelForm):
+    class Meta:
+        model = User
+        fields = ['full_name', 'phone_number', 'email', 'country', 'state', 'city', 'photo']
+        exclude = ['last_login', 'password', 'is_active', 'is_superuser', 'is_staff', 'groups', 'user_permissions',]
