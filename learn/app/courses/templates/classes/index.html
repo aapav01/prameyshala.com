@@ -118,7 +118,7 @@
       <button>close</button>
     </form>
   </dialog>
-  <script>new EasyMDE({element: document.getElementById('{{ form.description.id_for_label }}')});</script>
+  {% comment %} <script>new EasyMDE({element: document.getElementById('{{ form.description.id_for_label }}')});</script> {% endcomment %}
 {% endif %}
 {% if perms.courses.change_classes %}
   {% for class in classes %}
