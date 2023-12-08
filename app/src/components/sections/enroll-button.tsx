@@ -13,13 +13,14 @@ type Props = {
 
 export default function EnrollButton({ standard, enrolled }: Props) {
   const [disabled, setDisabled] = useState(false);
+
   return (
     <>
       {!enrolled && (
         <Button
           className="text-lg py-6 hover:bg-transparent border hover:border-primary hover:text-primary"
           size="lg"
-          disabled={true}
+          disabled={disabled}
         >
           {disabled ? (
             <ReloadIcon className="animate-spin" />
