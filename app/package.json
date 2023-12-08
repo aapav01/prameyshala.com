@@ -50,7 +50,7 @@
     "date-fns": "^2.30.0",
     "framer-motion": "^10.12.17",
     "graphql": "^16.8.1",
-    "next": "13.4.12",
+    "next": "13.5.1",
     "next-auth": "^4.24.5",
     "next-mdx-remote": "^4.4.1",
     "react": "18.2.0",
