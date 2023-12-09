@@ -78,7 +78,6 @@ export const metadata = {
     { name: "Abhay Gupta" },
     { name: "Naman Chaudhary", url: "https://webkolek.com" },
   ],
-  colorScheme: "light",
   creator: "Webkolek",
   openGraph: {
     title: "Pramey Shala",

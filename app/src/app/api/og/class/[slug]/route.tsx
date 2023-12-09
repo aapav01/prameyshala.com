@@ -1,4 +1,4 @@
-import { ImageResponse } from "next/server";
+import { ImageResponse } from "next/og";
 
 // GRAPHQL API - APPLOLO
 import { gql } from "@apollo/client";
@@ -24,7 +24,7 @@ export async function GET(request: Request, { params }: Props) {
     variables: { slug: params.slug },
   });
 
-  return new ImageResponse(
+  return new (ImageResponse as any)(
     (
       <div
         style={{
