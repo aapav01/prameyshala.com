@@ -22,12 +22,13 @@ pdfjs.GlobalWorkerOptions.workerSrc = new URL(
 ).toString();
 
 export default function Assignment({ file,type,lessonId }: Props) {
-  const [numPages, setNumPages] = useState<number>(1);
-  const [pageNumber, setPageNumber] = useState<number>(1);
+  const [numPages, setNumPages] = useState<number>(0);
+  const [pageNumber, setPageNumber] = useState<number>(0);
   const [scale, setScale] = useState<number[]>([1]);
   const { data: session } = useSession();
   const router = useRouter();
 
+  useEffect(()=>{
   async function progressSubmit() {
     if (!session?.user) {
       router.push("/login?callbackUrl=" + window.location.href);
@@ -57,6 +58,10 @@ export default function Assignment({ file,type,lessonId }: Props) {
       ),
     });
   }
+  if(pageNumber && numPages){
+    progressSubmit();
+  }
+},[pageNumber])
 
   function onDocumentLoadSuccess({ numPages }: { numPages: number }): void {
     setNumPages(numPages);
@@ -65,7 +70,7 @@ export default function Assignment({ file,type,lessonId }: Props) {
 
   function changePage(offset: number) {
     setPageNumber((prevPageNumber) => prevPageNumber + offset);
-    progressSubmit();
+
   }
 
   function previousPage() {
