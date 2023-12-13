@@ -5,6 +5,7 @@ import razorpay
 import requests
 import hashlib
 import shortuuid
+import base64
 
 from ..models import Payments
 
@@ -73,20 +74,23 @@ class PaymentMutation(graphene.ObjectType):
 
         order_id = shortuuid.ShortUUID().random(length=18) + str(user.id) + str(amount)
 
-        payload = {
-            "merchantId": env("PHONEPE_MERCHANT_ID"),
-            "merchantTransactionId": order_id,
-            "merchantUserId": user.id,
-            "amount": (amount * 100),
-            "redirectUrl": "https://webhook.site/b596f550-fe92-4639-96f7-14e8309394e5",
-            "redirectMode": "REDIRECT",
-            "callbackUrl": "https://webhook.site/b596f550-fe92-4639-96f7-14e8309394e5",
-            "mobileNumber": user.phone_number,
-            "paymentInstrument": {
-                "type": "PAY_PAGE"
-            }
-        }
-        hash_string = str(payload) + api_point + env("PHONEPE_SECRET")
+        base_payload = "{\n"
+        base_payload += "\t\"merchantId\": \"" + env("PHONEPE_MERCHANT_ID") + "\",\n"
+        base_payload += "\t\"merchantTransactionId\": \"" + order_id + "\",\n"
+        base_payload += "\t\"merchantUserId\": \"" + str(user.id) + "\",\n"
+        base_payload += "\t\"amount\": " + str(amount * 100) + ",\n"
+        base_payload += "\t\"redirectUrl\": \"https://webhook.site/29dc89d4-0c7d-4798-9e78-e12d86a25f91\",\n"
+        base_payload += "\t\"redirectMode\": \"REDIRECT\",\n"
+        base_payload += "\t\"callbackUrl\": \"https://webhook.site/29dc89d4-0c7d-4798-9e78-e12d86a25f91\",\n"
+        base_payload += "\t\"mobileNumber\": \"" + user.phone_number + "\",\n"
+        base_payload += "\t\"paymentInstrument\": {\n"
+        base_payload += "\t\t\"type\": \"PAY_PAGE\"\n"
+        base_payload += "\t}\n"
+        base_payload += "}"
+
+        base_payload = base64.b64encode(str(base_payload).encode("utf-8"))
+        base_payload = base_payload.decode("utf-8")
+        hash_string = base_payload + api_point + env("PHONEPE_SECRET")
         hash_sha = hashlib.sha256(hash_string.encode()).hexdigest()
 
         headers = {
@@ -96,12 +100,11 @@ class PaymentMutation(graphene.ObjectType):
         }
 
         try:
-            response = requests.post(url, headers=headers, json=payload)
+            response = requests.post(url, headers=headers, json={ "request": base_payload })
             data = response.json()
-            print(data)
             Payments.objects.create(order_gateway_id=order_id, gateway='phonepe',
                                     status="created", amount=amount, user=info.context.user,
-                                    user_email=info.context.user.email, json_response=response)
+                                    user_email=info.context.user.email, json_response=response.json())
             data["data"] = str(data["data"])
             return data
         except Exception as e:
