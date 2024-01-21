@@ -90,6 +90,7 @@ class Payments(models.Model):
     status = models.CharField(max_length=10,
         choices=PaymentStatus.choices, default=PaymentStatus.CREATED)
     json_response = models.TextField()
+    standard = models.ForeignKey('courses.Classes', on_delete=models.DO_NOTHING, blank=True, null=True)
     created_at = models.DateTimeField(auto_now=False, auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
