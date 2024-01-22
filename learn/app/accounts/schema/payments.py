@@ -147,8 +147,11 @@ class PaymentMutation(graphene.ObjectType):
                 payment.json_response = response.json()
                 payment.method = data["data"]["paymentInstrument"]["type"]
                 payment.save()
-                Enrollment.objects.create(user=user, standard=payment.standard, payment=payment.id,
-                                             expiration_date=(datetime.now() + timedelta(days=365)))
+            if (payment.status == "paid"):
+                enrollment = Enrollment.objects.filter(standard=payment.standard)
+                if enrollment.count() == 0:
+                    Enrollment.objects.create(user=user, standard=payment.standard, payment=payment,
+                                              expiration_date=(datetime.now() + timedelta(days=365)))
             return data
         except Exception as e:
             print(e)
