@@ -5,6 +5,7 @@ from django.contrib.auth.hashers import make_password
 from django.utils.translation import gettext_lazy as _
 from datetime import date, timedelta
 from phonenumber_field.modelfields import PhoneNumberField
+import base64
 
 phone_validator = RegexValidator(
     r"^(\+?\d{0,4})?\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{4}\)?)?$", "The phone number provided is invalid")
@@ -97,6 +98,16 @@ class Payments(models.Model):
     class Meta:
         db_table = 'payments'
 
+class PhonePeResponse(models.Model):
+    response = models.JSONField()
+    created_at = models.DateTimeField(auto_now=False, auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        db_table = 'phonepe_response'
+
+    def __str__(self):
+        return str(base64.decode(self.response))
 
 class Enrollment(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
