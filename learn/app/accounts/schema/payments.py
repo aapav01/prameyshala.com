@@ -12,6 +12,7 @@ from graphene_django import DjangoObjectType
 
 from app.courses.models import Classes
 from ..models import Enrollment, Payments
+from app.courses.schema import ClassesType
 
 env = environ.Env()
 environ.Env.read_env()
@@ -31,6 +32,7 @@ class PhonePeType(graphene.ObjectType):
     code = graphene.String()
     message = graphene.String()
     data = graphene.JSONString()
+    standardSlug = graphene.String()
 
 
 class PaymentQuery(graphene.ObjectType):
@@ -115,6 +117,7 @@ class PaymentMutation(graphene.ObjectType):
                                     status="created", amount=amount, user=info.context.user, standard=ps_class,
                                     user_email=info.context.user.email, json_response=response.json())
             # data["data"] = str(data["data"])
+            data["standardSlug"] = ps_payment.standard.slug
             return data
         except Exception as e:
             print(e)
@@ -152,7 +155,8 @@ class PaymentMutation(graphene.ObjectType):
                 if enrollment.count() == 0:
                     Enrollment.objects.create(user=user, standard=payment.standard, payment=payment,
                                               expiration_date=(datetime.now() + timedelta(days=365)))
+            data["standardSlug"] = payment.standard.slug
             return data
         except Exception as e:
             print(e)
-            return PhonePeType(success=False, code=response["code"], message=response["message"], data=response["data"])
+            return PhonePeType(success=False, code=response["code"], message=response["message"], data=response["data"], standardId=payment.standard.slug)
