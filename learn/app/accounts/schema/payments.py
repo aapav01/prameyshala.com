@@ -90,7 +90,7 @@ class PaymentMutation(graphene.ObjectType):
         base_payload += "\t\"amount\": " + str(amount * 100) + ",\n"
         base_payload += "\t\"redirectUrl\": \"https://prameyshala.com/learn/sub/"+ order_id +"\",\n"
         base_payload += "\t\"redirectMode\": \"REDIRECT\",\n"
-        base_payload += "\t\"callbackUrl\": \"https://webhook.site/66ca7c58-93a9-4cb3-8852-222bd3c6f968\",\n"
+        base_payload += "\t\"callbackUrl\": \"http://portal.prameyshala.com/account/payment/phonepe\",\n"
         base_payload += "\t\"mobileNumber\": \"" + user.phone_number + "\",\n"
         base_payload += "\t\"paymentInstrument\": {\n"
         base_payload += "\t\t\"type\": \"PAY_PAGE\"\n"
