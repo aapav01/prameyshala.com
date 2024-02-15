@@ -7,7 +7,7 @@ from django.views.generic import ListView, DetailView, CreateView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from django.db.models import Count
-from ..forms import ChoiceInlineFormSet, QuestionInlineFormSet, QuestionInlineUpdateFormSet, ChoiceInlineUpdateFormSet
+from ..forms import ChoiceInlineFormSet, QuestionInlineFormSet, QuestionForm, ChoiceInlineUpdateFormSet
 from ..models import Quiz
 from django.db.models import Q
 
@@ -91,7 +91,7 @@ class QuizUpdateView(PermissionRequiredMixin, UpdateView):
     permission_required = "courses.change_quizzes"
     model = Quiz
     success_url = reverse_lazy("courses:quizzes")
-    template_name = "quizzes/form.html"
+    template_name = "quizzes/update_form.html"
     fields = "__all__"
 
     extra_context = {
@@ -106,34 +106,16 @@ class QuizUpdateView(PermissionRequiredMixin, UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        if self.request.method == 'POST':
-            context['question_formset'] = QuestionInlineUpdateFormSet(self.request.POST, instance=self.object, prefix='question_formset')
-        else:
-            context['question_formset'] = QuestionInlineUpdateFormSet(instance=self.object, prefix='question_formset')
+        context['question_form'] = QuestionForm
+        context['question_form'].choice_formset = ChoiceInlineFormSet
 
-        questions_count = 0
-        for question in context['question_formset']:
-            if self.request.method == 'POST':
-                question.choice_formset = ChoiceInlineUpdateFormSet(self.request.POST, instance=question.instance, prefix='choice_formset_%s' % questions_count)
-            else:
-                question.choice_formset = ChoiceInlineUpdateFormSet(instance=question.instance, prefix='choice_formset_%s' % questions_count)
-            questions_count += 1
+
         return context
 
     def form_valid(self, form):
         result = super().form_valid(form)
         messages.info(
             self.request, f'{form.instance.name} has been updated successfully.')
-        question_formset = QuestionInlineUpdateFormSet(self.request.POST, instance=self.object, prefix='question_formset')
-        if question_formset.is_valid():
-            questions = question_formset.save()
-            questions_count = 0
-            for question in questions:
-                choice_formset = ChoiceInlineUpdateFormSet(
-                    self.request.POST, instance=question, prefix='choice_formset_%s' % questions_count)
-                if choice_formset.is_valid():
-                    choice_formset.save()
-                questions_count += 1
 
         return result
 

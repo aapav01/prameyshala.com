@@ -92,13 +92,19 @@ class CategoriesForm(ModelForm):
         model = Category
         fields = "__all__"
 
+class QuestionForm(ModelForm):
+    class Meta:
+        model = Question
+        exclude = ['quiz']
+        widgets = {
+            'question_text': forms.Textarea(attrs={'required': True}),
+        }
+
 
 QuestionInlineFormSet = inlineformset_factory(
     Quiz, Question, extra=1, fields="__all__")
 ChoiceInlineFormSet = inlineformset_factory(
     Question, Choice, extra=2, fields="__all__")
 
-QuestionInlineUpdateFormSet = inlineformset_factory(
-    Quiz, Question, extra=0, fields="__all__")
 ChoiceInlineUpdateFormSet = inlineformset_factory(
     Question, Choice, extra=0, fields="__all__")
