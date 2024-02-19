@@ -11,25 +11,44 @@
       </div>
       <form method="post" enctype="multipart/form-data" class="p-6">
         {% csrf_token %}
-        <div id="main_{{ form.prefix }}"
-             class="form-control w-full djanog-custom-forms grid grid-cols-1 md:grid-cols-2 gap-4">
-          {{ form.as_div }}
-        </div>
+        <div class="form-control w-full djanog-custom-forms grid grid-cols-1 md:grid-cols-2 gap-4">{{ form.as_div }}</div>
         <button class="btn btn-success my-4 shadow text-gray-300">Save</button>
       </form>
     </div>
     <div class="relative flex w-full flex-col rounded-xl bg-base-100 bg-clip-border text-base-content shadow-md">
-      <div class="relative mx-4 -mt-6 mb-4 grid px-6 py-8 overflow-hidden rounded-xl bg-gradient-to-tr from-purple-800 to-purple-400 bg-clip-border text-white shadow-lg shadow-purple-500/40">
+      <div class="relative mx-4 -mt-6 mb-4 grid px-6 py-8 overflow-hidden rounded-xl  bg-gradient-to-tr from-purple-800 to-purple-400 bg-clip-border text-white shadow-lg shadow-purple-500/40">
         <h1 class="block font-sans leading-snug tracking-normal text-white antialiased text-lg font-semibold">Questions</h1>
       </div>
-      <form> 
+      <form method="post" enctype="multipart/form-data" class="p-6">
         {% comment %} form add action to add question to quiz, "CREATE NEW VIEW WITH POST OR PUT" method to store the records {% endcomment %}
         {% csrf_token %}
-        <div class="form-control w-full djanog-custom-forms grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div id="main_{{ form.prefix }}"
+             class="form-control w-full djanog-custom-forms grid grid-cols-1 md:grid-cols-2 gap-4">
           {{ question_form.as_div }}
-          <div>{{ question_form.choice_formset.as_div }}</div>
+          <div>
+            {% for choice_form in question_form.choice_formset %}
+              <fieldset>
+                <legend>Choice {{ forloop.counter }}</legend>
+                {{ choice_form.as_p }}
+              </fieldset>
+            {% endfor %}
+          </div>
+          <div class="flex justify-end">
+            <button class="btn btn-primary text-white mt-6"
+                    onclick="handleAddChoice(this, {{ forloop.counter }})"
+                    type="button">
+              <i class="far fa-plus"></i>Add choice
+            </button>
+          </div>
         </div>
-        <button class="btn btn-success my-4 shadow text-gray-300">Save</button>
+        <div class="flex items-center justify-center">
+          <button type="button"
+                  class="btn bg-gradient-to-br from-purple-600 to-pink-400 text-white px-12 border-0 shadow-md shadow-purple-500/50 mt-8"
+                  onclick="handleAddQuestion(this)">
+            <i class="far fa-plus"></i>Add Question
+          </button>
+        </div>
+        <button class="btn btn-success my-4 shadow text-gray-800">Submit</button>
       </form>
       {% comment %} add another form to update the question this form will be having instance of so that it has value from existing records {% endcomment %}
     </div>

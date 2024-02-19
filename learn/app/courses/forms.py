@@ -61,6 +61,7 @@ class SubjectForm(ModelForm):
             'publish_at': forms.DateTimeInput(attrs={'type': 'datetime-local'})
         }
 
+
 class SubjectChatperForm(ModelForm):
     class Meta:
         model = Chapter
@@ -91,6 +92,13 @@ class CategoriesForm(ModelForm):
     class Meta:
         model = Category
         fields = "__all__"
+
+
+class QuizForm(ModelForm):
+    class Meta:
+        model = Quiz
+        fields = "__all__"
+
 
 class QuestionForm(ModelForm):
     class Meta:
