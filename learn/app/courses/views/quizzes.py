@@ -110,7 +110,7 @@ class QuizDetailView(PermissionRequiredMixin, DetailView):
             {'label': 'Courses'},
             {'url': 'courses:quizzes', 'label': 'Quizzes'},
             {'label': 'Detail Quiz View'},
-        ], 'form_question': QuestionForm
+        ],
     }
 
     def get_context_data(self, **kwargs):
@@ -120,18 +120,34 @@ class QuizDetailView(PermissionRequiredMixin, DetailView):
         context['form'] = QuizForm(
             instance=self.object, prefix=self.object.pk)
         context['questions'] = self.object.question_set.all()
+        if self.request.method == 'POST':
+            context['question_form'] = QuestionForm(self.request.POST)
+            context['question_form'].choice_formset = ChoiceInlineFormSet(
+                self.request.POST, prefix='question_formset')
+        else:
+            context['question_form'] = QuestionForm()
+            context['question_form'].choice_formset = ChoiceInlineFormSet(
+                prefix='question_formset')
         return context
 
     def post(self, request, **kwargs):
         form = QuestionForm(request.POST)
-        self.extra_context.update({'form_question': form})
+        self.extra_context.update({'question_form': form})
+
         if form.is_valid():
             instance = form.save(commit=False)
-            instance.question = self.get_object()
+            instance.quiz = self.get_object()
             instance.save()
+            question_formset = ChoiceInlineFormSet(request.POST, instance=instance, prefix='question_formset')
+            if question_formset.is_valid():
+                question_formset.save()
+            else:
+                messages.error(
+                    request, f'failed to create! please see the create form for more details.')
+                return super().get(request, **kwargs)
             messages.success(
-                request, f'{instance.name} has been created successfully.')
-            self.extra_context.update({'form': QuestionForm})
+                request, f'{instance.question_text} has been created successfully.')
+            self.extra_context.update({'form': QuizForm})
             return redirect('courses:quiz-detail', pk=self.get_object().pk)
         else:
             messages.error(
@@ -143,7 +159,7 @@ class QuizUpdateView(PermissionRequiredMixin, UpdateView):
     permission_required = "courses.change_quizzes"
     model = Quiz
     success_url = reverse_lazy("courses:quizzes")
-    template_name = "quizzes/form.html"
+    template_name = "form.html"
     form = QuizForm
     fields = "__all__"
 
@@ -165,11 +181,9 @@ class QuizUpdateView(PermissionRequiredMixin, UpdateView):
         return kwargs
 
     def form_valid(self, form):
-        result = super().form_valid(form)
         messages.info(
             self.request, f'{form.instance.name} has been updated successfully.')
-
-        return result
+        return super().form_valid(form)
 
 
 class QuizDeleteView(PermissionRequiredMixin, DeleteView):

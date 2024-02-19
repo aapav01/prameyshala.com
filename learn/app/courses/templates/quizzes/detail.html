@@ -47,23 +47,34 @@
         </div>
       </div>
     </div>
-    <h2 class="text-xl font-sans font-bold">Question in {{ title }}</h2>
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-x-4 gap-y-10">
+    <h2 class="text-xl font-sans font-bold">Questions</h2>
+    <div class="grid grid-cols-1 gap-x-4 gap-y-10">
       {% for question in questions %}
         <div class="relative flex w-full flex-col rounded-xl bg-base-100 bg-clip-border text-base-content shadow-md">
-          <div class="mx-4 -mt-6 mb-4 px-4 py-4 overflow-hidden rounded-xl bg-gradient-to-tr from-purple-800 to-purple-400 bg-clip-border text-white shadow-lg shadow-green-500/40">
-            <h3 class="block font-sans leading-snug tracking-normal text-white antialiased text-lg font-semibold">Question</h3>
+          <div class="mx-4 -mt-6 mb-4 px-4 py-4 overflow-hidden rounded-xl bg-gradient-to-tr from-purple-800 to-purple-400 bg-clip-border text-white shadow-lg shadow-purple-500/40">
+            <h3 class="block font-sans leading-snug tracking-normal text-white antialiased text-lg font-semibold">
+              {{ question }}
+            </h3>
           </div>
-          <div class="grid grid-cols-2 p-4 gap-2">
-            <div>
-              <span class="font-bold">Question Text</span>
-              <p class="text-lg">{{ question }}</p>
+          <div class="p-4">
+            <h4 class="font-bold">Choices</h4>
+            <div class="grid grid-cols-2 gap-2">
+              {% for choice in question.choice_set.all %}
+                <div class="col-span-2">
+                  <li>{{ choice }}</li>
+                </div>
+              {% endfor %}
             </div>
-            {% for choice in question.choice %}
-              <div class="col-span-2">
-                <li>{{ choice }}</li>
-              </div>
-            {% endfor %}
+          </div>
+          <div class="flex p-5 justify-end gap-2">
+            <a href="#"
+               class="btn btn-outline border-green-400 text-green-400 hover:bg-green-400 hover:text-white hover:border-green-400">
+              Edit Question
+            </a>
+            <a href="#"
+               class="btn btn-outline border-red-400 text-red-400 hover:bg-red-400 hover:text-white hover:border-red-400">
+              Delete Question
+            </a>
           </div>
         </div>
       {% endfor %}
@@ -90,7 +101,6 @@
         <button>close</button>
       </form>
     </dialog>
-    {% comment %} <script>new EasyMDE({element: document.getElementById('{{ form.description.id_for_label }}')});</script> {% endcomment %}
   {% endif %}
   {% if perms.courses.add_question %}
     <dialog id="create_question"
@@ -101,28 +111,19 @@
         {% csrf_token %}
         <h2 class="font-mono font-semibold text-lg">Add New Question</h2>
         <div class="relative mb-4">
-          <div class="form-control w-full djanog-custom-forms grid grid-cols-1 md:grid-cols-2 gap-4">
-            {{ form_question.as_div }}
-            <div>
+          <div class="form-control w-full djanog-custom-forms flex gap-4">
+            {{ question_form.as_div }}
+            {{ question_form.choice_formset.management_form }}
+            <div class="grid md:grid-cols-2 gap-2">
               {% for choice_form in question_form.choice_formset %}
-                <fieldset>
-                  <legend>Choice {{ forloop.counter }}</legend>
-                  {{ choice_form.as_p }}
-                </fieldset>
+                <div class="gap-2 inline-flex">{{ choice_form.as_div }}</div>
               {% endfor %}
-            </div>
-            <div class="flex justify-end">
-              <button class="btn btn-primary text-white mt-6"
-                      onclick="handleAddChoice(this, {{ forloop.counter }})"
-                      type="button">
-                <i class="far fa-plus"></i>Add choice
-              </button>
             </div>
           </div>
         </div>
         <div class="modal-action justify-between">
-          <p class="text-xs mt-auto">Press esc to close the window or outside the dialog box.</p>
-          <button type="submit" class="btn btn-success">Add</button>
+          <p class="text-xs mt-auto">Press esc to close the window or click outside the dialog box.</p>
+          <button type="submit" class="btn btn-success">Save</button>
         </div>
       </form>
       <form method="dialog" class="modal-backdrop backdrop-blur-md">
