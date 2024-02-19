@@ -154,9 +154,9 @@ export default async function AllPosts({ params }: Props) {
             {/* Social Media Handles */}
             <div className="w-full border flex flex-col p-6 gap-3">
               <div className="flex items-center justify-center gap-5">
-                <InstagramLogoIcon className="h-8 w-8 animate-bounce duration-[690ms]" />
-                <TwitterLogoIcon className="h-8 w-8 animate-bounce duration-[720ms]" />
-                <LinkedInLogoIcon className="h-8 w-8 animate-bounce duration-[760ms]" />
+                <InstagramLogoIcon className="h-8 w-8 animate-bounce duration-&lsqb;690ms&rsqb;" />
+                <TwitterLogoIcon className="h-8 w-8 animate-bounce duration-&lsqb;720ms&rsqb;" />
+                <LinkedInLogoIcon className="h-8 w-8 animate-bounce duration-&lsqb;760ms&rsqb;" />
               </div>
               <p className="text-center">Follow Us ☝🏼</p>
             </div>
