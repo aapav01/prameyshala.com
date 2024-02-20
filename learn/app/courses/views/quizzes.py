@@ -8,7 +8,7 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from django.db.models import Count
 from ..forms import ChoiceInlineFormSet, QuestionInlineFormSet, QuestionForm, ChoiceInlineUpdateFormSet, QuizForm
-from ..models import Quiz
+from ..models import Quiz, Question
 from django.db.models import Q
 
 
@@ -138,7 +138,8 @@ class QuizDetailView(PermissionRequiredMixin, DetailView):
             instance = form.save(commit=False)
             instance.quiz = self.get_object()
             instance.save()
-            question_formset = ChoiceInlineFormSet(request.POST, instance=instance, prefix='question_formset')
+            question_formset = ChoiceInlineFormSet(
+                request.POST, instance=instance, prefix='question_formset')
             if question_formset.is_valid():
                 question_formset.save()
             else:
@@ -193,4 +194,39 @@ class QuizDeleteView(PermissionRequiredMixin, DeleteView):
 
     def get(self, request, **kwargs):
         messages.error(request, 'Quiz has been deleted successfully.')
+        return self.delete(request, **kwargs)
+
+
+class QuestionUpdateView(PermissionRequiredMixin, UpdateView):
+    permission_required = "courses.change_questions"
+    model = Question
+    form_class = QuestionForm
+    template_name = "form.html"
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        prefix = self.kwargs.get('pk')
+        kwargs['prefix'] = prefix
+        return kwargs
+
+    def get_success_url(self):
+        quiz_id = self.object.quiz_id
+        return reverse_lazy('courses:quiz-detail', kwargs={'pk': quiz_id})
+
+    def form_valid(self, form):
+        messages.info(
+            self.request, f'{form.instance.question_text} has been updated successfully.')
+        return super().form_valid(form)
+
+
+class QuestionDeleteView(PermissionRequiredMixin, DeleteView):
+    permission_required = "courses.delete_question"
+    model = Question
+
+    def get_success_url(self):
+        quiz_id = self.object.quiz_id
+        return reverse_lazy('courses:quiz-detail', kwargs={'pk': quiz_id})
+
+    def get(self, request, **kwargs):
+        messages.error(request, 'Question has been deleted successfully.')
         return self.delete(request, **kwargs)
