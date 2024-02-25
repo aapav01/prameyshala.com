@@ -120,6 +120,10 @@ class QuizDetailView(PermissionRequiredMixin, DetailView):
         context['form'] = QuizForm(
             instance=self.object, prefix=self.object.pk)
         context['questions'] = self.object.question_set.all()
+        for obj in context['questions']:
+            temp_form = QuestionForm(instance=obj, prefix=obj.pk)
+            obj.question_form = temp_form
+            obj.choice_formset = ChoiceInlineFormSet(prefix=obj.pk)
         if self.request.method == 'POST':
             context['question_form'] = QuestionForm(self.request.POST)
             context['question_form'].choice_formset = ChoiceInlineFormSet(
