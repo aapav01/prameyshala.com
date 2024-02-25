@@ -85,7 +85,7 @@ export default async function AllPosts({ params }: Props) {
                   <div className="flex flex-col shadow my-4" key={post.id}>
                     <a href="#" className="hover:opacity-75">
                       {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img src="https://shorturl.at/TU015" alt={post.title} />
+                      {/* <img src="https://shorturl.at/TU015" alt={post.title} /> */}
                     </a>
                     <div className="bg-white flex flex-col justify-start p-6">
                       <a
@@ -106,7 +106,7 @@ export default async function AllPosts({ params }: Props) {
                           href="#"
                           className="font-semibold hover:text-gray-800"
                         >
-                          {post.author.user.fullName}
+                          {post.author.fullName}
                         </a>
                         , Published on {formattedDate}
                       </p>
