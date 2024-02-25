@@ -42,11 +42,15 @@
         </div>
         <div class="my-2">
           <span class="font-bold">Image</span>
+          {% if standard.image %}
           <img height=""
                width=""
                src="{% static 'media/' %}{{ standard.image }}"
                alt="{{ standard.name }}"
                class="w-1/2 rounded-lg shadow-md">
+          {% else %}
+            <p>No Image</p>
+          {% endif %}
         </div>
         <div>
           <span class="font-bold">Slug</span>
