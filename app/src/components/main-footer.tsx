@@ -50,8 +50,8 @@ function MainFooter({}: Props) {
               <div>
                 <p className="font-sans font-bold text-indigo-100">Usefull Links</p>
                 <ul className="mt-2">
-                  <li><a href="/about">About Us</a></li>
-                  <li><a href="/blog">Insight</a></li>
+                  <li><Link href="/about">About Us</Link></li>
+                  <li><Link href="/blog">Insight</Link></li>
                 </ul>
               </div>
               <div>
