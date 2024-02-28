@@ -90,7 +90,7 @@ class Query(graphene.ObjectType):
     #assignment
     assignment = graphene.List(AssignmentType, chapter=graphene.String(required=False))
     # progress
-    progress = graphene.List(ProgressType, lesson = graphene.ID(required=True))
+    progress = graphene.Field(ProgressType, lesson = graphene.ID(required=True))
 
     # classes
     def resolve_classes(self, info):
@@ -125,6 +125,7 @@ class Query(graphene.ObjectType):
         if not user.is_authenticated:
             raise Exception("Authentication credentials were not provided")
         return Lesson.objects.filter(public=True).get(pk=id)
+
 
     def resolve_lesson_by_chapter_paginated(self, info, chapter_id, page=None):
         user = info.context.user
