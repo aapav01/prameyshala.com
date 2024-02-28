@@ -1,4 +1,4 @@
-import { ImageResponse } from "next/server";
+import { ImageResponse } from "next/og";
 
 // Image metadata
 export const alt = "Pramey Shala";
@@ -11,7 +11,7 @@ export const contentType = "image/png";
 
 // Image generation
 export default async function Image() {
-  return new ImageResponse(
+  return new (ImageResponse as any)(
     (
       <div
         style={{

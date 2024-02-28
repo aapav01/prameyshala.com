@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { headers } from 'next/headers'
 import { getServerSession } from "next-auth/next";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import authOptions from "@/lib/authOption";
 // GRAPHQL API - APPLOLO
 import { OperationVariables, gql } from "@apollo/client";
 import { getClient } from "@/lib/client";

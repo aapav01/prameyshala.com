@@ -7,21 +7,21 @@ import { useRouter } from "next/navigation";
 import "react-pdf/dist/Page/AnnotationLayer.css";
 import "react-pdf/dist/Page/TextLayer.css";
 import { Button } from "@/components/ui/button";
-import { Slider } from "@/components/ui/slider"
+import { Slider } from "@/components/ui/slider";
 import { Label } from "../ui/label";
 import { toast } from "@/components/ui/use-toast";
 
 type Props = {
-  file: string,
-  type: string,
-  lessonId:number;
+  file: string;
+  type: string;
+  lessonId: number;
 };
 pdfjs.GlobalWorkerOptions.workerSrc = new URL(
   "pdfjs-dist/build/pdf.worker.min.js",
   import.meta.url
 ).toString();
 
-export default function Assignment({ file,type,lessonId }: Props) {
+export default function Assignment({ file, type, lessonId }: Props) {
   const [numPages, setNumPages] = useState<number>(0);
   const [pageNumber, setPageNumber] = useState<number>(0);
   const [scale, setScale] = useState<number[]>([1]);
@@ -85,7 +85,6 @@ export default function Assignment({ file,type,lessonId }: Props) {
 
   function changePage(offset: number) {
     setPageNumber((prevPageNumber) => prevPageNumber + offset);
-
   }
 
   function previousPage() {
@@ -99,31 +98,37 @@ export default function Assignment({ file,type,lessonId }: Props) {
   function NavigationBar() {
     return (
       <div className="flex justify-between items-center">
-          <p className="p-1">
-            Page {pageNumber || (numPages ? 1 : "--")} of {numPages || "--"}
-          </p>
-          <div className="w-full max-w-2xl">
-            <Label>Zoom Level {parseInt(`${scale[0] * 100}`)}%</Label>
-            <Slider defaultValue={scale} onValueChange={setScale} min={0.8} max={2} step={0.1} />
-          </div>
-          <div className="flex gap-2">
-            <Button
-              type="button"
-              disabled={pageNumber <= 1}
-              onClick={previousPage}
-            >
-              Previous
-            </Button>
-            <Button
-              type="button"
-              disabled={pageNumber >= numPages}
-              onClick={nextPage}
-            >
-              Next
-            </Button>
-          </div>
+        <p className="p-1">
+          Page {pageNumber || (numPages ? 1 : "--")} of {numPages || "--"}
+        </p>
+        <div className="w-full max-w-2xl">
+          <Label>Zoom Level {parseInt(`${scale[0] * 100}`)}%</Label>
+          <Slider
+            defaultValue={scale}
+            onValueChange={setScale}
+            min={0.8}
+            max={2}
+            step={0.1}
+          />
         </div>
-    )
+        <div className="flex gap-2">
+          <Button
+            type="button"
+            disabled={pageNumber <= 1}
+            onClick={previousPage}
+          >
+            Previous
+          </Button>
+          <Button
+            type="button"
+            disabled={pageNumber >= numPages}
+            onClick={nextPage}
+          >
+            Next
+          </Button>
+        </div>
+      </div>
+    );
   }
 
   var source_file = `${process.env.NEXT_PUBLIC_MEDIA_CDN}/static/media/${file}`;
@@ -142,7 +147,7 @@ export default function Assignment({ file,type,lessonId }: Props) {
         file={source_file}
         onLoadSuccess={onDocumentLoadSuccess}
       >
-        <Page scale={scale[0]} pageNumber={pageNumber}/>
+        <Page scale={scale[0]} pageNumber={pageNumber} />
       </Document>
       <div className=" border-t-2 mt-2 pt-4">
         <NavigationBar />

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
@@ -13,13 +13,39 @@ type Props = {
 
 export default function EnrollButton({ standard, enrolled }: Props) {
   const [disabled, setDisabled] = useState(false);
+  const [url, setUrl] = useState(null);
+
+  const enroll = async () => {
+    setDisabled(true);
+    await fetch("/api/enroll", {
+      method: "POST",
+      body: JSON.stringify({ standard: standard.id }),
+    })
+      .then(async (res) => {
+        const _data = await res.json();
+        let { data } = _data.createPaymentPhonepe;
+        data = JSON.parse(data);
+        setUrl(data.instrumentResponse.redirectInfo.url);
+        setDisabled(false);
+      })
+      .catch((err) => console.log(err));
+  };
+
+  useEffect(() => {
+    if (typeof window !== "undefined" && url) {
+      // open url in same tab
+      window.open(url, "_self");
+    }
+  }, [url]);
+
   return (
     <>
       {!enrolled && (
         <Button
           className="text-lg py-6 hover:bg-transparent border hover:border-primary hover:text-primary"
           size="lg"
-          disabled={true}
+          disabled={disabled}
+          onClick={enroll}
         >
           {disabled ? (
             <ReloadIcon className="animate-spin" />

@@ -1,4 +1,4 @@
-import { ImageResponse } from "next/server";
+import { ImageResponse } from "next/og";
 
 // Image metadata
 export const size = {
@@ -9,7 +9,7 @@ export const contentType = "image/png";
 
 // Image generation
 export default function Icon() {
-  return new ImageResponse(
+  return new (ImageResponse as any)(
     (
       <div
         style={{
