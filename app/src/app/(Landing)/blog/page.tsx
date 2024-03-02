@@ -6,11 +6,10 @@ import { Input } from "@/components/ui/input";
 import {
   InstagramLogoIcon,
   LinkedInLogoIcon,
-  MagnifyingGlassIcon,
   TwitterLogoIcon,
 } from "@radix-ui/react-icons";
 
-// GRAPHQL API - APPLOLO
+// GRAPHQL API - APPLLO
 import { gql } from "@apollo/client";
 import { getClient } from "@/lib/client";
 import Image from "next/image";
@@ -76,7 +75,7 @@ export default async function AllPosts({ params }: Props) {
       <div className="bg-white font-family-karla">
         <div className="container mx-auto flex flex-wrap py-6">
           {/* Posts Section */}
-          <section className="w-full rounded-none md:w-2/3 flex flex-col items-center px-3">
+          <section className="w-full rounded-none md:w-2/3 flex flex-col items-left px-3">
             {data.allPosts.length > 0 ? (
               data?.allPosts.map((post: any) => {
                 const publishDate = new Date(post.publishDate);
@@ -85,7 +84,7 @@ export default async function AllPosts({ params }: Props) {
                   <div className="flex flex-col shadow my-4" key={post.id}>
                     <a href="#" className="hover:opacity-75">
                       {/* eslint-disable-next-line @next/next/no-img-element */}
-                      {/* <img src="https://shorturl.at/TU015" alt={post.title} /> */}
+                      {/* <img src="" alt={post.title} /> */}
                     </a>
                     <div className="bg-white flex flex-col justify-start p-6">
                       <a
@@ -137,11 +136,16 @@ export default async function AllPosts({ params }: Props) {
 
           {/* #Sidebar Section */}
           <aside className="w-full md:w-1/3 flex flex-col items-center px-3 gap-4">
-            <div className="w-full border flex flex-col p-6">
-              <div className="relative flex gap-3">
-                <Input type="text" placeholder="Search" />
-                <Button size={"icon"} variant={"secondary"}>
-                  <MagnifyingGlassIcon />
+            <div className="w-full bg-white shadow flex flex-col my-4 p-6">
+              <p className="text-xl font-semibold pb-5">Search Here</p>
+              <div className="relative">
+                <Input
+                  type="text"
+                  placeholder="Search posts"
+                  className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-blue-500"
+                />
+                <Button variant={"secondary"} className="text-lg mt-5 py-3">
+                  Search
                 </Button>
               </div>
             </div>
@@ -149,16 +153,38 @@ export default async function AllPosts({ params }: Props) {
             {/* Popular Tags Section */}
             <div className="w-full border flex flex-col p-6">
               <p className="font-semibold pb-3">Popular Tags</p>
+              <div className="flex flex-wrap">
+                {(() => {
+                  const uniqueTags = new Set();
+                  return data?.allPosts.map((post: any) => (
+                    post.tags.map((tag: any) => {
+                      if (!uniqueTags.has(tag.name)) {
+                        uniqueTags.add(tag.name);
+                        return (
+                          <a
+                            key={tag.name}
+                            href="#"
+                            className="bg-gray-200 text-gray-700 full px-3 py-1 m-1 hover:bg-blue-500 hover:text-white"
+                          >
+                            {tag.name}
+                          </a>
+                        );
+                      }
+                      return null;
+                    })
+                  ));
+                })()}
+              </div>
             </div>
 
             {/* Social Media Handles */}
             <div className="w-full border flex flex-col p-6 gap-3">
               <div className="flex items-center justify-center gap-5">
-                <InstagramLogoIcon className="h-8 w-8 animate-bounce duration-&lsqb;690ms&rsqb;" />
-                <TwitterLogoIcon className="h-8 w-8 animate-bounce duration-&lsqb;720ms&rsqb;" />
-                <LinkedInLogoIcon className="h-8 w-8 animate-bounce duration-&lsqb;760ms&rsqb;" />
+                <InstagramLogoIcon className="text-red-600 h-8 w-8 animate-bounce duration-&lsqb;690ms&rsqb;" />
+                <TwitterLogoIcon className="text-blue-400 h-8 w-8 animate-bounce duration-&lsqb;720ms&rsqb;" />
+                <LinkedInLogoIcon className=" text-blue-400 h-8 w-8 animate-bounce duration-&lsqb;760ms&rsqb;" />
               </div>
-              <p className="text-center">Follow Us ☝🏼</p>
+              <p className="text-center justify-center">Follow Us☝🏼</p>
             </div>
           </aside>
         </div>
