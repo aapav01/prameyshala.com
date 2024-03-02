@@ -74,7 +74,7 @@
               {% endif %}
             </button>
             {% if perms.courses.delete_questions %}
-              <a href="{% url 'courses:question-delete' quiz_id=question.quiz.pk pk=question.pk %}"
+              <a href="{% url 'courses:question-delete' pk=question.pk %}"
                  onclick="if(confirm('Are you sure you want to delete {{ question.question_text }} from database?')) return true; else return false;"
                  class="btn btn-outline border-red-400 text-red-400 hover:bg-red-400 hover:text-white hover:border-red-400"> Delete Question
               </a>
@@ -141,7 +141,7 @@
               class="modal modal-bottom sm:modal-middle transition-all duration-500 ease-in-out">
         <form method="post"
               enctype="multipart/form-data"
-              action="{% url 'courses:question-update' quiz_id=question.quiz.pk pk=question.pk %}"
+              action="{% url 'courses:question-update' pk=question.pk %}"
               class="modal-box sm:max-w-5xl">
           {% csrf_token %}
           <h2 class="font-mono font-semibold text-lg">Update - {{ question.question_text }}</h2>
