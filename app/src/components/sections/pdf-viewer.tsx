@@ -18,10 +18,10 @@ type Props = {
 };
 
 /*
-  * Using Work-around suggested on issue #1699 on react-pdf
-  *
-  * https://github.com/wojtekmaj/react-pdf/issues/1699
-*/
+ * Using Work-around suggested on issue #1699 on react-pdf
+ *
+ * https://github.com/wojtekmaj/react-pdf/issues/1699
+ */
 pdfjs.GlobalWorkerOptions.workerSrc = "/static/js/pdf.worker.min.js";
 // pdfjs.GlobalWorkerOptions.workerSrc = new URL(
 //   "pdfjs-dist/build/pdf.worker.min.js",
@@ -35,55 +35,52 @@ export default function Assignment({ file, type, lessonId }: Props) {
   const { data: session } = useSession();
   const router = useRouter();
 
-  useEffect(()=>{
-  async function progressSubmit() {
-    if (!session?.user) {
-      router.push("/login?callbackUrl=" + window.location.href);
-      return;
-    }
-    if(pageNumber == 1)
-    {
-      const result = await fetch(`/api/progress/${lessonId}`, {
-        method: "GET",
-        headers:{
-          /*@ts-ignore*/
-          'token': session.user.token,
-        }
-      })
-        .then((res) => {
-          return res.json();
-        }).then((data)=>{
-          setPageNumber((data?.progress.progress)*numPages || 1)
+  useEffect(() => {
+    async function progressSubmit() {
+      if (!session?.user) {
+        router.push("/login?callbackUrl=" + window.location.href);
+        return;
+      }
+      if (pageNumber == 1) {
+        const result = await fetch(`/api/progress/${lessonId}`, {
+          method: "GET",
+          headers: {
+            /*@ts-ignore*/
+            token: session.user.token,
+          },
         })
-        .catch((err) => {
-          console.error(err);
-        });
-
-    }
-    else{
-
-      const progress:number = (pageNumber/numPages);
-      const result = await fetch(`/api/progress/${lessonId}`, {
-        method: "POST",
-        body: JSON.stringify({
-          lessonID: lessonId,
-          progress: progress,
-          /*@ts-ignore*/
-          token: session.user.token,
-        }),
-      })
-        .then((res) => {
-          return res.json();
+          .then((res) => {
+            return res.json();
+          })
+          .then((data) => {
+            setPageNumber(data?.progress.progress * numPages || 1);
+          })
+          .catch((err) => {
+            console.error(err);
+          });
+      } else {
+        const progress: number = pageNumber / numPages;
+        const result = await fetch(`/api/progress/${lessonId}`, {
+          method: "POST",
+          body: JSON.stringify({
+            lessonID: lessonId,
+            progress: progress,
+            /*@ts-ignore*/
+            token: session.user.token,
+          }),
         })
-        .catch((err) => {
-          console.error(err);
-        });
+          .then((res) => {
+            return res.json();
+          })
+          .catch((err) => {
+            console.error(err);
+          });
+      }
     }
-  }
-  if(pageNumber && numPages){
-    progressSubmit();
-  }
-},[pageNumber])
+    if (pageNumber && numPages) {
+      progressSubmit();
+    }
+  }, [pageNumber, numPages, session?.user, lessonId, router]);
 
   function onDocumentLoadSuccess({ numPages }: { numPages: number }): void {
     setNumPages(numPages);
@@ -142,7 +139,6 @@ export default function Assignment({ file, type, lessonId }: Props) {
   if (process.env.NODE_ENV === "development") {
     var source_file = `/static/media/${file}`;
   }
-  source_file = `/${file.substring(20)}`;
   return (
     <div className="m-4 p-4 rounded-2xl shadow-xl border-2">
       <div className=" border-b-2 mb-2 pb-4">
@@ -150,7 +146,9 @@ export default function Assignment({ file, type, lessonId }: Props) {
         <NavigationBar />
       </div>
       <Document
-        className={"flex flex-col items-center overflow-x-scroll overflow-y-scroll"}
+        className={
+          "flex flex-col items-center overflow-x-scroll overflow-y-scroll"
+        }
         file={source_file}
         onLoadSuccess={onDocumentLoadSuccess}
       >
