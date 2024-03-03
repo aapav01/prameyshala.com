@@ -16,10 +16,17 @@ type Props = {
   type: string;
   lessonId: number;
 };
-pdfjs.GlobalWorkerOptions.workerSrc = new URL(
-  "pdfjs-dist/build/pdf.worker.min.js",
-  import.meta.url
-).toString();
+
+/*
+  * Using Work-around suggested on issue #1699 on react-pdf
+  *
+  * https://github.com/wojtekmaj/react-pdf/issues/1699
+*/
+pdfjs.GlobalWorkerOptions.workerSrc = "/static/js/pdf.worker.min.js";
+// pdfjs.GlobalWorkerOptions.workerSrc = new URL(
+//   "pdfjs-dist/build/pdf.worker.min.js",
+//   import.meta.url
+// ).toString();
 
 export default function Assignment({ file, type, lessonId }: Props) {
   const [numPages, setNumPages] = useState<number>(0);
