@@ -11,6 +11,9 @@ type Props = {};
 export async function generateMetadata({}: Props): Promise<Metadata> {
   return {
     title: "Sign Up | Pramey Shala",
+    alternates: {
+      canonical: "https://prameyshala.com/register",
+    },
   };
 }
 

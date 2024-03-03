@@ -4,6 +4,7 @@ import ServiceCard from "@/components/service-card";
 import { gql } from "@apollo/client";
 import { getClient } from "@/lib/client";
 import PageHeader from "@/components/page-header";
+import { Metadata } from "next";
 
 type Props = {};
 
@@ -26,6 +27,12 @@ const query = gql`
     }
   }
 `;
+
+export const metadata: Metadata = {
+  alternates: {
+    canonical: "https://prameyshala.com/subject",
+  },
+}
 
 export default async function AllCategories({}: Props) {
   const { data } = await getClient().query({ query });
