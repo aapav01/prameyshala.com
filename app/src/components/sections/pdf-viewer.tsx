@@ -35,14 +35,35 @@ export default function Assignment({ file, type, lessonId }: Props) {
   const { data: session } = useSession();
   const router = useRouter();
 
-  useEffect(() => {
-    async function progressSubmit() {
-      if (!session?.user) {
-        router.push("/login?callbackUrl=" + window.location.href);
-        return;
-      }
-      const progress: number = pageNumber / numPages;
-      const result = await fetch("/api/progress", {
+  useEffect(()=>{
+  async function progressSubmit() {
+    if (!session?.user) {
+      router.push("/login?callbackUrl=" + window.location.href);
+      return;
+    }
+    if(pageNumber == 1)
+    {
+      const result = await fetch(`/api/progress/${lessonId}`, {
+        method: "GET",
+        headers:{
+          /*@ts-ignore*/
+          'token': session.user.token,
+        }
+      })
+        .then((res) => {
+          return res.json();
+        }).then((data)=>{
+          setPageNumber((data?.progress.progress)*numPages || 1)
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+
+    }
+    else{
+
+      const progress:number = (pageNumber/numPages);
+      const result = await fetch(`/api/progress/${lessonId}`, {
         method: "POST",
         body: JSON.stringify({
           lessonID: lessonId,
@@ -57,20 +78,12 @@ export default function Assignment({ file, type, lessonId }: Props) {
         .catch((err) => {
           console.error(err);
         });
-      toast({
-        description: (
-          <pre className="mt-2 w-[340px] rounded-md bg-green-900 p-4">
-            <code className="text-white">
-              {JSON.stringify(result, null, 2)}
-            </code>
-          </pre>
-        ),
-      });
     }
-    if (pageNumber && numPages) {
-      progressSubmit();
-    }
-  }, [pageNumber, lessonId, numPages, session?.user, router]);
+  }
+  if(pageNumber && numPages){
+    progressSubmit();
+  }
+},[pageNumber])
 
   function onDocumentLoadSuccess({ numPages }: { numPages: number }): void {
     setNumPages(numPages);
@@ -129,7 +142,7 @@ export default function Assignment({ file, type, lessonId }: Props) {
   if (process.env.NODE_ENV === "development") {
     var source_file = `/static/media/${file}`;
   }
-  //source_file = `/${file.substring(20)}`;
+  source_file = `/${file.substring(20)}`;
   return (
     <div className="m-4 p-4 rounded-2xl shadow-xl border-2">
       <div className=" border-b-2 mb-2 pb-4">
@@ -137,7 +150,7 @@ export default function Assignment({ file, type, lessonId }: Props) {
         <NavigationBar />
       </div>
       <Document
-        className={"flex flex-col items-center overflow-x-scroll"}
+        className={"flex flex-col items-center overflow-x-scroll overflow-y-scroll"}
         file={source_file}
         onLoadSuccess={onDocumentLoadSuccess}
       >
