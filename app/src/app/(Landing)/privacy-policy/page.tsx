@@ -1,7 +1,14 @@
 import PageHeader from "@/components/page-header";
+import { Metadata } from "next";
 import React from "react";
 
 type Props = {};
+
+export const metadata: Metadata = {
+  alternates: {
+    canonical: "https://prameyshala.com/privacy-policy",
+  },
+}
 
 export default function PrivacyPolicy({}: Props) {
   return (

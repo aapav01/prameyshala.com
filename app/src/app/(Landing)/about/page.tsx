@@ -5,8 +5,15 @@ import { Button } from "@/components/ui/button";
 // NextJs
 import Image from "next/image";
 import PageHeader from "@/components/page-header";
+import { Metadata } from "next";
 
 type Props = {};
+
+export const metadata: Metadata = {
+  alternates: {
+    canonical: "https://prameyshala.com/about",
+  },
+}
 
 function AboutPage({}: Props) {
   return (

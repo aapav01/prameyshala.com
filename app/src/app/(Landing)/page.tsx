@@ -1,5 +1,6 @@
 import React from "react";
 import Image from "next/image";
+import { Metadata } from "next";
 import { CheckCircledIcon } from "@radix-ui/react-icons";
 // Components
 import { Button } from "@/components/ui/button";
@@ -9,6 +10,12 @@ import TestimonialMain from "@/components/testimontial-main";
 import PopularCategory from "@/components/sections/popular-category";
 import SetupOtp from "@/components/sections/setup-otp";
 import Link from "next/link";
+
+export const metadata: Metadata = {
+  alternates: {
+    canonical: "https://prameyshala.com",
+  },
+}
 
 export default function Home() {
   return (
