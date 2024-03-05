@@ -10,6 +10,7 @@ import { Metadata } from "next";
 type Props = {};
 
 export const metadata: Metadata = {
+  title: "About Us - Pramey Shala",
   alternates: {
     canonical: "https://prameyshala.com/about",
   },

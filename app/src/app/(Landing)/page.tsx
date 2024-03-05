@@ -12,6 +12,7 @@ import SetupOtp from "@/components/sections/setup-otp";
 import Link from "next/link";
 
 export const metadata: Metadata = {
+  title: "Start Learning with Pramey Shala",
   alternates: {
     canonical: "https://prameyshala.com",
   },

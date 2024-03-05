@@ -12,7 +12,7 @@ const hind = Hind({
 export const metadata = {
   metadataBase: new URL("https://prameyshala.com"),
   title: "Pramey Shala",
-  description: "Start learning with Prameyshala",
+  description: "Start learning with PrameyShala",
   applicationName: "Pramey Shala",
   referrer: "origin-when-cross-origin",
   keywords: [
