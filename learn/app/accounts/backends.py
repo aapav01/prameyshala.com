@@ -2,6 +2,7 @@ from django.contrib.auth.hashers import check_password
 from django.contrib.auth.backends import ModelBackend
 from django.contrib.auth import get_user_model
 from django.db.models import Q
+from django.core.mail import send_mail
 
 User = get_user_model()
 
@@ -18,6 +19,13 @@ class EmailPhoneUsernameAuthenticationBackend(ModelBackend):
             return None
 
         if user and check_password(password, user.password):
+            if user.email:
+                email = user.email
+                print(email)
+                send_mail(subject="Login Mail",
+                          message=f"Hi, {user.full_name}. You have successfully logged in to PrameyShala.\n Your education journey begins.",
+                          from_email="admin@prameyshala.com",
+                          recipient_list=[email])
             return user
 
         return None
