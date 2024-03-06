@@ -189,3 +189,12 @@ GRAPHENE = {
         "graphql_jwt.middleware.JSONWebTokenMiddleware",
     ],
 }
+
+# Mail configuration
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'sandbox.smtp.mailtrap.io'
+EMAIL_HOST_USER = 'f0e559ad94a45b'
+EMAIL_HOST_PASSWORD = 'b0dcdf39e76055'
+EMAIL_PORT = '2525'
+EMAIL_USE_TLS = True
+EMAIL_USE_SSL = False
