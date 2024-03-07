@@ -7,6 +7,7 @@ import {
   InstagramLogoIcon,
   LinkedInLogoIcon,
   TwitterLogoIcon,
+
 } from "@radix-ui/react-icons";
 
 // GRAPHQL API - APPLLO
@@ -109,7 +110,7 @@ export default async function AllPosts({ params }: Props) {
                         </a>
                         , Published on {formattedDate}
                       </p>
-                      <p className="pb-6">{post.excerpt}</p>
+                      <p className="pb-3">{post.excerpt}</p>
                       <a
                         href={`/blog/${post.slug}`}
                         className="uppercase text-gray-800 hover:text-black"
@@ -151,8 +152,8 @@ export default async function AllPosts({ params }: Props) {
             </div>
 
             {/* Popular Tags Section */}
-            <div className="w-full border flex flex-col p-6">
-              <p className="font-semibold pb-3">Popular Tags</p>
+            <div className="w-full bg-white shadow flex flex-col p-6">
+              <p className="text-xl font-semibold pb-3">Popular Tags</p>
               <div className="flex flex-wrap">
                 {(() => {
                   const uniqueTags = new Set();
@@ -178,13 +179,19 @@ export default async function AllPosts({ params }: Props) {
             </div>
 
             {/* Social Media Handles */}
-            <div className="w-full border flex flex-col p-6 gap-3">
-              <div className="flex items-center justify-center gap-5">
-                <InstagramLogoIcon className="text-red-600 h-8 w-8 animate-bounce duration-&lsqb;690ms&rsqb;" />
-                <TwitterLogoIcon className="text-blue-400 h-8 w-8 animate-bounce duration-&lsqb;720ms&rsqb;" />
-                <LinkedInLogoIcon className=" text-blue-400 h-8 w-8 animate-bounce duration-&lsqb;760ms&rsqb;" />
+            <div className="w-full bg-white shadow flex flex-col p-6 gap-3">
+              <p className="text-xl font-semibold pb-3">Follow Us 👇🏻 </p>
+              <div className="flex items-center justify-start gap-5">
+                <a href="https://www.instagram.com/prameyshala/" className="text-red-600 h-8 w-8 animate-bounce duration-&lsqb;690ms&rsqb;" target="_blank">
+                  {<InstagramLogoIcon className="h-8 w-8" />}
+                </a>
+                <a href="#" className="text-blue-400 h-8 w-8 animate-bounce duration-&lsqb;720ms&rsqb;">
+                  <TwitterLogoIcon className="h-8 w-8" />
+                </a>
+                <a href="#" className="text-blue-400 h-8 w-8 animate-bounce duration-&lsqb;760ms&rsqb;">
+                  <LinkedInLogoIcon className="h-8 w-8" />
+                </a>
               </div>
-              <p className="text-center justify-center">Follow Us☝🏼</p>
             </div>
           </aside>
         </div>
