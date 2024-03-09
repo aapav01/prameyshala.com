@@ -3,12 +3,13 @@ from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.contrib import messages
 from django.db import models
 from django.shortcuts import render, redirect
-from django.views.generic import ListView, DetailView, CreateView
-from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.views.generic import ListView, DetailView
+from django.views.generic.edit import UpdateView, DeleteView
 from django.urls import reverse_lazy
+from django.utils.text import slugify
 from django.db.models import Count
-from ..forms import ChoiceInlineFormSet, QuestionInlineFormSet, QuestionForm, ChoiceInlineUpdateFormSet, QuizForm
-from ..models import Quiz, Question
+from ..forms import ChoiceInlineFormSet, ChoiceInlineUpdateFormSet, QuestionForm,  QuizForm
+from ..models import Quiz
 from django.db.models import Q
 
 
@@ -33,8 +34,25 @@ class QuizView(PermissionRequiredMixin, ListView):
             temp_form = QuizForm(instance=obj, prefix=obj.pk)
             obj.form = temp_form
         return context
-    # search
 
+    # create
+    def post(self, request, **kwargs):
+        form = self.form(request.POST)
+        self.extra_context.update({'form': form})
+        if form.is_valid():
+            instance = form.save(commit=False)
+            instance.slug = slugify(instance.name)
+            instance.save()
+            messages.success(
+                request, f'{instance.name} has been created successfully.')
+            self.extra_context.update({'form': QuizForm})
+            return redirect('courses:quizzes')
+        else:
+            messages.error(
+                request, f'failed to create! please see the create form for more details.')
+            return super().get(request, **kwargs)
+
+    # search
     def get_queryset(self):
         queryset = super().get_queryset()
 
@@ -45,56 +63,6 @@ class QuizView(PermissionRequiredMixin, ListView):
                 Q(type__iexact=search_query)
             )
         return queryset
-
-
-class QuizCreateView(PermissionRequiredMixin, CreateView):
-    model = Quiz
-    permission_required = "courses.add_quizzes"
-    fields = "__all__"
-    template_name = "quizzes/form.html"
-    success_url = reverse_lazy("courses:quizzes")
-
-    extra_context = {
-        'title': 'Quizzes',
-        'breadcrumbs': [
-            {'url': 'core:home', 'label': 'Dashboard'},
-            {'label': 'Courses'},
-            {'url': 'courses:quizzes', 'label': 'Quizzes'},
-            {'label': 'Create Quiz'},
-        ],
-        # 'question_formset': QuestionInlineFormSet(prefix='question_formset'),
-        # 'choice_formset': ChoiceInlineFormSet(prefix='choice_formset_0'),
-    }
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['question_formset'] = QuestionInlineFormSet(
-            prefix='question_formset')
-        # context['question_formset'].choice_formset = ChoiceInlineFormSet(prefix='choice_formset_0')
-        quesion_count = 0
-        for question in context['question_formset']:
-            question.choice_formset = ChoiceInlineFormSet(
-                prefix='choice_formset_%s' % quesion_count)
-            quesion_count += 1
-        return context
-
-    def form_valid(self, form):
-        result = super().form_valid(form)
-
-        question_formset = QuestionInlineFormSet(
-            form.data, instance=self.object, prefix='question_formset')
-        if question_formset.is_valid():
-            questions = question_formset.save()
-
-            questions_count = 0
-            for question in questions:
-                choice_formset = ChoiceInlineFormSet(
-                    form.data, instance=question, prefix='choice_formset_%s' % questions_count)
-                if choice_formset.is_valid():
-                    choice_formset.save()
-                questions_count += 1
-
-        return result
 
 
 class QuizDetailView(PermissionRequiredMixin, DetailView):
@@ -123,10 +91,11 @@ class QuizDetailView(PermissionRequiredMixin, DetailView):
         for obj in context['questions']:
             temp_form = QuestionForm(instance=obj, prefix=obj.pk)
             obj.question_form = temp_form
-            obj.choice_formset = ChoiceInlineFormSet(prefix=obj.pk)
+            obj.choice_formset = ChoiceInlineUpdateFormSet(
+                instance=obj, prefix=obj.pk)
         if self.request.method == 'POST':
             context['question_form'] = QuestionForm(self.request.POST)
-            context['question_form'].choice_formset = ChoiceInlineFormSet(
+            context['question_form'].choice_formset = ChoiceInlineUpdateFormSet(
                 self.request.POST, prefix='question_formset')
         else:
             context['question_form'] = QuestionForm()
@@ -134,10 +103,10 @@ class QuizDetailView(PermissionRequiredMixin, DetailView):
                 prefix='question_formset')
         return context
 
+    # create
     def post(self, request, **kwargs):
         form = QuestionForm(request.POST)
         self.extra_context.update({'question_form': form})
-
         if form.is_valid():
             instance = form.save(commit=False)
             instance.quiz = self.get_object()
@@ -167,16 +136,6 @@ class QuizUpdateView(PermissionRequiredMixin, UpdateView):
     template_name = "form.html"
     form = QuizForm
     fields = "__all__"
-
-    extra_context = {
-        'title': 'Quizzes',
-        'breadcrumbs': [
-            {'url': 'core:home', 'label': 'Dashboard'},
-            {'label': 'Courses'},
-            {'url': 'courses:quizzes', 'label': 'Quizzes'},
-            {'label': 'Edit Quiz'},
-        ],
-    }
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
