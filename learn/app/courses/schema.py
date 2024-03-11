@@ -103,6 +103,9 @@ class Query(graphene.ObjectType):
         AssignmentType, chapter=graphene.String(required=False))
     # progress
     progress = graphene.List(ProgressType, lesson=graphene.ID(required=True))
+    # grades
+    grades = graphene.List(GradesType, lesson_type=graphene.String(
+        required=False), assignment_or_quiz_id=graphene.ID(required=False))
 
     # classes
     def resolve_classes(self, info):
@@ -173,6 +176,29 @@ class Query(graphene.ObjectType):
             raise Exception("Authentication credentials were not provided")
         return Lesson_Progress.objects.get(lesson_id=lesson)
 
+    def resolve_grades(root, info, assignment_or_quiz_id=None, lesson_type=None):
+        user = info.context.user
+        if not user.is_authenticated:
+            raise Exception("Authentication credentials were not provided")
+        if lesson_type == "assignment":
+            if assignment_or_quiz_id:
+                assignment_grades = Grades.objects.filter(
+                    student_id=user.id, assignment=assignment_or_quiz_id)
+            else:
+                assignment_grades = Grades.objects.filter(
+                    student_id=user.id, assignment__lesson__lesson_type=lesson_type)
+            return assignment_grades
+        elif lesson_type == "quiz":
+            if assignment_or_quiz_id:
+                quiz_grades = Grades.objects.filter(
+                    student_id=user.id, quiz=assignment_or_quiz_id)
+            else:
+                quiz_grades = Grades.objects.filter(
+                    student_id=user.id, quiz__lesson__lesson_type=lesson_type)
+            return quiz_grades
+        else:
+            return Grades.objects.filter(student_id=user.id)
+
 
 class CreateAssignmentSubmission(graphene.Mutation):
     success = graphene.Boolean()
@@ -242,10 +268,10 @@ class CreateGrades(graphene.Mutation):
         enrollment = Enrollment.objects.get(user=user)
         enrollment_id = enrollment.id
         enrolled_class_id = enrollment.standard.id
-        if LessonType == "Assignment":
+        if LessonType == "assignment":
             Grades.objects.update_or_create(
                 student_id=user.id,
-                assignment=Assignment.objects.get(id=lessonID),
+                assignment=lessonID,
                 enrolled_class_id=enrolled_class_id,
                 enrollment_id=enrollment_id,
                 defaults={'grade': grade}
@@ -253,7 +279,7 @@ class CreateGrades(graphene.Mutation):
         else:
             Grades.objects.update_or_create(
                 student_id=user.id,
-                quiz=Quiz.objects.get(id=lessonID),
+                quiz=lessonID,
                 enrolled_class_id=enrolled_class_id,
                 enrollment_id=enrollment_id,
                 defaults={'grade': grade}
