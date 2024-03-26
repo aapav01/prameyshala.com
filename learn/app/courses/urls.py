@@ -42,8 +42,6 @@ urlpatterns = [
     path("categories/<int:pk>/delete/",
          login_required(CategoriesDeleteView.as_view()), name="category-delete"),
     path('quizzes/', login_required(QuizView.as_view()), name='quizzes'),
-    path('quizzes/create', login_required(QuizCreateView.as_view()),
-         name='quizzes-create'),
     path("quizzes/<int:pk>/",
          login_required(QuizDetailView.as_view()), name="quiz-detail"),
     path("quizzes/<int:pk>/edit",

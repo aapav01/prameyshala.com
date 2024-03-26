@@ -10,6 +10,7 @@ import {
   HomeIcon,
   ExitIcon,
   VideoIcon,
+  PersonIcon
 } from "@radix-ui/react-icons";
 import {
   DropdownMenu,
@@ -122,6 +123,13 @@ function MainNav() {
                   <DropdownMenuLabel className="text-xs text-gray-400 py-0 m-0 font-thin">
                     {session?.user?.email}
                   </DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem>
+                    <PersonIcon className="mr-1" />
+                    <Link href="/my-profile">
+                      My Profile
+                    </Link>
+                  </DropdownMenuItem>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem onClick={() => signOut()}>
                     <ExitIcon className="mr-1" />

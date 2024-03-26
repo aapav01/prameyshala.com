@@ -69,7 +69,8 @@ class Chapter(models.Model):
     collectionid = models.CharField(
         db_column='collectionId', max_length=255, blank=True, null=True)
     subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
-    user = models.ForeignKey(User, on_delete=models.DO_NOTHING, blank=True, null=True)
+    user = models.ForeignKey(
+        User, on_delete=models.DO_NOTHING, blank=True, null=True)
     created_at = models.DateTimeField(
         auto_now=False, auto_now_add=True, blank=True, null=True)
     updated_at = models.DateTimeField(auto_now=True, blank=True, null=True)
@@ -141,7 +142,8 @@ class Assignment(models.Model):
     time_required = models.IntegerField(blank=True, null=True)
     teacher = models.ForeignKey(
         User, on_delete=models.DO_NOTHING, blank=True, null=True)
-    assigment_file = models.FileField(upload_to='uploads/assignments', blank=True, null=True)
+    assigment_file = models.FileField(
+        upload_to='uploads/assignments', blank=True, null=True)
     type = models.CharField(max_length=20, choices=Type.choices)
     created_by = models.ForeignKey(
         User, on_delete=models.DO_NOTHING, related_name='assignment_created_by', blank=True, null=True)
@@ -149,7 +151,8 @@ class Assignment(models.Model):
         User, on_delete=models.DO_NOTHING, blank=True, null=True, related_name='assignment_updated_by')
     created_at = models.DateTimeField(auto_now=False, auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    chapter = models.ForeignKey(Chapter,default=None,blank=False, null=False,on_delete=models.CASCADE)
+    chapter = models.ForeignKey(
+        Chapter, default=None, blank=False, null=False, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.title
@@ -166,8 +169,9 @@ class AssignmentSubmission(models.Model):
     marks = models.IntegerField(blank=True,
                                 null=True,
                                 validators=[MinValueValidator(0)]
-    )
-    remarks = models.TextField(blank=True,null=True)
+                                )
+    remarks = models.TextField(blank=True, null=True)
+
     def __str__(self):
         return f"{self.assignment.title} - {self.student.full_name}"
 
@@ -179,10 +183,11 @@ class Grades(models.Model):
         Assignment, null=True, blank=True, on_delete=models.CASCADE)
     quiz = models.ForeignKey(
         Quiz, null=True, blank=True, on_delete=models.CASCADE)
-    grade = models.DecimalField(max_digits=2,
+    grade = models.DecimalField(max_digits=3,
                                 decimal_places=1,
                                 validators=[MinValueValidator(0.0), MaxValueValidator(10.0)])
-    enrollment = models.ForeignKey(Enrollment,default=None,blank=False,null=False,on_delete=models.CASCADE)
+    enrollment = models.ForeignKey(
+        Enrollment, default=None, blank=False, null=False, on_delete=models.CASCADE)
 
     def __str__(self):
         if self.assignment:
@@ -243,7 +248,7 @@ class Lesson(models.Model):
     quiz = models.ForeignKey(
         Quiz, on_delete=models.CASCADE, blank=True, null=True)
     assignment = models.ForeignKey(
-        Assignment,on_delete=models.CASCADE, blank=True, null=True)
+        Assignment, on_delete=models.CASCADE, blank=True, null=True)
 
     def __str__(self):
         return self.title
@@ -251,14 +256,17 @@ class Lesson(models.Model):
     class Meta:
         db_table = 'lessons'
 
+
 class Lesson_Progress(models.Model):
     student = models.ForeignKey(
-        User,on_delete=models.CASCADE, blank=False, null=False
+        User, on_delete=models.CASCADE, blank=False, null=False
     )
     lesson = models.ForeignKey(
-        Lesson,on_delete=models.CASCADE,blank=False,null=False
+        Lesson, on_delete=models.CASCADE, blank=False, null=False
     )
     progress = models.FloatField(default=0,
-                                 validators=[MinValueValidator(0.0), MaxValueValidator(1.0)],
-                                 blank=False,null=False)
-    lesson_completed = models.BooleanField(default=False, blank=True, null=True)
+                                 validators=[MinValueValidator(
+                                     0.0), MaxValueValidator(1.0)],
+                                 blank=False, null=False)
+    lesson_completed = models.BooleanField(
+        default=False, blank=True, null=True)

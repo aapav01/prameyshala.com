@@ -115,7 +115,7 @@ QuestionInlineFormSet = inlineformset_factory(
 # will using this for create but not for update because of the extra=2 and we are using this for create quiz at first place
 # but while updating we are dividing form for question and quiz separately adding child question to parent quiz
 ChoiceInlineFormSet = inlineformset_factory(
-    Question, Choice, extra=2, fields="__all__")
+    Question, Choice, extra=4, fields="__all__")
 
 # will using this for update in update_form.html because we want to update each question and choice separately
 ChoiceInlineUpdateFormSet = inlineformset_factory(

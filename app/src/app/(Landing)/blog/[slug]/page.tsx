@@ -9,6 +9,8 @@ import {
   InstagramLogoIcon,
   LinkedInLogoIcon,
   TwitterLogoIcon,
+  DoubleArrowRightIcon,
+  DoubleArrowLeftIcon
 } from "@radix-ui/react-icons";
 
 // GRAPHQL API - APPLOLO
@@ -82,7 +84,7 @@ export default async function postBySlug({ params }: Props) {
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 {/* <img src="" alt={data.postBySlug.slug} /> */}
               </a>
-              <MDXRemote source={data.postBySlug.description}></MDXRemote>
+              <MDXRemote source={data.postBySlug.description} ></MDXRemote>
               <p className="text-sm pb-8">
                 By{" "}
                 <a href="#" className="font-semibold hover:text-gray-800">
@@ -95,18 +97,17 @@ export default async function postBySlug({ params }: Props) {
               {previousPost && (
                 <Link href={`/blog/${previousPost.slug}`} className="w-full bg-white shadow hover:shadow-md text-left p-6">
                   <p className="text-lg text-blue-800 font-bold flex items-center justify-start">
-                    <i className="fas fa-arrow-left pr-1"></i>
-                    Previous
+                    <DoubleArrowLeftIcon className="mr-1 mb-0.5 size-5 animate-arrow-slide-left" /> Previous
                   </p>
-                  <p className="pt-2">{previousPost.title}</p>
+                  <p className="p-2">{previousPost.title}</p>
                 </Link>
               )}
               {nextPost && (
                 <Link href={`/blog/${nextPost.slug}`} className="w-full bg-white shadow hover:shadow-md text-right p-6">
                   <p className="text-lg text-blue-800 font-bold flex items-center justify-end">
-                    Next <i className="fas fa-arrow-right pl-1"></i>
+                    Next <DoubleArrowRightIcon className="mx-1 mb-0.5 size-5 animate-arrow-slide-right" />
                   </p>
-                  <p className="pt-2">{nextPost.title}</p>
+                  <p className="p-2">{nextPost.title}</p>
                 </Link>
               )}
             </div>
@@ -131,25 +132,23 @@ export default async function postBySlug({ params }: Props) {
               </div>
             </div>
 
-            <div className="w-full bg-white shadow flex flex-col my-4 p-6">
-              <p className="text-xl font-semibold pb-3">Share it On</p>
-              <div className="w-full flex flex-col p-4 gap-3">
-                <div className="flex items-center justify-center gap-5">
-                  <a href="#" className="text-red-600 h-8 w-8 animate-bounce duration-&lsqb;690ms&rsqb;">
-                    {<InstagramLogoIcon className="h-8 w-8" />}
-                  </a>
-                  <a href="#" className="text-blue-400 h-8 w-8 animate-bounce duration-&lsqb;720ms&rsqb;">
-                    <TwitterLogoIcon className="h-8 w-8" />
-                  </a>
-                  <a href="#" className="text-blue-400 h-8 w-8 animate-bounce duration-&lsqb;760ms&rsqb;">
-                    <LinkedInLogoIcon className="h-8 w-8" />
-                  </a>
-                </div>
+            <div className="w-full bg-white shadow flex flex-col p-6 gap-3">
+              <p className="text-xl font-semibold pb-3">Share it on 👇🏻 </p>
+              <div className="flex items-center justify-start gap-5">
+                <a href="https://www.instagram.com/prameyshala/" className="text-red-600 h-8 w-8 animate-bounce duration-&lsqb;690ms&rsqb;" target="_blank">
+                  {<InstagramLogoIcon className="h-8 w-8" />}
+                </a>
+                <a href="#" className="text-blue-400 h-8 w-8 animate-bounce duration-&lsqb;720ms&rsqb;">
+                  <TwitterLogoIcon className="h-8 w-8" />
+                </a>
+                <a href="#" className="text-blue-400 h-8 w-8 animate-bounce duration-&lsqb;760ms&rsqb;">
+                  <LinkedInLogoIcon className="h-8 w-8" />
+                </a>
               </div>
             </div>
           </aside>
         </div>
-      </div>
-    </main>
+      </div >
+    </main >
   );
 }

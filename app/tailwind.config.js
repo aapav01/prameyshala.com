@@ -71,10 +71,22 @@ module.exports = {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: 0 },
         },
+        "arrow-slide-left": {
+           "0%": {transform: "translateX(0px)"},
+         "50%": {transform: "translateX(-4px)"},
+         "100%": {transform: "translateX(0px)"},
       },
+      "arrow-slide-right": {
+           "0%": {transform: "translateX(0px)"},
+         "50%": {transform: "translateX(4px)"},
+         "100%": {transform: "translateX(0px)"},
+      },
+    },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        "arrow-slide-left": "arrow-slide-left 1s ease-in-out infinite",
+        "arrow-slide-right": "arrow-slide-right 1s ease-in-out infinite",
       },
     },
     fontFamily: {
@@ -86,3 +98,4 @@ module.exports = {
     require("@tailwindcss/typography"),
   ],
 }
+

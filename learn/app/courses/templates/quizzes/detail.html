@@ -56,12 +56,15 @@
               {{ question }}
             </h3>
           </div>
-          <div class="p-4">
-            <h4 class="font-bold">Choices</h4>
-            <div class="grid grid-cols-2 gap-2">
+          <div class="py-2 px-8">
+            <h4 class="font-bold text-lg">Choices</h4>
+            <div class="grid grid-cols-2 gap-2 mx-4 my-2">
               {% for choice in question.choice_set.all %}
                 <div class="col-span-2">
-                  <li>{{ choice }}</li>
+                  <li>
+                    {{ choice }}
+                    {% if choice.is_correct %}<i class="fa-solid fa-circle-check text-green-400"></i>{% endif %}
+                  </li>
                 </div>
               {% endfor %}
             </div>
@@ -150,8 +153,8 @@
               {{ question.question_form.as_p }}
               {{ question.question_form.choice_formset.management_form }}
               <div class="grid md:grid-cols-2 gap-2">
-                {% for choice_form in question.question_form.choice_formset %}
-                  <div class="gap-2 inline-flex">{{ choice_form.form.as_p }}</div>
+                {% for choice_form in question.choice_formset %}
+                  <div class="gap-2 inline-flex">{{ choice_form.as_p }}</div>
                 {% endfor %}
               </div>
             </div>
