@@ -25,6 +25,7 @@ const query = gql`
         chapterSet {
           id
           name
+          image
           lessonSet {
             id
           }

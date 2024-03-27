@@ -26,11 +26,13 @@ const query = gql`
         subjectSet {
           id
           name
+          image
           description
           slug
           chapterSet {
             id
             name
+            image
             lessonSet {
               id
             }
