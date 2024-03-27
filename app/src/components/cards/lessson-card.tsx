@@ -10,6 +10,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { FileTextIcon, ActivityLogIcon, PlayIcon } from "@radix-ui/react-icons";
 import Link from "next/link";
+import Image from "next/image";
 import { Skeleton } from "@/components/ui/skeleton";
 
 type Props = {
@@ -17,6 +18,7 @@ type Props = {
     id: number;
     title: string;
     type: string;
+    thumbUrl: string;
   };
 };
 
@@ -47,12 +49,31 @@ export function LessonCardLoading() {
 }
 
 export default function LessonCard({ lesson }: Props) {
+  console.log(lesson.thumbUrl);
   return (
     <Link href={"/learn/lesson/" + lesson.id}>
       <Card className="animate-in duration-200 ease-in hover:-translate-y-2 hover:shadow-xl hover:shadow-cyan-300/50 ">
         <CardHeader className="flex justify-between">
           <CardTitle>{lesson.title}</CardTitle>
         </CardHeader>
+        {lesson.thumbUrl ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            className="rounded-t-lg p-1"
+            width={630}
+            height={400}
+            src={`${process.env.NEXT_PUBLIC_MEDIA_CDN}/static/media/${lesson.thumbUrl}`}
+            alt={lesson.title}
+          />
+        ) : (
+          <Image
+            src={`/api/og/subject/${lesson.title}`}
+            width={630}
+            height={400}
+            alt={lesson.title}
+            className="rounded-t-lg p-1"
+          />
+        )}
         <CardContent className="mt-2 pb-0">
           <div className="flex flex-row pb-3 text-sm gap-1 justify-between">
             <span className="inline-flex gap-1">{lesson.type}</span>
