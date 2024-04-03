@@ -33,7 +33,7 @@ export default function LessonCard2({ lesson, page }: Props) {
         <CardHeader className="flex justify-between">
           <CardTitle>{lesson.title}</CardTitle>
         </CardHeader>
-        {lesson.thumbUrl ? (
+        {lesson.thumbUrl && (
           // eslint-disable-next-line @next/next/no-img-element
           <img
             className="rounded-t-lg p-1"
@@ -41,14 +41,6 @@ export default function LessonCard2({ lesson, page }: Props) {
             height={400}
             src={`${process.env.NEXT_PUBLIC_MEDIA_CDN}/static/media/${lesson.thumbUrl}`}
             alt={lesson.title}
-          />
-        ) : (
-          <Image
-            src={`/api/og/subject/${lesson.title}`}
-            width={630}
-            height={400}
-            alt={lesson.title}
-            className="rounded-t-lg p-1"
           />
         )}
         <CardContent className="mt-2 pb-0">
