@@ -20,6 +20,7 @@ type Props = {
     type: string;
     thumbUrl: string;
   };
+  size?: "sm";
 };
 
 export function LessonCardLoading() {
@@ -48,7 +49,7 @@ export function LessonCardLoading() {
   );
 }
 
-export default function LessonCard({ lesson }: Props) {
+export default function LessonCard({ lesson, size }: Props) {
   console.log(lesson.thumbUrl);
   return (
     <Link href={"/learn/lesson/" + lesson.id}>
@@ -56,7 +57,7 @@ export default function LessonCard({ lesson }: Props) {
         <CardHeader className="flex justify-between">
           <CardTitle>{lesson.title}</CardTitle>
         </CardHeader>
-        {lesson.thumbUrl && (
+        {size !== "sm" && lesson.thumbUrl && (
           // eslint-disable-next-line @next/next/no-img-element
           <img
             className="rounded-t-lg p-1"
