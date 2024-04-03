@@ -26,6 +26,7 @@ const query = gql`
         id
         title
         lessonType
+        thumbUrl
         chapter {
           id
         }

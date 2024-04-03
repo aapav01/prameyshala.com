@@ -28,6 +28,7 @@ const query = gql`
           lessonSet {
             id
             title
+            thumbUrl
             lessonType
             chapter {
               id

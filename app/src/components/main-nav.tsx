@@ -73,12 +73,24 @@ function MainNav() {
       className="bg-background w-full z-30 animate-in duration-300 ease-in top-0 slide-in-from-top-0"
     >
       <div className="container flex min-h-[3rem] p-6 gap-2">
-        <div className="flex-1">
+        <div className="flex-1 max-sm:hidden">
           <Link href="/" passHref>
             <Image
               src="/svg/logo.svg"
               alt="Logo"
               width={280}
+              height={48}
+              priority
+            />
+          </Link>
+        </div>
+        <div className="flex-1 sm:hidden">
+          <Link href="/" passHref>
+            <Image
+            className=" h-10 "
+              src="/svg/logo-sm.svg"
+              alt="Logo"
+              width={48}
               height={48}
               priority
             />
