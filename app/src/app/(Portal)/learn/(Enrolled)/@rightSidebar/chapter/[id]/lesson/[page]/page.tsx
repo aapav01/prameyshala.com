@@ -28,7 +28,7 @@ const query = gql`
           lessonSet {
             id
             title
-            thumbUrl
+            image
             lessonType
             chapter {
               id
@@ -81,7 +81,7 @@ export default async function ChapterDetail({ params }: Props) {
       </header>
       <div className="flex flex-col gap-4 px-2 py-8">
         {lesson.chapter.lessonSet.map((lesson: any, index: number) => (
-          <LessonCard key={index} lesson={lesson} page={index+1} />
+          <LessonCard key={index} lesson={lesson} page={index + 1} />
         )).sort()}
       </div>
     </section>
