@@ -134,9 +134,9 @@ export default async function LessonDetail({ params }: Props) {
 
   return (
     <React.Fragment>
-      <header className="bg-teal-700 py-6 text-indigo-50 shadow-lg shadow-teal-500/50">
+      <header id="header" className="bg-teal-700 py-6 text-indigo-50 shadow-lg shadow-teal-500/50">
         <div className="container">
-          <h1 className="text-4xl font-bold">{lesson.title}</h1>
+          <h1 className="text-xl sm:text-4xl font-bold">{lesson.title}</h1>
           <span className="py-2">
             {lesson.chapter.name} of {lesson.chapter.subject.name} (
             {lesson.chapter.subject.standard.name})
@@ -144,11 +144,11 @@ export default async function LessonDetail({ params }: Props) {
         </div>
       </header>
       <LessonType lesson={lesson} />
-      <div className="container py-6">
+      {lesson.description.length > 0 && (<div className="container py-6">
         <div className="prose prose-lg max-w-full">
           <MDXRemote source={lesson.description} />
         </div>
-      </div>
+      </div>)}
     </React.Fragment>
   );
 }

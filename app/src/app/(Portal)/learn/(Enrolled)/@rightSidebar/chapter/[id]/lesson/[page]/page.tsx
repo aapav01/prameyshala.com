@@ -65,8 +65,8 @@ export default async function ChapterDetail({ params }: Props) {
   if (!lessonByChapterPaginated) return null;
   const lesson = await lessonByChapterPaginated.lesson;
   return (
-    <section className="max-lg:hidden max-w-sm w-full min-h-screen max-h-full bg-muted overflow-y-auto shadow-inner relative">
-      <header className="bg-cyan-800 py-9 text-cyan-50">
+    <section className="max-lg:hidden max-w-sm w-full bg-muted shadow-inner relative">
+      <header className="bg-cyan-800 py-9 text-cyan-50 sticky">
         <div className="container">
           <Link
             href={"/learn/chapter/" + lesson.chapter.id}
@@ -75,11 +75,11 @@ export default async function ChapterDetail({ params }: Props) {
             <Button className="mb-1" size={"icon"} variant={"ghost"}>
               <ArrowLeftIcon className="mr-1 h-6 w-6" />
             </Button>
-            <h2 className="text-2xl">{lesson.chapter.name}</h2>
+            <h2 className="text-2xl text-wrap truncate line-clamp-1">{lesson.chapter.name}</h2>
           </Link>
         </div>
       </header>
-      <div className="flex flex-col gap-4 px-2 py-8">
+      <div className="flex flex-col gap-4 px-2 py-8 max-h-[80vh] overflow-y-auto">
         {lesson.chapter.lessonSet.map((lesson: any, index: number) => (
           <LessonCard key={index} lesson={lesson} page={index + 1} />
         )).sort()}
