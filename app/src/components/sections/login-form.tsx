@@ -40,6 +40,7 @@ export default function LoginForm({}: Props) {
   });
 
   const searchParams = useSearchParams();
+  const error = searchParams.get("error");
 
   function onSubmit(data: z.infer<typeof formSchema>) {
     const callbackUrl = searchParams.get("callbackUrl");
@@ -51,64 +52,71 @@ export default function LoginForm({}: Props) {
   }
 
   return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="mt-6 space-y-2">
-        <FormField
-          control={form.control}
-          name="username"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel className="font-medium text-gray-700">
-                Phone Number
-              </FormLabel>
-              <FormControl>
-                <PhoneInput
-                  placeholder="Enter phone number"
-                  defaultCountry="IN"
-                  {...field}
-                />
-              </FormControl>
-              <FormDescription>
-                Phone Number Used to Register on Pramey Shala.
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="password"
-          render={({ field }) => (
-            <FormItem className="mt-0">
-              <FormLabel className="font-medium text-gray-700">
-                Password
-              </FormLabel>
-              <FormControl>
-                <Input placeholder="Password" type="password" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <div className="flex items-center justify-end">
-          <div className="text-sm">
-            <a
-              href="#"
-              className="font-medium text-indigo-600 hover:text-indigo-500"
-            >
-              Forgot your password?
-            </a>
+    <React.Fragment>
+      {error && (
+        <div className="p-4 bg-red-100 text-red-600 rounded-md my-2">
+          {error}
+        </div>
+      )}
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="mt-6 space-y-2">
+          <FormField
+            control={form.control}
+            name="username"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="font-medium text-gray-700">
+                  Phone Number
+                </FormLabel>
+                <FormControl>
+                  <PhoneInput
+                    placeholder="Enter phone number"
+                    defaultCountry="IN"
+                    {...field}
+                  />
+                </FormControl>
+                <FormDescription>
+                  Phone Number Used to Register on Pramey Shala.
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="password"
+            render={({ field }) => (
+              <FormItem className="mt-0">
+                <FormLabel className="font-medium text-gray-700">
+                  Password
+                </FormLabel>
+                <FormControl>
+                  <Input placeholder="Password" type="password" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <div className="flex items-center justify-end">
+            <div className="text-sm">
+              <a
+                href="#"
+                className="font-medium text-indigo-600 hover:text-indigo-500"
+              >
+                Forgot your password?
+              </a>
+            </div>
           </div>
-        </div>
-        <div>
-          <button
-            type="submit"
-            className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-          >
-            Sign in
-          </button>
-        </div>
-      </form>
-    </Form>
+          <div>
+            <button
+              type="submit"
+              className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+            >
+              Sign in
+            </button>
+          </div>
+        </form>
+      </Form>
+    </React.Fragment>
   );
 }
