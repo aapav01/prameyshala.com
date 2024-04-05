@@ -154,6 +154,7 @@ class PaymentMutation(graphene.ObjectType):
                 enrollment = Enrollment.objects.filter(user=payment.user, standard=payment.standard)
                 # TODO: Add expiration date logic
                 if enrollment.count() == 0:
+                    print("Creating new enrollment")
                     Enrollment.objects.create(user=payment.user, standard=payment.standard, payment=payment,
                                               expiration_date=(datetime.now() + timedelta(days=365)))
             data["standardSlug"] = payment.standard.slug
