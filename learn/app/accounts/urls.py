@@ -32,4 +32,12 @@ urlpatterns = [
          login_required(UsersUpdateView.as_view()), name="user-update"),
     path("account/users/<int:pk>/delete/",
          login_required(UsersDeleteView.as_view()), name="user-delete"),
+    path("account/referrals", login_required(ReferralsView.as_view()), name='referrals'),
+    # TODO: Referral Detail view is not yet created.
+    # path("account/referrals/<str:pk>/",
+    #      login_required(ReferralsDetailView.as_view()), name="referral-detail"),
+    path("account/referrals/<str:pk>/edit",
+         login_required(ReferralsUpdateView.as_view()), name="referral-update"),
+    path("account/referrals/<str:pk>/delete/",
+         login_required(ReferralsDeleteView.as_view()), name="referral-delete"),
 ]

@@ -1,6 +1,6 @@
 from django import forms
 from django.forms import ModelForm
-from .models import Enrollment, Role, User
+from .models import Enrollment, Role, User, ReferralDetails
 from django.contrib.auth.models import Permission, Group
 
 
@@ -44,7 +44,7 @@ class UsersForm(ModelForm):
     class Meta:
         model = User
         fields = ['full_name', 'password', 'phone_number', 'email', 'is_active', 'country', 'state', 'city',
-                  'is_superuser', 'is_staff',   'groups', 'user_permissions',]
+                  'is_superuser', 'is_staff',   'groups', 'user_permissions',  'referred_by']
         exclude = ['last_login']
 
     def __init__(self, *args, **kwargs):
@@ -57,3 +57,11 @@ class UserProfile(ModelForm):
         model = User
         fields = ['full_name', 'phone_number', 'email', 'country', 'state', 'city', 'photo']
         exclude = ['last_login', 'password', 'is_active', 'is_superuser', 'is_staff', 'groups', 'user_permissions',]
+
+class ReferralsForm(ModelForm):
+
+    class Meta:
+        model = ReferralDetails
+        fields = "__all__"
+        exclude = ["referral_id"]
+

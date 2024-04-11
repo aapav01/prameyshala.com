@@ -14,7 +14,7 @@
   <li>
     <a href="{% url 'blog:posts' %}"
        {% if request.resolver_match.url_name == 'posts' %}class="active"{% endif %}
-       data-ripple-light="true"><i class="fa-light fa-blog"></i></i>Posts</a>
+       data-ripple-light="true"><i class="fa-light fa-blog"></i>Posts</a>
   </li>
 {% endif %}
 {% if perms.blog.view_tags %}
@@ -100,6 +100,13 @@
     <a href="{% url 'accounts:users' %}"
        {% if request.resolver_match.url_name == 'users' %}class="active"{% endif %}
        data-ripple-light="true"><i class="far fa-users"></i>Users</a>
+  </li>
+{% endif %}
+{% if perms.accounts.view_referraldetails %}
+  <li>
+    <a href="{% url 'accounts:referrals' %}"
+       {% if request.resolver_match.url_name == 'referrals' %}class="active"{% endif %}
+       data-ripple-light="true"><i class="fa-regular fa-people-arrows"></i>Referrals</a>
   </li>
 {% endif %}
 <li>

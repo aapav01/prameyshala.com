@@ -6,6 +6,7 @@ from django.utils.translation import gettext_lazy as _
 from datetime import date, timedelta
 from phonenumber_field.modelfields import PhoneNumberField
 import base64
+from shortuuid.django_fields import ShortUUIDField
 
 phone_validator = RegexValidator(
     r"^(\+?\d{0,4})?\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{4}\)?)?$", "The phone number provided is invalid")
@@ -43,6 +44,21 @@ class UserManager(BaseUserManager):
 class Role(Group):
     description = models.TextField(blank=True)
 
+class ReferralDetails(models.Model):
+    referral_id = ShortUUIDField(
+        length=16,
+        max_length=40,
+        prefix="id_",
+        alphabet="abcdefg1234",
+        primary_key=True,
+    )
+    referral_name =  models.CharField(max_length=255)
+    created_at = models.DateTimeField(
+        auto_now=False, auto_now_add=True, blank=True, null=True)
+    updated_at = models.DateTimeField(auto_now=True, blank=True, null=True)
+
+    def __str__(self):
+        return self.referral_name
 
 class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(max_length=100, unique=True)
@@ -57,6 +73,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     state = models.CharField(max_length=64, blank=True, null=True)
     city = models.CharField(max_length=64, blank=True, null=True)
     photo = models.ImageField(upload_to='uploads/profile_pics', blank=True, null=True)
+    referred_by = models.ForeignKey(ReferralDetails,null=True,blank=True,on_delete=models.SET_NULL)
     objects = UserManager()
     USERNAME_FIELD = 'phone_number'
     REQUIRED_FIELDS = ['email', 'full_name']

@@ -6,3 +6,4 @@ from .roles import *
 from .settings import *
 from .users import *
 from .phonepe import *
+from .referral import *
