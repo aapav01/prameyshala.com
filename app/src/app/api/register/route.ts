@@ -13,6 +13,7 @@ const mutation = gql`
     $country: String!
     $state: String!
     $city: String!
+    $referredBy: String
   ) {
     registerUser(
       phoneNumber: $phoneNumber
@@ -22,6 +23,7 @@ const mutation = gql`
       country: $country
       state: $state
       city: $city
+      referredBy: $referredBy
     ) {
       id
       fullName
