@@ -73,7 +73,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     state = models.CharField(max_length=64, blank=True, null=True)
     city = models.CharField(max_length=64, blank=True, null=True)
     photo = models.ImageField(upload_to='uploads/profile_pics', blank=True, null=True)
-    referred_by = models.ForeignKey(ReferralDetails,null=True,blank=True,on_delete=models.SET_NULL)
+    referred_by = models.ForeignKey(ReferralDetails,to_field='referral_id',null=True,blank=True,on_delete=models.DO_NOTHING)
     objects = UserManager()
     USERNAME_FIELD = 'phone_number'
     REQUIRED_FIELDS = ['email', 'full_name']
