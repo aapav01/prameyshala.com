@@ -42,7 +42,9 @@ export default function RegisterModal({}: Props) {
                   Sign in to your account.
                 </Link>
               </p>
-              <RegisterForm />
+              <React.Suspense>
+                <RegisterForm />
+              </React.Suspense>
             </div>
           </div>
         </div>
