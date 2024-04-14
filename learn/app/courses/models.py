@@ -198,6 +198,7 @@ class Lesson(models.Model):
         Quiz, on_delete=models.CASCADE, blank=True, null=True)
     assignment = models.ForeignKey(
         Assignment, on_delete=models.CASCADE, blank=True, null=True)
+    preview = models.BooleanField(default=False,null=False, blank=False)
 
     def __str__(self):
         return self.title

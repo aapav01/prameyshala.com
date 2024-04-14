@@ -113,6 +113,7 @@ class Query(graphene.ObjectType):
     lesson = graphene.Field(LessonType, id=graphene.ID(required=True))
     lesson_by_chapter_paginated = graphene.Field(
         PaginatedLessons, chapter_id=graphene.ID(required=True), page=graphene.Int())
+    lessons_by_preview = graphene.List(LessonType)
     # assignment
     assignment = graphene.List(
         AssignmentType, chapter=graphene.String(required=False))
@@ -182,6 +183,10 @@ class Query(graphene.ObjectType):
         replaced_obj.start_index = page_obj.start_index()
         replaced_obj.end_index = page_obj.end_index()
         return replaced_obj
+
+    def resolve_lessons_by_preview(self,info):
+        lessons = Lesson.objects.filter(preview=True)
+        return lessons
 
     # assignments
     def resolve_assignment(self, info, chapter=None):
@@ -357,10 +362,9 @@ class EndQuiz(graphene.Mutation):
             raise Exception("Authentication credentials were not provided")
         quiz_hash = QuizHash.objects.get(pk=quiz_hash_id)
         quiz_hash.quiz_ended = True
-        quiz_hash_question_answer = QuizHashQuestionAnswer.objects.get(
-            quiz_hash=quiz_hash_id)
-        return EndQuiz(success=True, quiz_hash_question_answer=quiz_hash_question_answer)
-
+        quiz_hash.save()
+        quiz_hash_question_answer = QuizHashQuestionAnswer.objects.get(quiz_hash=quiz_hash_id)
+        return EndQuiz(success=True,quiz_hash_question_answer=quiz_hash_question_answer)
 
 class Mutation(graphene.ObjectType):
     create_submission = CreateAssignmentSubmission.Field()
