@@ -11,6 +11,7 @@ import PopularCategory from "@/components/sections/popular-category";
 import SetupOtp from "@/components/sections/setup-otp";
 import Link from "next/link";
 import AvailableCourses from "@/components/sections/available-courses";
+import DemoVideo from "@/components/sections/demo-video";
 
 export const metadata: Metadata = {
   title: "Start Learning with Pramey Shala",
@@ -231,6 +232,7 @@ export default function Home() {
       <React.Suspense>
         {/* <PopularCategory />
          */}
+        <DemoVideo/>
         <AvailableCourses />
       </React.Suspense>
       <section className="py-28 bg-gradient-to-b from-transparent to-primary/10 testmonialarea">
