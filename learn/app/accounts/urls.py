@@ -16,6 +16,8 @@ urlpatterns = [
     path("account/enrollment/<int:pk>/delete/",
          login_required(EnrollmentDeleteView.as_view()), name="enrolls-delete"),
     path('account/payments/', login_required(PaymentsView.as_view()), name='payments'),
+    path('account/payments/<int:pk>/detail/',
+         login_required(PaymentsDetailView.as_view()), name='payments-detail'),
     path("account/payment/phonepe", repsonseCapture, name="phonepe"),
     path('account/roles', login_required(RolesView.as_view()), name='roles'),
     path("account/roles/<int:pk>/",
