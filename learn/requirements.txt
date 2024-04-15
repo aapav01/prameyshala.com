@@ -20,7 +20,7 @@ graphql-core==3.2.3
 graphql-relay==3.2.0
 html-tag-names==0.1.2
 html-void-elements==0.1.0
-idna==3.4
+idna==3.7
 jsbeautifier==1.14.8
 json5==0.9.14
 mysqlclient==2.2.0
