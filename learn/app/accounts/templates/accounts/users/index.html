@@ -17,9 +17,11 @@
                placeholder="Search users..."
                value="{{ request.GET.search }}">
         <button class="btn btn-square bg-gradient-to-br from-purple-600 to-indigo-400 text-white px-6 border-0 shadow-md shadow-indigo-500/50"
-                type="submit"><i class="fa-regular fa-magnifying-glass"></i></button>
-        <a class=" btn bg-gradient-to-br from-deep-orange-600 to-orange-800 text-white px-4 border-0 shadow-md shadow-deep-orange-500/50"
-           href="{% url 'accounts:users' %}" ><i class="fa-regular fa-x"></i></a>
+                type="submit">
+          <i class="fa-regular fa-magnifying-glass"></i>
+        </button>
+        <a class="btn bg-gradient-to-br from-deep-orange-600 to-orange-800 text-white px-4 border-0 shadow-md shadow-deep-orange-500/50"
+           href="{% url 'accounts:users' %}"><i class="fa-regular fa-x"></i></a>
       </form>
     </div>
     <div class="relative flex w-full flex-col rounded-xl bg-base-100 bg-clip-border text-base-content shadow-md">
@@ -36,6 +38,7 @@
               <th class="px-4 py-3">Phone</th>
               <th class="px-4 py-3">Role</th>
               <th class="px-4 py-3">Joined on</th>
+              <th class="px-4 py-3">Referred By</th>
               <th class="px-4 py-3">Action</th>
             </tr>
           </thead>
@@ -47,6 +50,7 @@
               <th class="px-4 py-3">Phone</th>
               <th class="px-4 py-3">Role</th>
               <th class="px-4 py-3">Joined on</th>
+              <th class="px-4 py-3">Referred By</th>
               <th class="px-4 py-3">Action</th>
             </tr>
           </tfoot>
@@ -64,6 +68,7 @@
                   </div>
                 </td>
                 <td class="px-4 py-3">{{ user.created_at }}</td>
+                <td class="px-4 py-3">{{ user.referred_by }}</td>
                 <td class="flex gap-2 px-4 py-3">
                   <button onclick="update_user_{{ user.pk }}.showModal()"
                           class="btn btn-sm btn-success btn-square">
