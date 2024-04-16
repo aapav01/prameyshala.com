@@ -3,6 +3,7 @@ from app.accounts.models import User
 from django.utils.translation import gettext_lazy as _
 from django.core.validators import MinValueValidator, MaxValueValidator
 from ..accounts.models import Enrollment
+from shortuuid.django_fields import ShortUUIDField
 
 
 class Classes(models.Model):
@@ -82,57 +83,6 @@ class Chapter(models.Model):
         db_table = 'chapters'
 
 
-class Quiz(models.Model):
-    class Type(models.TextChoices):
-        Mock = 'mock', _('Mock')
-        Practice = 'practice', _('Practice')
-
-    name = models.CharField(max_length=100)
-    type = models.CharField(max_length=20, choices=Type.choices)
-    created_at = models.DateTimeField(
-        auto_now=False, auto_now_add=True, blank=True, null=True)
-    updated_at = models.DateTimeField(auto_now=True, blank=True, null=True)
-    publish_at = models.DateTimeField(auto_now_add=True)
-    time_required = models.IntegerField(blank=True, null=True)
-
-    def __str__(self):
-        return self.name
-
-    class Meta:
-        db_table = 'quizzes'
-
-
-class Question(models.Model):
-    question_text = models.TextField()
-    quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
-    created_at = models.DateTimeField(
-        auto_now=False, auto_now_add=True, blank=True, null=True)
-    updated_at = models.DateTimeField(auto_now=True, blank=True, null=True)
-    figure = models.ImageField(
-        upload_to='uploads/', blank=True, null=True, verbose_name=_("Figure"))
-
-    def __str__(self):
-        return self.question_text
-
-    class Meta:
-        db_table = 'questions'
-
-
-class Choice(models.Model):
-    question = models.ForeignKey(Question, on_delete=models.CASCADE)
-    choice_text = models.CharField(max_length=200)
-    is_correct = models.BooleanField(default=False)
-    created_at = models.DateTimeField(
-        auto_now=False, auto_now_add=True, blank=True, null=True)
-    updated_at = models.DateTimeField(auto_now=True, blank=True, null=True)
-
-    def __str__(self):
-        return self.choice_text
-
-    class Meta:
-        db_table = 'choices'
-
-
 class Assignment(models.Model):
     class Type(models.TextChoices):
         Mock = 'mock', _('Mock')
@@ -176,25 +126,24 @@ class AssignmentSubmission(models.Model):
         return f"{self.assignment.title} - {self.student.full_name}"
 
 
-class Grades(models.Model):
-    student = models.ForeignKey(User, on_delete=models.CASCADE)
-    enrolled_class = models.ForeignKey(Classes, on_delete=models.CASCADE)
-    assignment = models.ForeignKey(
-        Assignment, null=True, blank=True, on_delete=models.CASCADE)
-    quiz = models.ForeignKey(
-        Quiz, null=True, blank=True, on_delete=models.CASCADE)
-    grade = models.DecimalField(max_digits=3,
-                                decimal_places=1,
-                                validators=[MinValueValidator(0.0), MaxValueValidator(10.0)])
-    enrollment = models.ForeignKey(
-        Enrollment, default=None, blank=False, null=False, on_delete=models.CASCADE)
+class Quiz(models.Model):
+    class Type(models.TextChoices):
+        Mock = 'mock', _('Mock')
+        Practice = 'practice', _('Practice')
+
+    name = models.CharField(max_length=100)
+    type = models.CharField(max_length=20, choices=Type.choices)
+    created_at = models.DateTimeField(
+        auto_now=False, auto_now_add=True, blank=True, null=True)
+    updated_at = models.DateTimeField(auto_now=True, blank=True, null=True)
+    publish_at = models.DateTimeField(auto_now_add=True)
+    time_required = models.IntegerField(blank=True, null=True)
 
     def __str__(self):
-        if self.assignment:
-            return f"{self.student.full_name} - Class {self.enrolled_class} - Assignment: {self.assignment.title} - Score: {self.grade}"
-        elif self.quiz:
-            return f"{self.student.full_name} - Class {self.enrolled_class} - Quiz: {self.quiz.name} - Score: {self.grade}"
-        return f"{self.student.full_name} - Class {self.enrolled_class} - Score: {self.grade}"
+        return self.name
+
+    class Meta:
+        db_table = 'quizzes'
 
 
 class Lesson(models.Model):
@@ -249,12 +198,45 @@ class Lesson(models.Model):
         Quiz, on_delete=models.CASCADE, blank=True, null=True)
     assignment = models.ForeignKey(
         Assignment, on_delete=models.CASCADE, blank=True, null=True)
+    preview = models.BooleanField(default=False,null=False, blank=False)
 
     def __str__(self):
         return self.title
 
     class Meta:
         db_table = 'lessons'
+
+
+class Question(models.Model):
+    question_text = models.TextField()
+    quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(
+        auto_now=False, auto_now_add=True, blank=True, null=True)
+    updated_at = models.DateTimeField(auto_now=True, blank=True, null=True)
+    figure = models.ImageField(
+        upload_to='uploads/', blank=True, null=True, verbose_name=_("Figure"))
+    lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE, default=None)
+
+    def __str__(self):
+        return self.question_text
+
+    class Meta:
+        db_table = 'questions'
+
+
+class Choice(models.Model):
+    question = models.ForeignKey(Question, on_delete=models.CASCADE)
+    choice_text = models.CharField(max_length=200)
+    is_correct = models.BooleanField(default=False)
+    created_at = models.DateTimeField(
+        auto_now=False, auto_now_add=True, blank=True, null=True)
+    updated_at = models.DateTimeField(auto_now=True, blank=True, null=True)
+
+    def __str__(self):
+        return self.choice_text
+
+    class Meta:
+        db_table = 'choices'
 
 
 class Lesson_Progress(models.Model):
@@ -270,3 +252,49 @@ class Lesson_Progress(models.Model):
                                  blank=False, null=False)
     lesson_completed = models.BooleanField(
         default=False, blank=True, null=True)
+
+
+class QuizHash(models.Model):
+    quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
+    student = models.ForeignKey(User, on_delete=models.CASCADE)
+    quiz_hash_id = ShortUUIDField(
+        length=16,
+        max_length=40,
+        prefix="id_",
+        alphabet="abcdefg1234",
+        primary_key=True,
+    )
+    start_time = models.DateTimeField(auto_now_add=True)
+    quiz_ended = models.BooleanField(default=False, blank=True, null=True)
+
+
+class QuizHashQuestionAnswer(models.Model):
+    quiz_hash = models.ForeignKey(QuizHash, on_delete=models.CASCADE)
+    question = models.ForeignKey(Question, on_delete=models.CASCADE)
+    question_order = models.PositiveBigIntegerField()
+    chosen_answer = models.ForeignKey(
+        Choice, on_delete=models.CASCADE, null=True, blank=True)
+
+    class Meta:
+        unique_together = ('quiz_hash', 'question', 'question_order')
+
+
+class Grades(models.Model):
+    student = models.ForeignKey(User, on_delete=models.CASCADE)
+    enrolled_class = models.ForeignKey(Classes, on_delete=models.CASCADE)
+    assignment = models.ForeignKey(
+        Assignment, null=True, blank=True, on_delete=models.CASCADE)
+    quiz = models.ForeignKey(
+        Quiz, null=True, blank=True, on_delete=models.CASCADE)
+    grade = models.DecimalField(max_digits=2,
+                                decimal_places=1,
+                                validators=[MinValueValidator(0.0), MaxValueValidator(10.0)])
+    enrollment = models.ForeignKey(
+        Enrollment, default=None, blank=False, null=False, on_delete=models.CASCADE)
+
+    def __str__(self):
+        if self.assignment:
+            return f"{self.student.full_name} - Class {self.enrolled_class} - Assignment: {self.assignment.title} - Score: {self.grade}"
+        elif self.quiz:
+            return f"{self.student.full_name} - Class {self.enrolled_class} - Quiz: {self.quiz.name} - Score: {self.grade}"
+        return f"{self.student.full_name} - Class {self.enrolled_class} - Score: {self.grade}"

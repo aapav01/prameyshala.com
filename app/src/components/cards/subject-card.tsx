@@ -32,8 +32,7 @@ export default function SubjectCard({ subject, size }: Props) {
   return (
     <Link href={"/learn/subject/" + subject.slug}>
       <Card className="animate-in duration-200 ease-in hover:-translate-y-2 hover:shadow-xl hover:shadow-indigo-300/50 ">
-        {subject.image ? (
-          // remove this from above since there is no value for size {size !== "sm"}
+        {size !== "sm" && (subject.image ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img
             className="rounded-t-lg p-1"
@@ -50,7 +49,7 @@ export default function SubjectCard({ subject, size }: Props) {
             alt={subject.name}
             className="rounded-t-lg p-1"
           />
-        )}
+        ))}
         <CardContent className="mt-2 pb-0">
           <div className="flex flex-row pb-3 text-sm gap-1 justify-between">
             <span className="inline-flex gap-2">

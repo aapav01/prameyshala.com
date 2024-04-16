@@ -12,7 +12,7 @@ const hind = Hind({
 export const metadata = {
   metadataBase: new URL("https://prameyshala.com"),
   title: "Pramey Shala",
-  description: "Start learning with PrameyShala",
+  description: "Achieve exam success with PrameyShala. Personalized learning, expert mentors, and resources for IIT JEE, NEET, and board exams (CBSE, ICSE, more).",
   applicationName: "Pramey Shala",
   referrer: "origin-when-cross-origin",
   keywords: [

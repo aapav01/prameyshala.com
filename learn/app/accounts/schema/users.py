@@ -3,7 +3,7 @@ import graphene
 import graphql_jwt
 from graphene_django import DjangoObjectType
 
-from ..models import User, phoneModel
+from ..models import User, phoneModel, ReferralDetails
 
 
 class UserType(DjangoObjectType):
@@ -51,9 +51,10 @@ class UserMutation(graphene.ObjectType):
                                    country=graphene.String(required=True),
                                    state=graphene.String(required=True),
                                    city=graphene.String(required=True),
-                                   password=graphene.String(required=True))
+                                   password=graphene.String(required=True),
+                                   referred_by=graphene.String(required=False))
 
-    def resolve_register_user(self, info, phone_number, name, email, password, country, state, city):
+    def resolve_register_user(self, info, phone_number, name, email, password, country, state, city, referred_by=None):
         try:
             Mobile = phoneModel.objects.get(Mobile=phone_number)
         except ObjectDoesNotExist:
@@ -66,9 +67,11 @@ class UserMutation(graphene.ObjectType):
             except ObjectDoesNotExist:
                 pass
             try:
+                if referred_by:
+                    referred_by_instance = ReferralDetails.objects.get(referral_id=referred_by)
                 user = User.objects.create_user(
                     phone_number=phone_number, full_name=name, email=email, password=password,
-                    country=country, state=state, city=city
+                    country=country, state=state, city=city, referred_by=referred_by_instance
                 )
                 return user
             except Exception as e:

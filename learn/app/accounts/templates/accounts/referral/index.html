@@ -6,9 +6,9 @@
 {% block content %}
   <div class="mt-12 mb-8 flex flex-col gap-12">
     <div class="flex justify-between px-6">
-      <button onclick="create_user.showModal()"
+      <button onclick="create_referral.showModal()"
               class="btn bg-gradient-to-br from-purple-600 to-pink-400 text-white px-12 border-0 shadow-md shadow-purple-500/50">
-        <i class="far fa-plus"></i>Add User
+        <i class="far fa-plus"></i>Add Referral
       </button>
       <form method="get" class="bg-white shadow-sm p-2 rounded-xl">
         <input class="input input-bordered"
@@ -21,7 +21,7 @@
           <i class="fa-regular fa-magnifying-glass"></i>
         </button>
         <a class="btn bg-gradient-to-br from-deep-orange-600 to-orange-800 text-white px-4 border-0 shadow-md shadow-deep-orange-500/50"
-           href="{% url 'accounts:users' %}"><i class="fa-regular fa-x"></i></a>
+           href="{% url 'accounts:referrals' %}"><i class="fa-regular fa-x"></i></a>
       </form>
     </div>
     <div class="relative flex w-full flex-col rounded-xl bg-base-100 bg-clip-border text-base-content shadow-md">
@@ -32,50 +32,41 @@
         <table class="table table-auto">
           <thead class="uppercase text-sm">
             <tr>
-              <th class="px-4 py-3">APP ID#</th>
+              <th class="px-4 py-3">Referral ID#</th>
               <th class="px-4 py-3">Name</th>
-              <th class="px-4 py-3">Email</th>
-              <th class="px-4 py-3">Phone</th>
-              <th class="px-4 py-3">Role</th>
-              <th class="px-4 py-3">Joined on</th>
-              <th class="px-4 py-3">Referred By</th>
+              <th class="px-4 py-3">Referral URL</th>
               <th class="px-4 py-3">Action</th>
             </tr>
           </thead>
           <tfoot class="border-t border-blue-gray-50 py-3 px-5 text-left font-bold uppercase text-blue-gray-400 text-sm">
             <tr>
-              <th class="px-4 py-3">APP ID#</th>
+              <th class="px-4 py-3">Referral ID#</th>
               <th class="px-4 py-3">Name</th>
-              <th class="px-4 py-3">Email</th>
-              <th class="px-4 py-3">Phone</th>
-              <th class="px-4 py-3">Role</th>
-              <th class="px-4 py-3">Joined on</th>
-              <th class="px-4 py-3">Referred By</th>
+              <th class="px-4 py-3">Referral URL</th>
               <th class="px-4 py-3">Action</th>
             </tr>
           </tfoot>
           <tbody>
-            {% for user in users %}
+            {% for referral in referrals %}
               <tr class="border-b border-blue-gray-50">
-                <td class="px-4 py-3">{{ user.id }}</td>
-                <td class="px-4 py-3">{{ user.full_name }}</td>
-                <td class="px-4 py-3">{{ user.email }}</td>
-                <td class="px-4 py-3">{{ user.phone_number }}</td>
-                <td class="px-4 py-3 capitalize">
-                  <div class="max-w-xs">
-                    {% if user.is_superuser %}<span class="badge badge-warning">Super User</span>{% endif %}
-                    {{ user.groups.all|join:", " }}
-                  </div>
+                <td class="px-4 py-3">{{ referral.referral_id }}</td>
+                <td class="px-4 py-3">{{ referral.referral_name }}</td>
+                <td class="px-4 py-3">
+                  {% if perms.courses.view_referraldetails %}
+                    https://prameyshala.com/register?ref={{ referral.referral_id }}
+                    <button onclick="copyReferralLink('{{ referral.referral_id }}')"
+                            class="btn btn-sm btn-square bg-blue-500 shadow shadow-blue-500/50 border-0">
+                      <i class="fa-regular fa-copy"></i>
+                    </button>
+                  {% endif %}
                 </td>
-                <td class="px-4 py-3">{{ user.created_at }}</td>
-                <td class="px-4 py-3">{{ user.referred_by }}</td>
                 <td class="flex gap-2 px-4 py-3">
-                  <button onclick="update_user_{{ user.pk }}.showModal()"
+                  <button onclick="update_referral_{{ referral.pk }}.showModal()"
                           class="btn btn-sm btn-success btn-square">
                     <i class="fad fa-edit"></i>
                   </button>
-                  <a href="{% url 'accounts:user-delete' pk=user.pk %}"
-                     onclick="if(confirm('Are you sure you want to delete {{ user.full_name }} from database?')) return true; else return false;"
+                  <a href="{% url 'accounts:referral-delete' pk=referral.pk %}"
+                     onclick="if(confirm('Are you sure you want to delete {{ referral.referral_name }} from database?')) return true; else return false;"
                      class="btn btn-sm btn-error btn-square"><i class="far fa-trash-alt"></i></a>
                 </td>
               </tr>
@@ -98,13 +89,13 @@
       </div>
     </div>
   </div>
-  <dialog id="create_user"
+  <dialog id="create_referral"
           class="modal modal-bottom sm:modal-middle transition-all duration-500 ease-in-out">
     <form method="post"
           enctype="multipart/form-data"
           class="modal-box sm:max-w-5xl">
       {% csrf_token %}
-      <h2 class="font-mono font-semibold text-lg">Add New User</h2>
+      <h2 class="font-mono font-semibold text-lg">Add New Referral</h2>
       <div class="relative mb-4">
         <div class="form-control w-full djanog-custom-forms grid grid-cols-1 md:grid-cols-2 gap-4">{{ form.as_div }}</div>
       </div>
@@ -117,17 +108,19 @@
       <button>close</button>
     </form>
   </dialog>
-  {% for user in users %}
-    <dialog id="update_user_{{ user.pk }}"
+  {% for referral in referrals %}
+    <dialog id="update_referral_{{ referral.pk }}"
             class="modal modal-bottom sm:modal-middle transition-all duration-500 ease-in-out">
       <form method="post"
             enctype="multipart/form-data"
-            action="{% url 'accounts:user-update' pk=user.pk %}"
+            action="{% url 'accounts:referral-update' pk=referral.pk %}"
             class="modal-box sm:max-w-5xl">
         {% csrf_token %}
-        <h2 class="font-mono font-semibold text-lg">Update - {{ user.full_name }}</h2>
+        <h2 class="font-mono font-semibold text-lg">Update - {{ referral.referral_name }}</h2>
         <div class="relative mb-4">
-          <div class="form-control w-full djanog-custom-forms grid grid-cols-1 md:grid-cols-2 gap-4">{{ user.form.as_div }}</div>
+          <div class="form-control w-full djanog-custom-forms grid grid-cols-1 md:grid-cols-2 gap-4">
+            {{ referral.form.as_div }}
+          </div>
         </div>
         <div class="modal-action justify-between">
           <p class="text-xs mt-auto">Press esc to close the window or outside the dialog box.</p>
@@ -140,3 +133,16 @@
     </dialog>
   {% endfor %}
 {% endblock content %}
+{% block body_js %}
+  <script>
+  const copyReferralLink = async (referralId)=> {
+    const prameyshalaReferralUrl = `https://prameyshala.com/register?ref=${referralId}`
+    try {
+      await navigator.clipboard.writeText(prameyshalaReferralUrl);
+      alert("Referral URL copied successfully.")
+    } catch (err) {
+      alert("Failed to copy referral url.");
+    }
+  }
+  </script>
+{% endblock body_js %}

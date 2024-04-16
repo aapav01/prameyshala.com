@@ -8,7 +8,7 @@ type Props = {
 export default function LayoutEnroll({ children, rightSidebar }: Props) {
   return (
     <main className="flex">
-      <section className="w-full min-h-[60vh]">{children}</section>
+      <section className="w-full">{children}</section>
       {rightSidebar}
     </main>
   );

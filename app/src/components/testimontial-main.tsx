@@ -11,7 +11,7 @@ type Props = {};
 
 function TestimonialMain({}: Props) {
   return (
-    <div className="testmonialarea container">
+    <div className="testmonialarea">
       <div className="flex flex-row justify-center gap-2">
         <div className="text-center gap-2">
           <span className="text-primary bg-primary/20 rounded-2xl text-sm font-semibold px-3 py-1">
@@ -24,9 +24,10 @@ function TestimonialMain({}: Props) {
       </div>
       <div className="mt-8">
         <Swiper
+          className=""
           modules={[Navigation]}
           navigation
-          spaceBetween={20}
+          // spaceBetween={10}
           slidesPerView={2}
           breakpoints={{
             320 : {
@@ -37,7 +38,7 @@ function TestimonialMain({}: Props) {
             }
           }}
         >
-          <SwiperSlide>
+          <SwiperSlide className="pl-12">
             <TestimonialCard
               rating={5}
               className=""
@@ -46,7 +47,7 @@ function TestimonialMain({}: Props) {
               content="As a parent, I am extremely grateful for this online learning platform. It has made my child's learning journey so much more interactive and engaging. The user-friendly interface and comprehensive curriculum have helped my son, Arjun Sharma, grasp complex concepts with ease. Thank you for revolutionizing education!"
             />
           </SwiperSlide>
-          <SwiperSlide>
+          <SwiperSlide className="px-12">
             <TestimonialCard
               rating={3}
               className=""
@@ -55,7 +56,7 @@ function TestimonialMain({}: Props) {
               content="I cannot recommend this virtual learning system enough! My daughter, Aishwarya Patel, has shown tremendous improvement in her academics ever since we started using it. The adaptive learning features and personalized assessments have boosted her confidence and motivated her to excel. I'm truly impressed!"
             />
           </SwiperSlide>
-          <SwiperSlide>
+          <SwiperSlide className="px-12">
             <TestimonialCard
               rating={5}
               className=""
@@ -64,7 +65,7 @@ function TestimonialMain({}: Props) {
               content="Being a teacher, I am always on the lookout for innovative tools to enhance my students' learning experience. This online education platform has been a game-changer in my classroom. The virtual classrooms, collaborative assignments, and instant feedback have transformed the way my students, including Ravi Kumar and Neha Khan, engage with the curriculum. It's truly a teacher's dream come true!"
             />
           </SwiperSlide>
-          <SwiperSlide>
+          <SwiperSlide className="px-12">
             <TestimonialCard
               rating={4}
               className=""

@@ -14,6 +14,7 @@ import { channel } from "diagnostics_channel";
 
 type Props = {
   chapter: any;
+  size?: "sm";
 };
 
 export function ChapterCardLoading() {
@@ -45,11 +46,11 @@ export function ChapterCardLoading() {
   );
 }
 
-export default function ChapterCard({ chapter }: Props) {
+export default function ChapterCard({ chapter, size }: Props) {
   return (
     <Link href={"/learn/chapter/" + chapter.id}>
       <Card className="animate-in duration-200 ease-in hover:-translate-y-2 hover:shadow-xl hover:shadow-purple-300/50 ">
-        {chapter.image ? (
+        {size !== "sm" && (chapter.image && (
           // eslint-disable-next-line @next/next/no-img-element
           <img
             className="rounded-t-lg p-1"
@@ -58,15 +59,7 @@ export default function ChapterCard({ chapter }: Props) {
             src={`${process.env.NEXT_PUBLIC_MEDIA_CDN}/static/media/${chapter.image}`}
             alt={chapter.name}
           />
-        ) : (
-          <Image
-            width={630}
-            height={400}
-            src={`/api/og/class/${chapter.slug}`}
-            alt={chapter.name}
-            className="rounded-t-lg p-1"
-          />
-        )}
+        ))}
         <CardHeader className="flex justify-between">
           <CardTitle>{chapter.name}</CardTitle>
         </CardHeader>

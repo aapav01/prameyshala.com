@@ -73,7 +73,7 @@ const authOptions: NextAuthOptions = {
   },
   pages: {
     signIn: "/login",
-    // error: '/login', // Error code passed in query string as ?error=
+    error: '/login', // Error code passed in query string as ?error=
     newUser: "/learn", // New users will be directed here on first sign in (leave the property out if not of interest)
   },
 };

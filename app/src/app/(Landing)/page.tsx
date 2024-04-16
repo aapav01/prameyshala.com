@@ -11,6 +11,7 @@ import PopularCategory from "@/components/sections/popular-category";
 import SetupOtp from "@/components/sections/setup-otp";
 import Link from "next/link";
 import AvailableCourses from "@/components/sections/available-courses";
+import DemoVideo from "@/components/sections/demo-video";
 
 export const metadata: Metadata = {
   title: "Start Learning with Pramey Shala",
@@ -33,10 +34,10 @@ export default function Home() {
                 Elevate your academic performance with personalized learning
                 experiences
               </h1>
-              <p className="text-background text-3xl font-sans mb-5">
+              <p className="text-background md:text-3xl font-sans mb-5">
                 Where excellence meets education.
               </p>
-              <SetupOtp />
+              {/* <SetupOtp /> */}
             </div>
             <div className="w-full lg:w-1/2">
               <div className="mx-auto items-center justify-center flex h-fit">
@@ -84,7 +85,7 @@ export default function Home() {
       </section>
       <section className="container py-12">
         <div className="flex flex-col lg:flex-row h-full items-center">
-          <div className="w-full lg:w-1/2 p-10">
+          <div className="w-full lg:w-1/2 p-10 max-sm:hidden">
             <div className="mx-auto items-center justify-center flex h-fit">
               <Image
                 src={content_2.src}
@@ -231,6 +232,7 @@ export default function Home() {
       <React.Suspense>
         {/* <PopularCategory />
          */}
+        <DemoVideo/>
         <AvailableCourses />
       </React.Suspense>
       <section className="py-28 bg-gradient-to-b from-transparent to-primary/10 testmonialarea">

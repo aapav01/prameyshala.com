@@ -68,12 +68,21 @@
   {{ form.teacher }}
   <label class="text-error">{{ form.teacher.errors }}</label>
 </div>
-<div class="form-control">
-  <label for="{{ form.public.id_for_label }}">
-    <span class="label-text">{{ form.public.label }}</span>
-  </label>
-  {{ form.public }}
-  <label class="text-error">{{ form.public.errors }}</label>
+<div class="flex gap-4">
+  <div id="preview_div_{{ form.prefix }}" class="form-control hidden">
+    <label for="{{ form.preview.id_for_label }}">
+      <span class="label-text">{{ form.preview.label }}</span>
+    </label>
+    {{ form.preview }}
+    <label class="text-error">{{ form.preview.errors }}</label>
+  </div>
+  <div class="form-control">
+    <label for="{{ form.public.id_for_label }}">
+      <span class="label-text">{{ form.public.label }}</span>
+    </label>
+    {{ form.public }}
+    <label class="text-error">{{ form.public.errors }}</label>
+  </div>
 </div>
 <script>
   $(document).ready(function() {
@@ -82,17 +91,29 @@
       var lessonType = $("#{{ form.lesson_type.id_for_label }}").val();
       if (lessonType === "video") {
         $("#platform_div_{{ form.prefix }}").removeClass("hidden");
+        $("#preview_div_{{ form.prefix }}").removeClass("hidden");
+        $("#quiz_div_{{ form.prefix }}").addClass("hidden");
+        $("#assignment_div_{{ form.prefix }}").addClass("hidden");
       }else if (lessonType === "quiz") {
         $("#quiz_div_{{ form.prefix }}").removeClass("hidden");
+        $("#assignment_div_{{ form.prefix }}").addClass("hidden");
+        $("#platform_div_{{ form.prefix }}").addClass("hidden");
+        $("{{ form.platform.id_for_label }}").val("");
+        $("#preview_div_{{ form.prefix }}").addClass("hidden");
       }
       else if (lessonType === "assignment") {
         $("#assignment_div_{{ form.prefix }}").removeClass("hidden");
+        $("#quiz_div_{{ form.prefix }}").addClass("hidden");
+        $("#platform_div_{{ form.prefix }}").addClass("hidden");
+        $("{{ form.platform.id_for_label }}").val("");
+        $("#preview_div_{{ form.prefix }}").addClass("hidden");
       } 
       else {
         $("#quiz_div_{{ form.prefix }}").addClass("hidden");
         $("#assignment_div_{{ form.prefix }}").addClass("hidden");
         $("#platform_div_{{ form.prefix }}").addClass("hidden");
         $("{{ form.platform.id_for_label }}").val("");
+        $("#preview_div_{{ form.prefix }}").addClass("hidden");
       }
     }
     // Function to toggle visibility of url field
@@ -100,8 +121,10 @@
       var platform = $("#{{ form.platform.id_for_label }}").val();
       if (platform === "youtube" || platform === "vimeo") {
         $("#url_div_{{ form.prefix }}").removeClass("hidden");
+        
       } else {
         $("#url_div_{{ form.prefix }}").addClass("hidden");
+        
       }
     }
     // Call the toggleFields function on page load

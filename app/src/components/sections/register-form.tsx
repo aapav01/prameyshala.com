@@ -30,6 +30,7 @@ import {
 } from "@/components/ui/select";
 import { ReloadIcon } from "@radix-ui/react-icons";
 import { useRouter } from "next/navigation";
+import { useSearchParams } from 'next/navigation'
 
 type Props = {};
 
@@ -47,6 +48,7 @@ const formSchema = z
     country: z.string(),
     state: z.string(),
     city: z.string(),
+    referredBy: z.string().optional(),
   })
   .refine((data) => data.password === data.confirm, {
     message: "Passwords don't match",
@@ -72,6 +74,7 @@ export default function RegisterForm({}: Props) {
   const [cities, setCities] = useState<Array<any>>([]);
   // Navigation
   const router = useRouter();
+  const searchParams = useSearchParams();
   // Erorr
   const [error, setErorr] = useState<any>(null);
 
@@ -92,6 +95,10 @@ export default function RegisterForm({}: Props) {
   });
 
   async function onSubmit(data: z.infer<typeof formSchema>) {
+    const referredBy:string|null = searchParams.get('ref');
+    if (referredBy){
+      data = {...data,referredBy}
+    }
     const result = await fetch("/api/register", {
       method: "POST",
       body: JSON.stringify(data),
