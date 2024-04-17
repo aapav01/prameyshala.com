@@ -27,6 +27,7 @@ const query = gql`
         id
         name
         image
+        order
         lessonSet {
           id
         }
@@ -63,6 +64,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function SubjectDetail({ params }: Props) {
   const data = await getData({ params });
+  const sortedChapters = data?.subject?.chapterSet.slice().sort((currentChapter:any, nextChapter:any) =>
+    currentChapter?.order - nextChapter?.order);
   return (
     <>
       <header className="bg-purple-700 py-6 h-24 text-indigo-50 shadow-lg shadow-purple-500/50">
@@ -74,7 +77,7 @@ export default async function SubjectDetail({ params }: Props) {
         </div>
       </header>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 px-4 py-6 gap-4">
-        {data.subject.chapterSet.map((chapter: any, index: number) => (
+        {sortedChapters?.map((chapter: any, index: number) => (
           <ChapterCard chapter={chapter} key={index} />
         ))}
       </div>
