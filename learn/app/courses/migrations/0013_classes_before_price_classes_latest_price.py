@@ -14,11 +14,13 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='classes',
             name='before_price',
-            field=models.FloatField(default=0.0, validators=[django.core.validators.MinValueValidator(0.0)]),
+            field=models.FloatField(default=0.0, validators=[
+                                    django.core.validators.MinValueValidator(0.0)]),
         ),
         migrations.AddField(
             model_name='classes',
             name='latest_price',
-            field=models.FloatField(default=0.0, validators=[django.core.validators.MinValueValidator(0.0)]),
+            field=models.FloatField(default=0.0, validators=[
+                                    django.core.validators.MinValueValidator(0.0)]),
         ),
     ]

@@ -43,11 +43,12 @@ class ReferralsView(PermissionRequiredMixin, ListView):
             self.extra_context.update({'form': ReferralsForm})
             return redirect('accounts:referrals')
         else:
-            messages.error(request, f'failed to create! please see the create form for more details.')
+            messages.error(
+                request, f'failed to create! please see the create form for more details.')
             return super().get(request, **kwargs)
 
+    # search
 
-    #search
     def get_queryset(self):
         queryset = super().get_queryset()
 

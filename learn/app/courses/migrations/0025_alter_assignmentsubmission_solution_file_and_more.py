@@ -13,26 +13,31 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='assignmentsubmission',
             name='solution_file',
-            field=models.FileField(upload_to='uploads/assignments/submissions'),
+            field=models.FileField(
+                upload_to='uploads/assignments/submissions'),
         ),
         migrations.AlterField(
             model_name='chapter',
             name='image',
-            field=models.ImageField(blank=True, null=True, upload_to='uploads/chapters'),
+            field=models.ImageField(
+                blank=True, null=True, upload_to='uploads/chapters'),
         ),
         migrations.AlterField(
             model_name='classes',
             name='image',
-            field=models.ImageField(blank=True, null=True, upload_to='uploads/classes'),
+            field=models.ImageField(
+                blank=True, null=True, upload_to='uploads/classes'),
         ),
         migrations.AlterField(
             model_name='lesson',
             name='thumb_url',
-            field=models.ImageField(blank=True, null=True, upload_to='uploads/lessons'),
+            field=models.ImageField(
+                blank=True, null=True, upload_to='uploads/lessons'),
         ),
         migrations.AlterField(
             model_name='subject',
             name='image',
-            field=models.ImageField(blank=True, null=True, upload_to='uploads/subjects'),
+            field=models.ImageField(
+                blank=True, null=True, upload_to='uploads/subjects'),
         ),
     ]

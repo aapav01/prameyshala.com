@@ -5,7 +5,7 @@ from .views import *
 
 app_name = 'blog'
 
-urlpatterns =[
+urlpatterns = [
     path('posts/', login_required(PostsView.as_view()), name='posts'),
     path("posts/<int:pk>/update/",
          login_required(PostsUpdateView.as_view()), name="post-update"),

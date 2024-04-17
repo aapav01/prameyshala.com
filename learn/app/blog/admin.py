@@ -1,9 +1,11 @@
 from django.contrib import admin
 from .models import Post, Tag
 
+
 @admin.register(Tag)
 class TagAdmin(admin.ModelAdmin):
     model = Tag
+
 
 @admin.register(Post)
 class PostAdmin(admin.ModelAdmin):
@@ -42,4 +44,3 @@ class PostAdmin(admin.ModelAdmin):
     }
     date_hierarchy = "publish_date"
     save_on_top = True
-

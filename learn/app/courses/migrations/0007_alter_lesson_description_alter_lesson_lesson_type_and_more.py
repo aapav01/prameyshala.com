@@ -18,12 +18,14 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='lesson',
             name='lesson_type',
-            field=models.CharField(choices=[('None', '---------'), ('video', 'Video'), ('document', 'Document'), ('audio', 'Audio'), ('image', 'Image'), ('text', 'Text')], db_column='type', default=None, max_length=8),
+            field=models.CharField(choices=[('None', '---------'), ('video', 'Video'), ('document', 'Document'), (
+                'audio', 'Audio'), ('image', 'Image'), ('text', 'Text')], db_column='type', default=None, max_length=8),
         ),
         migrations.AlterField(
             model_name='lesson',
             name='platform',
-            field=models.CharField(blank=True, choices=[('None', '---------'), ('file', 'File'), ('youtube', 'Youtube'), ('vimeo', 'Vimeo')], default=None, max_length=11, null=True),
+            field=models.CharField(blank=True, choices=[('None', '---------'), ('file', 'File'), (
+                'youtube', 'Youtube'), ('vimeo', 'Vimeo')], default=None, max_length=11, null=True),
         ),
         migrations.AlterField(
             model_name='lesson',
@@ -33,6 +35,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='lesson',
             name='status',
-            field=models.CharField(choices=[('created', 'Created'), ('pending', 'Pending'), ('uploading', 'Uploading'), ('processing', 'Processing'), ('ready', 'Ready'), ('error', 'Error')], default='created', max_length=10),
+            field=models.CharField(choices=[('created', 'Created'), ('pending', 'Pending'), ('uploading', 'Uploading'), (
+                'processing', 'Processing'), ('ready', 'Ready'), ('error', 'Error')], default='created', max_length=10),
         ),
     ]

@@ -44,6 +44,7 @@ class UserManager(BaseUserManager):
 class Role(Group):
     description = models.TextField(blank=True)
 
+
 class ReferralDetails(models.Model):
     referral_id = ShortUUIDField(
         length=16,
@@ -52,7 +53,7 @@ class ReferralDetails(models.Model):
         alphabet="abcdefg1234",
         primary_key=True,
     )
-    referral_name =  models.CharField(max_length=255)
+    referral_name = models.CharField(max_length=255)
     created_at = models.DateTimeField(
         auto_now=False, auto_now_add=True, blank=True, null=True)
     updated_at = models.DateTimeField(auto_now=True, blank=True, null=True)
@@ -60,20 +61,25 @@ class ReferralDetails(models.Model):
     def __str__(self):
         return self.referral_name
 
+
 class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(max_length=100, unique=True)
-    phone_number = models.CharField(max_length=16, validators=[phone_validator], unique=True)
+    phone_number = models.CharField(max_length=16, validators=[
+                                    phone_validator], unique=True)
     full_name = models.CharField(max_length=30)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     created_at = models.DateTimeField(
         auto_now=False, auto_now_add=True, blank=True, null=True)
     updated_at = models.DateTimeField(auto_now=True, blank=True, null=True)
-    country = models.CharField(max_length=64, blank=True, null=True, default='IN')
+    country = models.CharField(
+        max_length=64, blank=True, null=True, default='IN')
     state = models.CharField(max_length=64, blank=True, null=True)
     city = models.CharField(max_length=64, blank=True, null=True)
-    photo = models.ImageField(upload_to='uploads/profile_pics', blank=True, null=True)
-    referred_by = models.ForeignKey(ReferralDetails,to_field='referral_id',null=True,blank=True,on_delete=models.DO_NOTHING)
+    photo = models.ImageField(
+        upload_to='uploads/profile_pics', blank=True, null=True)
+    referred_by = models.ForeignKey(
+        ReferralDetails, to_field='referral_id', null=True, blank=True, on_delete=models.DO_NOTHING)
     objects = UserManager()
     USERNAME_FIELD = 'phone_number'
     REQUIRED_FIELDS = ['email', 'full_name']
@@ -97,7 +103,8 @@ class Payments(models.Model):
         ATTEMPTED = 'attempted', _('Authorized/Failed')
         SUCCESS = 'paid', _('Captured')
 
-    payment_gateway_id = models.CharField(max_length=255, blank=True, null=True)
+    payment_gateway_id = models.CharField(
+        max_length=255, blank=True, null=True)
     order_gateway_id = models.CharField(max_length=255, blank=True, null=True)
     gateway = models.CharField(max_length=255)
     method = models.CharField(max_length=255, blank=True, null=True)
@@ -106,14 +113,16 @@ class Payments(models.Model):
     user_email = models.CharField(max_length=255, blank=True, null=True)
     amount = models.CharField(max_length=255)
     status = models.CharField(max_length=10,
-        choices=PaymentStatus.choices, default=PaymentStatus.CREATED)
+                              choices=PaymentStatus.choices, default=PaymentStatus.CREATED)
     json_response = models.TextField()
-    standard = models.ForeignKey('courses.Classes', on_delete=models.DO_NOTHING, blank=True, null=True)
+    standard = models.ForeignKey(
+        'courses.Classes', on_delete=models.DO_NOTHING, blank=True, null=True)
     created_at = models.DateTimeField(auto_now=False, auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
         db_table = 'payments'
+
 
 class PhonePeResponse(models.Model):
     response = models.JSONField()
@@ -125,6 +134,7 @@ class PhonePeResponse(models.Model):
 
     def __str__(self):
         return str(base64.decode(self.response))
+
 
 class Enrollment(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)

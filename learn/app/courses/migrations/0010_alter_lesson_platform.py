@@ -13,6 +13,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='lesson',
             name='platform',
-            field=models.CharField(blank=True, choices=[('file', 'File'), ('youtube', 'Youtube'), ('vimeo', 'Vimeo')], default=None, max_length=11, null=True),
+            field=models.CharField(blank=True, choices=[('file', 'File'), (
+                'youtube', 'Youtube'), ('vimeo', 'Vimeo')], default=None, max_length=11, null=True),
         ),
     ]

@@ -36,31 +36,36 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='chapter',
             name='course',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='courses.subject'),
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE, to='courses.subject'),
             preserve_default=False,
         ),
         migrations.AddField(
             model_name='chapter',
             name='user',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL),
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL),
             preserve_default=False,
         ),
         migrations.AddField(
             model_name='lesson',
             name='chapter',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='courses.chapter'),
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE, to='courses.chapter'),
             preserve_default=False,
         ),
         migrations.AddField(
             model_name='lesson',
             name='user',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL),
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL),
             preserve_default=False,
         ),
         migrations.AddField(
             model_name='subject',
             name='standard',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='courses.classes'),
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE, to='courses.classes'),
             preserve_default=False,
         ),
         migrations.AlterField(

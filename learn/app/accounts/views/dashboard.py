@@ -25,7 +25,8 @@ class UserProfile(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = self.request.user.full_name
-        context['breadcrumbs'] = [{'url': 'core:home', 'label': 'Dashboard'}, {'label': "User's Profile"}]
+        context['breadcrumbs'] = [
+            {'url': 'core:home', 'label': 'Dashboard'}, {'label': "User's Profile"}]
         context['form'] = UserProfile(instance=self.request.user)
         return context
 

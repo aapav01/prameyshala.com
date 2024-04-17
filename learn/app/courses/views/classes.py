@@ -78,7 +78,8 @@ class ClassesDetailView(PermissionRequiredMixin, DetailView):
         context = super().get_context_data(**kwargs)
         context['title'] = f"{self.object.name}"
         context['breadcrumbs'][3] = {'label': f"{self.object.name}"}
-        context['form'] = ClassesForm(instance=self.object, prefix=self.object.pk)
+        context['form'] = ClassesForm(
+            instance=self.object, prefix=self.object.pk)
         context['subjects'] = self.object.subject_set.all()
         return context
 
@@ -96,7 +97,8 @@ class ClassesDetailView(PermissionRequiredMixin, DetailView):
             self.extra_context.update({'form': ClassSubjectForm})
             return redirect('courses:class-detail', pk=self.get_object().pk)
         else:
-            messages.error(request, f'failed to create! please see the create form for more details.')
+            messages.error(
+                request, f'failed to create! please see the create form for more details.')
             return super().get(request, **kwargs)
 
 

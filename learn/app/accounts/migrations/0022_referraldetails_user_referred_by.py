@@ -15,7 +15,8 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='ReferralDetails',
             fields=[
-                ('referral_id', shortuuid.django_fields.ShortUUIDField(alphabet='abcdefg1234', length=16, max_length=40, prefix='id_', primary_key=True, serialize=False)),
+                ('referral_id', shortuuid.django_fields.ShortUUIDField(alphabet='abcdefg1234',
+                 length=16, max_length=40, prefix='id_', primary_key=True, serialize=False)),
                 ('referral_name', models.CharField(max_length=255)),
                 ('created_at', models.DateTimeField(auto_now_add=True, null=True)),
                 ('updated_at', models.DateTimeField(auto_now=True, null=True)),
@@ -24,6 +25,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='user',
             name='referred_by',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.DO_NOTHING, to='accounts.referraldetails'),
+            field=models.ForeignKey(
+                blank=True, null=True, on_delete=django.db.models.deletion.DO_NOTHING, to='accounts.referraldetails'),
         ),
     ]

@@ -188,7 +188,7 @@ class Query(graphene.ObjectType):
         replaced_obj.end_index = page_obj.end_index()
         return replaced_obj
 
-    def resolve_lessons_by_preview(self,info):
+    def resolve_lessons_by_preview(self, info):
         lessons = Lesson.objects.filter(preview=True)
         return lessons
 
@@ -390,8 +390,10 @@ class EndQuiz(graphene.Mutation):
         quiz_hash = QuizHash.objects.get(pk=quiz_hash_id)
         quiz_hash.quiz_ended = True
         quiz_hash.save()
-        quiz_hash_question_answer = QuizHashQuestionAnswer.objects.get(quiz_hash=quiz_hash_id)
-        return EndQuiz(success=True,quiz_hash_question_answer=quiz_hash_question_answer)
+        quiz_hash_question_answer = QuizHashQuestionAnswer.objects.get(
+            quiz_hash=quiz_hash_id)
+        return EndQuiz(success=True, quiz_hash_question_answer=quiz_hash_question_answer)
+
 
 class Mutation(graphene.ObjectType):
     create_submission = CreateAssignmentSubmission.Field()

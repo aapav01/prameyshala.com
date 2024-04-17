@@ -48,16 +48,18 @@ class EnrollQuery(graphene.ObjectType):
 
 class EnrollMutation(graphene.ObjectType):
     enroll_student_razorpay = graphene.Field(EnrollmentType,
-                                    razorpay_payment_id=graphene.String(
-                                        required=True),
-                                    amount=graphene.Int(required=True),
-                                    ps_payment_id=graphene.ID(required=True),
-                                    ps_standard_id=graphene.ID(required=True))
+                                             razorpay_payment_id=graphene.String(
+                                                 required=True),
+                                             amount=graphene.Int(
+                                                 required=True),
+                                             ps_payment_id=graphene.ID(
+                                                 required=True),
+                                             ps_standard_id=graphene.ID(required=True))
 
     def resolve_enroll_student_razorpay(self, info, amount,
-                               razorpay_payment_id,
-                               ps_payment_id,
-                               ps_standard_id):
+                                        razorpay_payment_id,
+                                        ps_payment_id,
+                                        ps_standard_id):
         user = info.context.user
         if not user.is_authenticated:
             raise Exception("Authentication credentials were not provided")

@@ -88,11 +88,13 @@ class ChapterView(PermissionRequiredMixin, ListView):
         all_subjects = Chapter.objects.all().values('subject__name').distinct()
         self.extra_context.update({'all_subjects': all_subjects})
 
-        all_classes = Chapter.objects.all().values('subject__standard__name').distinct()
+        all_classes = Chapter.objects.all().values(
+            'subject__standard__name').distinct()
         self.extra_context.update({'all_classes': all_classes})
 
         if class_filter:
-            queryset = queryset.filter(subject__standard__name__icontains=class_filter)
+            queryset = queryset.filter(
+                subject__standard__name__icontains=class_filter)
 
         if chapter_filter:
             queryset = queryset.filter(name__icontains=chapter_filter)
