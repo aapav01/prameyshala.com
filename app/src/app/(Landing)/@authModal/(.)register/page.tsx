@@ -3,11 +3,9 @@
 import RegisterForm from "@/components/sections/register-form";
 import Link from "next/link";
 import React from "react";
-import { useRouter } from 'next/navigation'
+import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import {
-  CrossCircledIcon
-} from "@radix-ui/react-icons";
+import { CrossCircledIcon } from "@radix-ui/react-icons";
 
 type Props = {};
 
@@ -26,9 +24,14 @@ export default function RegisterModal({}: Props) {
           <div className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
             <div className="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
               <div className="flex justify-end p-0">
-              <Button variant={'ghost'} size={'icon'} className="m-0" onClick={() => router.back()}>
-                <CrossCircledIcon className="h-4 w-4 text-rose-600" />
-              </Button>
+                <Button
+                  variant={"ghost"}
+                  size={"icon"}
+                  className="m-0"
+                  onClick={() => router.back()}
+                >
+                  <CrossCircledIcon className="h-4 w-4 text-rose-600" />
+                </Button>
               </div>
               <h2 className="text-2xl font-extrabold text-gray-900">
                 Sign up for an account

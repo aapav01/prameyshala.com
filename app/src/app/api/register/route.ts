@@ -41,8 +41,8 @@ export async function POST(request: NextRequest) {
         context: {
           fetchOptions: {
             caches: "no-cache",
-          }
-        }
+          },
+        },
       });
       if (errors) {
         console.error(errors);

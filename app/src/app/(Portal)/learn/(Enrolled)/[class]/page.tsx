@@ -75,7 +75,11 @@ export default async function PortalClass({ params }: Props) {
     <main className="min-h-[70vh]">
       <header className="bg-indigo-800 py-12 text-indigo-50">
         <div className="container">
-          <BackButton className="mb-4 2xl:-ml-10" size={'sm'} variant={'ghost'} />
+          <BackButton
+            className="mb-4 2xl:-ml-10"
+            size={"sm"}
+            variant={"ghost"}
+          />
           <h1 className="text-4xl font-bold">{data?.standard.name}</h1>
           <div className="flex gap-2 my-4 overflow-x-auto">
             {data.standard.subjectSet.map((subject: any, index: number) => (

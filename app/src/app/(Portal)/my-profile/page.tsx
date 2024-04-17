@@ -28,7 +28,7 @@ const query = gql`
           name
         }
         expirationDate
-     }
+      }
     }
   }
 `;
@@ -50,7 +50,7 @@ async function getPaymentDetails(session: any) {
   }
 }
 
-export default async function MyProfilePage({ }: Props) {
+export default async function MyProfilePage({}: Props) {
   const session = await getServerSession(authOptions);
   const { data, error } = await getPaymentDetails(session);
 
@@ -59,7 +59,9 @@ export default async function MyProfilePage({ }: Props) {
   }
 
   const lastLogin = data.me?.lastLogin ? new Date(data.me.lastLogin) : null;
-  const lastLoginFormatted = lastLogin ? lastLogin.toISOString().split("T").join(" ").split(".")[0] : "";
+  const lastLoginFormatted = lastLogin
+    ? lastLogin.toISOString().split("T").join(" ").split(".")[0]
+    : "";
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
@@ -183,16 +185,29 @@ export default async function MyProfilePage({ }: Props) {
             </p>
             <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
               {data.me?.enrollmentSet.map((enrolled: any) => (
-                <div key={enrolled.id} className="flex flex-col card shadow p-4 gap-1 rounded-xl border border-slate-200">
-                  <span className="text-lg sm:text-xl font-bold">{enrolled.standard?.name}</span>
+                <div
+                  key={enrolled.id}
+                  className="flex flex-col card shadow p-4 gap-1 rounded-xl border border-slate-200"
+                >
+                  <span className="text-lg sm:text-xl font-bold">
+                    {enrolled.standard?.name}
+                  </span>
                   <ul className="flex flex-col gap-1 p-0">
                     <li className="flex items-center gap-1">
-                      <p className="block antialiased font-sans text-sm leading-normal text-blue-gray-900 font-semibold capitalize">Created At:</p>
-                      <p className="block antialiased font-sans text-sm leading-normal font-normal text-blue-gray-500">{formatDate(enrolled.standard?.createdAt)}</p>
+                      <p className="block antialiased font-sans text-sm leading-normal text-blue-gray-900 font-semibold capitalize">
+                        Created At:
+                      </p>
+                      <p className="block antialiased font-sans text-sm leading-normal font-normal text-blue-gray-500">
+                        {formatDate(enrolled.standard?.createdAt)}
+                      </p>
                     </li>
                     <li className="flex items-center gap-1">
-                      <p className="block antialiased font-sans text-sm leading-normal text-blue-gray-900 font-semibold capitalize">Expiration Date:</p>
-                      <p className="block antialiased font-sans text-sm leading-normal font-normal text-blue-gray-500">{enrolled.expirationDate}</p>
+                      <p className="block antialiased font-sans text-sm leading-normal text-blue-gray-900 font-semibold capitalize">
+                        Expiration Date:
+                      </p>
+                      <p className="block antialiased font-sans text-sm leading-normal font-normal text-blue-gray-500">
+                        {enrolled.expirationDate}
+                      </p>
                     </li>
                   </ul>
                 </div>
@@ -201,6 +216,6 @@ export default async function MyProfilePage({ }: Props) {
           </div>
         </div>
       </div>
-    </div >
+    </div>
   );
 }

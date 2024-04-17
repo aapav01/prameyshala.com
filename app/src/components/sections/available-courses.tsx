@@ -27,7 +27,7 @@ const query = gql`
   }
 `;
 
-export default async function AvailableCourses({ }: Props) {
+export default async function AvailableCourses({}: Props) {
   const { data } = await getClient().query({ query });
 
   return (
@@ -45,5 +45,5 @@ export default async function AvailableCourses({ }: Props) {
         </div>
       </div>
     </section>
-  )
+  );
 }

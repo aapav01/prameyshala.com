@@ -47,8 +47,8 @@ async function getData({ params }: Props, session: any) {
       context: {
         headers: {
           Authorization: `JWT ${session.user.token}`,
-        }
-      }
+        },
+      },
     });
     return api_data.data;
   } catch (error) {
@@ -65,7 +65,10 @@ export default async function ChapterDetail({ params }: Props) {
     <section className="max-lg:hidden max-w-sm w-full max-h-screen bg-muted overflow-y-auto shadow-inner relative">
       <header className="bg-purple-800 py-9 text-purple-50">
         <div className="container">
-          <Link href={"/learn/subject/" + chapter.subject.slug} className="inline-flex items-center gap-2">
+          <Link
+            href={"/learn/subject/" + chapter.subject.slug}
+            className="inline-flex items-center gap-2"
+          >
             <Button className="mb-1" size={"icon"} variant={"ghost"}>
               <ArrowLeftIcon className="mr-1 h-6 w-6" />
             </Button>

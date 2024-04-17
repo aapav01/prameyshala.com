@@ -46,24 +46,25 @@ export default function ClassCard({ standard, enroll, size }: Props) {
   return (
     <Link href={enroll ? "learn/" + standard.slug : "/class/" + standard.slug}>
       <Card className="animate-in duration-200 ease-in hover:-translate-y-2 hover:shadow-xl hover:shadow-indigo-300/50">
-        {size !== "sm" && (standard.image ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
-            className="rounded-t-lg p-1"
-            width={630}
-            height={400}
-            src={`${process.env.NEXT_PUBLIC_MEDIA_CDN}/static/media/${standard.image}`}
-            alt={standard.name}
-          />
-        ) : (
-          <Image
-            width={630}
-            height={400}
-            src={`/api/og/class/${standard.slug}`}
-            alt={standard.name}
-            className="rounded-t-lg p-1"
-          />
-        ))}
+        {size !== "sm" &&
+          (standard.image ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              className="rounded-t-lg p-1"
+              width={630}
+              height={400}
+              src={`${process.env.NEXT_PUBLIC_MEDIA_CDN}/static/media/${standard.image}`}
+              alt={standard.name}
+            />
+          ) : (
+            <Image
+              width={630}
+              height={400}
+              src={`/api/og/class/${standard.slug}`}
+              alt={standard.name}
+              className="rounded-t-lg p-1"
+            />
+          ))}
         <CardHeader>
           <div className="flex flex-row justify-between items-center">
             <CardTitle className="text-lg">{standard.name}</CardTitle>

@@ -30,7 +30,7 @@ import {
 } from "@/components/ui/select";
 import { ReloadIcon } from "@radix-ui/react-icons";
 import { useRouter } from "next/navigation";
-import { useSearchParams } from 'next/navigation'
+import { useSearchParams } from "next/navigation";
 
 type Props = {};
 
@@ -95,9 +95,9 @@ export default function RegisterForm({}: Props) {
   });
 
   async function onSubmit(data: z.infer<typeof formSchema>) {
-    const referredBy:string|null = searchParams.get('ref');
-    if (referredBy){
-      data = {...data,referredBy}
+    const referredBy: string | null = searchParams.get("ref");
+    if (referredBy) {
+      data = { ...data, referredBy };
     }
     const result = await fetch("/api/register", {
       method: "POST",
@@ -129,9 +129,7 @@ export default function RegisterForm({}: Props) {
           toast({
             description: (
               <pre className="mt-2 w-[340px] rounded-md bg-green-900 p-4">
-                <code className="text-white">
-                  OTP verified
-                </code>
+                <code className="text-white">OTP verified</code>
               </pre>
             ),
           });

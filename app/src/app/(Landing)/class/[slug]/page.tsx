@@ -15,7 +15,7 @@ import {
   Dialog,
   DialogContent,
   DialogTitle,
-  DialogTrigger
+  DialogTrigger,
 } from "@/components/ui/dialog";
 import {
   StarFilledIcon,
@@ -339,37 +339,47 @@ export default async function ClassDetail({ params }: Props) {
           <div className="w-full lg:w-4/12 relative">
             <div className="bg-white shadow lg:-mt-80 p-4 md:py-10 lg:px-6 rounded-lg flex max-sm:flex-col lg:flex-col">
               <div className="mb-6 relative h-fit">
-              <Dialog modal={true}>
-              <DialogTrigger>
-                <div className="absolute top-0 left-0 right-0 bottom-0 flex items-center justify-center">
-                  <div className="shadow shadow-pink-500/50 bg-pink-600 rounded-full text-white p-2 md:p-6 animate-pulse">
-                    <PlayIcon className="h-10 w-10" />
-                  </div>
-                </div>
-                {data.standard.image ? (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img
-                    className="rounded-t-lg p-1"
-                    width={630}
-                    height={400}
-                    src={`${process.env.NEXT_PUBLIC_MEDIA_CDN}/static/media/${data.standard.image}`}
-                    alt={data.standard.name}
-                  />
-                ) : (
-                  <Image
-                    src={`/api/og/class/${data.standard.slug}`}
-                    alt={data.standard.name}
-                    className="rounded"
-                    height={630}
-                    width={400}
-                  />
-                )}
-                </DialogTrigger>
-            <DialogContent className="w-[100vw]">
-              <DialogTitle>{data?.standard?.subjectSet[0]?.chapterSet[0]?.lessonSet[0].title}</DialogTitle>
-              <VideoPlayer lesson={data?.standard?.subjectSet[0]?.chapterSet[0]?.lessonSet[0]}/>
-            </DialogContent>
-            </Dialog>
+                <Dialog modal={true}>
+                  <DialogTrigger>
+                    <div className="absolute top-0 left-0 right-0 bottom-0 flex items-center justify-center">
+                      <div className="shadow shadow-pink-500/50 bg-pink-600 rounded-full text-white p-2 md:p-6 animate-pulse">
+                        <PlayIcon className="h-10 w-10" />
+                      </div>
+                    </div>
+                    {data.standard.image ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img
+                        className="rounded-t-lg p-1"
+                        width={630}
+                        height={400}
+                        src={`${process.env.NEXT_PUBLIC_MEDIA_CDN}/static/media/${data.standard.image}`}
+                        alt={data.standard.name}
+                      />
+                    ) : (
+                      <Image
+                        src={`/api/og/class/${data.standard.slug}`}
+                        alt={data.standard.name}
+                        className="rounded"
+                        height={630}
+                        width={400}
+                      />
+                    )}
+                  </DialogTrigger>
+                  <DialogContent className="w-[100vw]">
+                    <DialogTitle>
+                      {
+                        data?.standard?.subjectSet[0]?.chapterSet[0]
+                          ?.lessonSet[0].title
+                      }
+                    </DialogTitle>
+                    <VideoPlayer
+                      lesson={
+                        data?.standard?.subjectSet[0]?.chapterSet[0]
+                          ?.lessonSet[0]
+                      }
+                    />
+                  </DialogContent>
+                </Dialog>
               </div>
               <div className="w-1/2 max-sm:w-full lg:w-full px-3">
                 <div className="flex justify-between mb-8">

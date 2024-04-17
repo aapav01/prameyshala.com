@@ -18,7 +18,7 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "https://prameyshala.com",
   },
-}
+};
 
 export default function Home() {
   return (
@@ -232,7 +232,7 @@ export default function Home() {
       <React.Suspense>
         {/* <PopularCategory />
          */}
-        <DemoVideo/>
+        <DemoVideo />
         <AvailableCourses />
       </React.Suspense>
       <section className="py-28 bg-gradient-to-b from-transparent to-primary/10 testmonialarea">

@@ -65,17 +65,12 @@ export default function DemoVideo({}: props) {
       </div>
       <div className="flex lg:items-center gap-3 max-lg:flex-col w-full">
         <div className="w-full">
-          <Swiper
-            className=""
-            modules={[Navigation]}
-            navigation
-            slidesPerView={1}
-          >
+          <Swiper modules={[Navigation]} navigation slidesPerView={1}>
             {data &&
               data?.lessonsByPreview &&
               data?.lessonsByPreview.map((lesson: any, index: number) => {
                 return (
-                  <SwiperSlide className="pl-12" key={lesson?.id}>
+                  <SwiperSlide key={lesson?.id}>
                     <div className="py-4 w-full flex justify-center">
                       <Dialog modal={true}>
                         <DialogTrigger>
@@ -86,13 +81,24 @@ export default function DemoVideo({}: props) {
                                   <PlayIcon className="h-10 w-10" />
                                 </div>
                               </div>
-                              <Image
-                                src={`/api/og/class/${lesson?.chapter?.subject?.standard?.slug}`}
-                                alt={lesson?.title}
-                                className="rounded"
-                                height={255}
-                                width={401}
-                              />
+                              {lesson?.thumbUrl ? (
+                                // eslint-disable-next-line @next/next/no-img-element
+                                <img
+                                  className="rounded-t-lg p-1"
+                                  width={630}
+                                  height={540}
+                                  src={`${process.env.NEXT_PUBLIC_MEDIA_CDN}/static/media/${lesson?.thumbUrl}`}
+                                  alt={lesson?.title}
+                                />
+                              ) : (
+                                <Image
+                                  src={`/api/og/class/${lesson?.chapter?.subject?.standard?.slug}`}
+                                  alt={lesson?.title}
+                                  className="rounded"
+                                  height={255}
+                                  width={401}
+                                />
+                              )}
                             </div>
                             <div className="flex flex-col gap-4 text-left">
                               <div className="flex gap-2">

@@ -10,7 +10,7 @@ import {
   HomeIcon,
   ExitIcon,
   VideoIcon,
-  PersonIcon
+  PersonIcon,
 } from "@radix-ui/react-icons";
 import {
   DropdownMenu,
@@ -50,12 +50,12 @@ function MainNav() {
         mainHeader?.classList.remove("shadow-lg");
         mainHeader?.classList.remove("shadow-primary/30");
       }
-      if ((scrollPosition - 10) > window.scrollY) {
+      if (scrollPosition - 10 > window.scrollY) {
         mainHeader?.classList.remove("animate-out");
         mainHeader?.classList.add("animate-in");
         mainHeader?.classList.add("sticky");
       }
-      if ((scrollPosition + 10) < window.scrollY) {
+      if (scrollPosition + 10 < window.scrollY) {
         mainHeader?.classList.remove("animate-in");
         mainHeader?.classList.add("animate-out");
         mainHeader?.classList.remove("sticky");
@@ -87,7 +87,7 @@ function MainNav() {
         <div className="flex-1 sm:hidden">
           <Link href="/" passHref>
             <Image
-            className=" h-10 "
+              className=" h-10 "
               src="/svg/logo-sm.svg"
               alt="Logo"
               width={48}
@@ -138,9 +138,7 @@ function MainNav() {
                   <DropdownMenuSeparator />
                   <DropdownMenuItem>
                     <PersonIcon className="mr-1" />
-                    <Link href="/my-profile">
-                      My Profile
-                    </Link>
+                    <Link href="/my-profile">My Profile</Link>
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem onClick={() => signOut()}>
