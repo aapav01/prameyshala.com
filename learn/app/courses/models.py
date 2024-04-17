@@ -75,6 +75,7 @@ class Chapter(models.Model):
     created_at = models.DateTimeField(
         auto_now=False, auto_now_add=True, blank=True, null=True)
     updated_at = models.DateTimeField(auto_now=True, blank=True, null=True)
+    order = models.IntegerField(default=999,blank=False,null=False)
 
     def __str__(self):
         return self.name + ' - ' + self.subject.name + ' - ' + self.subject.standard.name
