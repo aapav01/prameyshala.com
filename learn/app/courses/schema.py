@@ -128,6 +128,10 @@ class Query(graphene.ObjectType):
     quiz_hash_question_answer = graphene.Field(
         QuizHashQuestionAnswerType, quiz_hash_id=graphene.ID(required=True))
 
+    # grades
+    grades = graphene.List(GradesType, lesson_type=graphene.String(
+        required=False), assignment_or_quiz_id=graphene.ID(required=False))
+
     # classes
 
     def resolve_classes(self, info):
@@ -226,6 +230,29 @@ class Query(graphene.ObjectType):
         if not user.is_authenticated:
             raise Exception("Authentication credentials were not provided")
         return QuizHashQuestionAnswerType.objects.get(quiz_hash=quiz_hash_id)
+
+    def resolve_grades(root, info, assignment_or_quiz_id=None, lesson_type=None):
+        user = info.context.user
+        if not user.is_authenticated:
+            raise Exception("Authentication credentials were not provided")
+        if lesson_type == "assignment":
+            if assignment_or_quiz_id:
+                assignment_grades = Grades.objects.filter(
+                    student_id=user.id, assignment=assignment_or_quiz_id)
+            else:
+                assignment_grades = Grades.objects.filter(
+                    student_id=user.id, assignment__lesson__lesson_type=lesson_type)
+            return assignment_grades
+        elif lesson_type == "quiz":
+            if assignment_or_quiz_id:
+                quiz_grades = Grades.objects.filter(
+                    student_id=user.id, quiz=assignment_or_quiz_id)
+            else:
+                quiz_grades = Grades.objects.filter(
+                    student_id=user.id, quiz__lesson__lesson_type=lesson_type)
+            return quiz_grades
+        else:
+            return Grades.objects.filter(student_id=user.id)
 
 
 class CreateAssignmentSubmission(graphene.Mutation):

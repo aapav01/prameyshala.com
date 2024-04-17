@@ -6,80 +6,88 @@
 {% block content %}
   <div class="mt-12 mb-8 flex flex-col gap-12">
     <div class="flex justify-end mx-4">
-      <form method="get" class="bg-white shadow-sm p-2 rounded-xl">
+      <form method="get">
         <input class="input input-bordered"
                type="text"
                name="search"
                placeholder="Search users..."
                value="{{ request.GET.search }}">
         <button class="btn btn-square bg-gradient-to-br from-purple-600 to-indigo-400 text-white px-6 border-0 shadow-md shadow-indigo-500/50"
-                type="submit"><i class="fa-regular fa-magnifying-glass"></i></button>
-      <a class="btn btn-square bg-gradient-to-br from-deep-orange-600 to-orange-800 text-white px-4 border-0 shadow-md shadow-deep-orange-500/50"
-         href="{% url 'accounts:payments' %}"><i class="fa-regular fa-x"></i></a>
-    </form>
-  </div>
-  <div class="relative flex w-full flex-col rounded-xl bg-base-100 bg-clip-border text-base-content shadow-md">
-    <div class="relative mx-4 -mt-6 mb-4 grid px-6 py-8 overflow-hidden rounded-xl bg-gradient-to-tr from-indigo-600 to-indigo-400 bg-clip-border text-white shadow-lg shadow-indigo-500/40">
-      <h1 class="block font-sans leading-snug tracking-normal text-white antialiased text-lg font-semibold">Payments</h1>
+                type="submit">
+          <i class="fa-regular fa-magnifying-glass"></i>
+        </button>
+        <a class="btn btn-square bg-gradient-to-br from-deep-orange-600 to-orange-800 text-white px-4 border-0 shadow-md shadow-deep-orange-500/50"
+           href="{% url 'accounts:payments' %}"><i class="fa-regular fa-x"></i></a>
+      </form>
     </div>
-    <div class="flex flex-col gap-4 p-6 overflow-x-auto">
-      <table class="table table-auto">
-        <thead class="uppercase text-sm">
-          <tr>
-            <th class="px-4 py-3">User</th>
-            <th class="px-4 py-3">Payment ID</th>
-            <th class="px-4 py-3">Payment Gateway</th>
-            <th class="px-4 py-3">Amount Paid</th>
-            <th class="px-4 py-3">Method</th>
-            <th class="px-4 py-3">Status</th>
-            <th class="px-4 py-3">Created Date/Time</th>
-          </tr>
-        </thead>
-        <tfoot class="border-t border-blue-gray-50 py-3 px-5 text-left font-bold uppercase text-blue-gray-400 text-sm">
-          <tr>
-            <th class="px-4 py-3">User</th>
-            <th class="px-4 py-3">Payment ID</th>
-            <th class="px-4 py-3">Payment Gateway</th>
-            <th class="px-4 py-3">Amount Paid</th>
-            <th class="px-4 py-3">Method</th>
-            <th class="px-4 py-3">Status</th>
-            <th class="px-4 py-3">Created Date/Time</th>
-          </tr>
-        </tfoot>
-        <tbody>
-          {% for payment in payments %}
-            <tr class="border-b border-blue-gray-50">
-              <td class="px-4 py-3">{{ payment.user.full_name }}</td>
-              <td class="px-4 py-3">{{ payment.payment_gateway_id }}</td>
-              <td class="px-4 py-3">{{ payment.gateway }}</td>
-              <td class="px-4 py-3">{{ payment.amount }}</td>
-              <td class="px-4 py-3">{{ payment.method }}</td>
-              <td class="px-4 py-3 capitalize">
-                {% if payment.status == 'paid' %}
-                  <span class="badge bg-success/50">{{ payment.status }}</span>
-                {% else %}
-                  <span class="badge bg-warning/50">{{ payment.status }}</span>
-                {% endif %}
-              </td>
-              <td class="px-4 py-3">{{ payment.created_at }}</td>
+    <div class="relative flex w-full flex-col rounded-xl bg-base-100 bg-clip-border text-base-content shadow-md">
+      <div class="relative mx-4 -mt-6 mb-4 grid px-6 py-8 overflow-hidden rounded-xl bg-gradient-to-tr from-indigo-600 to-indigo-400 bg-clip-border text-white shadow-lg shadow-indigo-500/40">
+        <h1 class="block font-sans leading-snug tracking-normal text-white antialiased text-lg font-semibold">Payments</h1>
+      </div>
+      <div class="flex flex-col gap-4 p-6 overflow-x-auto">
+        <table class="table table-auto">
+          <thead class="uppercase text-sm">
+            <tr>
+              <th class="px-4 py-3">User</th>
+              <th class="px-4 py-3">Payment ID</th>
+              <th class="px-4 py-3">Class</th>
+              <th class="px-4 py-3">Amount Paid</th>
+              <th class="px-4 py-3">Method</th>
+              <th class="px-4 py-3">Status</th>
+              <th class="px-4 py-3">Action</th>
             </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-    </div>
-    <div class="p-5 flex justify-end">
-      <div class="join">
-        {% if page_obj.has_previous %}
-          <a class="join-item btn btn-primary"
-             href="?page={{ page_obj.previous_page_number }}{% if search_query %}&search={{ search_query }}{% endif %}">previous</a>
-        {% endif %}
-        <span class="join-item btn btn-disabled">Page {{ page_obj.number }} of {{ paginator.num_pages }}.</span>
-        {% if page_obj.has_next %}
-          <a class="join-item btn btn-primary"
-             href="?page={{ page_obj.next_page_number }}{% if search_query %}&search={{ search_query }}{% endif %}">next</a>
-        {% endif %}
+          </thead>
+          <tfoot class="border-t border-blue-gray-50 py-3 px-5 text-left font-bold uppercase text-blue-gray-400 text-sm">
+            <tr>
+              <th class="px-4 py-3">User</th>
+              <th class="px-4 py-3">Payment ID</th>
+              <th class="px-4 py-3">Class</th>
+              <th class="px-4 py-3">Amount Paid</th>
+              <th class="px-4 py-3">Method</th>
+              <th class="px-4 py-3">Status</th>
+              <th class="px-4 py-3">Action</th>
+            </tr>
+          </tfoot>
+          <tbody>
+            {% for payment in payments %}
+              <tr class="border-b border-blue-gray-50">
+                <td class="px-4 py-3">{{ payment.user.full_name }}</td>
+                <td class="px-4 py-3">{{ payment.payment_gateway_id }}</td>
+                <td class="px-4 py-3">{{ payment.standard }}</td>
+                <td class="px-4 py-3">{{ payment.amount }}</td>
+                <td class="px-4 py-3">{{ payment.method }}</td>
+                <td class="px-4 py-3 capitalize">
+                  {% if payment.status == 'paid' %}
+                    <span class="badge bg-success/50">{{ payment.status }}</span>
+                  {% else %}
+                    <span class="badge bg-warning/50">{{ payment.status }}</span>
+                  {% endif %}
+                </td>
+                <td class="flex gap-2 px-4 py-3">
+                  <a href="{% url 'accounts:payments-detail' pk=payment.pk %}"
+                     class="btn btn-info btn-sm">
+                    <i class="fad fa-eye"></i>
+                    Show
+                  </a>
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      <div class="p-5 flex justify-end">
+        <div class="join">
+          {% if page_obj.has_previous %}
+            <a class="join-item btn btn-primary"
+               href="?page={{ page_obj.previous_page_number }}{% if search_query %}&search={{ search_query }}{% endif %}">previous</a>
+          {% endif %}
+          <span class="join-item btn btn-disabled">Page {{ page_obj.number }} of {{ paginator.num_pages }}.</span>
+          {% if page_obj.has_next %}
+            <a class="join-item btn btn-primary"
+               href="?page={{ page_obj.next_page_number }}{% if search_query %}&search={{ search_query }}{% endif %}">next</a>
+          {% endif %}
+        </div>
       </div>
     </div>
   </div>
-</div>
 {% endblock content %}

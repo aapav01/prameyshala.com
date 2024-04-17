@@ -1,0 +1,63 @@
+{% extends "layouts/dashboard.html" %}
+{% load static %}
+{% block title %}
+  {{ title }} | Pramey Shala
+{% endblock title %}
+{% block content %}
+  <div class="mt-12 mb-8 flex flex-col gap-12">
+    <div class="flex justify-end mx-4"></div>
+    <div class="relative flex w-full flex-col rounded-xl bg-base-100 bg-clip-border text-base-content shadow-md">
+      <div class="relative mx-4 -mt-6 mb-4 grid px-6 py-8 overflow-hidden rounded-xl bg-gradient-to-tr from-blue-600 to-blue-400 bg-clip-border text-white shadow-lg shadow-yellow-500/40">
+        <h1 class="block font-sans leading-snug tracking-normal text-white antialiased text-lg font-semibold">
+          {{ payments.user.full_name }}
+        </h1>
+      </div>
+      <div class="grid grid-cols-2 p-6 mb-6 grid-flow-dense gap-2">
+        <div>
+          <span class="font-bold">Payment ID</span>
+          <p class="text-lg">{{ payments.payment_gateway_id }}</p>
+        </div>
+        <div>
+          <span class="font-bold">Order ID</span>
+          <p class="text-lg">{{ payments.order_gateway_id }}</p>
+        </div>
+        <div>
+          <span class="font-bold">Status</span>
+          <p class="text-lg">
+            <span class="text-lg {% if payments.status == 'paid' %} badge bg-success/50 {% else %} badge bg-warning/50 {% endif %} text-black text-sm rounded-full">{{ payments.status | title }}</span>
+          </p>
+        </div>
+        <div>
+          <span class="font-bold">Class</span>
+          <p class="text-lg">{{ payments.standard }}</p>
+        </div>
+        <div>
+          <span class="font-bold">Created At</span>
+          <p class="text-lg">{{ payments.created_at }}</p>
+        </div>
+        <div>
+          <span class="font-bold">Updated At</span>
+          <p class="text-lg">{{ payments.updated_at }}</p>
+        </div>
+        <div>
+          <span class="font-bold">Email ID</span>
+          <p class="text-lg">{{ payments.user.email }}</p>
+        </div>
+        <div>
+          <span class="font-bold">Payment Method</span>
+          <p class="text-lg">{{ payments.method }}</p>
+        </div>
+        <div>
+          <span class="font-bold">Amount Paid</span>
+          <p class="text-lg">
+            <i class="fa-regular fa-indian-rupee-sign fa-sm"></i> {{ payments.amount }}
+          </p>
+        </div>
+        <div>
+          <span class="font-bold">Payment Gateway</span>
+          <p class="text-lg">{{ payments.gateway }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock content %}
