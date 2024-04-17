@@ -6,6 +6,7 @@ const query = gql`
 query demo_videos{
   lessonsByPreview{
     id
+    description
     lessonType
     title
     platformVideoId
