@@ -25,6 +25,7 @@ class ChartFliterOptions(JSONView):
         })
         return context
 
+
 class DashboardData(JSONView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -39,9 +40,12 @@ class DashboardData(JSONView):
         # DATA
         # Today
         today = date.today()
-        enrollment_count_day = Enrollment.objects.filter(created_at__date=today).count()
-        payment_amount_day = Payments.objects.filter(status='paid').filter(created_at__date=today).aggregate(Sum('amount'))['amount__sum']
-        user_today = User.objects.filter(is_active=True).filter(created_at__date=today).count()
+        enrollment_count_day = Enrollment.objects.filter(
+            created_at__date=today).count()
+        payment_amount_day = Payments.objects.filter(status='paid').filter(
+            created_at__date=today).aggregate(Sum('amount'))['amount__sum']
+        user_today = User.objects.filter(is_active=True).filter(
+            created_at__date=today).count()
 
         # This Month
         payment_amount_month = Payments.objects.filter(status='paid').filter(created_at__year=year).filter(
@@ -52,9 +56,12 @@ class DashboardData(JSONView):
             created_at__month=month).filter(created_at__year=year).count()
 
         # This Year
-        user_this_year = User.objects.filter(is_active=True).filter(created_at__year=year).count()
-        payment_amount_year = Payments.objects.filter(status='paid').filter(created_at__year=year).aggregate(Sum('amount'))['amount__sum']
-        enrollment_count_year = Enrollment.objects.filter(expiration_date__gt=today).filter(created_at__year=year).count()
+        user_this_year = User.objects.filter(
+            is_active=True).filter(created_at__year=year).count()
+        payment_amount_year = Payments.objects.filter(status='paid').filter(
+            created_at__year=year).aggregate(Sum('amount'))['amount__sum']
+        enrollment_count_year = Enrollment.objects.filter(
+            expiration_date__gt=today).filter(created_at__year=year).count()
 
         # All Over Time
         enrollment_count = Enrollment.objects.count()

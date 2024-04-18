@@ -1,10 +1,5 @@
 import React from "react";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { FileTextIcon, ListBulletIcon } from "@radix-ui/react-icons";
 import Link from "next/link";
@@ -50,7 +45,7 @@ export default function ChapterCard({ chapter, size }: Props) {
   return (
     <Link href={"/learn/chapter/" + chapter.id}>
       <Card className="animate-in duration-200 ease-in hover:-translate-y-2 hover:shadow-xl hover:shadow-purple-300/50 ">
-        {size !== "sm" && (chapter.image && (
+        {size !== "sm" && chapter.image && (
           // eslint-disable-next-line @next/next/no-img-element
           <img
             className="rounded-t-lg p-1"
@@ -59,7 +54,7 @@ export default function ChapterCard({ chapter, size }: Props) {
             src={`${process.env.NEXT_PUBLIC_MEDIA_CDN}/static/media/${chapter.image}`}
             alt={chapter.name}
           />
-        ))}
+        )}
         <CardHeader className="flex justify-between">
           <CardTitle>{chapter.name}</CardTitle>
         </CardHeader>

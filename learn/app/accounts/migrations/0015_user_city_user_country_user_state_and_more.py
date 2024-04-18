@@ -19,7 +19,8 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='user',
             name='country',
-            field=models.CharField(blank=True, default='IN', max_length=64, null=True),
+            field=models.CharField(
+                blank=True, default='IN', max_length=64, null=True),
         ),
         migrations.AddField(
             model_name='user',
@@ -29,6 +30,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='user',
             name='phone_number',
-            field=phonenumber_field.modelfields.PhoneNumberField(max_length=16, region=None, unique=True),
+            field=phonenumber_field.modelfields.PhoneNumberField(
+                max_length=16, region=None, unique=True),
         ),
     ]

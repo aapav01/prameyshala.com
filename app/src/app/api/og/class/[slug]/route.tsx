@@ -17,7 +17,6 @@ const query = gql`
   }
 `;
 
-
 export async function GET(request: Request, { params }: Props) {
   const { data } = await await getClient().query({
     query,

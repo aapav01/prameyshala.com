@@ -16,16 +16,19 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='lesson',
             name='teacher',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.DO_NOTHING, related_name='teacher', to=settings.AUTH_USER_MODEL),
+            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.DO_NOTHING,
+                                    related_name='teacher', to=settings.AUTH_USER_MODEL),
         ),
         migrations.AddField(
             model_name='lesson',
             name='updated_by',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.DO_NOTHING, related_name='updated_by', to=settings.AUTH_USER_MODEL),
+            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.DO_NOTHING,
+                                    related_name='updated_by', to=settings.AUTH_USER_MODEL),
         ),
         migrations.AlterField(
             model_name='lesson',
             name='created_by',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.DO_NOTHING, related_name='created_by', to=settings.AUTH_USER_MODEL),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.DO_NOTHING,
+                                    related_name='created_by', to=settings.AUTH_USER_MODEL),
         ),
     ]

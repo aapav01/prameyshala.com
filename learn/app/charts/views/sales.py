@@ -11,7 +11,8 @@ class SalesChart(JSONView):
         context = super().get_context_data(**kwargs)
         sales_dict = get_year_dict()
         year = self.kwargs.get("year")
-        purchases = Payments.objects.filter(created_at__year=year).filter(status='paid')
+        purchases = Payments.objects.filter(
+            created_at__year=year).filter(status='paid')
         grouped_purchases = purchases.annotate(price=F("amount")).annotate(month=ExtractMonth("created_at"))\
             .values("month").annotate(average=Sum("amount")).values("month", "average").order_by("month")
 

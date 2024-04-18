@@ -2,7 +2,6 @@ import React from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { LessonCardLoading } from "@/components/cards/lessson-card";
 
-
 type Props = {
   params: { id: string };
 };

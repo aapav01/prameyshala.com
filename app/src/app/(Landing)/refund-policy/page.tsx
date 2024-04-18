@@ -8,17 +8,14 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "https://prameyshala.com/refund-policy",
   },
-}
+};
 
 export default function RefundPolicy({}: Props) {
   return (
     <main className="min-h-screen">
       <PageHeader
         title={"Refund Policy"}
-        breadcrumbs={[
-          { title: "Home", href: "/" },
-          { title: "Refund Policy" },
-        ]}
+        breadcrumbs={[{ title: "Home", href: "/" }, { title: "Refund Policy" }]}
       />
       <section className="container py-12">
         <div className="prose text-lg max-w-5xl">
@@ -71,7 +68,8 @@ export default function RefundPolicy({}: Props) {
           <strong>Refund Process:</strong>
           <p>
             a. To initiate a refund request, users must contact our customer
-            support team by sending an email to <a href="mailto:info@prameyshala.com">info@prameyshala.com</a> or by
+            support team by sending an email to{" "}
+            <a href="mailto:info@prameyshala.com">info@prameyshala.com</a> or by
             submitting a refund request through our website within the specified
             time frame.
           </p>
@@ -116,7 +114,8 @@ export default function RefundPolicy({}: Props) {
           </p>
           <p>
             If you have any questions or require further assistance, please
-            contact our customer support team at <a href="mailto:info@prameyshala.com">info@prameyshala.com</a>.
+            contact our customer support team at{" "}
+            <a href="mailto:info@prameyshala.com">info@prameyshala.com</a>.
           </p>
           <p>Thank you for choosing Prameyshala!</p>
         </div>

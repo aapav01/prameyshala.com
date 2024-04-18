@@ -13,12 +13,14 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='chapter',
             name='image',
-            field=models.ImageField(blank=True, null=True, upload_to='static/uploads/chapters'),
+            field=models.ImageField(
+                blank=True, null=True, upload_to='static/uploads/chapters'),
         ),
         migrations.AlterField(
             model_name='classes',
             name='image',
-            field=models.ImageField(blank=True, null=True, upload_to='static/uploads/classes'),
+            field=models.ImageField(
+                blank=True, null=True, upload_to='static/uploads/classes'),
         ),
         migrations.AlterField(
             model_name='classes',
@@ -28,12 +30,14 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='lesson',
             name='thumb_url',
-            field=models.ImageField(blank=True, null=True, upload_to='static/uploads/lessons'),
+            field=models.ImageField(
+                blank=True, null=True, upload_to='static/uploads/lessons'),
         ),
         migrations.AlterField(
             model_name='subject',
             name='image',
-            field=models.ImageField(blank=True, null=True, upload_to='static/uploads/subjects'),
+            field=models.ImageField(
+                blank=True, null=True, upload_to='static/uploads/subjects'),
         ),
         migrations.AlterField(
             model_name='subject',

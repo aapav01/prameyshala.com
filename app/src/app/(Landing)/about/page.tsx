@@ -14,17 +14,14 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "https://prameyshala.com/about",
   },
-}
+};
 
 function AboutPage({}: Props) {
   return (
     <main className="min-h-screen">
       <PageHeader
         title={"About Us"}
-        breadcrumbs={[
-          { title: "Home", href: "/" },
-          { title: "About Us" },
-        ]}
+        breadcrumbs={[{ title: "Home", href: "/" }, { title: "About Us" }]}
       />
       <section className="container py-12">
         <div className="flex flex-col lg:flex-row h-full items-center">

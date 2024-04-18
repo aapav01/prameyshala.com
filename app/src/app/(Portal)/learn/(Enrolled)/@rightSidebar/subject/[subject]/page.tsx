@@ -72,7 +72,10 @@ export default async function SideSubjects({ params }: Props) {
     <section className="max-lg:hidden max-w-sm w-full max-h-screen bg-muted overflow-y-auto shadow-inner relative">
       <header className="bg-indigo-800 py-6 h-24 text-indigo-50">
         <div className="container">
-          <Link href={"/learn/" + data.subject.standard.slug} className="inline-flex items-center gap-2">
+          <Link
+            href={"/learn/" + data.subject.standard.slug}
+            className="inline-flex items-center gap-2"
+          >
             <Button className="mb-1" size={"icon"} variant={"ghost"}>
               <ArrowLeftIcon className="mr-1 h-6 w-6" />
             </Button>

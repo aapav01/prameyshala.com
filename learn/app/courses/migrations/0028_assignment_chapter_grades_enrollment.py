@@ -15,11 +15,13 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='assignment',
             name='chapter',
-            field=models.ForeignKey(default=None, on_delete=django.db.models.deletion.CASCADE, to='courses.chapter'),
+            field=models.ForeignKey(
+                default=None, on_delete=django.db.models.deletion.CASCADE, to='courses.chapter'),
         ),
         migrations.AddField(
             model_name='grades',
             name='enrollment',
-            field=models.ForeignKey(default=None, on_delete=django.db.models.deletion.CASCADE, to='accounts.enrollment'),
+            field=models.ForeignKey(
+                default=None, on_delete=django.db.models.deletion.CASCADE, to='accounts.enrollment'),
         ),
     ]

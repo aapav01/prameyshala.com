@@ -2,6 +2,7 @@ from django.template import Library
 
 register = Library()
 
+
 @register.filter
 def truncatewords_by_chars(value, arg):
     """Truncate the text when it exceeds a certain number of characters.

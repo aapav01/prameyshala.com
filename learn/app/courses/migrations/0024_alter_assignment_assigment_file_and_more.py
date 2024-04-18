@@ -16,31 +16,37 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='assignment',
             name='assigment_file',
-            field=models.FileField(blank=True, null=True, upload_to='uploads/assignments'),
+            field=models.FileField(blank=True, null=True,
+                                   upload_to='uploads/assignments'),
         ),
         migrations.AlterField(
             model_name='assignment',
             name='created_by',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.DO_NOTHING, related_name='assignment_created_by', to=settings.AUTH_USER_MODEL),
+            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.DO_NOTHING,
+                                    related_name='assignment_created_by', to=settings.AUTH_USER_MODEL),
         ),
         migrations.AlterField(
             model_name='assignment',
             name='teacher',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.DO_NOTHING, to=settings.AUTH_USER_MODEL),
+            field=models.ForeignKey(
+                blank=True, null=True, on_delete=django.db.models.deletion.DO_NOTHING, to=settings.AUTH_USER_MODEL),
         ),
         migrations.AlterField(
             model_name='assignment',
             name='updated_by',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.DO_NOTHING, related_name='assignment_updated_by', to=settings.AUTH_USER_MODEL),
+            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.DO_NOTHING,
+                                    related_name='assignment_updated_by', to=settings.AUTH_USER_MODEL),
         ),
         migrations.AlterField(
             model_name='chapter',
             name='user',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.DO_NOTHING, to=settings.AUTH_USER_MODEL),
+            field=models.ForeignKey(
+                blank=True, null=True, on_delete=django.db.models.deletion.DO_NOTHING, to=settings.AUTH_USER_MODEL),
         ),
         migrations.AlterField(
             model_name='lesson',
             name='created_by',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.DO_NOTHING, related_name='created_by', to=settings.AUTH_USER_MODEL),
+            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.DO_NOTHING,
+                                    related_name='created_by', to=settings.AUTH_USER_MODEL),
         ),
     ]

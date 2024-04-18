@@ -3,9 +3,7 @@ import { Metadata } from "next";
 import { ClassCardSkeleton } from "@/components/cards/class-card";
 import { Skeleton } from "@/components/ui/skeleton";
 
-
 type Props = {};
-
 
 export const metadata: Metadata = {
   title: "My Learning Portal | Pramey Shala",

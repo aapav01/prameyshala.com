@@ -9,8 +9,8 @@ function MainTemplate({
   children,
   session,
 }: {
-  children: React.ReactNode,
-  session: any
+  children: React.ReactNode;
+  session: any;
 }) {
   return (
     <SessionProvider session={session}>

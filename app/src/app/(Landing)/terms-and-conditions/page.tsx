@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "https://prameyshala.com/terms-and-conditions",
   },
-}
+};
 
 export default function TNC({}: Props) {
   return (
@@ -182,7 +182,8 @@ export default function TNC({}: Props) {
           </p>
           <p>
             If you have any questions or concerns about these Terms and
-            Conditions, please contact us at <a href="mailto:info@prameyshala.com">info@prameyshala.com</a>.
+            Conditions, please contact us at{" "}
+            <a href="mailto:info@prameyshala.com">info@prameyshala.com</a>.
           </p>
           <p>
             By using the Prameyshala EdTech Platform, you acknowledge that you

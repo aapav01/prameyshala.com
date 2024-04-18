@@ -23,7 +23,6 @@ headers = {
 }
 
 
-
 class SubjectsView(PermissionRequiredMixin, ListView):
     permission_required = "courses.view_subject"
     model = Subject
@@ -37,7 +36,6 @@ class SubjectsView(PermissionRequiredMixin, ListView):
     }
     paginate_by = 10
     ordering = ['-created_at']
-
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -63,10 +61,11 @@ class SubjectsView(PermissionRequiredMixin, ListView):
             self.extra_context.update({'form': SubjectForm})
             return redirect('courses:subjects')
         else:
-            messages.error(request, f'failed to create! please see the create form for more details.')
+            messages.error(
+                request, f'failed to create! please see the create form for more details.')
             return super().get(request, **kwargs)
 
-    #filter
+    # filter
     def get_queryset(self):
         queryset = super().get_queryset()
         subject_filter = self.request.GET.get('subject')
@@ -75,7 +74,8 @@ class SubjectsView(PermissionRequiredMixin, ListView):
         all_subjects = Subject.objects.all().values('name').distinct()
         self.extra_context.update({'all_subjects': all_subjects})
 
-        all_classes = Subject.objects.all().values('standard__name', 'standard__slug').distinct()
+        all_classes = Subject.objects.all().values(
+            'standard__name', 'standard__slug').distinct()
         self.extra_context.update({'all_classes': all_classes})
 
         if subject_filter:
@@ -130,7 +130,8 @@ class SubjectDetailView(PermissionRequiredMixin, DetailView):
             self.extra_context.update({'form_chapter': SubjectChatperForm})
             return redirect('courses:subject-detail', pk=self.get_object().pk)
         else:
-            messages.error(request, f'failed to create! please see the create form for more details.')
+            messages.error(
+                request, f'failed to create! please see the create form for more details.')
             return super().get(request, **kwargs)
 
 

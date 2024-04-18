@@ -13,7 +13,7 @@ import VideoPlayer from "@/components/sections/video-player";
 import Quiz from "@/components/sections/quiz";
 // import Assignment from "@/components/sections/assignment";
 const Assignment = dynamic(() => import("@/components/sections/pdf-viewer"), {
-  ssr: false
+  ssr: false,
 });
 
 type Props = {
@@ -50,7 +50,7 @@ const query = gql`
               choiceText
             }
           }
-				}
+        }
         assignment {
           id
           title
@@ -120,7 +120,13 @@ function LessonType({ lesson }: { lesson: any }) {
     case "QUIZ":
       return <Quiz lesson={lesson} />;
     case "ASSIGNMENT":
-      return <Assignment file={lesson.assignment.assigmentFile} type={lesson.lessonType} lessonId={lesson.id}/>;
+      return (
+        <Assignment
+          file={lesson.assignment.assigmentFile}
+          type={lesson.lessonType}
+          lessonId={lesson.id}
+        />
+      );
     default:
       return <div>Unknown Lesson Type</div>;
   }
@@ -134,7 +140,10 @@ export default async function LessonDetail({ params }: Props) {
 
   return (
     <React.Fragment>
-      <header id="header" className="bg-teal-700 py-6 text-indigo-50 shadow-lg shadow-teal-500/50">
+      <header
+        id="header"
+        className="bg-teal-700 py-6 text-indigo-50 shadow-lg shadow-teal-500/50"
+      >
         <div className="container">
           <h1 className="text-xl sm:text-4xl font-bold">{lesson.title}</h1>
           <span className="py-2">
@@ -144,11 +153,13 @@ export default async function LessonDetail({ params }: Props) {
         </div>
       </header>
       <LessonType lesson={lesson} />
-      {lesson.description.length > 0 && (<div className="container py-6">
-        <div className="prose prose-lg max-w-full">
-          <MDXRemote source={lesson.description} />
+      {lesson.description.length > 0 && (
+        <div className="container py-6">
+          <div className="prose prose-lg max-w-full">
+            <MDXRemote source={lesson.description} />
+          </div>
         </div>
-      </div>)}
+      )}
     </React.Fragment>
   );
 }

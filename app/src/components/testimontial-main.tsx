@@ -30,12 +30,12 @@ function TestimonialMain({}: Props) {
           // spaceBetween={10}
           slidesPerView={2}
           breakpoints={{
-            320 : {
+            320: {
               slidesPerView: 1,
             },
             1024: {
               slidesPerView: 2,
-            }
+            },
           }}
         >
           <SwiperSlide className="pl-12">

@@ -84,13 +84,14 @@ class PaymentMutation(graphene.ObjectType):
 
         order_id = "order_" + shortuuid.ShortUUID().random(length=18)
 
-
         base_payload = "{\n"
-        base_payload += "\t\"merchantId\": \"" + env("PHONEPE_MERCHANT_ID") + "\",\n"
+        base_payload += "\t\"merchantId\": \"" + \
+            env("PHONEPE_MERCHANT_ID") + "\",\n"
         base_payload += "\t\"merchantTransactionId\": \"" + order_id + "\",\n"
         base_payload += "\t\"merchantUserId\": \"" + str(user.id) + "\",\n"
         base_payload += "\t\"amount\": " + str(amount * 100) + ",\n"
-        base_payload += "\t\"redirectUrl\": \"https://prameyshala.com/learn/sub/"+ order_id +"\",\n"
+        base_payload += "\t\"redirectUrl\": \"https://prameyshala.com/learn/sub/" + \
+            order_id + "\",\n"
         base_payload += "\t\"redirectMode\": \"REDIRECT\",\n"
         base_payload += "\t\"callbackUrl\": \"http://portal.prameyshala.com/account/payment/phonepe\",\n"
         base_payload += "\t\"mobileNumber\": \"" + user.phone_number + "\",\n"
@@ -111,11 +112,12 @@ class PaymentMutation(graphene.ObjectType):
         }
 
         try:
-            response = requests.post(url, headers=headers, json={ "request": base_payload })
+            response = requests.post(url, headers=headers, json={
+                                     "request": base_payload})
             data = response.json()
             ps_payment = Payments.objects.create(order_gateway_id=order_id, gateway='phonepe',
-                                    status="created", amount=amount, user=info.context.user, standard=ps_class,
-                                    user_email=info.context.user.email, json_response=response.json())
+                                                 status="created", amount=amount, user=info.context.user, standard=ps_class,
+                                                 user_email=info.context.user.email, json_response=response.json())
             # data["data"] = str(data["data"])
             data["standardSlug"] = ps_payment.standard.slug
             return data
@@ -151,7 +153,8 @@ class PaymentMutation(graphene.ObjectType):
                 payment.method = data["data"]["paymentInstrument"]["type"]
                 payment.save()
             if (payment.status == "paid"):
-                enrollment = Enrollment.objects.filter(user=payment.user, standard=payment.standard)
+                enrollment = Enrollment.objects.filter(
+                    user=payment.user, standard=payment.standard)
                 # TODO: Add expiration date logic
                 if enrollment.count() == 0:
                     print("Creating new enrollment")

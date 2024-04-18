@@ -17,11 +17,16 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Lesson_Progress',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('progress', models.FloatField(default=0, validators=[django.core.validators.MinValueValidator(0.0), django.core.validators.MaxValueValidator(1.0)])),
-                ('lesson_completed', models.BooleanField(blank=True, default=False, null=True)),
-                ('lesson', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='courses.lesson')),
-                ('student', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+                ('id', models.BigAutoField(auto_created=True,
+                 primary_key=True, serialize=False, verbose_name='ID')),
+                ('progress', models.FloatField(default=0, validators=[
+                 django.core.validators.MinValueValidator(0.0), django.core.validators.MaxValueValidator(1.0)])),
+                ('lesson_completed', models.BooleanField(
+                    blank=True, default=False, null=True)),
+                ('lesson', models.ForeignKey(
+                    on_delete=django.db.models.deletion.CASCADE, to='courses.lesson')),
+                ('student', models.ForeignKey(
+                    on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
             ],
         ),
     ]

@@ -7,7 +7,6 @@ import {
   InstagramLogoIcon,
   LinkedInLogoIcon,
   TwitterLogoIcon,
-
 } from "@radix-ui/react-icons";
 
 // GRAPHQL API - APPLLO
@@ -44,7 +43,6 @@ const query = gql`
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   // fetch data
-
 
   return {
     title: "Insight | Pramey Shala",
@@ -130,7 +128,9 @@ export default async function AllPosts({ params }: Props) {
                   height={280}
                   priority
                 />
-                <p className="text-2xl">No Updates Yet !! Stay Connected for updates.</p>
+                <p className="text-2xl">
+                  No Updates Yet !! Stay Connected for updates.
+                </p>
               </div>
             )}
           </section>
@@ -157,7 +157,7 @@ export default async function AllPosts({ params }: Props) {
               <div className="flex flex-wrap">
                 {(() => {
                   const uniqueTags = new Set();
-                  return data?.allPosts.map((post: any) => (
+                  return data?.allPosts.map((post: any) =>
                     post.tags.map((tag: any) => {
                       if (!uniqueTags.has(tag.name)) {
                         uniqueTags.add(tag.name);
@@ -173,7 +173,7 @@ export default async function AllPosts({ params }: Props) {
                       }
                       return null;
                     })
-                  ));
+                  );
                 })()}
               </div>
             </div>
@@ -182,13 +182,23 @@ export default async function AllPosts({ params }: Props) {
             <div className="w-full bg-white shadow flex flex-col p-6 gap-3">
               <p className="text-xl font-semibold pb-3">Follow Us 👇🏻 </p>
               <div className="flex items-center justify-start gap-5">
-                <a href="https://www.instagram.com/prameyshala/" className="text-red-600 h-8 w-8 animate-bounce duration-&lsqb;690ms&rsqb;" target="_blank">
+                <a
+                  href="https://www.instagram.com/prameyshala/"
+                  className="text-red-600 h-8 w-8 animate-bounce duration-&lsqb;690ms&rsqb;"
+                  target="_blank"
+                >
                   {<InstagramLogoIcon className="h-8 w-8" />}
                 </a>
-                <a href="#" className="text-blue-400 h-8 w-8 animate-bounce duration-&lsqb;720ms&rsqb;">
+                <a
+                  href="#"
+                  className="text-blue-400 h-8 w-8 animate-bounce duration-&lsqb;720ms&rsqb;"
+                >
                   <TwitterLogoIcon className="h-8 w-8" />
                 </a>
-                <a href="#" className="text-blue-400 h-8 w-8 animate-bounce duration-&lsqb;760ms&rsqb;">
+                <a
+                  href="#"
+                  className="text-blue-400 h-8 w-8 animate-bounce duration-&lsqb;760ms&rsqb;"
+                >
                   <LinkedInLogoIcon className="h-8 w-8" />
                 </a>
               </div>

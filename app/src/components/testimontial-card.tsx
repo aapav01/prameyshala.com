@@ -18,7 +18,6 @@ function TestimonialCard(props: Props) {
       .filter((n) => n)
       .join(""))(props.name.split(" ")).toUpperCase();
 
-
   function getRating() {
     const stars = [];
     for (let i = 0; i < 5; i++) {
@@ -44,9 +43,7 @@ function TestimonialCard(props: Props) {
             <span>{props.designation}</span>
           </div>
         </div>
-        <div className="testimonial__icon flex flex-row">
-          {getRating()}
-        </div>
+        <div className="testimonial__icon flex flex-row">{getRating()}</div>
       </div>
 
       <div className="testimonial__content">

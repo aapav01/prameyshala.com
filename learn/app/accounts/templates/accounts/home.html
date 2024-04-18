@@ -6,17 +6,17 @@
 {% endblock title %}
 {% block content %}
   <form id="filterForm" class="-mt-10 pb-10">
-   <div class="inline-flex gap-2">
-    <label class="label" for="year">
-      <span class="label-text">Show Data from: </span>
-    </label>
-    <select class="select select-bordered w-56 select-sm" name="month" id="month"></select>
-    <select class="select select-bordered w-56 select-sm" name="year" id="year"></select>
-    <input type="submit"
-           value="Load"
-           name="_load"
-           class="btn btn-sm btn-outline">
-   </div>
+    <div class="inline-flex gap-2">
+      <label class="label" for="year">
+        <span class="label-text">Show Data from:</span>
+      </label>
+      <select class="select select-bordered w-56 select-sm" name="month" id="month"></select>
+      <select class="select select-bordered w-56 select-sm" name="year" id="year"></select>
+      <input type="submit"
+             value="Load"
+             name="_load"
+             class="btn btn-sm btn-outline">
+    </div>
   </form>
   {% if perms.accounts.view_payments %}
     <div class="mb-12 grid gap-y-10 gap-x-6 md:grid-cols-2 xl:grid-cols-3">

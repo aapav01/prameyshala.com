@@ -46,7 +46,8 @@ class PostsView(PermissionRequiredMixin, ListView):
             self.extra_context.update({'form': PostForm})
             return redirect('blog:posts')
         else:
-            messages.error(request, f'failed to create! please see the create form for more details.')
+            messages.error(
+                request, f'failed to create! please see the create form for more details.')
             return super().get(request, **kwargs)
 
     def get_queryset(self):
@@ -59,8 +60,8 @@ class PostsView(PermissionRequiredMixin, ListView):
                 Q(subtitle__icontains=search_query)
             )
 
-
         return queryset
+
 
 class PostsUpdateView(PermissionRequiredMixin, UpdateView):
     permission_required = "blog.change_posts"
@@ -90,4 +91,3 @@ class PostsDeleteView(PermissionRequiredMixin, DeleteView):
     def get(self, request, **kwargs):
         messages.error(request, 'Post has been deleted successfully.')
         return self.delete(request, **kwargs)
-

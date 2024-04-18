@@ -34,12 +34,14 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='assignment',
             name='assigment_file',
-            field=models.FileField(blank=True, null=True, upload_to='static/uploads/assignments'),
+            field=models.FileField(blank=True, null=True,
+                                   upload_to='static/uploads/assignments'),
         ),
         migrations.AddField(
             model_name='assignment',
             name='created_by',
-            field=models.ForeignKey(default=1, on_delete=django.db.models.deletion.CASCADE, related_name='assignment_created_by', to=settings.AUTH_USER_MODEL),
+            field=models.ForeignKey(default=1, on_delete=django.db.models.deletion.CASCADE,
+                                    related_name='assignment_created_by', to=settings.AUTH_USER_MODEL),
             preserve_default=False,
         ),
         migrations.AddField(
@@ -50,7 +52,8 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='assignment',
             name='updated_by',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='assignment_updated_by', to=settings.AUTH_USER_MODEL),
+            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE,
+                                    related_name='assignment_updated_by', to=settings.AUTH_USER_MODEL),
         ),
         migrations.AddField(
             model_name='assignmentsubmission',
@@ -60,7 +63,8 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='question',
             name='quiz',
-            field=models.ForeignKey(default=1, on_delete=django.db.models.deletion.CASCADE, to='courses.quiz'),
+            field=models.ForeignKey(
+                default=1, on_delete=django.db.models.deletion.CASCADE, to='courses.quiz'),
             preserve_default=False,
         ),
         migrations.AlterField(
@@ -71,11 +75,13 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='assignment',
             name='teacher',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL),
+            field=models.ForeignKey(
+                blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL),
         ),
         migrations.AlterField(
             model_name='assignmentsubmission',
             name='solution_file',
-            field=models.FileField(upload_to='static/uploads/assignments/submissions'),
+            field=models.FileField(
+                upload_to='static/uploads/assignments/submissions'),
         ),
     ]

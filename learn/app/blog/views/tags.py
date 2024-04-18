@@ -44,7 +44,8 @@ class TagsView(PermissionRequiredMixin, ListView):
             self.extra_context.update({'form': TagForm})
             return redirect('blog:tags')
         else:
-            messages.error(request, f'failed to create! please see the create form for more details.')
+            messages.error(
+                request, f'failed to create! please see the create form for more details.')
             return super().get(request, **kwargs)
 
     def get_queryset(self):
@@ -55,6 +56,7 @@ class TagsView(PermissionRequiredMixin, ListView):
             queryset = queryset.filter(name__icontains=search_query)
 
         return queryset
+
 
 class TagsUpdateView(PermissionRequiredMixin, UpdateView):
     permission_required = "blog.change_tags"

@@ -14,15 +14,15 @@
           <div class="avatar">
             <div class="w-24 rounded-xl shadow-lg shadow-blue-gray-500/40">
               {% if user.photo %}
-              <img src="{% static 'media/' %}{{ user.photo }}"
-                   width="78px"
-                   height="78px"
-                   alt="{{ user.full_name }}" />
+                <img src="{% static 'media/' %}{{ user.photo }}"
+                     width="78px"
+                     height="78px"
+                     alt="{{ user.full_name }}" />
               {% else %}
-              <img src="https://placehold.co/600x400"
-                   width="78px"
-                   height="78px"
-                   alt="{{ user.full_name }}" />
+                <img src="https://placehold.co/600x400"
+                     width="78px"
+                     height="78px"
+                     alt="{{ user.full_name }}" />
               {% endif %}
             </div>
           </div>
@@ -103,12 +103,20 @@
               <span class="text-xl font-bold">{{ enrolled.standard.name }}</span>
               <ul class="flex flex-col gap-2 p-0">
                 <li class="flex items-center gap-2">
-                  <p class="block antialiased font-sans text-sm leading-normal text-blue-gray-900 font-semibold capitalize">Created At:</p>
-                  <p class="block antialiased font-sans text-sm leading-normal font-normal text-blue-gray-500">{{ enrolled.created_at }}</p>
+                  <p class="block antialiased font-sans text-sm leading-normal text-blue-gray-900 font-semibold capitalize">
+                    Created At:
+                  </p>
+                  <p class="block antialiased font-sans text-sm leading-normal font-normal text-blue-gray-500">
+                    {{ enrolled.created_at }}
+                  </p>
                 </li>
                 <li class="flex items-center gap-2">
-                  <p class="block antialiased font-sans text-sm leading-normal text-blue-gray-900 font-semibold capitalize">Expiration Date:</p>
-                  <p class="block antialiased font-sans text-sm leading-normal font-normal text-blue-gray-500">{{ enrolled.expiration_date }}</p>
+                  <p class="block antialiased font-sans text-sm leading-normal text-blue-gray-900 font-semibold capitalize">
+                    Expiration Date:
+                  </p>
+                  <p class="block antialiased font-sans text-sm leading-normal font-normal text-blue-gray-500">
+                    {{ enrolled.expiration_date }}
+                  </p>
                 </li>
               </ul>
             </div>
