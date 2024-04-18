@@ -6,7 +6,7 @@ from datetime import datetime
 from app.accounts.models import User
 from django.utils.timezone import now
 from datetime import timedelta
-from .models import Lesson, Subject, Classes, Chapter, Category, Quiz, Question, Choice, Assignment, AssignmentSubmission, Lesson_Progress, QuizHash, QuizHashQuestionAnswer, Grades
+from .models import Lesson, Subject, Classes, Chapter, Category, Quiz, Question, Choice, Assignment, AssignmentSubmission, Lesson_Progress, QuizHash, QuizHashQuestionAnswer, Grades, Enrollment
 import random
 
 
@@ -101,26 +101,33 @@ class Query(graphene.ObjectType):
     # classes
     classes = graphene.List(ClassesType)
     standard = graphene.Field(ClassesType, slug=graphene.String(required=True))
+
     # category
     categories = graphene.List(CategoriesType, popular=graphene.Boolean())
     category = graphene.Field(CategoriesType, id=graphene.ID(required=True))
 
     # subjects
     subject = graphene.Field(SubjectType, slug=graphene.String(required=True))
+
     # chapters
     chapter = graphene.Field(ChapterType, id=graphene.ID(required=True))
+
     # lessons
     lesson = graphene.Field(LessonType, id=graphene.ID(required=True))
     lesson_by_chapter_paginated = graphene.Field(
         PaginatedLessons, chapter_id=graphene.ID(required=True), page=graphene.Int())
     lessons_by_preview = graphene.List(LessonType)
+
     # assignment
     assignment = graphene.List(
         AssignmentType, chapter=graphene.String(required=False))
+
     # progress
     progress = graphene.Field(ProgressType, lesson=graphene.ID(required=True))
+
     # quiz
     quiz = graphene.List(QuizType, id=graphene.ID(required=False))
+
     # quiz hash
     quiz_hash = graphene.Field(
         QuizHashType, quiz_id=graphene.ID(required=True))
@@ -188,7 +195,7 @@ class Query(graphene.ObjectType):
         replaced_obj.end_index = page_obj.end_index()
         return replaced_obj
 
-    def resolve_lessons_by_preview(self,info):
+    def resolve_lessons_by_preview(self, info):
         lessons = Lesson.objects.filter(preview=True)
         return lessons
 
@@ -231,11 +238,12 @@ class Query(graphene.ObjectType):
             raise Exception("Authentication credentials were not provided")
         return QuizHashQuestionAnswerType.objects.get(quiz_hash=quiz_hash_id)
 
+    # grades
     def resolve_grades(root, info, assignment_or_quiz_id=None, lesson_type=None):
         user = info.context.user
         if not user.is_authenticated:
             raise Exception("Authentication credentials were not provided")
-        if lesson_type == "assignment":
+        if lesson_type and lesson_type.lower() == "assignment":
             if assignment_or_quiz_id:
                 assignment_grades = Grades.objects.filter(
                     student_id=user.id, assignment=assignment_or_quiz_id)
@@ -243,7 +251,7 @@ class Query(graphene.ObjectType):
                 assignment_grades = Grades.objects.filter(
                     student_id=user.id, assignment__lesson__lesson_type=lesson_type)
             return assignment_grades
-        elif lesson_type == "quiz":
+        elif lesson_type and lesson_type.lower() == "quiz":
             if assignment_or_quiz_id:
                 quiz_grades = Grades.objects.filter(
                     student_id=user.id, quiz=assignment_or_quiz_id)
@@ -390,8 +398,10 @@ class EndQuiz(graphene.Mutation):
         quiz_hash = QuizHash.objects.get(pk=quiz_hash_id)
         quiz_hash.quiz_ended = True
         quiz_hash.save()
-        quiz_hash_question_answer = QuizHashQuestionAnswer.objects.get(quiz_hash=quiz_hash_id)
-        return EndQuiz(success=True,quiz_hash_question_answer=quiz_hash_question_answer)
+        quiz_hash_question_answer = QuizHashQuestionAnswer.objects.get(
+            quiz_hash=quiz_hash_id)
+        return EndQuiz(success=True, quiz_hash_question_answer=quiz_hash_question_answer)
+
 
 class Mutation(graphene.ObjectType):
     create_submission = CreateAssignmentSubmission.Field()
