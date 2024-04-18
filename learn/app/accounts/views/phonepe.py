@@ -3,6 +3,7 @@ from django.views.decorators.csrf import csrf_exempt
 import json
 from ..models import PhonePeResponse
 
+
 @csrf_exempt
 def repsonseCapture(request):
     if request.method == 'POST':

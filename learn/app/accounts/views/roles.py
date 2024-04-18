@@ -43,7 +43,8 @@ class RolesView(PermissionRequiredMixin, ListView):
             self.extra_context.update({'form': RolesForm})
             return redirect('accounts:roles')
         else:
-            messages.error(request, f'failed to create! please see the create form for more details.')
+            messages.error(
+                request, f'failed to create! please see the create form for more details.')
             return super().get(request, **kwargs)
 
 

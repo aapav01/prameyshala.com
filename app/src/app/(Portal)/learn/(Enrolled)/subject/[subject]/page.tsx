@@ -64,8 +64,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function SubjectDetail({ params }: Props) {
   const data = await getData({ params });
-  const sortedChapters = data?.subject?.chapterSet.slice().sort((currentChapter:any, nextChapter:any) =>
-    currentChapter?.order - nextChapter?.order);
+  const sortedChapters = data?.subject?.chapterSet
+    .slice()
+    .sort(
+      (currentChapter: any, nextChapter: any) =>
+        currentChapter?.order - nextChapter?.order
+    );
   return (
     <>
       <header className="bg-purple-700 py-6 h-24 text-indigo-50 shadow-lg shadow-purple-500/50">

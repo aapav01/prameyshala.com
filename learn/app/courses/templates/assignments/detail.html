@@ -1,7 +1,7 @@
 {% extends "layouts/dashboard.html" %}
 {% load static %}
 {% block title %}
-{{ assignments.title }} - Assignment | Pramey Shala
+  {{ assignments.title }} - Assignment | Pramey Shala
 {% endblock title %}
 {% block content %}
   <div class="flex gap-4">
@@ -16,7 +16,8 @@
       </h1>
     </div>
     <div class="p-3">
-      <a href="{% url 'courses:assignment-submissions' pk=assignments.pk %}" class="btn btn-success text-white text-xs mb-2">Submitted Solutions</a>
+      <a href="{% url 'courses:assignment-submissions' pk=assignments.pk %}"
+         class="btn btn-success text-white text-xs mb-2">Submitted Solutions</a>
       <h3 class="font-sans font-medium">Description</h3>
       <p>{{ assignments.description }}</p>
       <h3 class="font-sans font-medium">Time Required</h3>
@@ -30,18 +31,18 @@
       <h3 class="font-sans font-medium">Chapter</h3>
       <p>{{ assignments.chapter.name }}</p>
       <div class="mt-2">
-        <a href="{% url 'courses:assignments' %}" class="btn btn-error text-white text-xs mt-2">Close</a>
+        <a href="{% url 'courses:assignments' %}"
+           class="btn btn-error text-white text-xs mt-2">Close</a>
       </div>
     </div>
   </div>
 </div>
 {% endblock content %}
 {% block head_link %}
-<link rel="stylesheet" href="https://unpkg.com/easymde/dist/easymde.min.css">
-<script src="https://unpkg.com/easymde/dist/easymde.min.js"></script>
+  <link rel="stylesheet"
+        href="https://unpkg.com/easymde/dist/easymde.min.css">
+  <script src="https://unpkg.com/easymde/dist/easymde.min.js"></script>
 {% endblock head_link %}
 {% block body_js %}
-<script>
-  new EasyMDE({element: document.getElementById('{{ form.description.id_for_label }}')});
-</script>
+  <script>new EasyMDE({element: document.getElementById('{{ form.description.id_for_label }}')});</script>
 {% endblock body_js %}

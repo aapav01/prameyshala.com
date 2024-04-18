@@ -13,6 +13,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='assignment',
             name='assigment_file',
-            field=models.FileField(blank=True, null=True, upload_to='media/uploads/assignments'),
+            field=models.FileField(blank=True, null=True,
+                                   upload_to='media/uploads/assignments'),
         ),
     ]

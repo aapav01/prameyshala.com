@@ -17,11 +17,13 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Chapter',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.BigAutoField(auto_created=True,
+                 primary_key=True, serialize=False, verbose_name='ID')),
                 ('name', models.CharField(max_length=255)),
                 ('description', models.TextField(blank=True, null=True)),
                 ('image', models.CharField(max_length=255)),
-                ('collectionid', models.CharField(blank=True, db_column='collectionId', max_length=255, null=True)),
+                ('collectionid', models.CharField(blank=True,
+                 db_column='collectionId', max_length=255, null=True)),
                 ('created_at', models.DateTimeField(blank=True, null=True)),
                 ('updated_at', models.DateTimeField(blank=True, null=True)),
             ],
@@ -32,7 +34,8 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Classes',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.BigAutoField(auto_created=True,
+                 primary_key=True, serialize=False, verbose_name='ID')),
                 ('name', models.CharField(max_length=255)),
                 ('description', models.TextField()),
                 ('image', models.CharField(max_length=255)),
@@ -49,7 +52,8 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Subject',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.BigAutoField(auto_created=True,
+                 primary_key=True, serialize=False, verbose_name='ID')),
                 ('name', models.CharField(max_length=255)),
                 ('short', models.CharField(blank=True, max_length=255, null=True)),
                 ('description', models.TextField()),
@@ -58,7 +62,8 @@ class Migration(migrations.Migration):
                 ('publish_at', models.DateTimeField()),
                 ('created_at', models.DateTimeField(blank=True, null=True)),
                 ('updated_at', models.DateTimeField(blank=True, null=True)),
-                ('standard_id', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='courses.classes')),
+                ('standard_id', models.ForeignKey(
+                    on_delete=django.db.models.deletion.CASCADE, to='courses.classes')),
             ],
             options={
                 'db_table': 'subjects',
@@ -67,22 +72,28 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Lesson',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.BigAutoField(auto_created=True,
+                 primary_key=True, serialize=False, verbose_name='ID')),
                 ('title', models.CharField(max_length=255)),
-                ('description', models.CharField(blank=True, max_length=255, null=True)),
+                ('description', models.CharField(
+                    blank=True, max_length=255, null=True)),
                 ('length', models.FloatField(blank=True, null=True)),
                 ('url', models.CharField(blank=True, max_length=255, null=True)),
-                ('thumb_url', models.CharField(blank=True, max_length=255, null=True)),
+                ('thumb_url', models.CharField(
+                    blank=True, max_length=255, null=True)),
                 ('public', models.IntegerField()),
                 ('position', models.IntegerField()),
                 ('lesson_type', models.CharField(db_column='type', max_length=8)),
                 ('status', models.CharField(max_length=10)),
                 ('platform', models.CharField(blank=True, max_length=11, null=True)),
-                ('platform_video_id', models.CharField(blank=True, max_length=255, null=True)),
+                ('platform_video_id', models.CharField(
+                    blank=True, max_length=255, null=True)),
                 ('created_at', models.DateTimeField(blank=True, null=True)),
                 ('updated_at', models.DateTimeField(blank=True, null=True)),
-                ('chapter_id', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='courses.chapter')),
-                ('user_id', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+                ('chapter_id', models.ForeignKey(
+                    on_delete=django.db.models.deletion.CASCADE, to='courses.chapter')),
+                ('user_id', models.ForeignKey(
+                    on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
             ],
             options={
                 'db_table': 'lessons',
@@ -91,11 +102,13 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='chapter',
             name='course_id',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='courses.subject'),
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE, to='courses.subject'),
         ),
         migrations.AddField(
             model_name='chapter',
             name='user_id',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL),
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL),
         ),
     ]

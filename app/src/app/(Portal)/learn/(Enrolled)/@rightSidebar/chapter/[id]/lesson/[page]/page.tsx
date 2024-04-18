@@ -75,14 +75,18 @@ export default async function ChapterDetail({ params }: Props) {
             <Button className="mb-1" size={"icon"} variant={"ghost"}>
               <ArrowLeftIcon className="mr-1 h-6 w-6" />
             </Button>
-            <h2 className="text-2xl text-wrap truncate line-clamp-1">{lesson.chapter.name}</h2>
+            <h2 className="text-2xl text-wrap truncate line-clamp-1">
+              {lesson.chapter.name}
+            </h2>
           </Link>
         </div>
       </header>
       <div className="flex flex-col gap-4 px-2 py-8 max-h-[80vh] overflow-y-auto">
-        {lesson.chapter.lessonSet.map((lesson: any, index: number) => (
-          <LessonCard key={index} lesson={lesson} page={index + 1} />
-        )).sort()}
+        {lesson.chapter.lessonSet
+          .map((lesson: any, index: number) => (
+            <LessonCard key={index} lesson={lesson} page={index + 1} />
+          ))
+          .sort()}
       </div>
     </section>
   );

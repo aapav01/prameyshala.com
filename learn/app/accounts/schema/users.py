@@ -68,7 +68,8 @@ class UserMutation(graphene.ObjectType):
                 pass
             try:
                 if referred_by:
-                    referred_by_instance = ReferralDetails.objects.get(referral_id=referred_by)
+                    referred_by_instance = ReferralDetails.objects.get(
+                        referral_id=referred_by)
                 user = User.objects.create_user(
                     phone_number=phone_number, full_name=name, email=email, password=password,
                     country=country, state=state, city=city, referred_by=referred_by_instance

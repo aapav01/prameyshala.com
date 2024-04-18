@@ -41,10 +41,11 @@ class CategoriesView(ListView):
             self.extra_context.update({'form': CategoriesForm})
             return redirect('courses:categories')
         else:
-            messages.error(request, f'failed to create! please see the create form for more details.')
+            messages.error(
+                request, f'failed to create! please see the create form for more details.')
             return super().get(request, **kwargs)
 
-    #filter
+    # filter
     def get_queryset(self):
         queryset = super().get_queryset()
         category_name = self.request.GET.get('category')

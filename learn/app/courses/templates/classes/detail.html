@@ -13,7 +13,8 @@
     <div class="flex justify-between px-6">
       <div>
         {% if perms.courses.add_subject %}
-          <button onclick="create_subject.showModal()" class="btn btn-outline border-green-400 text-green-400 hover:bg-green-400 hover:text-white hover:border-green-400">
+          <button onclick="create_subject.showModal()"
+                  class="btn btn-outline border-green-400 text-green-400 hover:bg-green-400 hover:text-white hover:border-green-400">
             Add Subject
           </button>
         {% endif %}
@@ -43,11 +44,11 @@
         <div class="my-2">
           <span class="font-bold">Image</span>
           {% if standard.image %}
-          <img height=""
-               width=""
-               src="{% static 'media/' %}{{ standard.image }}"
-               alt="{{ standard.name }}"
-               class="w-1/2 rounded-lg shadow-md">
+            <img height=""
+                 width=""
+                 src="{% static 'media/' %}{{ standard.image }}"
+                 alt="{{ standard.name }}"
+                 class="w-1/2 rounded-lg shadow-md">
           {% else %}
             <p>No Image</p>
           {% endif %}
@@ -119,7 +120,7 @@
           </div>
           <div class="w-full flex justify-end p-3">
             <a href="{% url 'courses:subject-detail' pk=subject.pk %}"
-            class="btn btn-sm bg-green-700 text-white border-0 shadow shadow-green-900/50 hover:shadow-none hover:bg-green-800 hover:text-white">
+               class="btn btn-sm bg-green-700 text-white border-0 shadow shadow-green-900/50 hover:shadow-none hover:bg-green-800 hover:text-white">
               View
             </a>
           </div>
@@ -159,7 +160,9 @@
         {% csrf_token %}
         <h2 class="font-mono font-semibold text-lg">Add New Subject</h2>
         <div class="relative mb-4">
-          <div class="form-control w-full djanog-custom-forms grid grid-cols-1 md:grid-cols-2 gap-4">{{ form_subject.as_div }}</div>
+          <div class="form-control w-full djanog-custom-forms grid grid-cols-1 md:grid-cols-2 gap-4">
+            {{ form_subject.as_div }}
+          </div>
         </div>
         <div class="modal-action justify-between">
           <p class="text-xs mt-auto">Press esc to close the window or outside the dialog box.</p>

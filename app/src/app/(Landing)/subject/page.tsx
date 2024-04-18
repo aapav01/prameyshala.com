@@ -32,7 +32,7 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "https://prameyshala.com/subject",
   },
-}
+};
 
 export default async function AllCategories({}: Props) {
   const { data } = await getClient().query({ query });

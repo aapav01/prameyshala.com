@@ -47,11 +47,12 @@ class UsersView(PermissionRequiredMixin, ListView):
             self.extra_context.update({'form': UsersForm})
             return redirect('accounts:users')
         else:
-            messages.error(request, f'failed to create! please see the create form for more details.')
+            messages.error(
+                request, f'failed to create! please see the create form for more details.')
             return super().get(request, **kwargs)
 
+    # search
 
-    #search
     def get_queryset(self):
         queryset = super().get_queryset()
 

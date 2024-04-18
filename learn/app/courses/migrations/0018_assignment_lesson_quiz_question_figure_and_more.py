@@ -17,25 +17,31 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Assignment',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.BigAutoField(auto_created=True,
+                 primary_key=True, serialize=False, verbose_name='ID')),
                 ('title', models.CharField(max_length=200)),
                 ('description', models.TextField()),
                 ('due_date', models.DateTimeField()),
                 ('uploaded_at', models.DateTimeField(auto_now_add=True)),
-                ('assignment_file', models.FileField(blank=True, null=True, upload_to='assignments/')),
-                ('type', models.CharField(choices=[('mock', 'Mock'), ('practice', 'Practice')], max_length=20)),
-                ('teacher', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+                ('assignment_file', models.FileField(
+                    blank=True, null=True, upload_to='assignments/')),
+                ('type', models.CharField(choices=[
+                 ('mock', 'Mock'), ('practice', 'Practice')], max_length=20)),
+                ('teacher', models.ForeignKey(
+                    on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
             ],
         ),
         migrations.AddField(
             model_name='lesson',
             name='quiz',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='courses.quiz'),
+            field=models.ForeignKey(
+                blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='courses.quiz'),
         ),
         migrations.AddField(
             model_name='question',
             name='figure',
-            field=models.ImageField(blank=True, null=True, upload_to='uploads/', verbose_name='Figure'),
+            field=models.ImageField(
+                blank=True, null=True, upload_to='uploads/', verbose_name='Figure'),
         ),
         migrations.AddField(
             model_name='quiz',
@@ -45,27 +51,37 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='lesson',
             name='lesson_type',
-            field=models.CharField(choices=[('None', '---------'), ('video', 'Video'), ('document', 'Document'), ('audio', 'Audio'), ('image', 'Image'), ('text', 'Text'), ('quiz', 'Quiz')], db_column='type', default=None, max_length=8),
+            field=models.CharField(choices=[('None', '---------'), ('video', 'Video'), ('document', 'Document'), ('audio', 'Audio'),
+                                   ('image', 'Image'), ('text', 'Text'), ('quiz', 'Quiz')], db_column='type', default=None, max_length=8),
         ),
         migrations.CreateModel(
             name='Grades',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('grade', models.DecimalField(decimal_places=1, max_digits=2, validators=[django.core.validators.MinValueValidator(0.0), django.core.validators.MaxValueValidator(10.0)])),
-                ('assignment', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='courses.assignment')),
-                ('enrolled_class', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='courses.classes')),
-                ('quiz', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='courses.quiz')),
-                ('student', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+                ('id', models.BigAutoField(auto_created=True,
+                 primary_key=True, serialize=False, verbose_name='ID')),
+                ('grade', models.DecimalField(decimal_places=1, max_digits=2, validators=[
+                 django.core.validators.MinValueValidator(0.0), django.core.validators.MaxValueValidator(10.0)])),
+                ('assignment', models.ForeignKey(blank=True, null=True,
+                 on_delete=django.db.models.deletion.CASCADE, to='courses.assignment')),
+                ('enrolled_class', models.ForeignKey(
+                    on_delete=django.db.models.deletion.CASCADE, to='courses.classes')),
+                ('quiz', models.ForeignKey(blank=True, null=True,
+                 on_delete=django.db.models.deletion.CASCADE, to='courses.quiz')),
+                ('student', models.ForeignKey(
+                    on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
             ],
         ),
         migrations.CreateModel(
             name='AssignmentSubmission',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.BigAutoField(auto_created=True,
+                 primary_key=True, serialize=False, verbose_name='ID')),
                 ('solution_file', models.FileField(upload_to='submissions/')),
                 ('submitted_at', models.DateTimeField(auto_now_add=True)),
-                ('assignment', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='courses.assignment')),
-                ('student', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+                ('assignment', models.ForeignKey(
+                    on_delete=django.db.models.deletion.CASCADE, to='courses.assignment')),
+                ('student', models.ForeignKey(
+                    on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
             ],
         ),
     ]

@@ -25,9 +25,7 @@ function MainFooter({}: Props) {
                   className="invert brightness-0"
                 />
               </Link>
-              <p className="mt-2">
-              Start learning with Prameyshala
-              </p>
+              <p className="mt-2">Start learning with Prameyshala</p>
               <p className="mt-2 font-sans text-sm font-bold text-center">
                 Download our apps to start learning. (Coming Soon)
               </p>
@@ -48,10 +46,16 @@ function MainFooter({}: Props) {
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 p-8 gap-4 text-lg w-full">
               <div>
-                <p className="font-sans font-bold text-indigo-100">Usefull Links</p>
+                <p className="font-sans font-bold text-indigo-100">
+                  Usefull Links
+                </p>
                 <ul className="mt-2">
-                  <li><Link href="/about">About Us</Link></li>
-                  <li><Link href="/blog">Insight</Link></li>
+                  <li>
+                    <Link href="/about">About Us</Link>
+                  </li>
+                  <li>
+                    <Link href="/blog">Insight</Link>
+                  </li>
                 </ul>
               </div>
               <div>
@@ -59,16 +63,26 @@ function MainFooter({}: Props) {
                   Help & support
                 </p>
                 <ul className="mt-2">
-                  <li><Link href={'/privacy-policy'}>Privacy Policy</Link></li>
+                  <li>
+                    <Link href={"/privacy-policy"}>Privacy Policy</Link>
+                  </li>
                   {/* <li>Site Map</li> */}
-                  <li><Link href={'/refund-policy'}>Refund Policy</Link></li>
+                  <li>
+                    <Link href={"/refund-policy"}>Refund Policy</Link>
+                  </li>
                   <li>Takedown Policy</li>
-                  <li><Link href={'/terms-and-conditions'}>Terms &amp; Conditions</Link></li>
+                  <li>
+                    <Link href={"/terms-and-conditions"}>
+                      Terms &amp; Conditions
+                    </Link>
+                  </li>
                 </ul>
               </div>
               <div>
                 <p className="font-sans font-bold text-indigo-100">About us</p>
-                <p className="text-sm">Contact us and we will answer all your questions about us.</p>
+                <p className="text-sm">
+                  Contact us and we will answer all your questions about us.
+                </p>
                 <p className="mt-2">
                   <a href="mailto:contact@prameyshala.com">
                     <EnvelopeClosedIcon className="inline-block h-8 w-8 mr-2" />

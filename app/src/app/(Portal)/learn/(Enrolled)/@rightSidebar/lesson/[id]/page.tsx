@@ -41,7 +41,7 @@ async function getData({ params }: Props, session: any) {
         headers: {
           Authorization: `JWT ${session.user?.token}`,
         },
-      }
+      },
     });
     return api_data.data;
   } catch (error) {

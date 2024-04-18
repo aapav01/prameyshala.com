@@ -13,6 +13,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='lesson',
             name='lesson_type',
-            field=models.CharField(choices=[('None', '---------'), ('video', 'Video'), ('document', 'Document'), ('image', 'Image'), ('text', 'Text'), ('quiz', 'Quiz')], db_column='type', default=None, max_length=8),
+            field=models.CharField(choices=[('None', '---------'), ('video', 'Video'), ('document', 'Document'), (
+                'image', 'Image'), ('text', 'Text'), ('quiz', 'Quiz')], db_column='type', default=None, max_length=8),
         ),
     ]

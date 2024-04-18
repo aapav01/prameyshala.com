@@ -2,11 +2,9 @@
 
 import Link from "next/link";
 import React from "react";
-import { useRouter } from 'next/navigation'
+import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import {
-  CrossCircledIcon
-} from "@radix-ui/react-icons";
+import { CrossCircledIcon } from "@radix-ui/react-icons";
 import LoginForm from "@/components/sections/login-form";
 
 type Props = {};
@@ -26,22 +24,27 @@ export default function RegisterModal({}: Props) {
           <div className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
             <div className="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
               <div className="flex justify-end p-0">
-              <Button variant={'ghost'} size={'icon'} className="m-0" onClick={() => router.back()}>
-                <CrossCircledIcon className="h-4 w-4 text-rose-600" />
-              </Button>
+                <Button
+                  variant={"ghost"}
+                  size={"icon"}
+                  className="m-0"
+                  onClick={() => router.back()}
+                >
+                  <CrossCircledIcon className="h-4 w-4 text-rose-600" />
+                </Button>
               </div>
               <h2 className="text-2xl font-extrabold text-gray-900">
-              Sign in to your account
-            </h2>
-            <p className="mt-1 text-gray-500">
-              Or&nbsp;
-              <Link
-                href="/register"
-                className="font-medium text-indigo-600 hover:text-indigo-500"
-              >
-                Get Started by Creating an Account.
-              </Link>
-            </p>
+                Sign in to your account
+              </h2>
+              <p className="mt-1 text-gray-500">
+                Or&nbsp;
+                <Link
+                  href="/register"
+                  className="font-medium text-indigo-600 hover:text-indigo-500"
+                >
+                  Get Started by Creating an Account.
+                </Link>
+              </p>
               <React.Suspense>
                 <LoginForm />
               </React.Suspense>

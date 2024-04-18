@@ -6,7 +6,7 @@ import { Button, ButtonProps } from "@/components/ui/button";
 import { ArrowLeftIcon } from "@radix-ui/react-icons";
 
 const BackButton = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({onClick, ...props}, ref) => {
+  ({ onClick, ...props }, ref) => {
     const router = useRouter();
     return (
       <Button {...props} onClick={() => router.back()}>

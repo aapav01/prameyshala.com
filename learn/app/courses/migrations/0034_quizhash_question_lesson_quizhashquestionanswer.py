@@ -17,26 +17,35 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='QuizHash',
             fields=[
-                ('quiz_hash_id', shortuuid.django_fields.ShortUUIDField(alphabet='abcdefg1234', length=16, max_length=40, prefix='id_', primary_key=True, serialize=False)),
+                ('quiz_hash_id', shortuuid.django_fields.ShortUUIDField(alphabet='abcdefg1234',
+                 length=16, max_length=40, prefix='id_', primary_key=True, serialize=False)),
                 ('start_time', models.DateTimeField(auto_now_add=True)),
-                ('quiz_ended', models.BooleanField(blank=True, default=False, null=True)),
-                ('quiz', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='courses.quiz')),
-                ('student', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+                ('quiz_ended', models.BooleanField(
+                    blank=True, default=False, null=True)),
+                ('quiz', models.ForeignKey(
+                    on_delete=django.db.models.deletion.CASCADE, to='courses.quiz')),
+                ('student', models.ForeignKey(
+                    on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
             ],
         ),
         migrations.AddField(
             model_name='question',
             name='lesson',
-            field=models.ForeignKey(default=None, on_delete=django.db.models.deletion.CASCADE, to='courses.lesson'),
+            field=models.ForeignKey(
+                default=None, on_delete=django.db.models.deletion.CASCADE, to='courses.lesson'),
         ),
         migrations.CreateModel(
             name='QuizHashQuestionAnswer',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.BigAutoField(auto_created=True,
+                 primary_key=True, serialize=False, verbose_name='ID')),
                 ('question_order', models.PositiveBigIntegerField()),
-                ('chosen_answer', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='courses.choice')),
-                ('question', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='courses.question')),
-                ('quiz_hash', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='courses.quizhash')),
+                ('chosen_answer', models.ForeignKey(blank=True, null=True,
+                 on_delete=django.db.models.deletion.CASCADE, to='courses.choice')),
+                ('question', models.ForeignKey(
+                    on_delete=django.db.models.deletion.CASCADE, to='courses.question')),
+                ('quiz_hash', models.ForeignKey(
+                    on_delete=django.db.models.deletion.CASCADE, to='courses.quizhash')),
             ],
             options={
                 'unique_together': {('quiz_hash', 'question', 'question_order')},

@@ -4,10 +4,9 @@
   {{ title }} | Pramey Shala
 {% endblock title %}
 {% block content %}
-<form method="post"
-enctype="multipart/form-data">
-{% csrf_token %}
-  {{ form.as_p }}
-  <button class="btn btn-primary" type="submit">Submit</button>
-</form>
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button class="btn btn-primary" type="submit">Submit</button>
+  </form>
 {% endblock content %}

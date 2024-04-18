@@ -45,13 +45,15 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='enrollment',
             name='payment',
-            field=models.ForeignKey(default='', on_delete=django.db.models.deletion.CASCADE, to='accounts.payments'),
+            field=models.ForeignKey(
+                default='', on_delete=django.db.models.deletion.CASCADE, to='accounts.payments'),
             preserve_default=False,
         ),
         migrations.AddField(
             model_name='payments',
             name='status',
-            field=models.CharField(choices=[('created', 'Created'), ('attempted', 'Authorized/Failed'), ('paid', 'Captured')], default='created', max_length=10),
+            field=models.CharField(choices=[('created', 'Created'), (
+                'attempted', 'Authorized/Failed'), ('paid', 'Captured')], default='created', max_length=10),
         ),
         migrations.AlterField(
             model_name='enrollment',

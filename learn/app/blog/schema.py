@@ -5,13 +5,16 @@ from app.accounts.models import User
 
 from .models import Post, Tag
 
+
 class PostType(DjangoObjectType):
     class Meta:
         model = Post
 
+
 class TagType(DjangoObjectType):
     class Meta:
         model = Tag
+
 
 class Query(graphene.ObjectType):
     all_posts = graphene.List(PostType)
@@ -52,4 +55,3 @@ class Query(graphene.ObjectType):
             .select_related("author")
             .filter(tags__name__iexact=tag)
         )
-

@@ -14,7 +14,8 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='assignmentsubmission',
             name='marks',
-            field=models.IntegerField(blank=True, null=True,validators=[django.core.validators.MinValueValidator(0)]),
+            field=models.IntegerField(blank=True, null=True, validators=[
+                                      django.core.validators.MinValueValidator(0)]),
         ),
         migrations.AddField(
             model_name='assignmentsubmission',
