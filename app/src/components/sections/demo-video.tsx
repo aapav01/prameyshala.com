@@ -47,7 +47,7 @@ const getDemoVideos = async () => {
     });
 };
 
-export default function DemoVideo({}: props) {
+export default function DemoVideo({ }: props) {
   const [data, setData] = useState<DemoVideoData | null>(null);
   useEffect(() => {
     const fetchData = async () => {
@@ -65,7 +65,7 @@ export default function DemoVideo({}: props) {
       </div>
       <div className="flex lg:items-center gap-3 max-lg:flex-col w-full">
         <div className="w-full">
-          <Swiper modules={[Navigation]} navigation slidesPerView={1}>
+          <Swiper modules={[Navigation]} navigation slidesPerView={1} className="max-sm:-mt-20">
             {data &&
               data?.lessonsByPreview &&
               data?.lessonsByPreview.map((lesson: any, index: number) => {
@@ -74,7 +74,7 @@ export default function DemoVideo({}: props) {
                     <div className="py-4 w-full flex justify-center">
                       <Dialog modal={true}>
                         <DialogTrigger>
-                          <div className="grid grid-cols-[1fr_2fr] xl:gap-10 gap-4 w-full container">
+                          <div className="grid md:grid-cols-[1fr_2fr] xl:gap-10 gap-4 w-full container max-sm:mt-20">
                             <div className="bg-white shadow shadow-indigo-300/50 p-4 rounded-lg w-fit flex justify-center items-center relative">
                               <div className="absolute top-0 left-0 right-0 bottom-0 flex items-center justify-center">
                                 <div className="shadow shadow-pink-500/50 bg-pink-600 rounded-full text-white p-2 md:p-6 animate-pulse">
@@ -100,7 +100,7 @@ export default function DemoVideo({}: props) {
                                 />
                               )}
                             </div>
-                            <div className="flex flex-col gap-4 text-left">
+                            <div className="flex flex-col max-sm:flex-col-reverse gap-4 text-left max-sm:ml-1">
                               <div className="flex gap-2">
                                 <div className="text-blue-800 bg-blue-500/20 px-3 py-1 rounded-lg text font-semibold text-center w-fit">
                                   {lesson?.chapter?.subject?.standard?.name}
@@ -112,7 +112,7 @@ export default function DemoVideo({}: props) {
                               <h4 className="text-xl lg:text-2xl font-bold line-clamp-1">
                                 {lesson?.title}
                               </h4>
-                              <div className="prose line-clamp-6">
+                              <div className="prose line-clamp-6 hidden md:block">
                                 {lesson?.description}
                               </div>
                             </div>
