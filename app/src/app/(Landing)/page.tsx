@@ -212,7 +212,7 @@ export default function Home() {
           <div className="w-full lg:w-1/2 p-10">
             <div className="mx-auto items-center justify-center flex h-fit">
               <Image
-                src="/img/about/about_2.png"
+                src="/img/about/about_new.png"
                 height={520}
                 width={520}
                 className="h-fit rounded-lg absolute"
