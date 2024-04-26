@@ -42,6 +42,7 @@ const query = gql`
           id
           name
           type
+          timeRequired
           questionSet {
             id
             questionText
