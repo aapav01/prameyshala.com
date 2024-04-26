@@ -9,7 +9,7 @@ import TestimonialCard from "@/components/testimontial-card";
 
 type Props = {};
 
-function TestimonialMain({}: Props) {
+function TestimonialMain({ }: Props) {
   return (
     <div className="testmonialarea">
       <div className="flex flex-row justify-center gap-2">
@@ -38,7 +38,7 @@ function TestimonialMain({}: Props) {
             },
           }}
         >
-          <SwiperSlide className="pl-12">
+          <SwiperSlide className="px-12">
             <TestimonialCard
               rating={5}
               className=""

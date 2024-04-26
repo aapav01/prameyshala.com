@@ -25,7 +25,7 @@ class EmailPhoneUsernameAuthenticationBackend(ModelBackend):
                 send_mail(subject="Login Mail",
                           message=f"Hi,{user.full_name}. You have successfully logged in to PrameyShala.\nYour education journey begins.",
                           from_email="admin@prameyshala.com",
-                          recipient_list=[email])
+                          recipient_list=[email], fail_silently=True)
             return user
 
         return None

@@ -1,9 +1,11 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
+import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
-import Link from "next/link";
 import { ReloadIcon } from "@radix-ui/react-icons";
 
 type Props = {
@@ -14,8 +16,14 @@ type Props = {
 export default function EnrollButton({ standard, enrolled }: Props) {
   const [disabled, setDisabled] = useState(false);
   const [url, setUrl] = useState(null);
+  const router = useRouter();
+  const { data: session } = useSession();
 
   const enroll = async () => {
+    if (!session?.user) {
+      router.push("/login?callbackUrl=" + window.location.href);
+      return;
+    }
     setDisabled(true);
     await fetch("/api/enroll", {
       method: "POST",

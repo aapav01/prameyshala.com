@@ -6,7 +6,7 @@ from datetime import datetime
 from app.accounts.models import User
 from django.utils.timezone import now
 from datetime import timedelta
-from .models import Lesson, Subject, Classes, Chapter, Category, Quiz, Question, Choice, Assignment, AssignmentSubmission, Lesson_Progress, QuizHash, QuizHashQuestionAnswer, Grades
+from .models import Lesson, Subject, Classes, Chapter, Category, Quiz, Question, Choice, Assignment, AssignmentSubmission, Lesson_Progress, QuizHash, QuizHashQuestionAnswer, Grades, Enrollment
 import random
 
 class ChapterType(DjangoObjectType):
@@ -100,26 +100,33 @@ class Query(graphene.ObjectType):
     # classes
     classes = graphene.List(ClassesType)
     standard = graphene.Field(ClassesType, slug=graphene.String(required=True))
+
     # category
     categories = graphene.List(CategoriesType, popular=graphene.Boolean())
     category = graphene.Field(CategoriesType, id=graphene.ID(required=True))
 
     # subjects
     subject = graphene.Field(SubjectType, slug=graphene.String(required=True))
+
     # chapters
     chapter = graphene.Field(ChapterType, id=graphene.ID(required=True))
+
     # lessons
     lesson = graphene.Field(LessonType, id=graphene.ID(required=True))
     lesson_by_chapter_paginated = graphene.Field(
         PaginatedLessons, chapter_id=graphene.ID(required=True), page=graphene.Int())
     lessons_by_preview = graphene.List(LessonType)
+
     # assignment
     assignment = graphene.List(
         AssignmentType, chapter=graphene.String(required=False))
+
     # progress
     progress = graphene.Field(ProgressType, lesson=graphene.ID(required=True))
+
     # quiz
     quiz = graphene.List(QuizType, id=graphene.ID(required=False))
+
     # quiz hash
     quiz_hash = graphene.List(
         QuizHashType, quiz_id=graphene.ID(required=True))
@@ -251,11 +258,12 @@ class Query(graphene.ObjectType):
         else:
             return None
 
+    # grades
     def resolve_grades(root, info, assignment_or_quiz_id=None, lesson_type=None):
         user = info.context.user
         if not user.is_authenticated:
             raise Exception("Authentication credentials were not provided")
-        if lesson_type == "assignment":
+        if lesson_type and lesson_type.lower() == "assignment":
             if assignment_or_quiz_id:
                 assignment_grades = Grades.objects.filter(
                     student_id=user.id, assignment=assignment_or_quiz_id)
@@ -263,7 +271,7 @@ class Query(graphene.ObjectType):
                 assignment_grades = Grades.objects.filter(
                     student_id=user.id, assignment__lesson__lesson_type=lesson_type)
             return assignment_grades
-        elif lesson_type == "quiz":
+        elif lesson_type and lesson_type.lower() == "quiz":
             if assignment_or_quiz_id:
                 quiz_grades = Grades.objects.filter(
                     student_id=user.id, quiz=assignment_or_quiz_id)
