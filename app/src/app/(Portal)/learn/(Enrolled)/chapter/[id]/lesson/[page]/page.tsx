@@ -91,6 +91,9 @@ async function getData({ params }: Props, session: any) {
       query,
       variables: { chapter: parseInt(params.id), page: parseInt(params.page) },
       context: {
+        fetchOptions: {
+          cache: "no-store",
+        },
         headers: {
           Authorization: `JWT ${session.user?.token}`,
         },
@@ -146,7 +149,9 @@ export default async function LessonDetail({ params }: Props) {
         className="bg-teal-700 py-6 text-indigo-50 shadow-lg shadow-teal-500/50"
       >
         <div className="container">
-          <h1 className="text-xl sm:text-4xl font-bold capitalize">{lesson.title}</h1>
+          <h1 className="text-xl sm:text-4xl font-bold capitalize">
+            {lesson.title}
+          </h1>
           <span className="py-2">
             {lesson.chapter.name} of {lesson.chapter.subject.name} (
             {lesson.chapter.subject.standard.name})
