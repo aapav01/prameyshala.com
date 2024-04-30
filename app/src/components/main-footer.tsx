@@ -8,13 +8,13 @@ import { EnvelopeClosedIcon } from "@radix-ui/react-icons";
 
 type Props = {};
 
-function MainFooter({}: Props) {
+function MainFooter({ }: Props) {
   return (
     <footer className="bg-primary-deep text-indigo-300 py-8">
       <div className="container">
         <div className="border-b-2 border-indigo-900 pb-8">
-          <div className="flex flex-col md:flex-row gap-4">
-            <div className="max-w-sm">
+          <div className="flex flex-col md:flex-row gap-2 sm:gap:6">
+            <div className="mt-2 ml-4 max-w-sm">
               <Link href="/" passHref>
                 <Image
                   src="/svg/logo.svg"
@@ -25,11 +25,11 @@ function MainFooter({}: Props) {
                   className="invert brightness-0"
                 />
               </Link>
-              <p className="mt-2">Start learning with Prameyshala</p>
-              <p className="mt-2 font-sans text-sm font-bold text-center">
-                Download our apps to start learning. (Coming Soon)
+              <p className="mt-2 max-sm:text-center max-sm:-ml-7">Start learning with Prameyshala</p>
+              <p className="mt-2 font-sans text-base font-bold text-left max-sm:ml-2">
+                Download our app to start learning. <span className="max-sm:text-center max-sm:block max-sm:-ml-14 max-sm:mt-2">(Coming Soon)</span>
               </p>
-              <div className="flex flex-row gap-2 p-1">
+              <div className="flex flex-row gap-2 mt-4">
                 <Image
                   src={AppStore.src}
                   alt="App Store"
@@ -44,7 +44,7 @@ function MainFooter({}: Props) {
                 />
               </div>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 p-8 gap-4 text-lg w-full">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 p-5 pt-4 gap-6 text-lg w-full">
               <div>
                 <p className="font-sans font-bold text-indigo-100">
                   Usefull Links

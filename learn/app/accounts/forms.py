@@ -44,7 +44,7 @@ class UsersForm(ModelForm):
     class Meta:
         model = User
         fields = ['full_name', 'password', 'phone_number', 'email', 'is_active', 'country', 'state', 'city',
-                  'is_superuser', 'is_staff',   'groups', 'user_permissions',  'referred_by']
+                  'is_superuser', 'is_staff',   'groups', 'user_permissions',  'referred_by', 'photo']
         exclude = ['last_login']
 
     def __init__(self, *args, **kwargs):

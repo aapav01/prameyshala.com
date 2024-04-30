@@ -424,9 +424,44 @@ class EndQuiz(graphene.Mutation):
         return EndQuiz(success=True)
 
 
+class CreateGrades(graphene.Mutation):
+    success = graphene.Boolean()
+
+    class Arguments:
+        LessonType = graphene.String(required=True)
+        lessonID = graphene.ID(required=True)
+        grade = graphene.Float(required=True)
+
+    def mutate(root, info, LessonType, lessonID, grade):
+        user = info.context.user
+        if not user.is_authenticated:
+            raise Exception("Authentication credentials were not provided")
+        enrollment = Enrollment.objects.get(user=user)
+        enrollment_id = enrollment.id
+        enrolled_class_id = enrollment.standard.id
+        if LessonType and LessonType.lower() == "assignment":
+            Grades.objects.create(
+                student_id=user.id,
+                assignment=Assignment.objects.get(id=lessonID),
+                enrolled_class_id=enrolled_class_id,
+                enrollment_id=enrollment_id,
+                grade=grade
+            )
+        else:
+            Grades.objects.create(
+                student_id=user.id,
+                quiz=Quiz.objects.get(id=lessonID),
+                enrolled_class_id=enrolled_class_id,
+                enrollment_id=enrollment_id,
+                grade=grade
+            )
+        return CreateGrades(success=True)
+
+
 class Mutation(graphene.ObjectType):
     create_submission = CreateAssignmentSubmission.Field()
     create_progress = CreateProgress.Field()
     start_or_resume_quiz = StartOrResumeQuiz.Field()
     submit_answer = SubmitAnswerToQuiz.Field()
     end_quiz = EndQuiz.Field()
+    create_grades = CreateGrades.Field()
