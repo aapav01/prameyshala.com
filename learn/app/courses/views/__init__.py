@@ -6,3 +6,4 @@ from .categories import *
 from .quizzes import *
 from .assignment import *
 from .questions import *
+from .notes import *

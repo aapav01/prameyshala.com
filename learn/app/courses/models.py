@@ -299,3 +299,10 @@ class Grades(models.Model):
         elif self.quiz:
             return f"{self.student.full_name} - Class {self.enrolled_class} - Quiz: {self.quiz.name} - Score: {self.grade}"
         return f"{self.student.full_name} - Class {self.enrolled_class} - Score: {self.grade}"
+
+
+class Notes(models.Model):
+    chapter = models.ForeignKey(Chapter, on_delete=models.CASCADE)
+    title = models.CharField(max_length=255)
+    notes_file = models.FileField(
+        upload_to='uploads/notes', blank=True, null=True)

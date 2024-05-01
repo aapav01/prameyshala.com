@@ -1,6 +1,6 @@
 from django import forms
 from django.forms import ModelForm, inlineformset_factory
-from .models import Classes, Subject, Chapter, Lesson, Category, Quiz, Choice, Question, Assignment, AssignmentSubmission
+from .models import Classes, Subject, Chapter, Lesson, Notes, Category, Quiz, Choice, Question, Assignment, AssignmentSubmission
 from app.accounts.models import User
 
 
@@ -107,6 +107,12 @@ class QuestionForm(ModelForm):
         widgets = {
             'question_text': forms.Textarea(attrs={'required': True}),
         }
+
+
+class NotesForm(ModelForm):
+    class Meta:
+        model = Notes
+        fields = "__all__"
 
 
 QuestionInlineFormSet = inlineformset_factory(
