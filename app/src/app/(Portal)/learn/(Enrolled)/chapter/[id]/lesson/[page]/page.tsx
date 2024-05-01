@@ -10,7 +10,7 @@ import authOptions from "@/lib/authOption";
 import { gql } from "@apollo/client";
 import { getClient } from "@/lib/client";
 import VideoPlayer from "@/components/sections/video-player";
-import Quiz from "@/app/(Portal)/learn/(Enrolled)/quiz/quiz";
+// import Quiz from "@/app/(Portal)/learn/(Enrolled)/chapter/[id]/quiz/quiz";
 // import Assignment from "@/components/sections/assignment";
 const Assignment = dynamic(() => import("@/components/sections/pdf-viewer"), {
   ssr: false,
@@ -122,15 +122,17 @@ function LessonType({ lesson }: { lesson: any }) {
     case "VIDEO":
       return <VideoPlayer lesson={lesson} />;
     case "QUIZ":
-      return <Quiz lesson={lesson} />;
+      // return <Quiz lesson={lesson} />;
+      return null;
     case "ASSIGNMENT":
-      return (
-        <Assignment
-          file={lesson.assignment.assigmentFile}
-          type={lesson.lessonType}
-          lessonId={lesson.id}
-        />
-      );
+      // return (
+      //   <Assignment
+      //     file={lesson.assignment.assigmentFile}
+      //     type={lesson.lessonType}
+      //     lessonId={lesson.id}
+      //   />
+      // );
+      return null;
     default:
       return <div>Unknown Lesson Type</div>;
   }
@@ -144,6 +146,8 @@ export default async function LessonDetail({ params }: Props) {
 
   return (
     <React.Fragment>
+      {lesson.LessonType !== "QUIZ" && lesson.LessonType !== "ASSIGNMENT" &&
+      <>
       <header
         id="header"
         className="bg-teal-700 py-6 text-indigo-50 shadow-lg shadow-teal-500/50"
@@ -166,6 +170,8 @@ export default async function LessonDetail({ params }: Props) {
           </div>
         </div>
       )}
+      </>
+    }
     </React.Fragment>
   );
 }
