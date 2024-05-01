@@ -8,7 +8,7 @@ type Props = {
   quizHash: string | null;
   currentGrade: number;
   setCurrentGrade: any;
-  lesson: any;
+  quiz: any;
   token: any;
   setQuizEnded: any;
   quizEnded: boolean;
@@ -21,7 +21,7 @@ export default function Question({
   quizHash,
   currentGrade,
   setCurrentGrade,
-  lesson,
+  quiz,
   token,
   setQuizEnded,
   quizEnded,
@@ -35,7 +35,7 @@ export default function Question({
     const getChosenAnswer = async (questionCount: number) => {
       const chosenOptionData = await fetch(
         //@ts-ignore
-        `/api/quiz/${lesson?.quiz?.id}/quizHash/${quizHash}/answer?question=${questions?.questionSet[questionCount].question.id}`,
+        `/api/quiz/${quiz?.id}/quizHash/${quizHash}/answer?question=${questions?.questionSet[questionCount].question.id}`,
         {
           method: "GET",
           headers: {
@@ -58,7 +58,7 @@ export default function Question({
 
     getChosenAnswer(questions?.currentQuestionCount - 1);
   }, [
-    lesson?.quiz?.id,
+    quiz?.id,
     questions,
     questions.currentQuestion,
     questions?.currentQuestionCount,
@@ -69,7 +69,7 @@ export default function Question({
 
   // To submit selected answer for question
   const submitAnswer = async (curGrade: number) => {
-    await fetch(`/api/quiz/${lesson?.quiz?.id}/quizHash/${quizHash}/answer`, {
+    await fetch(`/api/quiz/${quiz?.id}/quizHash/${quizHash}/answer`, {
       method: "POST",
       body: JSON.stringify({
         quizHashId: quizHash,
@@ -122,6 +122,7 @@ export default function Question({
 
   const handleSubmitQuiz = async () => {
     let curGrade = currentGrade;
+
     if (optionChosen) {
       if (
         //@ts-ignore
@@ -132,18 +133,22 @@ export default function Question({
           (choice) => choice.isCorrect
         )?.id
       ) {
+        curGrade = curGrade + 1;
         setCurrentGrade((prev: number) => {
-          curGrade = curGrade + 1;
           return prev + 1;
         });
       }
 
       await submitAnswer(curGrade);
     }
-    await fetch(`/api/quiz/${lesson?.quiz?.id}/end-quiz`, {
+    curGrade = Number(
+      ((curGrade / questions.questionSet.length) * 10).toFixed(2)
+    ); // TO make grade between 0-10
+    await fetch(`/api/quiz/${quiz?.id}/end-quiz`, {
       method: "POST",
       body: JSON.stringify({
         quizHashId: quizHash,
+        grade: curGrade,
         /*@ts-ignore*/
         token: token,
       }),
@@ -163,12 +168,10 @@ export default function Question({
         <div className="flex flex-col px-6 max-sm:px-1">
           <div className="flex justify-between mb-4 items-end max-sm:gap-2">
             <h1 className="font-semibold text-2xl max-sm:text-lg ml-3 mb-[0.30rem] max-sm:mb-0">
-              {lesson?.quiz?.name}
+              {quiz?.name}
             </h1>
             <QuizTimer
-              timeRequired={
-                timeRequired ? timeRequired : lesson?.quiz?.timeRequired
-              }
+              timeRequired={timeRequired ? timeRequired : quiz?.timeRequired}
               onSubmit={handleSubmitQuiz}
             />
             <button
@@ -191,6 +194,7 @@ export default function Question({
               {
                 /*@ts-ignore*/
                 questions?.currentQuestion?.question?.figure && (
+                  // eslint-disable-next-line @next/next/no-img-element
                   <img
                     className="block rounded-md"
                     //@ts-ignore

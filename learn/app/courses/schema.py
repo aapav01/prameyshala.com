@@ -126,6 +126,7 @@ class Query(graphene.ObjectType):
 
     # quiz
     quiz = graphene.List(QuizType, id=graphene.ID(required=False))
+    quiz_by_chapter = graphene.Field(QuizType, chapter=graphene.ID(required=True))
 
     # quiz hash
     quiz_hash = graphene.List(
@@ -228,6 +229,14 @@ class Query(graphene.ObjectType):
         if id:
             return Quiz.objects.filter(pk=id)
         return Quiz.objects.all()
+
+    def resolve_quiz_by_chapter(self, info, chapter):
+        user = info.context.user
+        if not user.is_authenticated:
+            raise Exception("Authentication credentials were not provided")
+        chapter_instance = Chapter.objects.get(pk=chapter)
+        lesson_instance = Lesson.objects.get(chapter=chapter_instance, lesson_type = "QUIZ")
+        return Quiz.objects.get(lesson=lesson_instance)
 
     # quiz hash
     def resolve_quiz_hash(self, info, quiz_id):
@@ -411,15 +420,27 @@ class SubmitAnswerToQuiz(graphene.Mutation):
 class EndQuiz(graphene.Mutation):
     class Arguments:
         quiz_hash_id = graphene.String(required=True)
+        grade = graphene.Int(required = True)
 
     success = graphene.Boolean()
 
-    def mutate(self, info, quiz_hash_id):
+    def mutate(self, info, quiz_hash_id, grade):
         user = info.context.user
         if not user.is_authenticated:
             raise Exception("Authentication credentials were not provided")
         quiz_hash = QuizHash.objects.get(quiz_hash_id=quiz_hash_id)
         quiz_hash.quiz_ended = True
+        enrollment = Enrollment.objects.get(user=user)
+        enrollment_id = enrollment.id
+        enrolled_class_id = enrollment.standard.id
+        quiz = Quiz.objects.get(pk=quiz_hash.quiz.id)
+        Grades.objects.create(
+                student_id=user.id,
+                quiz=quiz,
+                enrolled_class_id=enrolled_class_id,
+                enrollment_id=enrollment_id,
+                grade=grade
+            )
         quiz_hash.save()
         return EndQuiz(success=True)
 

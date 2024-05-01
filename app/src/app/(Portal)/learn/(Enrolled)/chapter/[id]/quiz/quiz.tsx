@@ -8,10 +8,10 @@ import { Card } from "@/components/ui/card";
 import { CheckCircledIcon } from "@radix-ui/react-icons";
 
 type Props = {
-  lesson: any;
+  quiz: any;
 };
 
-function Quiz({ lesson }: Props) {
+function Quiz({ quiz }: Props) {
   const [startQuiz, setStartQuiz] = useState(false);
   const { data: session } = useSession();
   const router = useRouter();
@@ -24,7 +24,7 @@ function Quiz({ lesson }: Props) {
   const [quizHashId, setQuizHashId] = useState(null);
   const [timeRequired, setTimeRequired] = useState<number | null>(null);
   const [quizEnded, setQuizEnded] = useState(false);
-  const [currentGrade, setCurrentGrade] = useState(0);
+  const [currentGrade, setCurrentGrade] = useState(0.0);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -33,7 +33,7 @@ function Quiz({ lesson }: Props) {
         return;
       }
       // API call for checking if quiz has to be resumed
-      const resumeQuiz = await fetch(`/api/quiz/${lesson?.quiz?.id}/quizHash`, {
+      const resumeQuiz = await fetch(`/api/quiz/${quiz?.id}/quizHash`, {
         method: "GET",
         headers: {
           /*@ts-ignore*/
@@ -64,7 +64,7 @@ function Quiz({ lesson }: Props) {
       }
     };
     fetchData();
-  }, [lesson.id, lesson?.quiz?.id, router, session?.user]);
+  }, [quiz?.id, router, session?.user]);
 
   useEffect(() => {
     if (quizEnded) {
@@ -97,7 +97,7 @@ function Quiz({ lesson }: Props) {
   // To get questions
   async function getQuestions(quizHash: String) {
     const questionData = await fetch(
-      `/api/quiz/${lesson?.quiz?.id}/quizHash/${quizHash}/question`,
+      `/api/quiz/${quiz?.id}/quizHash/${quizHash}/question`,
       {
         method: "GET",
         headers: {
@@ -140,15 +140,13 @@ function Quiz({ lesson }: Props) {
       {!startQuiz && !quizEnded && (
         <div className="flex flex-col">
           <h1 className="text-xl md:text-2xl font-semibold text-center">
-            {lesson?.quiz?.name}
+            {quiz?.name}
           </h1>
           <div className="flex flex-col px-4 mr-4">
             <div className="flex justify-between mr-8">
               <p className="font-semibold">
                 Time Required:{" "}
-                <span className="font-normal">
-                  {lesson?.quiz?.timeRequired} mins
-                </span>
+                <span className="font-normal">{quiz?.timeRequired} mins</span>
               </p>
               {/* @ts-ignore */}
               <p className="font-semibold">
@@ -156,7 +154,7 @@ function Quiz({ lesson }: Props) {
                 <span className="font-normal">
                   {
                     //@ts-ignore
-                    lesson?.quiz?.questionSet?.length
+                    quiz?.questionSet?.length
                   }
                 </span>
               </p>
@@ -164,7 +162,7 @@ function Quiz({ lesson }: Props) {
             <Button
               variant={"outline"}
               className="mt-4 w-auto px-5 py-3 border border-transparent rounded-md text-xl shadow font-medium text-green-600 hover:bg-green-50 mr-4"
-              onClick={(event) => handleStartOrResumeClick(lesson?.quiz?.id)}
+              onClick={(event) => handleStartOrResumeClick(quiz?.id)}
             >
               {resumeQuiz ? "Resume Quiz" : "Start Quiz"}
             </Button>
@@ -179,7 +177,7 @@ function Quiz({ lesson }: Props) {
             quizHash={quizHashId}
             currentGrade={currentGrade}
             setCurrentGrade={setCurrentGrade}
-            lesson={lesson}
+            quiz={quiz}
             /* @ts-ignore */
             token={session?.user?.token}
             setQuizEnded={setQuizEnded}
