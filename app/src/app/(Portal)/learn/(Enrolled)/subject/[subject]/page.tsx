@@ -6,7 +6,7 @@ import { notFound } from "next/navigation";
 import { gql } from "@apollo/client";
 import { getClient } from "@/lib/client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import ChapterCard from "@/components/cards/chapter-card";
+import ChapterCard2 from "@/components/cards/chapter-card2";
 
 type Props = {
   params: { subject: string };
@@ -80,9 +80,9 @@ export default async function SubjectDetail({ params }: Props) {
           </h1>
         </div>
       </header>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 px-4 py-6 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 px-4 py-6 gap-4">
         {sortedChapters?.map((chapter: any, index: number) => (
-          <ChapterCard chapter={chapter} key={index} />
+          <ChapterCard2 chapter={chapter} key={index} />
         ))}
       </div>
     </>
