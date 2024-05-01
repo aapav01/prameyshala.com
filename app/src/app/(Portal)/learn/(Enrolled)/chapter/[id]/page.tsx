@@ -81,7 +81,7 @@ export default async function ChapterDetail({ params }: Props) {
       </header>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 px-4 py-6 gap-4">
         {chapter.lessonSet.map((lesson: any, index: number) => (
-          <LessonCard2 key={lesson.id} lesson={lesson} page={index + 1} />
+          lesson.lessonType !== "QUIZ" && lesson.lessonType !== "ASSIGNMENT" && <LessonCard2 key={lesson.id} lesson={lesson} page={index + 1} />
         ))}
       </div>
     </>
