@@ -27,7 +27,6 @@ type Props = {
 };
 
 export default function LessonCard2({ lesson, page, size }: Props) {
-  console.log(lesson.thumbUrl);
   return (
     <Link href={"/learn/chapter/" + lesson.chapter.id + "/lesson/" + page}>
       <Card className="animate-in duration-200 ease-in hover:-translate-y-2 hover:shadow-xl hover:shadow-cyan-300/50 ">
