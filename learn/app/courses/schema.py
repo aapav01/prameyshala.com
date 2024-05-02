@@ -9,7 +9,6 @@ from datetime import timedelta
 from .models import Lesson, Subject, Classes, Chapter, Category, Quiz, Question, Choice, Assignment, AssignmentSubmission, Lesson_Progress, QuizHash, QuizHashQuestionAnswer, Grades, Enrollment
 import random
 
-
 class ChapterType(DjangoObjectType):
     class Meta:
         model = Chapter
@@ -129,11 +128,17 @@ class Query(graphene.ObjectType):
     quiz = graphene.List(QuizType, id=graphene.ID(required=False))
 
     # quiz hash
-    quiz_hash = graphene.Field(
+    quiz_hash = graphene.List(
         QuizHashType, quiz_id=graphene.ID(required=True))
     # quiz hash question answer
-    quiz_hash_question_answer = graphene.Field(
+    quiz_hash_question_answer = graphene.List(
         QuizHashQuestionAnswerType, quiz_hash_id=graphene.ID(required=True))
+
+    quiz_hash_question_answer_for_chosen_answer = graphene.Field(
+        QuizHashQuestionAnswerType,
+        quiz_hash = graphene.String(required=True),
+        question_id = graphene.ID(required=True)
+    )
 
     # grades
     grades = graphene.List(GradesType, lesson_type=graphene.String(
@@ -229,14 +234,29 @@ class Query(graphene.ObjectType):
         user = info.context.user
         if not user.is_authenticated:
             raise Exception("Authentication credentials were not provided")
-        return QuizHash.objects.get(student=user, quiz=quiz_id)
+        return QuizHash.objects.filter(student=user, quiz=quiz_id).order_by('-start_time')
 
     # quiz hash question answer
     def resolve_quiz_hash_question_answer(self, info, quiz_hash_id):
         user = info.context.user
         if not user.is_authenticated:
             raise Exception("Authentication credentials were not provided")
-        return QuizHashQuestionAnswerType.objects.get(quiz_hash=quiz_hash_id)
+        return QuizHashQuestionAnswer.objects.filter(quiz_hash=quiz_hash_id).order_by('question_order')
+
+    def resolve_quiz_hash_question_answer_for_chosen_answer(self, info, quiz_hash, question_id):
+        user = info.context.user
+        if not user.is_authenticated:
+            raise Exception("Authentication credentials were not provided")
+        quiz_hash_instance = QuizHash.objects.get(pk=quiz_hash)
+        question_instance = Question.objects.get(pk=question_id)
+        quiz_hash_question_answer_instance =  QuizHashQuestionAnswer.objects.filter(quiz_hash=quiz_hash_instance, question = question_instance)
+        if quiz_hash_question_answer_instance:
+            if quiz_hash_question_answer_instance:
+                return quiz_hash_question_answer_instance[0]
+            else:
+                return None
+        else:
+            return None
 
     # grades
     def resolve_grades(root, info, assignment_or_quiz_id=None, lesson_type=None):
@@ -360,27 +380,31 @@ class StartOrResumeQuiz(graphene.Mutation):
 
 class SubmitAnswerToQuiz(graphene.Mutation):
     class Arguments:
-        quiz_hash_id = graphene.String(required=True)
-        question_id = graphene.ID(required=True)
-        chosen_answer_id = graphene.ID(required=True)
+        quiz_hash_id = graphene.String(required = True)
+        question_id = graphene.ID(required = True)
+        chosen_answer_id = graphene.ID(required = True)
+        current_grade = graphene.Int(required = True)
+        last_attempted_question_count = graphene.Int(required = True)
 
     success = graphene.Boolean()
 
-    def mutate(self, info, quiz_hash_id, question_id, chosen_answer_id):
+    def mutate(self, info, quiz_hash_id, question_id, chosen_answer_id, current_grade, last_attempted_question_count):
         user = info.context.user
         if not user.is_authenticated:
             raise Exception("Authentication credentials were not provided")
-        quiz_hash = QuizHash.objects.get(pk=quiz_hash_id)
-        question = Question.objects.get(pk=question_id)
-        chosen_answer = Choice.objects.get(pk=chosen_answer_id)
-
-        QuizHashQuestionAnswer.objects.filter(
-            quiz_hash=quiz_hash,
-            question=question
-        ).update(
-            chosen_answer=chosen_answer
+        quiz_hash_instance = QuizHash.objects.get(pk=quiz_hash_id)
+        question_instance = Question.objects.get(pk=question_id)
+        chosen_answer_instance = Choice.objects.get(pk=chosen_answer_id)
+        quiz_hash_question_answer_instance = QuizHashQuestionAnswer.objects.get(
+            quiz_hash=quiz_hash_instance,
+            question=question_instance
         )
-
+        quiz_hash_question_answer_instance.chosen_answer = chosen_answer_instance
+        quiz_hash_instance.last_attempted_question = question_instance
+        quiz_hash_instance.current_grade = current_grade
+        quiz_hash_instance.last_attempted_question_count = last_attempted_question_count
+        quiz_hash_question_answer_instance.save()
+        quiz_hash_instance.save()
         return SubmitAnswerToQuiz(success=True)
 
 
@@ -389,18 +413,15 @@ class EndQuiz(graphene.Mutation):
         quiz_hash_id = graphene.String(required=True)
 
     success = graphene.Boolean()
-    quiz_hash_question_answer = graphene.ID()
 
     def mutate(self, info, quiz_hash_id):
         user = info.context.user
         if not user.is_authenticated:
             raise Exception("Authentication credentials were not provided")
-        quiz_hash = QuizHash.objects.get(pk=quiz_hash_id)
+        quiz_hash = QuizHash.objects.get(quiz_hash_id=quiz_hash_id)
         quiz_hash.quiz_ended = True
         quiz_hash.save()
-        quiz_hash_question_answer = QuizHashQuestionAnswer.objects.get(
-            quiz_hash=quiz_hash_id)
-        return EndQuiz(success=True, quiz_hash_question_answer=quiz_hash_question_answer)
+        return EndQuiz(success=True)
 
 
 class CreateGrades(graphene.Mutation):

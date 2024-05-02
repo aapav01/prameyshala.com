@@ -10,7 +10,7 @@ import authOptions from "@/lib/authOption";
 import { gql } from "@apollo/client";
 import { getClient } from "@/lib/client";
 import VideoPlayer from "@/components/sections/video-player";
-import Quiz from "@/components/sections/quiz";
+import Quiz from "@/app/(Portal)/learn/(Enrolled)/quiz/quiz";
 // import Assignment from "@/components/sections/assignment";
 const Assignment = dynamic(() => import("@/components/sections/pdf-viewer"), {
   ssr: false,
@@ -42,6 +42,7 @@ const query = gql`
           id
           name
           type
+          timeRequired
           questionSet {
             id
             questionText
@@ -145,7 +146,7 @@ export default async function LessonDetail({ params }: Props) {
         className="bg-teal-700 py-6 text-indigo-50 shadow-lg shadow-teal-500/50"
       >
         <div className="container">
-          <h1 className="text-xl sm:text-4xl font-bold">{lesson.title}</h1>
+          <h1 className="text-xl sm:text-4xl font-bold capitalize">{lesson.title}</h1>
           <span className="py-2">
             {lesson.chapter.name} of {lesson.chapter.subject.name} (
             {lesson.chapter.subject.standard.name})

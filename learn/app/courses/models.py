@@ -267,7 +267,9 @@ class QuizHash(models.Model):
     )
     start_time = models.DateTimeField(auto_now_add=True)
     quiz_ended = models.BooleanField(default=False, blank=True, null=True)
-
+    last_attempted_question = models.ForeignKey(Question, on_delete=models.SET_NULL, default=None, null=True, blank=True, related_name="last_attempted_question")
+    current_grade = models.IntegerField(null=False, blank=False, default=0)
+    last_attempted_question_count = models.IntegerField(default=1)
 
 class QuizHashQuestionAnswer(models.Model):
     quiz_hash = models.ForeignKey(QuizHash, on_delete=models.CASCADE)
