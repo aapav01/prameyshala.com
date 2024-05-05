@@ -1,5 +1,6 @@
 "use client";
-import React, { useEffect, useState } from "react";
+
+import { useEffect, useState } from "react";
 import QuizTimer from "./quizTimer";
 
 type Props = {
@@ -12,7 +13,7 @@ type Props = {
   token: any;
   setQuizEnded: any;
   quizEnded: boolean;
-  timeRequired: number;
+  timeRequired: number | null;
 };
 
 export default function Question({
@@ -27,19 +28,17 @@ export default function Question({
   quizEnded,
   timeRequired,
 }: Props) {
-  const [optionChosen, setOptionChosen] = useState(null);
+  const [optionChosen, setOptionChosen] = useState<any>();
   const [questionsLoaded, setQuestionsLoaded] = useState(false);
 
   useEffect(() => {
     // To get selected answer for the question
     const getChosenAnswer = async (questionCount: number) => {
       const chosenOptionData = await fetch(
-        //@ts-ignore
         `/api/quiz/${lesson?.quiz?.id}/quizHash/${quizHash}/answer?question=${questions?.questionSet[questionCount].question.id}`,
         {
           method: "GET",
           headers: {
-            /*@ts-ignore*/
             token: token,
           },
         }
@@ -73,13 +72,10 @@ export default function Question({
       method: "POST",
       body: JSON.stringify({
         quizHashId: quizHash,
-        // @ts-ignore
         questionId: questions?.currentQuestion?.question?.id,
-        // @ts-ignore
-        chosenAnswerId: optionChosen.id,
+        chosenAnswerId: optionChosen?.id || null,
         currentGrade: curGrade,
         lastAttemptedQuestionCount: questions?.currentQuestionCount,
-        /*@ts-ignore*/
         token: token,
       }),
     })
@@ -94,12 +90,9 @@ export default function Question({
     let curGrade = currentGrade;
     if (optionChosen) {
       if (
-        //@ts-ignore
         optionChosen?.id ==
-        //@ts-ignore
         questions?.currentQuestion?.question?.choiceSet.find(
-          //@ts-ignore
-          (choice) => choice.isCorrect
+          (choice: any) => choice.isCorrect
         )?.id
       ) {
         setCurrentGrade((prev: number) => {
@@ -124,12 +117,9 @@ export default function Question({
     let curGrade = currentGrade;
     if (optionChosen) {
       if (
-        //@ts-ignore
-        optionChosen?.id ==
-        //@ts-ignore
+        optionChosen ==
         questions?.currentQuestion?.question?.choiceSet.find(
-          //@ts-ignore
-          (choice) => choice.isCorrect
+          (choice: any) => choice.isCorrect
         )?.id
       ) {
         setCurrentGrade((prev: number) => {
@@ -179,62 +169,42 @@ export default function Question({
             </button>
           </div>
           <div className="z-10 flex flex-col w-full px-6 py-8 overflow-hidden rounded-t-xl bg-gradient-to-br from-blue-700 to-blue-400 text-white text-wrap">
-            {/*@ts-ignore*/}
             <h1 className="block leading-snug text-white antialiased text-lg max-sm:text-md font-semibold max-sm:text-left ">
               <span className="px-1 max-sm:px-0 mr-2 max-sm:mr-1 py-[0.15rem] max-sm:text-left text-center font-semibold">
                 Q{questions?.currentQuestionCount}.
               </span>
-              {/*@ts-ignore*/}
               {questions?.currentQuestion?.question?.questionText}
             </h1>
             <div className="max-w-3xl object-contain self-center mt-2">
-              {
-                /*@ts-ignore*/
-                questions?.currentQuestion?.question?.figure && (
-                  <img
-                    className="block rounded-md"
-                    //@ts-ignore
-                    src={`${process.env.NEXT_PUBLIC_MEDIA_CDN}/static/media/${questions?.currentQuestion?.question?.figure}`}
-                    alt={
-                      /*@ts-ignore*/
-                      questions?.currentQuestion?.question?.questionText
-                    }
-                  />
-                )
-              }
+              {questions?.currentQuestion?.question?.figure && (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  className="block rounded-md"
+                  src={`${process.env.NEXT_PUBLIC_MEDIA_CDN}/static/media/${questions?.currentQuestion?.question?.figure}`}
+                  alt={questions?.currentQuestion?.question?.questionText}
+                />
+              )}
             </div>
           </div>
           <div className="mt-0 relative flex flex-col w-full justify-center rounded-b-xl bg-gray-50  text-base-content shadow-md pb-6 px-7 max-sm:px-2">
             <div className="grid max-sm:grid-cols-1 grid-cols-2 mt-8">
-              {
-                // @ts-ignore
-                questions?.currentQuestion?.question?.choiceSet.map(
-                  // @ts-ignore
-                  (choice, index) => (
-                    <div
-                      key={choice.id}
-                      className={`rounded-xl ${
-                        optionChosen != choice
-                          ? "bg-white text-base-content hover:-translate-y-1 transition-transform hover:bg-gray-100 border-gray-400"
-                          : "bg-blue-700 text-white shadow-blue-500/40 hover:-translate-y-1 transition-transform border-blue-400"
-                      }  bg-clip-border shadow-lg my-3 mx-6 py-4 font-semibold cursor-pointer inline border-b-2 `}
-                      onClick={() => setOptionChosen(choice)}
-                    >
-                      <p className="text-md px-4">{choice?.choiceText}</p>
-                    </div>
-                  )
+              {questions?.currentQuestion?.question?.choiceSet.map(
+                (choice: any, index: number) => (
+                  <div
+                    key={choice.id}
+                    className={`rounded-xl ${
+                      optionChosen != choice
+                        ? "bg-white text-base-content hover:-translate-y-1 transition-transform hover:bg-gray-100 border-gray-400"
+                        : "bg-blue-700 text-white shadow-blue-500/40 hover:-translate-y-1 transition-transform border-blue-400"
+                    }  bg-clip-border shadow-lg my-3 mx-6 py-4 font-semibold cursor-pointer inline border-b-2 `}
+                    onClick={() => setOptionChosen(choice)}
+                  >
+                    <p className="text-md px-4">{choice?.choiceText}</p>
+                  </div>
                 )
-              }
+              )}
             </div>
             <div className="flex max-sm:flex-col flex-row-reverse mt-3 justify-evenly">
-              {/* <button
-        className = {`mt-3 mr-2 px-3 py-2 border border-transparent rounded-md shadow bg-gradient-to-tr from-indigo-600 to-indigo-400 text-base font-medium text-white hover:from-indigo-500 hover:to-indigo-300 focus:outline-none focus:ring-2 focus:ring-white focus:border-white sm:mt-0 sm:ml-3 flex-shrink
-        ${(questions?.currentQuestionCount <= 1) && "hidden"}`}
-            onClick={handlePreviousClick}
-
-               >
-                  Previous Question
-            </button> */}
               <button
                 className={`mt-3 mr-6 max-sm:ml-6 px-3 py-2 border border-transparent rounded-md shadow bg-gradient-to-tr from-green-600 to-green-400 text-base font-medium text-white hover:from-green-500 hover:to-green-300 focus:outline-none focus:ring-2 focus:ring-white focus:border-white sm:mt-0 sm:ml-3 flex-shrink ${
                   questions?.currentQuestionCount >=

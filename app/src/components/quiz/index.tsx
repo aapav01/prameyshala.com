@@ -1,11 +1,11 @@
 "use client";
+
+import { Button } from "@/components/ui/button";
+import { CheckCircledIcon } from "@radix-ui/react-icons";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Question from "./question";
-import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
-import { CheckCircledIcon } from "@radix-ui/react-icons";
 
 type Props = {
   lesson: any;
@@ -28,15 +28,10 @@ function Quiz({ lesson }: Props) {
 
   useEffect(() => {
     const fetchData = async () => {
-      if (!session?.user) {
-        router.push("/login?callbackUrl=" + window.location.href);
-        return;
-      }
-      // API call for checking if quiz has to be resumed
       const resumeQuiz = await fetch(`/api/quiz/${lesson?.quiz?.id}/quizHash`, {
         method: "GET",
         headers: {
-          /*@ts-ignore*/
+          // @ts-ignore
           token: session?.user?.token,
         },
       })
@@ -150,14 +145,10 @@ function Quiz({ lesson }: Props) {
                   {lesson?.quiz?.timeRequired} mins
                 </span>
               </p>
-              {/* @ts-ignore */}
               <p className="font-semibold">
                 No. of Questions:{" "}
                 <span className="font-normal">
-                  {
-                    //@ts-ignore
-                    lesson?.quiz?.questionSet?.length
-                  }
+                  {lesson?.quiz?.questionSet?.length}
                 </span>
               </p>
             </div>
@@ -184,7 +175,6 @@ function Quiz({ lesson }: Props) {
             token={session?.user?.token}
             setQuizEnded={setQuizEnded}
             quizEnded={quizEnded}
-            /* @ts-ignore */
             timeRequired={timeRequired}
           />
         </div>
