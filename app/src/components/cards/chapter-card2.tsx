@@ -63,22 +63,22 @@ export default function ChapterCard2({ chapter, size }: Props) {
           <Link
             href={"/learn/chapter/" + chapter.id}
           >
-            <div className="text-purple-800 bg-purple-500/20 px-1 py-1 rounded-lg text-xs font-semibold text-center animate-in duration-200 ease-in hover:-translate-y-1 hover:shadow-xl hover:shadow-purple-300/50">
+            <div className="text-purple-800 bg-purple-500/20 px-2 py-4 rounded-lg font-semibold text-center animate-in duration-200 ease-in hover:-translate-y-1 hover:shadow-xl hover:shadow-purple-300/50">
               Video Lesson
             </div>
           </Link>
-          <div className="text-purple-800 bg-purple-500/20 px-1 py-1 rounded-lg text-xs font-semibold text-center animate-in duration-200 ease-in hover:-translate-y-1 hover:shadow-xl hover:shadow-purple-300/50">
+          <div className="text-purple-800 bg-purple-500/20 px-2 py-4 rounded-lg font-semibold text-center animate-in duration-200 ease-in hover:-translate-y-1 hover:shadow-xl hover:shadow-purple-300/50">
             Study Notes
           </div>
           <Link
             href={{
               pathname: `/learn/chapter/${chapter.id}/quiz`}}
           >
-            <div className="text-purple-800 bg-purple-500/20 px-1 py-1 rounded-lg text-xs font-semibold text-center animate-in duration-200 ease-in hover:-translate-y-1 hover:shadow-xl hover:shadow-purple-300/50">
+            <div className="text-purple-800 bg-purple-500/20 px-2 py-4 rounded-lg font-semibold text-center animate-in duration-200 ease-in hover:-translate-y-1 hover:shadow-xl hover:shadow-purple-300/50">
               Quiz
             </div>
           </Link>
-          <div className="text-purple-800 bg-purple-500/20 px-1 py-1 rounded-lg text-xs font-semibold text-center animate-in duration-200 ease-in hover:-translate-y-1 hover:shadow-xl hover:shadow-purple-300/50">
+          <div className="text-purple-800 bg-purple-500/20 px-2 py-4 rounded-lg font-semibold text-center animate-in duration-200 ease-in hover:-translate-y-1 hover:shadow-xl hover:shadow-purple-300/50">
             Report
           </div>
         </div>
