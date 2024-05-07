@@ -4,8 +4,8 @@ import { gql} from "@apollo/client";
 import { getClient } from "@/lib/client";
 
 const mutation = gql`
-mutation endQuiz($quizHashId: String!) {
-    endQuiz(quizHashId: $quizHashId) {
+mutation endQuiz($quizHashId: String!, $grade: Int!) {
+    endQuiz(quizHashId: $quizHashId, grade: $grade) {
       success
     }
   }
