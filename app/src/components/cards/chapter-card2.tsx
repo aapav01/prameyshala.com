@@ -35,24 +35,16 @@ export default function ChapterCard2({ chapter, size }: Props) {
   return (
     <Card className="">
       {(size !== "sm" &&
-        chapter.image) ? (
+        chapter?.image) ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img
             className="rounded-t-lg p-1"
             width={630}
             height={400}
-            src={`${process.env.NEXT_PUBLIC_MEDIA_CDN}/static/media/${chapter.image}`}
+            src={`${process.env.NEXT_PUBLIC_MEDIA_CDN}/static/media/${chapter?.image}`}
             alt={chapter.name}
           />
-        ) : (
-          <Image
-            width={630}
-            height={400}
-            src={`/api/og/class/${chapter.slug}`}
-            alt={chapter.name}
-            className="rounded-t-lg p-1"
-          />
-        )}
+        ) : null}
       <CardHeader>
         <div className="flex flex-row justify-between items-center -mt-4">
           <div className="flex-wrap w-[48%]">
