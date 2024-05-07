@@ -50,7 +50,6 @@ export function LessonCardLoading() {
 }
 
 export default function LessonCard({ lesson, size }: Props) {
-  console.log(lesson.thumbUrl);
   return (
     <Link href={"/learn/lesson/" + lesson.id}>
       <Card className="animate-in duration-200 ease-in hover:-translate-y-2 hover:shadow-xl hover:shadow-cyan-300/50 ">

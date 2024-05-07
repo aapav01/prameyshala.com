@@ -10,7 +10,7 @@ import authOptions from "@/lib/authOption";
 import { gql } from "@apollo/client";
 import { getClient } from "@/lib/client";
 import VideoPlayer from "@/components/sections/video-player";
-import Quiz from "@/app/(Portal)/learn/(Enrolled)/quiz/quiz";
+// import Quiz from "@/components/quiz";
 // import Assignment from "@/components/sections/assignment";
 const Assignment = dynamic(() => import("@/components/sections/pdf-viewer"), {
   ssr: false,
@@ -91,6 +91,9 @@ async function getData({ params }: Props, session: any) {
       query,
       variables: { chapter: parseInt(params.id), page: parseInt(params.page) },
       context: {
+        fetchOptions: {
+          cache: "no-store",
+        },
         headers: {
           Authorization: `JWT ${session.user?.token}`,
         },
@@ -119,15 +122,17 @@ function LessonType({ lesson }: { lesson: any }) {
     case "VIDEO":
       return <VideoPlayer lesson={lesson} />;
     case "QUIZ":
-      return <Quiz lesson={lesson} />;
+      // return <Quiz lesson={lesson} />;
+      return null;
     case "ASSIGNMENT":
-      return (
-        <Assignment
-          file={lesson.assignment.assigmentFile}
-          type={lesson.lessonType}
-          lessonId={lesson.id}
-        />
-      );
+      // return (
+      //   <Assignment
+      //     file={lesson.assignment.assigmentFile}
+      //     type={lesson.lessonType}
+      //     lessonId={lesson.id}
+      //   />
+      // );
+      return null;
     default:
       return <div>Unknown Lesson Type</div>;
   }
@@ -141,12 +146,16 @@ export default async function LessonDetail({ params }: Props) {
 
   return (
     <React.Fragment>
+      {lesson.LessonType !== "QUIZ" && lesson.LessonType !== "ASSIGNMENT" &&
+      <>
       <header
         id="header"
         className="bg-teal-700 py-6 text-indigo-50 shadow-lg shadow-teal-500/50"
       >
         <div className="container">
-          <h1 className="text-xl sm:text-4xl font-bold capitalize">{lesson.title}</h1>
+          <h1 className="text-xl sm:text-4xl font-bold capitalize">
+            {lesson.title}
+          </h1>
           <span className="py-2">
             {lesson.chapter.name} of {lesson.chapter.subject.name} (
             {lesson.chapter.subject.standard.name})
@@ -161,6 +170,8 @@ export default async function LessonDetail({ params }: Props) {
           </div>
         </div>
       )}
+      </>
+    }
     </React.Fragment>
   );
 }
