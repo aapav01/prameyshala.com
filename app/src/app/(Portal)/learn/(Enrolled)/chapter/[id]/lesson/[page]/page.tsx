@@ -10,7 +10,7 @@ import authOptions from "@/lib/authOption";
 import { gql } from "@apollo/client";
 import { getClient } from "@/lib/client";
 import VideoPlayer from "@/components/sections/video-player";
-// import Quiz from "@/app/(Portal)/learn/(Enrolled)/chapter/[id]/quiz/quiz";
+// import Quiz from "@/components/quiz";
 // import Assignment from "@/components/sections/assignment";
 const Assignment = dynamic(() => import("@/components/sections/pdf-viewer"), {
   ssr: false,
