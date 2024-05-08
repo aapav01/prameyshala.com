@@ -1,5 +1,4 @@
 import React from "react";
-import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getServerSession } from "next-auth/next";
 import authOptions from "@/lib/authOption";
@@ -8,7 +7,7 @@ import authOptions from "@/lib/authOption";
 import { gql } from "@apollo/client";
 import { getClient } from "@/lib/client";
 
-import Quiz from "./quiz";
+import Quiz from "@/components/quiz";
 
 const query = gql`
   query quizByChapter($chapter: ID!) {

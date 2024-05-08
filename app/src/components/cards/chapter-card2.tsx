@@ -35,24 +35,16 @@ export default function ChapterCard2({ chapter, size }: Props) {
   return (
     <Card className="">
       {(size !== "sm" &&
-        chapter.image) ? (
+        chapter?.image) ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img
             className="rounded-t-lg p-1"
             width={630}
             height={400}
-            src={`${process.env.NEXT_PUBLIC_MEDIA_CDN}/static/media/${chapter.image}`}
+            src={`${process.env.NEXT_PUBLIC_MEDIA_CDN}/static/media/${chapter?.image}`}
             alt={chapter.name}
           />
-        ) : (
-          <Image
-            width={630}
-            height={400}
-            src={`/api/og/class/${chapter.slug}`}
-            alt={chapter.name}
-            className="rounded-t-lg p-1"
-          />
-        )}
+        ) : null}
       <CardHeader>
         <div className="flex flex-row justify-between items-center -mt-4">
           <div className="flex-wrap w-[48%]">
@@ -71,22 +63,22 @@ export default function ChapterCard2({ chapter, size }: Props) {
           <Link
             href={"/learn/chapter/" + chapter.id}
           >
-            <div className="text-purple-800 bg-purple-500/20 px-1 py-1 rounded-lg text-xs font-semibold text-center animate-in duration-200 ease-in hover:-translate-y-1 hover:shadow-xl hover:shadow-purple-300/50">
+            <div className="text-purple-800 bg-purple-500/20 px-2 py-4 rounded-lg font-semibold text-center animate-in duration-200 ease-in hover:-translate-y-1 hover:shadow-xl hover:shadow-purple-300/50">
               Video Lesson
             </div>
           </Link>
-          <div className="text-purple-800 bg-purple-500/20 px-1 py-1 rounded-lg text-xs font-semibold text-center animate-in duration-200 ease-in hover:-translate-y-1 hover:shadow-xl hover:shadow-purple-300/50">
+          <div className="text-purple-800 bg-purple-500/20 px-2 py-4 rounded-lg font-semibold text-center animate-in duration-200 ease-in hover:-translate-y-1 hover:shadow-xl hover:shadow-purple-300/50">
             Study Notes
           </div>
           <Link
             href={{
               pathname: `/learn/chapter/${chapter.id}/quiz`}}
           >
-            <div className="text-purple-800 bg-purple-500/20 px-1 py-1 rounded-lg text-xs font-semibold text-center animate-in duration-200 ease-in hover:-translate-y-1 hover:shadow-xl hover:shadow-purple-300/50">
+            <div className="text-purple-800 bg-purple-500/20 px-2 py-4 rounded-lg font-semibold text-center animate-in duration-200 ease-in hover:-translate-y-1 hover:shadow-xl hover:shadow-purple-300/50">
               Quiz
             </div>
           </Link>
-          <div className="text-purple-800 bg-purple-500/20 px-1 py-1 rounded-lg text-xs font-semibold text-center animate-in duration-200 ease-in hover:-translate-y-1 hover:shadow-xl hover:shadow-purple-300/50">
+          <div className="text-purple-800 bg-purple-500/20 px-2 py-4 rounded-lg font-semibold text-center animate-in duration-200 ease-in hover:-translate-y-1 hover:shadow-xl hover:shadow-purple-300/50">
             Report
           </div>
         </div>
