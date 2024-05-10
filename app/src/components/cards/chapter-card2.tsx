@@ -70,6 +70,7 @@ export default function ChapterCard2({ chapter, size }: Props) {
           <div className="text-purple-800 bg-purple-500/20 px-2 py-4 rounded-lg font-semibold text-center animate-in duration-200 ease-in hover:-translate-y-1 hover:shadow-xl hover:shadow-purple-300/50">
             Study Notes
           </div>
+          {(chapter?.lessonSet.some((lesson : any) => lesson?.quiz && Object.keys(lesson?.quiz).length > 0)) &&
           <Link
             href={{
               pathname: `/learn/chapter/${chapter.id}/quiz`}}
@@ -78,6 +79,7 @@ export default function ChapterCard2({ chapter, size }: Props) {
               Quiz
             </div>
           </Link>
+          }
           <div className="text-purple-800 bg-purple-500/20 px-2 py-4 rounded-lg font-semibold text-center animate-in duration-200 ease-in hover:-translate-y-1 hover:shadow-xl hover:shadow-purple-300/50">
             Report
           </div>

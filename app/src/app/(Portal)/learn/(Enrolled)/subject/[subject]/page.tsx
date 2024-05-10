@@ -30,6 +30,9 @@ const query = gql`
         order
         lessonSet {
           id
+          quiz{
+            id
+          }
         }
       }
     }
