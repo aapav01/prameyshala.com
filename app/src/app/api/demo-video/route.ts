@@ -30,6 +30,11 @@ export async function GET(request: NextRequest) {
   try {
     const { data, errors } = await getClient().query({
       query,
+      context: {
+        fetchOptions: {
+          cache: "no-store",
+        },
+      },
     });
     if (errors) {
       console.error(errors);
