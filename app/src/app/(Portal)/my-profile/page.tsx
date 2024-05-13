@@ -64,16 +64,26 @@ export default async function MyProfilePage({ }: Props) {
   const session = await getServerSession(authOptions);
   const { data, errors } = await getPaymentDetails(session);
 
-  const lastLogin = data.me?.lastLogin ? new Date(data.me.lastLogin) : null;
-  const lastLoginFormatted = lastLogin
-    ? lastLogin.toISOString().split("T").join(" ").split(".")[0]
-    : "";
+  const lastLogin = data?.me?.lastLogin ? new Date(data.me.lastLogin) : null;
+  let lastLoginFormatted = "";
+  if (lastLogin) {
+    const year = lastLogin.getFullYear();
+    const month = lastLogin.getMonth() + 1;
+    const day = lastLogin.getDate();
+    const hours = lastLogin.getHours();
+    const minutes = lastLogin.getMinutes();
+    const seconds = lastLogin.getSeconds();
+    const amPM = hours >= 12 ? 'PM' : 'AM';
+    const formattedHours = hours % 12 || 12;
+
+    lastLoginFormatted = `${day < 10 ? '0' : ''}${day}/${month < 10 ? '0' : ''}${month}/${year} ${formattedHours}:${minutes < 10 ? '0' : ''}${minutes}:${seconds < 10 ? '0' : ''}${seconds} ${amPM}`;
+  }
 
   const formatDate = (inputDate: any) => {
     const date = new Date(inputDate);
     const monthNames = [
-      "Jan", "Feb", "Mar", "Apr", "May", "Jun",
-      "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+      "January", "February", "March", "April", "May", "June",
+      "July", "August", "September", "October", "November", "December"
     ];
     const day = date.getDate();
     const monthIndex = date.getMonth();
@@ -93,7 +103,7 @@ export default async function MyProfilePage({ }: Props) {
             <div className="flex items-center gap-6">
               <div className="avatar">
                 <div className="w-24 h-24 sm:w-32 sm:h-32 overflow-hidden rounded-full shadow-lg shadow-blue-gray-500/40">
-                  {data.me?.photo ? (
+                  {data?.me?.photo ? (
                     <img
                       src={`${process.env.NEXT_PUBLIC_MEDIA_CDN}/static/media/${data?.me?.photo}`}
                       width="144px"
@@ -111,9 +121,10 @@ export default async function MyProfilePage({ }: Props) {
                 </div>
               </div>
               <div>
-                <h5 className="block antialiased tracking-normal font-serif text-xl sm:text-2xl font-semibold leading-snug text-blue-gray-900">
+                <h5 className="block antialiased tracking-normal font-serif text-xl sm:text-2xl font-semibold leading-snug">
                   {data?.me?.fullName}
                 </h5>
+                <h2 className="text-gray-400 text-xs sm:text-base"> Last Login : {lastLoginFormatted}</h2>
               </div>
             </div>
           </div>
@@ -126,15 +137,7 @@ export default async function MyProfilePage({ }: Props) {
               </div>
               <div className="p-0">
                 <hr className="my-4 border-gray-200" />
-                <ul className="flex flex-col gap-4 p-0 antialiased font-serif leading-normal text-base sm:text-lg">
-                  <li className="flex items-center gap-4">
-                    <p className="text-blue-gray-900 font-semibold capitalize">
-                      Full Name:
-                    </p>
-                    <p className="font-normal text-gray-400">
-                      {data?.me?.fullName}
-                    </p>
-                  </li>
+                <ul className="flex flex-col gap-4 antialiased font-serif leading-normal text-base sm:text-lg">
                   <li className="flex items-center gap-4">
                     <p className="text-blue-gray-900 font-semibold capitalize">
                       Mobile:
@@ -153,10 +156,10 @@ export default async function MyProfilePage({ }: Props) {
                   </li>
                   <li className="flex items-center gap-4">
                     <p className="text-blue-gray-900 font-semibold capitalize">
-                      Last Login:
+                      Enrolled Class:
                     </p>
                     <p className="font-normal text-gray-400">
-                      {lastLoginFormatted}
+                      {data?.me?.enrollmentSet[0].standard.name}
                     </p>
                   </li>
                   <li className="flex items-center gap-4">
@@ -169,10 +172,10 @@ export default async function MyProfilePage({ }: Props) {
                   </li>
                   <li className="flex items-center gap-4">
                     <p className="text-blue-gray-900 font-semibold capitalize">
-                      is Active:
+                      City:
                     </p>
                     <p className="font-normal text-gray-400">
-                      {data?.me?.isActive ? "Yes" : "No"}
+                      {data?.me?.city}
                     </p>
                   </li>
                   <li className="flex items-center gap-4">
@@ -194,31 +197,39 @@ export default async function MyProfilePage({ }: Props) {
               </div>
               <div className="p-0">
                 <hr className="my-5 border-gray-200" />
-                <div className="relative overflow-x-auto shadow-md sm:rounded-md">
-                  <table className="w-full text-xs sm:text-base text-left rtl:text-right text-gray-500">
-                    <thead className="text-xs sm:text-base text-gray-700 title bg-gray-50">
-                      <tr className="bg-gray-100">
-                        <th align="center" scope="col" className="px-2 sm:px-3 py-2 sm:py-4">Date</th>
-                        <th align="center" scope="col" className="px-2 sm:px-3 py-2 sm:py-4">Class Enrolled</th>
-                        <th align="center" scope="col" className="px-2 sm:px-3 py-2 sm:py-4">Status</th>
-                        <th align="center" scope="col" className="px-2 sm:px-3 py-2 sm:py-4">Amount</th>
-                        <th align="center" scope="col" className="px-2 sm:px-3 py-2 sm:py-4">Action</th>
-                      </tr>
-                    </thead>
-                    <tbody className="text-gray-600">
-                      {/* @ts-ignore */}
-                      {data?.me?.paymentsSet.slice(0).sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)).slice(0, 5).map((payment, index) => (
-                        <tr key={index} className="odd:bg-white even:bg-gray-50 border-b">
-                          <td align="center" className="pl-2 sm:pl-3 py-2 sm:py-3">{formatDate(payment.createdAt)}</td>
-                          <td align="center" scope="col" className="px-2 sm:px-3 py-2 sm:py-3">{payment.standard.name}</td>
-                          <td align="center" scope="col" className="px-2 sm:px-3 py-2 sm:py-3">{payment.status}</td>
-                          <td align="center" scope="col" className="px-2 sm:px-3 py-2 sm:py-3">₹ {payment.amount}</td>
-                          <td align="center" scope="col" className="px-2 sm:px-3 py-2 sm:py-3"><a href="#" className="font-medium text-blue-600 hover:underline">Get Invoice</a></td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
+                <div>
+                  <div className="relative overflow-x-auto shadow-md sm:rounded-md">
+                    {/* @ts-ignore */}
+                    {data?.me?.paymentsSet && data?.me?.paymentsSet.filter(payment => payment.status === "PAID").length > 0 ? (
+                      <table className="w-full text-xs sm:text-base text-left rtl:text-right text-gray-500">
+                        <thead className="text-xs sm:text-base text-gray-700 title bg-gray-50">
+                          <tr className="bg-gray-100">
+                            <th align="center" scope="col" className="px-2 sm:px-3 py-2 sm:py-4">Date</th>
+                            <th align="center" scope="col" className="px-2 sm:px-3 py-2 sm:py-4">Class Enrolled</th>
+                            <th align="center" scope="col" className="px-2 sm:px-3 py-2 sm:py-4">Status</th>
+                            <th align="center" scope="col" className="px-2 sm:px-3 py-2 sm:py-4">Amount</th>
+                            <th align="center" scope="col" className="px-2 sm:px-3 py-2 sm:py-4">Action</th>
+                          </tr>
+                        </thead>
+                        <tbody className="text-gray-600">
+                          {/* @ts-ignore */}
+                          {data?.me?.paymentsSet.filter(payment => payment.status === "PAID").slice(0).sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)).slice(0, 5).map((payment, index) => (
+                            <tr key={index} className="odd:bg-white even:bg-gray-50 border-b">
+                              <td align="center" className="pl-2 sm:pl-3 py-2 sm:py-3">{formatDate(payment.createdAt)}</td>
+                              <td align="center" scope="col" className="px-2 sm:px-3 py-2 sm:py-3">{payment.standard.name}</td>
+                              <td align="center" scope="col" className="px-2 sm:px-3 py-2 sm:py-3">{payment.status}</td>
+                              <td align="center" scope="col" className="px-2 sm:px-3 py-2 sm:py-3">₹ {payment.amount}</td>
+                              <td align="center" scope="col" className="px-2 sm:px-3 py-2 sm:py-3"><a href="#" className="font-medium text-blue-600 hover:underline">Get Invoice</a></td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    ) : (
+                      <p className="text-gray-400 ">Not Enrolled in any classes.</p>
+                    )}
+                  </div>
                 </div>
+
               </div>
             </div>
           </div>
