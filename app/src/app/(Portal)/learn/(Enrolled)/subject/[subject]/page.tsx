@@ -34,6 +34,9 @@ const query = gql`
             id
           }
         }
+        notesSet {
+          notesFile
+        }
       }
     }
   }

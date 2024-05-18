@@ -8,6 +8,7 @@ import { getClient } from "@/lib/client";
 
 import { Card } from '@/components/ui/card';
 import LineChartComponent from '@/components/ui/charts/line-chart';
+import BarChartComponent from '@/components/ui/charts/bar-chart';
 
 
 type Props = {
@@ -101,24 +102,17 @@ export default async function studentgrades({ }: Props) {
 
   // quiz
   const quizGrade = data?.grades?.map(({ grade, quiz, student }: any) => ({ grade, quiz, student })).filter((data: any) => data.quiz);
-  const quizchapterGrade = data?.grades.map(({ grade, quiz }: any) => ({
-    grade,
-    chapter: quiz ? quiz.lessonSet[0].chapter : null
-  })).filter((data: any) => data.chapter);
-  const quizsubjectGrade = data?.grades.map(({ grade, quiz }: any) => ({
-    grade,
-    subject: quiz ? quiz.lessonSet[0].chapter.subject : null
-  })).filter((data: any) => data.subject);
+
 
   // assignment
   const assignmentGrade = data?.grades?.map(({ grade, assignment, student }: any) => ({ grade, assignment, student })).filter((data: any) => data.assignment);
   const assignmentchapterGrade = data?.grades.map(({ grade, assignment }: any) => ({
     grade,
-    chapter: assignment ? assignment.lessonSet[0].chapter : null
+    chapter: assignment ? assignment?.lessonSet[0]?.chapter : null
   })).filter((data: any) => data.chapter);
   const assignmentsubjectGrade = data?.grades.map(({ grade, assignment }: any) => ({
     grade,
-    subject: assignment ? assignment.lessonSet[0].chapter.subject : null
+    subject: assignment ? assignment?.lessonSet[0]?.chapter.subject : null
   })).filter((data: any) => data.subject);
 
 
@@ -152,6 +146,15 @@ export default async function studentgrades({ }: Props) {
     return acc;
   }, []);
 
+  const avgquizgradesbysubject = quizchartDataBySubject.map(({ name, grades }: any) => {
+    const averageGrade = (grades.reduce((acc: any, grade: any) => acc + grade, 0) / grades.length).toFixed(2);
+    return {
+      name,
+      grade: averageGrade,
+    };
+  });
+
+
   const quizchartDataByChapter = data.grades.filter((item: any) => item.quiz).reduce((acc: any, item: any) => {
     const existingQuiz = acc.find((q: any) => {
       return q.name === item.quiz.lessonSet[0].chapter.name
@@ -167,18 +170,11 @@ export default async function studentgrades({ }: Props) {
     return acc;
   }, []);
 
-  const quizFormattedChartData = quizchartDataByChapter.map((data: any) => {
-    return ({
-      ...data,
-      grades: (data.grades.reduce((sum: number, grade: number) => sum + grade, 0) / data.grades.length).toFixed(2),
-    })
-  })
-
-
-  const assignchartData = data.grades.filter((item: any) => item.assignment).map((item: any) => ({
-    name: item.assignment.title,
-    grade: parseFloat(item.grade)
+  const highestQuizGradesbyChapter = quizchartDataByChapter.map(({ name, grades }: any) => ({
+    name,
+    grade: Math.max(...grades)
   }));
+
 
   return (
     <main className="min-h-screen">
@@ -259,7 +255,7 @@ export default async function studentgrades({ }: Props) {
               </div>
             </div>
             <div className="flex flex-col h-full">
-              <Card className='p-6 text-xl flex-1'>
+              <Card className='p-6 pl-3 text-xl grid grid-cols-1 sm:grid-cols-2 gap-2'>
                 {quizGrade.reduce((accumulator: any, gradedata: any) => {
                   const existingIndex = accumulator.findIndex((item: any) => item.quiz.name === gradedata.quiz.name);
                   if (existingIndex !== -1) {
@@ -274,7 +270,7 @@ export default async function studentgrades({ }: Props) {
                 }, []).map((gradedata: any, index: any) => (
                   <div key={`quiz_${index}`} className="mb-8">
                     <p className='font-serif text-xl sm:text-2xl font-semibold leading-relaxed text-blue-500 mx-2'>
-                      {gradedata.quiz.name}
+                      Attempt wise {gradedata.quiz.name} grades
                     </p>
                     <hr className="border-blue-gray-50 " />
                     <ul className='mx-2 pt-4 text-lg sm:text-xl'>
@@ -293,16 +289,16 @@ export default async function studentgrades({ }: Props) {
                           let chartFormattedData: {
                             name: string;
                             grade: number;
-                            attempt: number;
+                            attempt: String;
                           }[] = [];
                           for (let i = 0; i < data.grades.length; i++) {
                             chartFormattedData.push({
                               "name": data.name,
                               'grade': data.grades[i],
-                              'attempt': i + 1
+                              'attempt': `Attempt ${i + 1}`
                             })
                           }
-                          return <LineChartComponent chartData={chartFormattedData} key={dataIndex} />;
+                          return <LineChartComponent chartData={chartFormattedData} key={dataIndex} XAxisDatakey="attempt" YAxisDatakey="grade" />;
                         }
                         return null;
                       })}
@@ -310,6 +306,18 @@ export default async function studentgrades({ }: Props) {
                   </div>
                 ))}
               </Card>
+            </div>
+            <div className="relative flex flex-col bg-clip-border bg-transparent text-gray-700 shadow-md p-6 border border-slate-200 grow rounded-xl">
+              <h2 className="text-2xl font-semibold text-gray-800 mb-4">Chapter Wise Quiz Grades</h2>
+              <div className="bg-white p-4 rounded shadow-md">
+                <LineChartComponent chartData={highestQuizGradesbyChapter} XAxisDatakey="name" YAxisDatakey="grade" />
+              </div>
+            </div>
+          </div>
+          <div className="relative flex flex-col bg-clip-border bg-transparent text-gray-700 shadow-md p-6 border border-slate-200 grow rounded-xl">
+            <h2 className="text-2xl font-semibold text-gray-800 mb-4">Subject Wise Quiz Grades(Average)</h2>
+            <div className="bg-white p-4 rounded shadow-md">
+              <BarChartComponent chartData={avgquizgradesbysubject} XAxisDatakey="name" YAxisDatakey="grade" />
             </div>
           </div>
         </div>

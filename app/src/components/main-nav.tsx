@@ -11,6 +11,7 @@ import {
   ExitIcon,
   VideoIcon,
   PersonIcon,
+  FileTextIcon
 } from "@radix-ui/react-icons";
 import {
   DropdownMenu,
@@ -139,6 +140,11 @@ function MainNav() {
                   <DropdownMenuItem>
                     <PersonIcon className="mr-1" />
                     <Link href="/my-profile">My Profile</Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem>
+                    <FileTextIcon className="mr-1" />
+                    <Link href="/student-report">My Report</Link>
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem onClick={() => signOut()}>

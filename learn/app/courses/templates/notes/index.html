@@ -1,0 +1,132 @@
+{% extends "layouts/dashboard.html" %}
+{% load static %}
+{% block title %}
+  {{ title }} | Pramey Shala
+{% endblock title %}
+{% block content %}
+  <div class="mt-12 mb-8 flex flex-col gap-12">
+    <div class="flex justify-between px-6">
+      {% if perms.courses.add_notes %}
+        <button onclick="create_notes.showModal()"
+                class="btn bg-gradient-to-br from-purple-600 to-pink-400 text-white px-12 border-0 shadow-md shadow-purple-500/50">
+          <i class="far fa-plus"></i>Add Notes
+        </button>
+      {% endif %}
+      <form method="get" class="p-2 rounded-xl">
+        <input class="input input-bordered"
+               type="text"
+               name="search"
+               placeholder="Search..."
+               value="{{ request.GET.search }}">
+        <button class="btn btn-square bg-gradient-to-br from-purple-600 to-indigo-400 text-white px-6 border-0 shadow-md shadow-indigo-500/50"
+                type="submit">
+          <i class="fa-regular fa-magnifying-glass"></i>
+        </button>
+        <a class="btn btn-square bg-gradient-to-br from-deep-orange-600 to-orange-800 text-white px-4 border-0 shadow-md shadow-deep-orange-500/50"
+           href="{% url 'courses:notes' %}"><i class="fa-regular fa-x"></i></a>
+      </form>
+    </div>
+    <div class="relative flex w-full flex-col rounded-xl bg-base-100 bg-clip-border text-base-content shadow-md">
+      <div class="relative mx-4 -mt-6 mb-4 grid px-6 py-8 overflow-hidden rounded-xl bg-gradient-to-tr from-indigo-600 to-indigo-400 bg-clip-border text-white shadow-lg shadow-indigo-500/40">
+        <h1 class="block font-sans leading-snug tracking-normal text-white antialiased text-lg font-semibold">{{ title }}</h1>
+      </div>
+      <div class="flex flex-col gap-4 p-6 overflow-x-auto">
+        <table class="table table-auto">
+          <thead class="uppercase text-sm">
+            <tr>
+              <th class="px-4 py-3">Title</th>
+              <th class="px-4 py-3">Chapter</th>
+              <th class="px-4 py-3">File Name</th>
+              <th class="px-4 py-3">Actions</th>
+            </tr>
+          </thead>
+          <tfoot class="border-t border-blue-gray-50 py-3 px-5 text-left font-bold uppercase text-blue-gray-400 text-sm">
+            <tr>
+              <th class="px-4 py-3">Title</th>
+              <th class="px-4 py-3">Chapter</th>
+              <th class="px-4 py-3">File</th>
+              <th class="px-4 py-3">Actions</th>
+            </tr>
+          </tfoot>
+          <tbody>
+            {% for notes in notes_list %}
+              <tr class="border-b border-blue-gray-50">
+                <td class="px-4 py-3">{{ notes.title }}</td>
+                <td class="px-4 py-3">{{ notes.chapter.name }}</td>
+                <td class="px-4 py-3">{{ notes.notes_file|cut:"uploads/notes/" }}</td>
+                <td class="px-4 py-3">
+                  {% if notes.notes_file %}
+                     <a href="{% url 'courses:notes-detail' pk=notes.pk %}"
+                     class="btn btn-info btn-sm">
+                    <i class="fad fa-eye"></i>
+                    Show
+                  </a>
+                  {% endif %}
+                  {% if perms.courses.change_notes %}
+                    <button onclick="update_notes_{{ notes.pk }}.showModal()"
+                            class="btn btn-sm btn-success btn-square">
+                      <i class="fad fa-edit"></i>
+                    </button>
+                  {% endif %}
+                  {% if perms.courses.delete_notes %}
+                  <a href="{% url 'courses:notes-delete' pk=notes.pk %}"
+                     onclick="if(confirm('Are you sure you want to delete {{ notes.title }} from database?')) return true; else return false;"
+                     class="btn btn-sm btn-error btn-square"><i class="far fa-trash-alt"></i>
+                </a>
+              {% endif %}
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+</div>
+{% if perms.courses.add_notes %}
+  <dialog id="create_notes"
+          class="modal modal-bottom sm:modal-middle transition-all duration-500 ease-in-out">
+    <form method="post"
+          enctype="multipart/form-data"
+          class="modal-box sm:max-w-5xl">
+      {% csrf_token %}
+      <h2 class="font-mono font-semibold text-lg">Add New Notes</h2>
+      <div class="relative mb-4">
+        <div class="form-control w-full djanog-custom-forms grid grid-cols-1 md:grid-cols-2 gap-4">{{ form.as_div }}</div>
+      </div>
+      <div class="modal-action justify-between">
+        <p class="text-xs mt-auto">Press esc to close the window or outside the dialog box.</p>
+        <button type="submit" class="btn btn-success">Add</button>
+      </div>
+    </form>
+    <form method="dialog" class="modal-backdrop backdrop-blur-md">
+      <button>close</button>
+    </form>
+  </dialog>
+{% endif %}
+{% if perms.courses.change_notes %}
+  {% for notes in notes_list %}
+    <dialog id="update_notes_{{ notes.pk }}"
+            class="modal modal-bottom sm:modal-middle transition-all duration-500 ease-in-out">
+      <form method="post"
+            enctype="multipart/form-data"
+            action="{% url 'courses:notes-update' pk=notes.pk %}"
+            class="modal-box sm:max-w-5xl">
+        {% csrf_token %}
+        <h2 class="font-mono font-semibold text-lg">Update - {{ notes.title }}</h2>
+        <div class="relative mb-4">
+          <div class="form-control w-full djanog-custom-forms grid grid-cols-1 md:grid-cols-2 gap-4">
+            {{ notes.form.as_div }}
+          </div>
+        </div>
+        <div class="modal-action justify-between">
+          <p class="text-xs mt-auto">Press esc to close the window or outside the dialog box.</p>
+          <button type="submit" class="btn btn-success shadow">Update</button>
+        </div>
+      </form>
+      <form method="dialog" class="modal-backdrop backdrop-blur-md">
+        <button>close</button>
+      </form>
+    </dialog>
+  {% endfor %}
+{% endif %}
+{% endblock content %}

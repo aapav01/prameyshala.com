@@ -6,8 +6,9 @@ from datetime import datetime
 from app.accounts.models import User
 from django.utils.timezone import now
 from datetime import timedelta
-from .models import Lesson, Subject, Classes, Chapter, Category, Quiz, Question, Choice, Assignment, AssignmentSubmission, Lesson_Progress, QuizHash, QuizHashQuestionAnswer, Grades, Enrollment
+from .models import Lesson, Subject, Classes, Chapter, Category, Quiz, Question, Choice, Assignment, AssignmentSubmission, Lesson_Progress, QuizHash, QuizHashQuestionAnswer, Grades, Enrollment, Notes
 import random
+
 
 class ChapterType(DjangoObjectType):
     class Meta:
@@ -86,6 +87,13 @@ class GradesType(DjangoObjectType):
         fields = "__all__"
 
 
+class NotesType(DjangoObjectType):
+
+    class Meta:
+        model = Notes
+        fields = "__all__"
+
+
 class PaginatedLessons(graphene.ObjectType):
     count = graphene.Int()
     num_pages = graphene.Int()
@@ -126,7 +134,8 @@ class Query(graphene.ObjectType):
 
     # quiz
     quiz = graphene.List(QuizType, id=graphene.ID(required=False))
-    quiz_by_chapter = graphene.Field(QuizType, chapter=graphene.ID(required=True))
+    quiz_by_chapter = graphene.Field(
+        QuizType, chapter=graphene.ID(required=True))
 
     # quiz hash
     quiz_hash = graphene.List(
@@ -137,8 +146,8 @@ class Query(graphene.ObjectType):
 
     quiz_hash_question_answer_for_chosen_answer = graphene.Field(
         QuizHashQuestionAnswerType,
-        quiz_hash = graphene.String(required=True),
-        question_id = graphene.ID(required=True)
+        quiz_hash=graphene.String(required=True),
+        question_id=graphene.ID(required=True)
     )
 
     # grades
@@ -235,7 +244,8 @@ class Query(graphene.ObjectType):
         if not user.is_authenticated:
             raise Exception("Authentication credentials were not provided")
         chapter_instance = Chapter.objects.get(pk=chapter)
-        lesson_instance = Lesson.objects.get(chapter=chapter_instance, lesson_type = "QUIZ")
+        lesson_instance = Lesson.objects.get(
+            chapter=chapter_instance, lesson_type="QUIZ")
         return Quiz.objects.get(lesson=lesson_instance)
 
     # quiz hash
@@ -258,7 +268,8 @@ class Query(graphene.ObjectType):
             raise Exception("Authentication credentials were not provided")
         quiz_hash_instance = QuizHash.objects.get(pk=quiz_hash)
         question_instance = Question.objects.get(pk=question_id)
-        quiz_hash_question_answer_instance =  QuizHashQuestionAnswer.objects.filter(quiz_hash=quiz_hash_instance, question = question_instance)
+        quiz_hash_question_answer_instance = QuizHashQuestionAnswer.objects.filter(
+            quiz_hash=quiz_hash_instance, question=question_instance)
         if quiz_hash_question_answer_instance:
             if quiz_hash_question_answer_instance:
                 return quiz_hash_question_answer_instance[0]
@@ -389,11 +400,11 @@ class StartOrResumeQuiz(graphene.Mutation):
 
 class SubmitAnswerToQuiz(graphene.Mutation):
     class Arguments:
-        quiz_hash_id = graphene.String(required = True)
-        question_id = graphene.ID(required = True)
-        chosen_answer_id = graphene.ID(required = True)
-        current_grade = graphene.Int(required = True)
-        last_attempted_question_count = graphene.Int(required = True)
+        quiz_hash_id = graphene.String(required=True)
+        question_id = graphene.ID(required=True)
+        chosen_answer_id = graphene.ID(required=True)
+        current_grade = graphene.Int(required=True)
+        last_attempted_question_count = graphene.Int(required=True)
 
     success = graphene.Boolean()
 
@@ -420,7 +431,7 @@ class SubmitAnswerToQuiz(graphene.Mutation):
 class EndQuiz(graphene.Mutation):
     class Arguments:
         quiz_hash_id = graphene.String(required=True)
-        grade = graphene.Int(required = True)
+        grade = graphene.Int(required=True)
 
     success = graphene.Boolean()
 
@@ -435,12 +446,12 @@ class EndQuiz(graphene.Mutation):
         enrolled_class_id = enrollment.standard.id
         quiz = Quiz.objects.get(pk=quiz_hash.quiz.id)
         Grades.objects.create(
-                student_id=user.id,
-                quiz=quiz,
-                enrolled_class_id=enrolled_class_id,
-                enrollment_id=enrollment_id,
-                grade=grade
-            )
+            student_id=user.id,
+            quiz=quiz,
+            enrolled_class_id=enrolled_class_id,
+            enrollment_id=enrollment_id,
+            grade=grade
+        )
         quiz_hash.save()
         return EndQuiz(success=True)
 

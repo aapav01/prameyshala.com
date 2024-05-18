@@ -1,18 +1,19 @@
 'use client'
 import React from 'react';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Rectangle } from 'recharts';
 
 type Props = {
-  chartData: { name: string; grade: number; attempt: String; }[];
+  chartData: { name: string; grade: number; }[];
   XAxisDatakey: any;
   YAxisDatakey: any;
 }
 
-export default function LineChartComponent({ chartData, XAxisDatakey, YAxisDatakey }: Props) {
+export default function BarChartComponent({ chartData, XAxisDatakey, YAxisDatakey }: Props) {
+  const alternatingColors = chartData.map((_, index) => index % 2 === 0 ? '#8884d8' : '#82ca9d');
 
   return (
     <ResponsiveContainer width="100%" height={450}>
-      <LineChart
+      <BarChart
         width={500}
         height={300}
         data={chartData}
@@ -28,8 +29,8 @@ export default function LineChartComponent({ chartData, XAxisDatakey, YAxisDatak
         <YAxis dataKey={YAxisDatakey} domain={[0, 10]} tickCount={6} />
         <Tooltip />
         <Legend />
-        <Line type="monotone" dataKey="grade" stroke="#8884d8" activeDot={{ r: 8 }} />
-      </LineChart>
+        <Bar dataKey="grade" fill="#8884d8" />
+      </BarChart>
     </ResponsiveContainer>
   );
 }

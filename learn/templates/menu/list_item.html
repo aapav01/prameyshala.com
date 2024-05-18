@@ -58,6 +58,13 @@
        data-ripple-light="true"><i class="fa-regular fa-chalkboard"></i>Lessons</a>
   </li>
 {% endif %}
+{% if perms.courses.view_notes %}
+  <li>
+    <a href="{% url 'courses:notes' %}"
+       {% if request.resolver_match.url_name == 'notes' %}class="active"{% endif %}
+       data-ripple-light="true"><i class="fa-regular fa-file"></i>Notes</a>
+  </li>
+{% endif %}
 {% if perms.courses.view_quizzes %}
   <li>
     <a href="{% url 'courses:quizzes' %}"

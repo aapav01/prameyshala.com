@@ -34,21 +34,20 @@ export function ClassCardSkeleton() {
 export default function ChapterCard2({ chapter, size }: Props) {
   return (
     <Card className="">
-      {(size !== "sm" &&
-        chapter?.image) ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
-            className="rounded-t-lg p-1"
-            width={630}
-            height={400}
-            src={`${process.env.NEXT_PUBLIC_MEDIA_CDN}/static/media/${chapter?.image}`}
-            alt={chapter.name}
-          />
-        ) : null}
+      {size !== "sm" && chapter?.image ? (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          className="rounded-t-lg p-1"
+          width={630}
+          height={400}
+          src={`${process.env.NEXT_PUBLIC_MEDIA_CDN}/static/media/${chapter?.image}`}
+          alt={chapter.name}
+        />
+      ) : null}
       <CardHeader>
         <div className="flex flex-row justify-between items-center -mt-4">
           <div className="flex-wrap w-[48%]">
-          <CardTitle className="text-lg shrink">{chapter.name}</CardTitle>
+            <CardTitle className="text-lg shrink">{chapter.name}</CardTitle>
           </div>
           <div className="self-start">
             <span className="inline-flex gap-1 flex-nowrap">
@@ -60,26 +59,36 @@ export default function ChapterCard2({ chapter, size }: Props) {
       </CardHeader>
       <CardContent>
         <div className="grid grid-cols-2 gap-2 gap-x-3 -mt-4 -mx-1">
-          <Link
-            href={"/learn/chapter/" + chapter.id}
-          >
+          <Link href={"/learn/chapter/" + chapter.id}>
             <div className="text-purple-800 bg-purple-500/20 px-2 py-4 rounded-lg font-semibold text-center animate-in duration-200 ease-in hover:-translate-y-1 hover:shadow-xl hover:shadow-purple-300/50">
               Video Lesson
             </div>
           </Link>
-          <div className="text-purple-800 bg-purple-500/20 px-2 py-4 rounded-lg font-semibold text-center animate-in duration-200 ease-in hover:-translate-y-1 hover:shadow-xl hover:shadow-purple-300/50">
-            Study Notes
-          </div>
-          {(chapter?.lessonSet.some((lesson : any) => lesson?.quiz && Object.keys(lesson?.quiz).length > 0)) &&
-          <Link
-            href={{
-              pathname: `/learn/chapter/${chapter.id}/quiz`}}
-          >
-            <div className="text-purple-800 bg-purple-500/20 px-2 py-4 rounded-lg font-semibold text-center animate-in duration-200 ease-in hover:-translate-y-1 hover:shadow-xl hover:shadow-purple-300/50">
-              Quiz
-            </div>
-          </Link>
-          }
+          {chapter.notesSet.length > 0 && (
+            <Link
+              href={`${process.env.NEXT_PUBLIC_MEDIA_CDN}/static/media/${chapter.notesSet[0].notesFile}`}
+              target="_blank"
+              download={true}
+            >
+              <div className="text-purple-800 bg-purple-500/20 px-2 py-4 rounded-lg font-semibold text-center animate-in duration-200 ease-in hover:-translate-y-1 hover:shadow-xl hover:shadow-purple-300/50">
+                Study Notes
+              </div>
+            </Link>
+          )}
+          {chapter?.lessonSet.some(
+            (lesson: any) =>
+              lesson?.quiz && Object.keys(lesson?.quiz).length > 0
+          ) && (
+            <Link
+              href={{
+                pathname: `/learn/chapter/${chapter.id}/quiz`,
+              }}
+            >
+              <div className="text-purple-800 bg-purple-500/20 px-2 py-4 rounded-lg font-semibold text-center animate-in duration-200 ease-in hover:-translate-y-1 hover:shadow-xl hover:shadow-purple-300/50">
+                Quiz
+              </div>
+            </Link>
+          )}
           <div className="text-purple-800 bg-purple-500/20 px-2 py-4 rounded-lg font-semibold text-center animate-in duration-200 ease-in hover:-translate-y-1 hover:shadow-xl hover:shadow-purple-300/50">
             Report
           </div>
