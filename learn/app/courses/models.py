@@ -160,15 +160,15 @@ class Lesson(models.Model):
         NONE = None, _('---------')
         VIDEO = 'video', _('Video')
         DOCUMENT = 'document', _('Document')
-        IMAGE = 'image', _('Image')
-        TEXT = 'text', _('Text')
+        # IMAGE = 'image', _('Image')
+        # TEXT = 'text', _('Text')
         QUIZ = 'quiz', _('Quiz')
         ASSIGNMENT = 'assignment', _('Assignment')
 
     class SupportPlatform(models.TextChoices):
         FILE = 'file', _('File')
-        YOUTUBE = 'youtube', _('Youtube')
-        VIMEO = 'vimeo', _('Vimeo')
+        # YOUTUBE = 'youtube', _('Youtube')
+        # VIMEO = 'vimeo', _('Vimeo')
 
     title = models.CharField(max_length=255)
     description = models.TextField(blank=True, null=True)
