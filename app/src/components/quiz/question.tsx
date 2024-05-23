@@ -118,7 +118,7 @@ export default function Question({
 
     if (optionChosen) {
       if (
-        optionChosen ==
+        optionChosen?.id ==
         questions?.currentQuestion?.question?.choiceSet.find(
           (choice: any) => choice.isCorrect
         )?.id
@@ -131,14 +131,14 @@ export default function Question({
 
       await submitAnswer(curGrade);
     }
-    curGrade = Number(
-      ((curGrade / questions.questionSet.length) * 10).toFixed(2)
+    const grade = Number(
+      ((curGrade / questions.questionSet.length) * 10).toFixed(1)
     ); // TO make grade between 0-10
     await fetch(`/api/quiz/${quiz?.id}/end-quiz`, {
       method: "POST",
       body: JSON.stringify({
         quizHashId: quizHash,
-        grade: curGrade,
+        grade: grade,
         /*@ts-ignore*/
         token: token,
       }),
