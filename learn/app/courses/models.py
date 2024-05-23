@@ -289,7 +289,7 @@ class Grades(models.Model):
         Assignment, null=True, blank=True, on_delete=models.CASCADE)
     quiz = models.ForeignKey(
         Quiz, null=True, blank=True, on_delete=models.CASCADE)
-    grade = models.DecimalField(max_digits=2,
+    grade = models.DecimalField(max_digits=3,
                                 decimal_places=1,
                                 validators=[MinValueValidator(0.0), MaxValueValidator(10.0)])
     enrollment = models.ForeignKey(
