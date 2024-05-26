@@ -246,19 +246,23 @@ export default async function studentgrades({ searchParams }: Props) {
               <div className="flex items-center gap-6 mb-4">
                 <div className="avatar">
                   <div className="w-24 h-24 sm:w-32 sm:h-32 overflow-hidden rounded-full shadow-lg shadow-gray-500/40">
-                    {studentData?.me ? (
+                    {studentData?.me?.photo ? (
+                      // eslint-disable-next-line @next/next/no-img-element
                       <img
                         src={`${process.env.NEXT_PUBLIC_MEDIA_CDN}/static/media/${studentData?.me?.photo}`}
                         width="144px"
                         height="144px"
                         alt={studentData?.me?.fullName}
+                        loading='lazy'
                       />
                     ) : (
+                      // eslint-disable-next-line @next/next/no-img-element
                       <img
                         src="https://placehold.co/600x600"
                         width="144px"
                         height="144px"
                         alt={studentData?.me?.fullName}
+                        loading='lazy'
                       />
                     )}
                   </div>
