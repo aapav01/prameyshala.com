@@ -3,6 +3,7 @@ import { getClient } from "@/lib/client";
 import { getServerSession } from "next-auth";
 import authOptions from "@/lib/authOption";
 import React from "react";
+import InvoiceLink from "@/components/invoice-link";
 
 type Props = {};
 
@@ -94,10 +95,19 @@ export default async function MyProfilePage({ }: Props) {
 
   return (
     <div className="container py-2 px-0">
-      <div className="relative mt-auto h-72 sm:h-96 w-full overflow-hidden rounded-xl bg-cover bg-center max-sm:hidden ">
-        <div className="absolute inset-0 h-full w-full bg-red-500/50 max-sm:hidden"></div>
+      <div className="relative mt-auto h-72 sm:h-96 w-full overflow-hidden rounded-xl bg-cover bg-center max-sm:hidden">
+        <div className="absolute inset-0 w-full bg-red-500/50 max-sm:hidden">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/img/profile/cover.png"
+            height={720}
+            width={1440}
+            alt="cover"
+            className="-mt-24"
+          />
+        </div>
       </div>
-      <div className="relative flex flex-col bg-clip-border rounded-xl bg-white text-gray-700 shadow-lg mx-3 sm:-mt-16 mb-6 lg:mx-4">
+      <div className="relative flex flex-col bg-clip-border rounded-xl bg-white text-gray-700 shadow-lg mx-3 sm:-mt-8 mb-6 lg:mx-4">
         <div className="p-4">
           <div className="flex flex-col sm:flex-row m-2 mb-6 sm:m-6 items-start justify-between gap-6">
             <div className="flex items-center gap-6">
@@ -215,10 +225,10 @@ export default async function MyProfilePage({ }: Props) {
                           {/* @ts-ignore */}
                           {data?.me?.paymentsSet.filter(payment => payment.status === "PAID").slice(0).sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)).slice(0, 5).map((payment, index) => (
                             <tr key={index} className="odd:bg-white even:bg-gray-50 border-b">
-                              <td align="center" className="pl-2 sm:pl-3 py-2 sm:py-3">{formatDate(payment.createdAt)}</td>
-                              <td align="center" scope="col" className="px-2 sm:px-3 py-2 sm:py-3">{payment.standard.name}</td>
-                              <td align="center" scope="col" className="px-2 sm:px-3 py-2 sm:py-3">{payment.status}</td>
-                              <td align="center" scope="col" className="px-2 sm:px-3 py-2 sm:py-3">₹ {payment.amount}</td>
+                              <td align="center" className="pl-2 sm:pl-3 py-2 sm:py-3">{formatDate(payment?.createdAt)}</td>
+                              <td align="center" scope="col" className="px-2 sm:px-3 py-2 sm:py-3">{payment?.standard?.name}</td>
+                              <td align="center" scope="col" className="px-2 sm:px-3 py-2 sm:py-3">{payment?.status}</td>
+                              <td align="center" scope="col" className="px-2 sm:px-3 py-2 sm:py-3">₹ {payment?.amount}</td>
                               <td align="center" scope="col" className="px-2 sm:px-3 py-2 sm:py-3"><a href="#" className="font-medium text-blue-600 hover:underline">Get Invoice</a></td>
                             </tr>
                           ))}
