@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { gql } from "@apollo/client";
 import { getClient } from "@/lib/client";
+import { validate } from "graphql";
 
 const query = gql`
   query demo_videos {
@@ -32,7 +33,7 @@ export async function GET(request: NextRequest) {
       query,
       context: {
         fetchOptions: {
-          cache: "no-store",
+          validate: 5,
         },
       },
     });
