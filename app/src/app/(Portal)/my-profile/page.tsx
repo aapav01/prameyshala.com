@@ -3,7 +3,6 @@ import { getClient } from "@/lib/client";
 import { getServerSession } from "next-auth";
 import authOptions from "@/lib/authOption";
 import React from "react";
-import InvoiceLink from "@/components/invoice-link";
 
 type Props = {};
 
@@ -114,6 +113,7 @@ export default async function MyProfilePage({ }: Props) {
               <div className="avatar">
                 <div className="w-24 h-24 sm:w-32 sm:h-32 overflow-hidden rounded-full shadow-lg shadow-blue-gray-500/40">
                   {data?.me?.photo ? (
+                    // eslint-disable-next-line @next/next/no-img-element
                     <img
                       src={`${process.env.NEXT_PUBLIC_MEDIA_CDN}/static/media/${data?.me?.photo}`}
                       width="144px"
@@ -121,6 +121,7 @@ export default async function MyProfilePage({ }: Props) {
                       alt={data?.me?.fullName}
                     />
                   ) : (
+                    // eslint-disable-next-line @next/next/no-img-element
                     <img
                       src="https://placehold.co/600x600"
                       width="144px"
