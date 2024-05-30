@@ -26,13 +26,13 @@
   {{ form.lesson_type }}
   <label class="text-error">{{ form.lesson_type.errors }}</label>
 </div>
-<div id="quiz_div_{{ form.prefix }}" class="form-control hidden">
+{% comment %} <div id="quiz_div_{{ form.prefix }}" class="form-control hidden">
   <label for="{{ form.quiz.id_for_label }}">
     <span class="label-text">{{ form.quiz.label }}</span>
   </label>
   {{ form.quiz }}
   <label class="text-error">{{ form.quiz.errors }}</label>
-</div>
+</div> {% endcomment %}
 <div id="assignment_div_{{ form.prefix }}" class="form-control hidden">
   <label for="{{ form.assignment.id_for_label }}">
     <span class="label-text">{{ form.assignment.label }}</span>
@@ -92,24 +92,27 @@
       if (lessonType === "video") {
         $("#platform_div_{{ form.prefix }}").removeClass("hidden");
         $("#preview_div_{{ form.prefix }}").removeClass("hidden");
-        $("#quiz_div_{{ form.prefix }}").addClass("hidden");
+        // $("#quiz_div_{{ form.prefix }}").addClass("hidden");
         $("#assignment_div_{{ form.prefix }}").addClass("hidden");
-      }else if (lessonType === "quiz") {
+      }
+      /* else if (lessonType === "quiz") 
+      {
         $("#quiz_div_{{ form.prefix }}").removeClass("hidden");
         $("#assignment_div_{{ form.prefix }}").addClass("hidden");
         $("#platform_div_{{ form.prefix }}").addClass("hidden");
         $("{{ form.platform.id_for_label }}").val("");
         $("#preview_div_{{ form.prefix }}").addClass("hidden");
       }
+      */
       else if (lessonType === "assignment") {
         $("#assignment_div_{{ form.prefix }}").removeClass("hidden");
-        $("#quiz_div_{{ form.prefix }}").addClass("hidden");
+        //$("#quiz_div_{{ form.prefix }}").addClass("hidden");
         $("#platform_div_{{ form.prefix }}").addClass("hidden");
         $("{{ form.platform.id_for_label }}").val("");
         $("#preview_div_{{ form.prefix }}").addClass("hidden");
       } 
       else {
-        $("#quiz_div_{{ form.prefix }}").addClass("hidden");
+        //$("#quiz_div_{{ form.prefix }}").addClass("hidden");
         $("#assignment_div_{{ form.prefix }}").addClass("hidden");
         $("#platform_div_{{ form.prefix }}").addClass("hidden");
         $("{{ form.platform.id_for_label }}").val("");

@@ -139,6 +139,7 @@ class Quiz(models.Model):
     updated_at = models.DateTimeField(auto_now=True, blank=True, null=True)
     publish_at = models.DateTimeField(auto_now_add=True)
     time_required = models.IntegerField(blank=True, null=True)
+    chapter = models.ForeignKey(Chapter, on_delete=models.CASCADE, default=None, blank=False, null=False, related_name='quizzes')
 
     def __str__(self):
         return self.name
@@ -162,7 +163,7 @@ class Lesson(models.Model):
         DOCUMENT = 'document', _('Document')
         # IMAGE = 'image', _('Image')
         # TEXT = 'text', _('Text')
-        QUIZ = 'quiz', _('Quiz')
+        # QUIZ = 'quiz', _('Quiz')
         ASSIGNMENT = 'assignment', _('Assignment')
 
     class SupportPlatform(models.TextChoices):
@@ -195,8 +196,8 @@ class Lesson(models.Model):
     created_at = models.DateTimeField(
         auto_now=False, auto_now_add=True, blank=True, null=True)
     updated_at = models.DateTimeField(auto_now=True, blank=True, null=True)
-    quiz = models.ForeignKey(
-        Quiz, on_delete=models.CASCADE, blank=True, null=True)
+    # quiz = models.ForeignKey(
+    #     Quiz, on_delete=models.CASCADE, blank=True, null=True)
     assignment = models.ForeignKey(
         Assignment, on_delete=models.CASCADE, blank=True, null=True)
     preview = models.BooleanField(default=False, null=False, blank=False)
