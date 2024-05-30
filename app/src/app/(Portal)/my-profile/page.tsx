@@ -3,7 +3,7 @@ import { getClient } from "@/lib/client";
 import { getServerSession } from "next-auth";
 import authOptions from "@/lib/authOption";
 import React from "react";
-import InvoiceLink from "@/components/invoice-link";
+import GenerateInvoicePDF from "@/components/invoice-link";
 
 type Props = {};
 
@@ -229,7 +229,9 @@ export default async function MyProfilePage({ }: Props) {
                               <td align="center" scope="col" className="px-2 sm:px-3 py-2 sm:py-3">{payment?.standard?.name}</td>
                               <td align="center" scope="col" className="px-2 sm:px-3 py-2 sm:py-3">{payment?.status}</td>
                               <td align="center" scope="col" className="px-2 sm:px-3 py-2 sm:py-3">₹ {payment?.amount}</td>
-                              <td align="center" scope="col" className="px-2 sm:px-3 py-2 sm:py-3"><a href="#" className="font-medium text-blue-600 hover:underline">Get Invoice</a></td>
+                              <td align="center" scope="col" className="px-2 sm:px-3 py-2 sm:py-3">
+                                <GenerateInvoicePDF paymentData={[payment]} />
+                              </td>
                             </tr>
                           ))}
                         </tbody>
