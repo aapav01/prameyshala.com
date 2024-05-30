@@ -160,15 +160,15 @@ class Lesson(models.Model):
         NONE = None, _('---------')
         VIDEO = 'video', _('Video')
         DOCUMENT = 'document', _('Document')
-        IMAGE = 'image', _('Image')
-        TEXT = 'text', _('Text')
+        # IMAGE = 'image', _('Image')
+        # TEXT = 'text', _('Text')
         QUIZ = 'quiz', _('Quiz')
         ASSIGNMENT = 'assignment', _('Assignment')
 
     class SupportPlatform(models.TextChoices):
         FILE = 'file', _('File')
-        YOUTUBE = 'youtube', _('Youtube')
-        VIMEO = 'vimeo', _('Vimeo')
+        # YOUTUBE = 'youtube', _('Youtube')
+        # VIMEO = 'vimeo', _('Vimeo')
 
     title = models.CharField(max_length=255)
     description = models.TextField(blank=True, null=True)
@@ -289,7 +289,7 @@ class Grades(models.Model):
         Assignment, null=True, blank=True, on_delete=models.CASCADE)
     quiz = models.ForeignKey(
         Quiz, null=True, blank=True, on_delete=models.CASCADE)
-    grade = models.DecimalField(max_digits=2,
+    grade = models.DecimalField(max_digits=3,
                                 decimal_places=1,
                                 validators=[MinValueValidator(0.0), MaxValueValidator(10.0)])
     enrollment = models.ForeignKey(

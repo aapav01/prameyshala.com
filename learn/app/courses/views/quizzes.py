@@ -9,7 +9,7 @@ from django.urls import reverse_lazy
 from django.utils.text import slugify
 from django.db.models import Count
 from ..forms import ChoiceInlineFormSet, ChoiceInlineUpdateFormSet, QuestionForm,  QuizForm
-from ..models import Quiz
+from ..models import Quiz,Lesson
 from django.db.models import Q
 
 
@@ -90,6 +90,9 @@ class QuizDetailView(PermissionRequiredMixin, DetailView):
         context['questions'] = self.object.question_set.all()
         for obj in context['questions']:
             temp_form = QuestionForm(instance=obj, prefix=obj.pk)
+            quiz = Quiz.objects.get(pk=self.object.pk)
+            chapter = quiz.lesson_set.first().chapter
+            temp_form.fields['lesson'].queryset = Lesson.objects.filter(chapter=chapter)
             obj.question_form = temp_form
             obj.choice_formset = ChoiceInlineUpdateFormSet(
                 instance=obj, prefix=obj.pk)

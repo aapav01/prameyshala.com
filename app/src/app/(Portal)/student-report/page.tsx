@@ -1,4 +1,4 @@
-import React from 'react'
+import React from "react";
 import { getServerSession } from "next-auth";
 import authOptions from "@/lib/authOption";
 
@@ -6,13 +6,15 @@ import authOptions from "@/lib/authOption";
 import { gql } from "@apollo/client";
 import { getClient } from "@/lib/client";
 
-import { Card } from '@/components/ui/card';
-import LineChartComponent from '@/components/ui/charts/line-chart';
-import BarChartComponent from '@/components/ui/charts/bar-chart';
+import { Card } from "@/components/ui/card";
+import LineChartComponent from "@/components/ui/charts/line-chart";
+import BarChartComponent from "@/components/ui/charts/bar-chart";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import Initials from "@/lib/initials";
 
 type Props = {
-  searchParams: { chapterId?: number }
-}
+  searchParams: { chapterId?: number };
+};
 
 const query = gql`
   query getGrades {
@@ -122,7 +124,9 @@ export default async function studentgrades({ searchParams }: Props) {
   // @ts-expect-error
   const studentData = await getStudentDetails(session);
 
-  const chapterId = searchParams.chapterId ? searchParams.chapterId.toString() : null;
+  const chapterId = searchParams.chapterId
+    ? searchParams.chapterId.toString()
+    : null;
   const showChapterChart = Boolean(chapterId);
   const hasGrades = data?.grades && data.grades.length > 0;
 
@@ -134,102 +138,134 @@ export default async function studentgrades({ searchParams }: Props) {
   const averageGrade = totalGrade / data?.grades?.length;
 
   // Quiz
-  const quizGrade = data?.grades?.map(({ grade, quiz, student }: any) => ({ grade, quiz, student })).filter((data: any) => data?.quiz);
+  const quizGrade = data?.grades
+    ?.map(({ grade, quiz, student }: any) => ({ grade, quiz, student }))
+    .filter((data: any) => data?.quiz);
 
   // Assignment
-  const assignmentGrade = data?.grades?.map(({ grade, assignment, student }: any) => ({ grade, assignment, student })).filter((data: any) => data?.assignment);
-  const assignmentchapterGrade = data?.grades?.map(({ grade, assignment }: any) => ({
-    grade,
-    chapter: assignment ? assignment?.lessonSet[0]?.chapter : null
-  })).filter((data: any) => data?.chapter);
-  const assignmentsubjectGrade = data?.grades?.map(({ grade, assignment }: any) => ({
-    grade,
-    subject: assignment ? assignment?.lessonSet[0]?.chapter?.subject : null
-  })).filter((data: any) => data?.subject);
+  const assignmentGrade = data?.grades
+    ?.map(({ grade, assignment, student }: any) => ({
+      grade,
+      assignment,
+      student,
+    }))
+    .filter((data: any) => data?.assignment);
+  const assignmentchapterGrade = data?.grades
+    ?.map(({ grade, assignment }: any) => ({
+      grade,
+      chapter: assignment ? assignment?.lessonSet[0]?.chapter : null,
+    }))
+    .filter((data: any) => data?.chapter);
+  const assignmentsubjectGrade = data?.grades
+    ?.map(({ grade, assignment }: any) => ({
+      grade,
+      subject: assignment ? assignment?.lessonSet[0]?.chapter?.subject : null,
+    }))
+    .filter((data: any) => data?.subject);
 
   // Quiz Chart Data
-  const quizChartDataByName = data?.grades?.filter((item: any) => item?.quiz).reduce((acc: any, item: any) => {
-    const existingQuiz = acc.find((q: any) => q.name === item?.quiz?.name);
-    if (existingQuiz) {
-      existingQuiz.grades.push(parseFloat(item?.grade));
-    } else {
-      acc.push({
-        name: item?.quiz?.name,
-        grades: [parseFloat(item?.grade)]
-      });
-    }
-    return acc;
-  }, []);
+  const quizChartDataByName = data?.grades
+    ?.filter((item: any) => item?.quiz)
+    .reduce((acc: any, item: any) => {
+      const existingQuiz = acc.find((q: any) => q.name === item?.quiz?.name);
+      if (existingQuiz) {
+        existingQuiz.grades.push(parseFloat(item?.grade));
+      } else {
+        acc.push({
+          name: item?.quiz?.name,
+          grades: [parseFloat(item?.grade)],
+        });
+      }
+      return acc;
+    }, []);
 
-  const quizchartDataBySubject = data?.grades?.filter((item: any) => item?.quiz).reduce((acc: any, item: any) => {
-    const existingQuiz = acc.find((q: any) => q.name === item?.quiz?.lessonSet[0]?.chapter?.subject?.name);
-    if (existingQuiz) {
-      existingQuiz.grades.push(parseFloat(item?.grade));
-    } else {
-      acc.push({
-        name: item?.quiz?.lessonSet[0]?.chapter?.subject?.name,
-        grades: [parseFloat(item?.grade)]
-      });
-    }
-    return acc;
-  }, []);
+  const quizchartDataBySubject = data?.grades
+    ?.filter((item: any) => item?.quiz)
+    .reduce((acc: any, item: any) => {
+      const existingQuiz = acc.find(
+        (q: any) => q.name === item?.quiz?.lessonSet[0]?.chapter?.subject?.name
+      );
+      if (existingQuiz) {
+        existingQuiz.grades.push(parseFloat(item?.grade));
+      } else {
+        acc.push({
+          name: item?.quiz?.lessonSet[0]?.chapter?.subject?.name,
+          grades: [parseFloat(item?.grade)],
+        });
+      }
+      return acc;
+    }, []);
 
-  const avgquizgradesbysubject = quizchartDataBySubject?.map(({ name, grades }: any) => {
-    const averageGrade = (grades.reduce((acc: any, grade: any) => acc + grade, 0) / grades.length).toFixed(2);
-    return {
+  const avgquizgradesbysubject = quizchartDataBySubject?.map(
+    ({ name, grades }: any) => {
+      const averageGrade = (
+        grades.reduce((acc: any, grade: any) => acc + grade, 0) / grades.length
+      ).toFixed(2);
+      return {
+        name,
+        grade: averageGrade,
+      };
+    }
+  );
+
+  const quizchartDataByChapter = data?.grades
+    ?.filter((item: any) => item?.quiz)
+    .reduce((acc: any, item: any) => {
+      const existingQuiz = acc.find(
+        (q: any) => q.name === item?.quiz?.lessonSet[0]?.chapter?.name
+      );
+      if (existingQuiz) {
+        existingQuiz.grades.push(parseFloat(item?.grade));
+      } else {
+        acc.push({
+          name: item?.quiz?.lessonSet[0]?.chapter?.name,
+          grades: [parseFloat(item?.grade)],
+        });
+      }
+      return acc;
+    }, []);
+
+  const highestQuizGradesbyChapter = quizchartDataByChapter?.map(
+    ({ name, grades }: any) => ({
       name,
-      grade: averageGrade,
-    };
-  });
-
-  const quizchartDataByChapter = data?.grades?.filter((item: any) => item?.quiz).reduce((acc: any, item: any) => {
-    const existingQuiz = acc.find((q: any) => q.name === item?.quiz?.lessonSet[0]?.chapter?.name);
-    if (existingQuiz) {
-      existingQuiz.grades.push(parseFloat(item?.grade));
-    } else {
-      acc.push({
-        name: item?.quiz?.lessonSet[0]?.chapter?.name,
-        grades: [parseFloat(item?.grade)]
-      });
-    }
-    return acc;
-  }, []);
-
-  const highestQuizGradesbyChapter = quizchartDataByChapter?.map(({ name, grades }: any) => ({
-    name,
-    grade: Math.max(...grades)
-  }));
+      grade: Math.max(...grades),
+    })
+  );
 
   // Filtered data for the specific chapter
   const filteredGrades = chapterId
     ? data?.grades.filter(
-      (grade: any) => grade?.quiz?.lessonSet[0]?.chapter?.id.toString() === chapterId
-    )
+        (grade: any) =>
+          grade?.quiz?.lessonSet[0]?.chapter?.id.toString() === chapterId
+      )
     : [];
 
-  const quizChartDataForChapter = filteredGrades.reduce((acc: any, item: any) => {
-    const existingQuiz = acc.find((q: any) => q.name === item?.quiz?.name);
-    if (existingQuiz) {
-      existingQuiz.grades.push(parseFloat(item?.grade));
-    } else {
-      acc.push({
-        name: item?.quiz?.name,
-        grades: [parseFloat(item?.grade)]
-      });
+  const quizChartDataForChapter = filteredGrades.reduce(
+    (acc: any, item: any) => {
+      const existingQuiz = acc.find((q: any) => q.name === item?.quiz?.name);
+      if (existingQuiz) {
+        existingQuiz.grades.push(parseFloat(item?.grade));
+      } else {
+        acc.push({
+          name: item?.quiz?.name,
+          grades: [parseFloat(item?.grade)],
+        });
+      }
+      return acc;
+    },
+    []
+  );
+
+  const chapterChartData = quizChartDataForChapter.map(
+    ({ name, grades }: any) => {
+      const chartFormattedData = grades.map((grade: any, index: number) => ({
+        name,
+        grade,
+        attempt: `Attempt ${index + 1}`,
+      }));
+      return chartFormattedData;
     }
-    return acc;
-  }, []);
-
-  const chapterChartData = quizChartDataForChapter.map(({ name, grades }: any) => {
-    const chartFormattedData = grades.map((grade: any, index: number) => ({
-      name,
-      grade,
-      attempt: `Attempt ${index + 1}`,
-    }));
-    return chartFormattedData;
-  });
-
-
+  );
 
   return (
     <main className="min-h-screen">
@@ -244,25 +280,14 @@ export default async function studentgrades({ searchParams }: Props) {
           <div className="relative flex flex-col bg-clip-border bg-transparent text-gray-700 shadow-md p-6 border border-slate-200 grow rounded-xl">
             <div className="relative bg-clip-border overflow-hidden bg-transparent text-gray-700 shadow-none mx-0 mt-0 flex items-center justify-between gap-4">
               <div className="flex items-center gap-6 mb-4">
-                <div className="avatar">
-                  <div className="w-24 h-24 sm:w-32 sm:h-32 overflow-hidden rounded-full shadow-lg shadow-gray-500/40">
-                    {studentData?.me ? (
-                      <img
-                        src={`${process.env.NEXT_PUBLIC_MEDIA_CDN}/static/media/${studentData?.me?.photo}`}
-                        width="144px"
-                        height="144px"
-                        alt={studentData?.me?.fullName}
-                      />
-                    ) : (
-                      <img
-                        src="https://placehold.co/600x600"
-                        width="144px"
-                        height="144px"
-                        alt={studentData?.me?.fullName}
-                      />
-                    )}
-                  </div>
-                </div>
+                <Avatar className="lg:min-h-24 lg:min-w-24 lg:text-3xl">
+                  <AvatarImage
+                    src={`${process.env.NEXT_PUBLIC_MEDIA_CDN}/static/media/${studentData?.me?.photo}`}
+                  />
+                  <AvatarFallback>
+                    {Initials(studentData?.me?.fullName)}
+                  </AvatarFallback>
+                </Avatar>
                 <div>
                   <h5 className="block antialiased tracking-normal font-serif text-xl sm:text-2xl font-semibold leading-snug text-blue-500">
                     {studentData?.me?.fullName}
@@ -316,93 +341,25 @@ export default async function studentgrades({ searchParams }: Props) {
           </div>
         </div>
         {!hasGrades ? (
-          <Card className='p-4'>
-            <h1>
-              No Quiz/Assignments given yet.
-            </h1>
+          <Card className="p-4">
+            <h1>No Quiz/Assignments given yet.</h1>
           </Card>
         ) : (
           <div>
             {!showChapterChart && (
-              <div className='flex flex-col gap-2'>
+              <div className="flex flex-col gap-2">
                 <div className="flex flex-col h-full">
-                  <Card className='p-6 pl-3 text-xl grid grid-cols-1 sm:grid-cols-2 gap-2'>
-                    {quizGrade?.reduce((accumulator: any, gradedata: any) => {
-                      const existingIndex = accumulator.findIndex((item: any) => item?.quiz?.name === gradedata?.quiz?.name);
-                      if (existingIndex !== -1) {
-                        accumulator[existingIndex].grades.push(gradedata?.grade);
-                      } else {
-                        accumulator.push({
-                          quiz: gradedata?.quiz,
-                          grades: [gradedata?.grade]
-                        });
-                      }
-                      return accumulator;
-                    }, []).map((gradedata: any, index: any) => (
-                      <div key={`quiz_${index}`} className="mb-8">
-                        <p className='font-serif text-xl sm:text-2xl font-semibold leading-relaxed text-blue-500 mx-2'>
-                          Attempt wise {gradedata?.quiz?.name} grades
-                        </p>
-                        <hr className="border-blue-gray-50 " />
-                        <ul className='mx-2 pt-4 text-lg sm:text-xl'>
-                          <li>
-                            Grades:
-                            {gradedata?.grades?.map((grade: any, attemptIndex: any) => (
-                              <span key={`grade_${attemptIndex}`} className={`ml-2 ${grade > 7.5 ? 'text-green-500' : grade >= 5 ? 'text-orange-400' : 'text-red-600'}`}>
-                                {grade}
-                              </span>
-                            ))}
-                          </li>
-                        </ul>
-                        <div className="mt-4">
-                          {quizChartDataByName?.map((data: any, dataIndex: number) => {
-                            if (data?.name === gradedata?.quiz?.name) {
-                              let chartFormattedData: {
-                                name: string;
-                                grade: number;
-                                attempt: String;
-                              }[] = [];
-                              for (let i = 0; i < data?.grades?.length; i++) {
-                                chartFormattedData.push({
-                                  "name": data?.name,
-                                  'grade': data?.grades[i],
-                                  'attempt': `Attempt ${i + 1}`
-                                })
-                              }
-                              return <LineChartComponent chartData={chartFormattedData} key={dataIndex} XAxisDatakey="attempt" YAxisDatakey="grade" />;
-                            }
-                            return null;
-                          })}
-                        </div>
-                      </div>
-                    ))}
-                  </Card>
-                </div>
-                <div className="relative flex flex-col bg-clip-border bg-transparent text-gray-700 shadow-md p-6 border border-slate-200 grow rounded-xl">
-                  <h2 className="text-2xl font-semibold text-gray-800 mb-4">Chapter Wise Quiz Grades</h2>
-                  <div className="bg-white p-4 rounded shadow-md">
-                    <LineChartComponent chartData={highestQuizGradesbyChapter} XAxisDatakey="name" YAxisDatakey="grade" />
-                  </div>
-                </div>
-                <div className="relative flex flex-col bg-clip-border bg-transparent text-gray-700 shadow-md p-6 border border-slate-200 grow rounded-xl">
-                  <h2 className="text-2xl font-semibold text-gray-800 mb-4">Subject Wise Quiz Grades (Average)</h2>
-                  <div className="bg-white p-4 rounded shadow-md">
-                    <BarChartComponent chartData={avgquizgradesbysubject} XAxisDatakey="name" YAxisDatakey="grade" />
-                  </div>
-                </div>
-              </div>
-            )}
-            {showChapterChart && (
-              <div className='flex flex-col gap-2'>
-                <div className="flex flex-col h-full">
-                  <Card className='p-6 pl-3 text-xl grid grid-cols-1 sm:grid-cols-1 gap-2'>
-                    {filteredGrades?.length > 0 ? (
-                      filteredGrades?.reduce((accumulator: any, gradedata: any) => {
+                  <Card className="p-6 pl-3 text-xl grid grid-cols-1 sm:grid-cols-2 gap-2">
+                    {quizGrade
+                      ?.reduce((accumulator: any, gradedata: any) => {
                         const existingIndex = accumulator.findIndex(
-                          (item: any) => item?.quiz?.name === gradedata?.quiz?.name
+                          (item: any) =>
+                            item?.quiz?.name === gradedata?.quiz?.name
                         );
                         if (existingIndex !== -1) {
-                          accumulator[existingIndex].grades.push(gradedata?.grade);
+                          accumulator[existingIndex].grades.push(
+                            gradedata?.grade
+                          );
                         } else {
                           accumulator.push({
                             quiz: gradedata?.quiz,
@@ -410,60 +367,182 @@ export default async function studentgrades({ searchParams }: Props) {
                           });
                         }
                         return accumulator;
-                      }, []).map((gradedata: any, index: any) => (
+                      }, [])
+                      .map((gradedata: any, index: any) => (
                         <div key={`quiz_${index}`} className="mb-8">
-                          <p className='font-serif text-xl sm:text-2xl font-semibold leading-relaxed text-blue-500 mx-2'>
-                            {gradedata?.quiz?.lessonSet[0]?.chapter?.name} Quiz Grades by Attempt
+                          <p className="font-serif text-xl sm:text-2xl font-semibold leading-relaxed text-blue-500 mx-2">
+                            Attempt wise {gradedata?.quiz?.name} grades
                           </p>
                           <hr className="border-blue-gray-50 " />
-                          <ul className='mx-2 pt-4 text-lg sm:text-xl'>
+                          <ul className="mx-2 pt-4 text-lg sm:text-xl">
                             <li>
                               Grades:
-                              {gradedata?.grades?.map((grade: any, attemptIndex: any) => (
-                                <span
-                                  key={`grade_${attemptIndex}`}
-                                  className={`ml-2 ${grade > 7.5
-                                    ? 'text-green-500'
-                                    : grade >= 5
-                                      ? 'text-orange-400'
-                                      : 'text-red-600'
+                              {gradedata?.grades?.map(
+                                (grade: any, attemptIndex: any) => (
+                                  <span
+                                    key={`grade_${attemptIndex}`}
+                                    className={`ml-2 ${
+                                      grade > 7.5
+                                        ? "text-green-500"
+                                        : grade >= 5
+                                        ? "text-orange-400"
+                                        : "text-red-600"
                                     }`}
-                                >
-                                  {grade}
-                                </span>
-                              ))}
+                                  >
+                                    {grade}
+                                  </span>
+                                )
+                              )}
                             </li>
                           </ul>
                           <div className="mt-4">
-                            {chapterChartData?.map((chartData: any, chartIndex: any) => {
-                              if (chartData?.[0]?.name === gradedata?.quiz?.name) {
-                                return (
-                                  <LineChartComponent
-                                    chartData={chartData}
-                                    key={chartIndex}
-                                    XAxisDatakey="attempt"
-                                    YAxisDatakey="grade"
-                                  />
-                                );
+                            {quizChartDataByName?.map(
+                              (data: any, dataIndex: number) => {
+                                if (data?.name === gradedata?.quiz?.name) {
+                                  let chartFormattedData: {
+                                    name: string;
+                                    grade: number;
+                                    attempt: String;
+                                  }[] = [];
+                                  for (
+                                    let i = 0;
+                                    i < data?.grades?.length;
+                                    i++
+                                  ) {
+                                    chartFormattedData.push({
+                                      name: data?.name,
+                                      grade: data?.grades[i],
+                                      attempt: `Attempt ${i + 1}`,
+                                    });
+                                  }
+                                  return (
+                                    <LineChartComponent
+                                      chartData={chartFormattedData}
+                                      key={dataIndex}
+                                      XAxisDatakey="attempt"
+                                      YAxisDatakey="grade"
+                                    />
+                                  );
+                                }
+                                return null;
                               }
-                              return null;
-                            })}
+                            )}
                           </div>
                         </div>
-                      ))
+                      ))}
+                  </Card>
+                </div>
+                <div className="relative flex flex-col bg-clip-border bg-transparent text-gray-700 shadow-md p-6 border border-slate-200 grow rounded-xl">
+                  <h2 className="text-2xl font-semibold text-gray-800 mb-4">
+                    Chapter Wise Quiz Grades
+                  </h2>
+                  <div className="bg-white p-4 rounded shadow-md">
+                    <LineChartComponent
+                      chartData={highestQuizGradesbyChapter}
+                      XAxisDatakey="name"
+                      YAxisDatakey="grade"
+                    />
+                  </div>
+                </div>
+                <div className="relative flex flex-col bg-clip-border bg-transparent text-gray-700 shadow-md p-6 border border-slate-200 grow rounded-xl">
+                  <h2 className="text-2xl font-semibold text-gray-800 mb-4">
+                    Subject Wise Quiz Grades (Average)
+                  </h2>
+                  <div className="bg-white p-4 rounded shadow-md">
+                    <BarChartComponent
+                      chartData={avgquizgradesbysubject}
+                      XAxisDatakey="name"
+                      YAxisDatakey="grade"
+                    />
+                  </div>
+                </div>
+              </div>
+            )}
+            {showChapterChart && (
+              <div className="flex flex-col gap-2">
+                <div className="flex flex-col h-full">
+                  <Card className="p-6 pl-3 text-xl grid grid-cols-1 sm:grid-cols-1 gap-2">
+                    {filteredGrades?.length > 0 ? (
+                      filteredGrades
+                        ?.reduce((accumulator: any, gradedata: any) => {
+                          const existingIndex = accumulator.findIndex(
+                            (item: any) =>
+                              item?.quiz?.name === gradedata?.quiz?.name
+                          );
+                          if (existingIndex !== -1) {
+                            accumulator[existingIndex].grades.push(
+                              gradedata?.grade
+                            );
+                          } else {
+                            accumulator.push({
+                              quiz: gradedata?.quiz,
+                              grades: [gradedata?.grade],
+                            });
+                          }
+                          return accumulator;
+                        }, [])
+                        .map((gradedata: any, index: any) => (
+                          <div key={`quiz_${index}`} className="mb-8">
+                            <p className="font-serif text-xl sm:text-2xl font-semibold leading-relaxed text-blue-500 mx-2">
+                              {gradedata?.quiz?.lessonSet[0]?.chapter?.name}{" "}
+                              Quiz Grades by Attempt
+                            </p>
+                            <hr className="border-blue-gray-50 " />
+                            <ul className="mx-2 pt-4 text-lg sm:text-xl">
+                              <li>
+                                Grades:
+                                {gradedata?.grades?.map(
+                                  (grade: any, attemptIndex: any) => (
+                                    <span
+                                      key={`grade_${attemptIndex}`}
+                                      className={`ml-2 ${
+                                        grade > 7.5
+                                          ? "text-green-500"
+                                          : grade >= 5
+                                          ? "text-orange-400"
+                                          : "text-red-600"
+                                      }`}
+                                    >
+                                      {grade}
+                                    </span>
+                                  )
+                                )}
+                              </li>
+                            </ul>
+                            <div className="mt-4">
+                              {chapterChartData?.map(
+                                (chartData: any, chartIndex: any) => {
+                                  if (
+                                    chartData?.[0]?.name ===
+                                    gradedata?.quiz?.name
+                                  ) {
+                                    return (
+                                      <LineChartComponent
+                                        chartData={chartData}
+                                        key={chartIndex}
+                                        XAxisDatakey="attempt"
+                                        YAxisDatakey="grade"
+                                      />
+                                    );
+                                  }
+                                  return null;
+                                }
+                              )}
+                            </div>
+                          </div>
+                        ))
                     ) : (
                       <div>
-                        <h1>
-                          No Quiz/Assignment given for this Chapter.
-                        </h1>
+                        <h1>No Quiz/Assignment given for this Chapter.</h1>
                       </div>
                     )}
                   </Card>
                 </div>
               </div>
             )}
-          </div>)}
+          </div>
+        )}
       </section>
-    </main >
-  )
+    </main>
+  );
 }
