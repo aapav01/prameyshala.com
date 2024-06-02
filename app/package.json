@@ -58,7 +58,7 @@
     "react-day-picker": "^8.8.0",
     "react-dom": "18.2.0",
     "react-hook-form": "^7.45.2",
-    "react-pdf": "^7.3.3",
+    "react-pdf": "^9.0.0",
     "react-phone-number-input": "^3.3.0",
     "react-player": "^2.12.0",
     "recharts": "^2.12.6",
