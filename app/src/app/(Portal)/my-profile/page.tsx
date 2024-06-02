@@ -4,6 +4,8 @@ import { getClient } from "@/lib/client";
 import Initials from "@/lib/initials";
 import { gql } from "@apollo/client";
 import { getServerSession } from "next-auth";
+import React from "react";
+import GenerateInvoicePDF from "@/components/invoice-link";
 
 type Props = {};
 
@@ -266,7 +268,7 @@ export default async function MyProfilePage({}: Props) {
                             .filter((payment: any) => payment.status === "PAID")
                             .slice(0)
                             .sort(
-                              (a: any, b: any) =>
+                              (a: any, b: any): any =>
                                 // @ts-ignore
                                 new Date(b.createdAt) - new Date(a.createdAt)
                             )
@@ -308,12 +310,16 @@ export default async function MyProfilePage({}: Props) {
                                   scope="col"
                                   className="px-2 sm:px-3 py-2 sm:py-3"
                                 >
-                                  <a
-                                    href="#"
-                                    className="font-medium text-blue-600 hover:underline"
-                                  >
-                                    Get Invoice
-                                  </a>
+                                  <GenerateInvoicePDF
+                                    paymentData={{
+                                      user: data?.me,
+                                      amount: payment.amount,
+                                      createdAt: formatDate(payment.createdAt),
+                                      orderGatewayId: payment.orderGatewayId,
+                                      status: payment.status,
+                                      standard: payment.standard.name,
+                                    }}
+                                  />
                                 </td>
                               </tr>
                             ))}
