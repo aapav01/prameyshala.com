@@ -89,27 +89,33 @@ class QuizDetailView(PermissionRequiredMixin, DetailView):
         context['form'] = QuizForm(
             instance=self.object, prefix=self.object.pk)
         context['questions'] = self.object.question_set.all()
+        quiz = self.object
+        chapter = quiz.chapter
         for obj in context['questions']:
             temp_form = QuestionForm(instance=obj, prefix=obj.pk)
-            quiz = Quiz.objects.get(pk=self.object.pk)
-            chapter = quiz.lesson_set.first().chapter
             temp_form.fields['lesson'].queryset = Lesson.objects.filter(chapter=chapter)
             obj.question_form = temp_form
             obj.choice_formset = ChoiceInlineUpdateFormSet(
                 instance=obj, prefix=obj.pk)
         if self.request.method == 'POST':
-            context['question_form'] = QuestionForm(self.request.POST)
+            post_question_form = QuestionForm(self.request.POST)
+            post_question_form.fields['lesson'].queryset = Lesson.objects.filter(chapter=chapter)
+            context['question_form'] = post_question_form
             context['question_form'].choice_formset = ChoiceInlineUpdateFormSet(
                 self.request.POST, prefix='question_formset')
         else:
-            context['question_form'] = QuestionForm()
-            context['question_form'].choice_formset = ChoiceInlineFormSet(
-                prefix='question_formset')
+            question_form = QuestionForm()
+            question_form.fields['lesson'].queryset = Lesson.objects.filter(chapter=chapter)
+            context['question_form'] = question_form
+            context['question_form'].choice_formset = ChoiceInlineFormSet(prefix='question_formset')
         return context
 
     # create
     def post(self, request, **kwargs):
+        quiz = self.get_object()
+        chapter = Chapter.objects.get(pk=quiz.chapter.id)
         form = QuestionForm(request.POST)
+        form.fields['lesson'].queryset = Lesson.objects.filter(chapter=chapter)
         self.extra_context.update({'question_form': form})
         if form.is_valid():
             instance = form.save(commit=False)
