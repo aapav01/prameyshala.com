@@ -75,10 +75,7 @@ export default function ChapterCard2({ chapter, size }: Props) {
               </div>
             </Link>
           )}
-          {chapter?.lessonSet.some(
-            (lesson: any) =>
-              lesson?.quiz && Object.keys(lesson?.quiz).length > 0
-          ) && (
+          {chapter?.quizSet.length > 0 && (
             <Link
               href={{
                 pathname: `/learn/chapter/${chapter.id}/quiz`,
