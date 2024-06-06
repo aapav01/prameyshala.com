@@ -244,9 +244,7 @@ class Query(graphene.ObjectType):
         if not user.is_authenticated:
             raise Exception("Authentication credentials were not provided")
         chapter_instance = Chapter.objects.get(pk=chapter)
-        lesson_instance = Lesson.objects.get(
-            chapter=chapter_instance, lesson_type="QUIZ")
-        return Quiz.objects.get(lesson=lesson_instance)
+        return Quiz.objects.get(chapter = chapter_instance)
 
     # quiz hash
     def resolve_quiz_hash(self, info, quiz_id):
