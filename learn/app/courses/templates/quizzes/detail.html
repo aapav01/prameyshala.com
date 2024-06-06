@@ -171,3 +171,61 @@
     {% endfor %}
   {% endif %}
 {% endblock content %}
+{% block body_js %}
+<script>
+  $(document).ready(function() {
+      $(document).on('change', '[id^="id_"][id$="-class_field"]', function() {
+          var classId = $(this).val();
+          var prefix = $(this).attr('id').split('-')[0];
+          var subjectField = $('#' + prefix + '-subject_field');
+          var chapterField = $('#' + prefix + '-chapter_field');
+          
+          if (classId) {
+              $.ajax({
+                  url: '{% url "courses:get_subjects" %}',
+                  data: {'class_id': classId},
+                  success: function(data) {
+                      var options = '<option value="">---------</option>';
+                      for (var i = 0; i < data.subjects.length; i++) {
+                          options += '<option value="' + data.subjects[i].id + '">' + data.subjects[i].name + '</option>';
+                      }
+                      subjectField.html(options);
+                      subjectField.prop('disabled', false);
+                      chapterField.html('<option value="">---------</option>');
+                      chapterField.prop('disabled', true);
+                  }
+              });
+          } else {
+              subjectField.html('<option value="">---------</option>');
+              subjectField.prop('disabled', true);
+              chapterField.html('<option value="">---------</option>');
+              chapterField.prop('disabled', true);
+          }
+      });
+
+      $(document).on('change', '[id^="id_"][id$="-subject_field"]', function() {
+          var subjectId = $(this).val();
+          var prefix = $(this).attr('id').split('-')[0];
+          var chapterField = $('#' + prefix + '-chapter_field');
+          
+          if (subjectId) {
+              $.ajax({
+                  url: '{% url "courses:get_chapters" %}',
+                  data: {'subject_id': subjectId},
+                  success: function(data) {
+                      var options = '<option value="">---------</option>';
+                      for (var i = 0; i < data.chapters.length; i++) {
+                          options += '<option value="' + data.chapters[i].id + '">' + data.chapters[i].name + '</option>';
+                      }
+                      chapterField.html(options);
+                      chapterField.prop('disabled', false);
+                  }
+              });
+          } else {
+              chapterField.html('<option value="">---------</option>');
+              chapterField.prop('disabled', true);
+          }
+      });
+  });
+</script>
+{% endblock body_js %}

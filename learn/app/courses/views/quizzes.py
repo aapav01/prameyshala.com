@@ -9,8 +9,9 @@ from django.urls import reverse_lazy
 from django.utils.text import slugify
 from django.db.models import Count
 from ..forms import ChoiceInlineFormSet, ChoiceInlineUpdateFormSet, QuestionForm,  QuizForm
-from ..models import Quiz,Lesson
+from ..models import Quiz,Lesson,Chapter,Subject
 from django.db.models import Q
+from ...charts.views import JSONView
 
 
 class QuizView(PermissionRequiredMixin, ListView):
@@ -41,7 +42,7 @@ class QuizView(PermissionRequiredMixin, ListView):
         self.extra_context.update({'form': form})
         if form.is_valid():
             instance = form.save(commit=False)
-            instance.slug = slugify(instance.name)
+            instance.chapter = Chapter.objects.get(pk=form.cleaned_data['chapter_field'])
             instance.save()
             messages.success(
                 request, f'{instance.name} has been created successfully.')
@@ -138,7 +139,6 @@ class QuizUpdateView(PermissionRequiredMixin, UpdateView):
     success_url = reverse_lazy("courses:quizzes")
     template_name = "form.html"
     form = QuizForm
-    fields = "__all__"
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
@@ -161,3 +161,32 @@ class QuizDeleteView(PermissionRequiredMixin, DeleteView):
     def get(self, request, **kwargs):
         messages.error(request, 'Quiz has been deleted successfully.')
         return self.delete(request, **kwargs)
+
+
+class GetSubjectsView(JSONView):
+    def get(self, request, *args, **kwargs):
+        class_id = request.GET.get('class_id')
+        if class_id:
+            subjects = Subject.objects.filter(standard_id=class_id)
+            if subjects:
+                subject_list = list(subjects.values('id', 'name'))
+            else:
+                subject_list = []
+        else:
+            subject_list = []
+        context = {'subjects': subject_list}
+        return self.render_to_json_response(context)
+
+class GetChaptersView(JSONView):
+    def get(self, request, *args, **kwargs):
+        subject_id = request.GET.get('subject_id')
+        if subject_id:
+            chapters = Chapter.objects.filter(subject_id=subject_id)
+            if chapters:
+                chapter_list = list(chapters.values('id', 'name'))
+            else:
+                chapter_list = []
+        else:
+            chapter_list = []
+        context = {'chapters': chapter_list}
+        return self.render_to_json_response(context)
