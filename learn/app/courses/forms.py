@@ -95,9 +95,46 @@ class CategoriesForm(ModelForm):
 
 
 class QuizForm(ModelForm):
+    class_field = forms.ModelChoiceField(queryset=Classes.objects.all(), label="Class")
+    subject_field = forms.ChoiceField(label="Subject", choices=[])
+    chapter_field = forms.ChoiceField(label="Chapter", choices=[])
+
     class Meta:
         model = Quiz
-        fields = "__all__"
+        fields = ['name', 'type', 'time_required']
+
+    def __init__(self, *args, **kwargs):
+        super(QuizForm, self).__init__(*args, **kwargs)
+        if 'instance' in kwargs:
+            quiz_instance = kwargs['instance']
+            self.fields['class_field'].initial = quiz_instance.chapter.subject.standard.id
+            self.fields['subject_field'].choices = [(subject.id, subject.name) for subject in Subject.objects.filter(standard=quiz_instance.chapter.subject.standard)]
+            self.fields['subject_field'].initial = quiz_instance.chapter.subject.id
+            self.fields['chapter_field'].queryset = Chapter.objects.filter(subject=quiz_instance.chapter.subject)
+            self.fields['chapter_field'].initial = quiz_instance.chapter.id
+        elif 'class_field' in self.data:
+            try:
+                class_id = int(self.data.get('class_field'))
+                self.fields['subject_field'].choices = [(subject.id, subject.name) for subject in Subject.objects.filter(standard_id=class_id)]
+            except (ValueError, TypeError):
+                print(ValueError)
+
+        if 'subject_field' in self.data:
+            try:
+                subject_id = int(self.data.get('subject_field'))
+                self.fields['chapter_field'].choices = [(chapter.id, chapter.name) for chapter in Chapter.objects.filter(subject_id=subject_id)]
+            except (ValueError, TypeError):
+                self.fields['chapter_field'].choices = []
+        elif self.instance.pk:
+            self.fields['chapter_field'].choices = [(chapter.id, chapter.name) for chapter in Chapter.objects.filter(subject=self.instance.chapter.subject)]
+
+    def clean(self):
+        cleaned_data = super().clean()
+        if not cleaned_data.get('subject_field'):
+            self.add_error('subject_field', 'This field is required.')
+        if not cleaned_data.get('chapter_field'):
+            self.add_error('chapter_field', 'This field is required.')
+        return cleaned_data
 
 
 class QuestionForm(ModelForm):

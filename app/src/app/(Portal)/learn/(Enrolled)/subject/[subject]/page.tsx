@@ -30,10 +30,10 @@ const query = gql`
         order
         lessonSet {
           id
-          quiz{
+        }
+        quizSet{
             id
           }
-        }
         notesSet {
           notesFile
         }
