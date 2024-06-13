@@ -4,6 +4,8 @@ import { getClient } from "@/lib/client";
 import Initials from "@/lib/initials";
 import { gql } from "@apollo/client";
 import { getServerSession } from "next-auth";
+import React from "react";
+import GenerateInvoicePDF from "@/components/invoice";
 
 type Props = {};
 
@@ -61,7 +63,7 @@ async function getPaymentDetails(session: any) {
   }
 }
 
-export default async function MyProfilePage({}: Props) {
+export default async function MyProfilePage({ }: Props) {
   const session = await getServerSession(authOptions);
   const { data, errors } = await getPaymentDetails(session);
 
@@ -77,11 +79,9 @@ export default async function MyProfilePage({}: Props) {
     const amPM = hours >= 12 ? "PM" : "AM";
     const formattedHours = hours % 12 || 12;
 
-    lastLoginFormatted = `${day < 10 ? "0" : ""}${day}/${
-      month < 10 ? "0" : ""
-    }${month}/${year} ${formattedHours}:${minutes < 10 ? "0" : ""}${minutes}:${
-      seconds < 10 ? "0" : ""
-    }${seconds} ${amPM}`;
+    lastLoginFormatted = `${day < 10 ? "0" : ""}${day}/${month < 10 ? "0" : ""
+      }${month}/${year} ${formattedHours}:${minutes < 10 ? "0" : ""}${minutes}:${seconds < 10 ? "0" : ""
+      }${seconds} ${amPM}`;
   }
 
   const formatDate = (inputDate: any) => {
@@ -176,7 +176,7 @@ export default async function MyProfilePage({}: Props) {
                       Enrolled Class:
                     </p>
                     <p className="font-normal text-gray-400">
-                      {data?.me?.enrollmentSet[0].standard.name}
+                      {data?.me?.enrollmentSet[0]?.standard?.name}
                     </p>
                   </li>
                   <li className="flex items-center gap-4">
@@ -218,9 +218,9 @@ export default async function MyProfilePage({}: Props) {
                   <div className="relative overflow-x-auto shadow-md sm:rounded-md">
                     {/* @ts-ignore */}
                     {data?.me?.paymentsSet &&
-                    data?.me?.paymentsSet.filter(
-                      (payment: any) => payment.status === "PAID"
-                    ).length > 0 ? (
+                      data?.me?.paymentsSet.filter(
+                        (payment: any) => payment.status === "PAID"
+                      ).length > 0 ? (
                       <table className="w-full text-xs sm:text-base text-left rtl:text-right text-gray-500">
                         <thead className="text-xs sm:text-base text-gray-700 title bg-gray-50">
                           <tr className="bg-gray-100">
@@ -262,61 +262,25 @@ export default async function MyProfilePage({}: Props) {
                           </tr>
                         </thead>
                         <tbody className="text-gray-600">
-                          {data?.me?.paymentsSet
-                            .filter((payment: any) => payment.status === "PAID")
-                            .slice(0)
-                            .sort(
-                              (a: any, b: any) =>
-                                // @ts-ignore
-                                new Date(b.createdAt) - new Date(a.createdAt)
-                            )
-                            .slice(0, 5)
-                            .map((payment: any, index: number) => (
-                              <tr
-                                key={index}
-                                className="odd:bg-white even:bg-gray-50 border-b"
-                              >
-                                <td
-                                  align="center"
-                                  className="pl-2 sm:pl-3 py-2 sm:py-3"
-                                >
-                                  {formatDate(payment?.createdAt)}
-                                </td>
-                                <td
-                                  align="center"
-                                  scope="col"
-                                  className="px-2 sm:px-3 py-2 sm:py-3"
-                                >
-                                  {payment?.standard?.name}
-                                </td>
-                                <td
-                                  align="center"
-                                  scope="col"
-                                  className="px-2 sm:px-3 py-2 sm:py-3"
-                                >
-                                  {payment?.status}
-                                </td>
-                                <td
-                                  align="center"
-                                  scope="col"
-                                  className="px-2 sm:px-3 py-2 sm:py-3"
-                                >
-                                  ₹ {payment?.amount}
-                                </td>
-                                <td
-                                  align="center"
-                                  scope="col"
-                                  className="px-2 sm:px-3 py-2 sm:py-3"
-                                >
-                                  <a
-                                    href="#"
-                                    className="font-medium text-blue-600 hover:underline"
-                                  >
-                                    Get Invoice
-                                  </a>
-                                </td>
-                              </tr>
-                            ))}
+                          {/* @ts-ignore */}
+                          {data?.me?.paymentsSet.filter(payment => payment.status === "PAID").slice(0).sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)).slice(0, 5).map((payment, index) => (
+                            <tr key={index} className="odd:bg-white even:bg-gray-50 border-b">
+                              <td align="center" className="pl-2 sm:pl-3 py-2 sm:py-3">{formatDate(payment?.createdAt)}</td>
+                              <td align="center" scope="col" className="px-2 sm:px-3 py-2 sm:py-3">{payment?.standard?.name}</td>
+                              <td align="center" scope="col" className="px-2 sm:px-3 py-2 sm:py-3">{payment?.status}</td>
+                              <td align="center" scope="col" className="px-2 sm:px-3 py-2 sm:py-3">₹ {payment?.amount}</td>
+                              <td align="center" scope="col" className="px-2 sm:px-3 py-2 sm:py-3"><GenerateInvoicePDF
+                                paymentData={{
+                                  user: data?.me,
+                                  amount: payment?.amount,
+                                  createdAt: formatDate(payment?.createdAt),
+                                  orderGatewayId: payment?.orderGatewayId,
+                                  status: payment?.status,
+                                  standard: payment?.standard?.name,
+                                }}
+                              /></td>
+                            </tr>
+                          ))}
                         </tbody>
                       </table>
                     ) : (

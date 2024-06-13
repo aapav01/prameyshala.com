@@ -235,9 +235,9 @@ export default async function studentgrades({ searchParams }: Props) {
   // Filtered data for the specific chapter
   const filteredGrades = chapterId
     ? data?.grades.filter(
-        (grade: any) =>
-          grade?.quiz?.lessonSet[0]?.chapter?.id.toString() === chapterId
-      )
+      (grade: any) =>
+        grade?.quiz?.lessonSet[0]?.chapter?.id.toString() === chapterId
+    )
     : [];
 
   const quizChartDataForChapter = filteredGrades.reduce(
@@ -381,13 +381,12 @@ export default async function studentgrades({ searchParams }: Props) {
                                 (grade: any, attemptIndex: any) => (
                                   <span
                                     key={`grade_${attemptIndex}`}
-                                    className={`ml-2 ${
-                                      grade > 7.5
+                                    className={`ml-2 ${grade > 7.5
                                         ? "text-green-500"
                                         : grade >= 5
-                                        ? "text-orange-400"
-                                        : "text-red-600"
-                                    }`}
+                                          ? "text-orange-400"
+                                          : "text-red-600"
+                                      }`}
                                   >
                                     {grade}
                                   </span>
@@ -495,13 +494,12 @@ export default async function studentgrades({ searchParams }: Props) {
                                   (grade: any, attemptIndex: any) => (
                                     <span
                                       key={`grade_${attemptIndex}`}
-                                      className={`ml-2 ${
-                                        grade > 7.5
+                                      className={`ml-2 ${grade > 7.5
                                           ? "text-green-500"
                                           : grade >= 5
-                                          ? "text-orange-400"
-                                          : "text-red-600"
-                                      }`}
+                                            ? "text-orange-400"
+                                            : "text-red-600"
+                                        }`}
                                     >
                                       {grade}
                                     </span>
