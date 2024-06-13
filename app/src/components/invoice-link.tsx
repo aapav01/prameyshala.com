@@ -14,7 +14,7 @@ export default function GenerateInvoicePDF({ paymentData }: Props) {
     const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
     const fontSize = 12;
     const headerFontSize = 24;
-    const headerColor = rgb(0, 0, 1);
+    const headerColor = rgb(0, 0, 0);
 
     const drawText = (
       text: string,
