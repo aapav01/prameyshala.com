@@ -1,6 +1,5 @@
 import React from "react";
 import { Metadata } from "next";
-import dynamic from "next/dynamic";
 import { notFound } from "next/navigation";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import { getServerSession } from "next-auth/next";
@@ -10,11 +9,6 @@ import authOptions from "@/lib/authOption";
 import { gql } from "@apollo/client";
 import { getClient } from "@/lib/client";
 import VideoPlayer from "@/components/sections/video-player";
-// import Quiz from "@/components/quiz";
-// import Assignment from "@/components/sections/assignment";
-const Assignment = dynamic(() => import("@/components/sections/pdf-viewer"), {
-  ssr: false,
-});
 
 type Props = {
   params: {
@@ -37,20 +31,6 @@ const query = gql`
         teacher {
           id
           fullName
-        }
-        quiz {
-          id
-          name
-          type
-          timeRequired
-          questionSet {
-            id
-            questionText
-            choiceSet {
-              id
-              choiceText
-            }
-          }
         }
         assignment {
           id
