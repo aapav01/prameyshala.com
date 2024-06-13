@@ -247,6 +247,7 @@ export default async function studentgrades({ searchParams }: Props) {
                 <div className="avatar">
                   <div className="w-24 h-24 sm:w-32 sm:h-32 overflow-hidden rounded-full shadow-lg shadow-gray-500/40">
                     {studentData?.me ? (
+                      /* eslint-disable-next-line @next/next/no-img-element */
                       <img
                         src={`${process.env.NEXT_PUBLIC_MEDIA_CDN}/static/media/${studentData?.me?.photo}`}
                         width="144px"
@@ -254,6 +255,7 @@ export default async function studentgrades({ searchParams }: Props) {
                         alt={studentData?.me?.fullName}
                       />
                     ) : (
+                      /* eslint-disable-next-line @next/next/no-img-element */
                       <img
                         src="https://placehold.co/600x600"
                         width="144px"

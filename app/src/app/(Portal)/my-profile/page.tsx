@@ -3,7 +3,7 @@ import { getClient } from "@/lib/client";
 import { getServerSession } from "next-auth";
 import authOptions from "@/lib/authOption";
 import React from "react";
-import InvoiceLink from "@/components/invoice-link";
+import GenerateInvoicePDF from "@/components/invoice";
 
 type Props = {};
 
@@ -114,6 +114,7 @@ export default async function MyProfilePage({ }: Props) {
               <div className="avatar">
                 <div className="w-24 h-24 sm:w-32 sm:h-32 overflow-hidden rounded-full shadow-lg shadow-blue-gray-500/40">
                   {data?.me?.photo ? (
+                    /* eslint-disable-next-line @next/next/no-img-element */
                     <img
                       src={`${process.env.NEXT_PUBLIC_MEDIA_CDN}/static/media/${data?.me?.photo}`}
                       width="144px"
@@ -121,6 +122,7 @@ export default async function MyProfilePage({ }: Props) {
                       alt={data?.me?.fullName}
                     />
                   ) : (
+                    /* eslint-disable-next-line @next/next/no-img-element */
                     <img
                       src="https://placehold.co/600x600"
                       width="144px"
@@ -169,7 +171,7 @@ export default async function MyProfilePage({ }: Props) {
                       Enrolled Class:
                     </p>
                     <p className="font-normal text-gray-400">
-                      {data?.me?.enrollmentSet[0].standard.name}
+                      {data?.me?.enrollmentSet[0]?.standard?.name}
                     </p>
                   </li>
                   <li className="flex items-center gap-4">
@@ -229,7 +231,16 @@ export default async function MyProfilePage({ }: Props) {
                               <td align="center" scope="col" className="px-2 sm:px-3 py-2 sm:py-3">{payment?.standard?.name}</td>
                               <td align="center" scope="col" className="px-2 sm:px-3 py-2 sm:py-3">{payment?.status}</td>
                               <td align="center" scope="col" className="px-2 sm:px-3 py-2 sm:py-3">₹ {payment?.amount}</td>
-                              <td align="center" scope="col" className="px-2 sm:px-3 py-2 sm:py-3"><a href="#" className="font-medium text-blue-600 hover:underline">Get Invoice</a></td>
+                              <td align="center" scope="col" className="px-2 sm:px-3 py-2 sm:py-3"><GenerateInvoicePDF
+                                paymentData={{
+                                  user: data?.me,
+                                  amount: payment?.amount,
+                                  createdAt: formatDate(payment?.createdAt),
+                                  orderGatewayId: payment?.orderGatewayId,
+                                  status: payment?.status,
+                                  standard: payment?.standard?.name,
+                                }}
+                              /></td>
                             </tr>
                           ))}
                         </tbody>
