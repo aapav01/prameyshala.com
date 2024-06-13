@@ -75,21 +75,27 @@ export default function ChapterCard2({ chapter, size }: Props) {
               </div>
             </Link>
           )}
+          {chapter?.quizSet.length > 0 && (
+            <Link
+              href={{
+                pathname: `/learn/chapter/${chapter.id}/quiz`,
+              }}
+            >
+              <div className="text-purple-800 bg-purple-500/20 px-2 py-4 rounded-lg font-semibold text-center animate-in duration-200 ease-in hover:-translate-y-1 hover:shadow-xl hover:shadow-purple-300/50">
+                Quiz
+              </div>
+            </Link>
+          )}
           <Link
             href={{
-              pathname: `/learn/chapter/${chapter.id}/quiz`,
+              pathname: "/student-report",
+              query: { chapterId: chapter.id },
             }}
           >
-            <div className="text-purple-800 bg-purple-500/20 px-2 py-4 rounded-lg font-semibold text-center animate-in duration-200 ease-in hover:-translate-y-1 hover:shadow-xl hover:shadow-purple-300/50">
-              Quiz
-            </div>
-          </Link>
-          <Link href={{ pathname: "/student-report", query: { chapterId: chapter.id } }}>
             <div className="text-purple-800 bg-purple-500/20 px-2 py-4 rounded-lg font-semibold text-center animate-in duration-200 ease-in hover:-translate-y-1 hover:shadow-xl hover:shadow-purple-300/50">
               Report
             </div>
           </Link>
-
         </div>
       </CardContent>
     </Card>

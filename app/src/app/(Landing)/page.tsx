@@ -1,17 +1,22 @@
-import React from "react";
-import Image from "next/image";
-import { Metadata } from "next";
 import { CheckCircledIcon } from "@radix-ui/react-icons";
+import { Metadata } from "next";
+import Image from "next/image";
+import React from "react";
 // Components
 import { Button } from "@/components/ui/button";
 // Assets
-import content_2 from "@/svg/10044566_4117341.svg";
 import TestimonialMain from "@/components/testimontial-main";
-import PopularCategory from "@/components/sections/popular-category";
-import SetupOtp from "@/components/sections/setup-otp";
+import content_2 from "@/svg/10044566_4117341.svg";
+import dynamic from "next/dynamic";
 import Link from "next/link";
-import AvailableCourses from "@/components/sections/available-courses";
-import DemoVideo from "@/components/sections/demo-video";
+
+const AvailableCourses = dynamic(
+  () => import("@/components/sections/available-courses"),
+  { ssr: false }
+);
+const DemoVideo = dynamic(() => import("@/components/sections/demo-video"), {
+  ssr: false,
+});
 
 export const metadata: Metadata = {
   title: "Start Learning with Pramey Shala",
@@ -229,12 +234,9 @@ export default function Home() {
         </div>
       </section>
       {/* Category Section */}
-      <React.Suspense>
-        {/* <PopularCategory />
-         */}
-        <DemoVideo />
-        <AvailableCourses />
-      </React.Suspense>
+      {/* <PopularCategory /> */}
+      <DemoVideo />
+      <AvailableCourses />
       <section className="py-28 bg-gradient-to-b from-transparent to-primary/10 testmonialarea">
         <TestimonialMain />
       </section>

@@ -1,7 +1,9 @@
-import { gql } from "@apollo/client";
-import { getClient } from "@/lib/client";
-import { getServerSession } from "next-auth";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import authOptions from "@/lib/authOption";
+import { getClient } from "@/lib/client";
+import Initials from "@/lib/initials";
+import { gql } from "@apollo/client";
+import { getServerSession } from "next-auth";
 import React from "react";
 import GenerateInvoicePDF from "@/components/invoice";
 
@@ -38,9 +40,9 @@ const query = gql`
         method
         status
         standard {
-        name
+          name
+        }
       }
-    }
     }
   }
 `;
@@ -74,17 +76,29 @@ export default async function MyProfilePage({ }: Props) {
     const hours = lastLogin.getHours();
     const minutes = lastLogin.getMinutes();
     const seconds = lastLogin.getSeconds();
-    const amPM = hours >= 12 ? 'PM' : 'AM';
+    const amPM = hours >= 12 ? "PM" : "AM";
     const formattedHours = hours % 12 || 12;
 
-    lastLoginFormatted = `${day < 10 ? '0' : ''}${day}/${month < 10 ? '0' : ''}${month}/${year} ${formattedHours}:${minutes < 10 ? '0' : ''}${minutes}:${seconds < 10 ? '0' : ''}${seconds} ${amPM}`;
+    lastLoginFormatted = `${day < 10 ? "0" : ""}${day}/${month < 10 ? "0" : ""
+      }${month}/${year} ${formattedHours}:${minutes < 10 ? "0" : ""}${minutes}:${seconds < 10 ? "0" : ""
+      }${seconds} ${amPM}`;
   }
 
   const formatDate = (inputDate: any) => {
     const date = new Date(inputDate);
     const monthNames = [
-      "January", "February", "March", "April", "May", "June",
-      "July", "August", "September", "October", "November", "December"
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December",
     ];
     const day = date.getDate();
     const monthIndex = date.getMonth();
@@ -112,31 +126,22 @@ export default async function MyProfilePage({ }: Props) {
           <div className="flex flex-col sm:flex-row m-2 mb-6 sm:m-6 items-start justify-between gap-6">
             <div className="flex items-center gap-6">
               <div className="avatar">
-                <div className="w-24 h-24 sm:w-32 sm:h-32 overflow-hidden rounded-full shadow-lg shadow-blue-gray-500/40">
-                  {data?.me?.photo ? (
-                    /* eslint-disable-next-line @next/next/no-img-element */
-                    <img
-                      src={`${process.env.NEXT_PUBLIC_MEDIA_CDN}/static/media/${data?.me?.photo}`}
-                      width="144px"
-                      height="144px"
-                      alt={data?.me?.fullName}
-                    />
-                  ) : (
-                    /* eslint-disable-next-line @next/next/no-img-element */
-                    <img
-                      src="https://placehold.co/600x600"
-                      width="144px"
-                      height="144px"
-                      alt={data?.me?.fullName}
-                    />
-                  )}
-                </div>
+                <Avatar className="lg:min-h-24 lg:min-w-24 lg:text-3xl">
+                  <AvatarImage
+                    src={`${process.env.NEXT_PUBLIC_MEDIA_CDN}/static/media/${data?.me?.photo}`}
+                  />
+                  <AvatarFallback>
+                    {Initials(data?.me?.fullName)}
+                  </AvatarFallback>
+                </Avatar>
               </div>
               <div>
                 <h5 className="block antialiased tracking-normal font-serif text-xl sm:text-2xl font-semibold leading-snug">
                   {data?.me?.fullName}
                 </h5>
-                <h2 className="text-gray-400 text-xs sm:text-base"> Last Login : {lastLoginFormatted}</h2>
+                <h2 className="text-gray-400 text-xs sm:text-base">
+                  Last Login : {lastLoginFormatted}
+                </h2>
               </div>
             </div>
           </div>
@@ -212,15 +217,48 @@ export default async function MyProfilePage({ }: Props) {
                 <div>
                   <div className="relative overflow-x-auto shadow-md sm:rounded-md">
                     {/* @ts-ignore */}
-                    {data?.me?.paymentsSet && data?.me?.paymentsSet.filter(payment => payment.status === "PAID").length > 0 ? (
+                    {data?.me?.paymentsSet &&
+                      data?.me?.paymentsSet.filter(
+                        (payment: any) => payment.status === "PAID"
+                      ).length > 0 ? (
                       <table className="w-full text-xs sm:text-base text-left rtl:text-right text-gray-500">
                         <thead className="text-xs sm:text-base text-gray-700 title bg-gray-50">
                           <tr className="bg-gray-100">
-                            <th align="center" scope="col" className="px-2 sm:px-3 py-2 sm:py-4">Date</th>
-                            <th align="center" scope="col" className="px-2 sm:px-3 py-2 sm:py-4">Class Enrolled</th>
-                            <th align="center" scope="col" className="px-2 sm:px-3 py-2 sm:py-4">Status</th>
-                            <th align="center" scope="col" className="px-2 sm:px-3 py-2 sm:py-4">Amount</th>
-                            <th align="center" scope="col" className="px-2 sm:px-3 py-2 sm:py-4">Action</th>
+                            <th
+                              align="center"
+                              scope="col"
+                              className="px-2 sm:px-3 py-2 sm:py-4"
+                            >
+                              Date
+                            </th>
+                            <th
+                              align="center"
+                              scope="col"
+                              className="px-2 sm:px-3 py-2 sm:py-4"
+                            >
+                              Class Enrolled
+                            </th>
+                            <th
+                              align="center"
+                              scope="col"
+                              className="px-2 sm:px-3 py-2 sm:py-4"
+                            >
+                              Status
+                            </th>
+                            <th
+                              align="center"
+                              scope="col"
+                              className="px-2 sm:px-3 py-2 sm:py-4"
+                            >
+                              Amount
+                            </th>
+                            <th
+                              align="center"
+                              scope="col"
+                              className="px-2 sm:px-3 py-2 sm:py-4"
+                            >
+                              Action
+                            </th>
                           </tr>
                         </thead>
                         <tbody className="text-gray-600">
@@ -246,11 +284,12 @@ export default async function MyProfilePage({ }: Props) {
                         </tbody>
                       </table>
                     ) : (
-                      <p className="text-gray-400 ">Not Enrolled in any classes.</p>
+                      <p className="text-gray-400 ">
+                        Not Enrolled in any classes.
+                      </p>
                     )}
                   </div>
                 </div>
-
               </div>
             </div>
           </div>

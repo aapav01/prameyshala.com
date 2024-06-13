@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { gql } from "@apollo/client";
 import { getClient } from "@/lib/client";
+import { validate } from "graphql";
 
 const query = gql`
   query demo_videos {
@@ -30,6 +31,11 @@ export async function GET(request: NextRequest) {
   try {
     const { data, errors } = await getClient().query({
       query,
+      context: {
+        fetchOptions: {
+          validate: 5,
+        },
+      },
     });
     if (errors) {
       console.error(errors);

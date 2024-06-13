@@ -139,6 +139,7 @@ class Quiz(models.Model):
     updated_at = models.DateTimeField(auto_now=True, blank=True, null=True)
     publish_at = models.DateTimeField(auto_now_add=True)
     time_required = models.IntegerField(blank=True, null=True)
+    chapter = models.ForeignKey(Chapter, on_delete=models.CASCADE, default=None)
 
     def __str__(self):
         return self.name
@@ -160,15 +161,15 @@ class Lesson(models.Model):
         NONE = None, _('---------')
         VIDEO = 'video', _('Video')
         DOCUMENT = 'document', _('Document')
-        IMAGE = 'image', _('Image')
-        TEXT = 'text', _('Text')
-        QUIZ = 'quiz', _('Quiz')
+        # IMAGE = 'image', _('Image')
+        # TEXT = 'text', _('Text')
+        # QUIZ = 'quiz', _('Quiz')
         ASSIGNMENT = 'assignment', _('Assignment')
 
     class SupportPlatform(models.TextChoices):
         FILE = 'file', _('File')
-        YOUTUBE = 'youtube', _('Youtube')
-        VIMEO = 'vimeo', _('Vimeo')
+        # YOUTUBE = 'youtube', _('Youtube')
+        # VIMEO = 'vimeo', _('Vimeo')
 
     title = models.CharField(max_length=255)
     description = models.TextField(blank=True, null=True)
@@ -195,8 +196,8 @@ class Lesson(models.Model):
     created_at = models.DateTimeField(
         auto_now=False, auto_now_add=True, blank=True, null=True)
     updated_at = models.DateTimeField(auto_now=True, blank=True, null=True)
-    quiz = models.ForeignKey(
-        Quiz, on_delete=models.CASCADE, blank=True, null=True)
+    # quiz = models.ForeignKey(
+        # Quiz, on_delete=models.CASCADE, blank=True, null=True)
     assignment = models.ForeignKey(
         Assignment, on_delete=models.CASCADE, blank=True, null=True)
     preview = models.BooleanField(default=False, null=False, blank=False)
@@ -289,7 +290,7 @@ class Grades(models.Model):
         Assignment, null=True, blank=True, on_delete=models.CASCADE)
     quiz = models.ForeignKey(
         Quiz, null=True, blank=True, on_delete=models.CASCADE)
-    grade = models.DecimalField(max_digits=2,
+    grade = models.DecimalField(max_digits=3,
                                 decimal_places=1,
                                 validators=[MinValueValidator(0.0), MaxValueValidator(10.0)])
     enrollment = models.ForeignKey(

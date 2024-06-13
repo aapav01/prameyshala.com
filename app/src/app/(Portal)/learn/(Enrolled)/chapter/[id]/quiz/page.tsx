@@ -18,7 +18,6 @@ const query = gql`
     questionSet{
       id
     }
-    lessonSet{
       chapter{
         name
         subject{
@@ -27,7 +26,6 @@ const query = gql`
             name
           }
         }
-      }
     }
   }
   }
@@ -82,8 +80,8 @@ export default async function QuizDetail({params}: Props) {
             {quizByChapter?.name}
           </h1>
           <span className="py-2">
-            {quizByChapter?.lessonSet[0].chapter.name} of {quizByChapter?.lessonSet[0].chapter.subject.name} (
-            {quizByChapter?.lessonSet[0].chapter.subject.standard.name})
+            {quizByChapter?.chapter.name} of {quizByChapter?.chapter.subject.name} (
+            {quizByChapter?.chapter.subject.standard.name})
           </span>
         </div>
       </header>

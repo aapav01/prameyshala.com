@@ -31,6 +31,9 @@ const query = gql`
         lessonSet {
           id
         }
+        quizSet{
+            id
+          }
         notesSet {
           notesFile
         }

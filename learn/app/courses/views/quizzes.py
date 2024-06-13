@@ -9,8 +9,9 @@ from django.urls import reverse_lazy
 from django.utils.text import slugify
 from django.db.models import Count
 from ..forms import ChoiceInlineFormSet, ChoiceInlineUpdateFormSet, QuestionForm,  QuizForm
-from ..models import Quiz
+from ..models import Quiz,Lesson,Chapter,Subject
 from django.db.models import Q
+from ...charts.views import JSONView
 
 
 class QuizView(PermissionRequiredMixin, ListView):
@@ -41,7 +42,7 @@ class QuizView(PermissionRequiredMixin, ListView):
         self.extra_context.update({'form': form})
         if form.is_valid():
             instance = form.save(commit=False)
-            instance.slug = slugify(instance.name)
+            instance.chapter = Chapter.objects.get(pk=form.cleaned_data['chapter_field'])
             instance.save()
             messages.success(
                 request, f'{instance.name} has been created successfully.')
@@ -88,24 +89,33 @@ class QuizDetailView(PermissionRequiredMixin, DetailView):
         context['form'] = QuizForm(
             instance=self.object, prefix=self.object.pk)
         context['questions'] = self.object.question_set.all()
+        quiz = self.object
+        chapter = quiz.chapter
         for obj in context['questions']:
             temp_form = QuestionForm(instance=obj, prefix=obj.pk)
+            temp_form.fields['lesson'].queryset = Lesson.objects.filter(chapter=chapter)
             obj.question_form = temp_form
             obj.choice_formset = ChoiceInlineUpdateFormSet(
                 instance=obj, prefix=obj.pk)
         if self.request.method == 'POST':
-            context['question_form'] = QuestionForm(self.request.POST)
+            post_question_form = QuestionForm(self.request.POST)
+            post_question_form.fields['lesson'].queryset = Lesson.objects.filter(chapter=chapter)
+            context['question_form'] = post_question_form
             context['question_form'].choice_formset = ChoiceInlineUpdateFormSet(
                 self.request.POST, prefix='question_formset')
         else:
-            context['question_form'] = QuestionForm()
-            context['question_form'].choice_formset = ChoiceInlineFormSet(
-                prefix='question_formset')
+            question_form = QuestionForm()
+            question_form.fields['lesson'].queryset = Lesson.objects.filter(chapter=chapter)
+            context['question_form'] = question_form
+            context['question_form'].choice_formset = ChoiceInlineFormSet(prefix='question_formset')
         return context
 
     # create
     def post(self, request, **kwargs):
+        quiz = self.get_object()
+        chapter = Chapter.objects.get(pk=quiz.chapter.id)
         form = QuestionForm(request.POST)
+        form.fields['lesson'].queryset = Lesson.objects.filter(chapter=chapter)
         self.extra_context.update({'question_form': form})
         if form.is_valid():
             instance = form.save(commit=False)
@@ -135,7 +145,6 @@ class QuizUpdateView(PermissionRequiredMixin, UpdateView):
     success_url = reverse_lazy("courses:quizzes")
     template_name = "form.html"
     form = QuizForm
-    fields = "__all__"
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
@@ -158,3 +167,32 @@ class QuizDeleteView(PermissionRequiredMixin, DeleteView):
     def get(self, request, **kwargs):
         messages.error(request, 'Quiz has been deleted successfully.')
         return self.delete(request, **kwargs)
+
+
+class GetSubjectsView(JSONView):
+    def get(self, request, *args, **kwargs):
+        class_id = request.GET.get('class_id')
+        if class_id:
+            subjects = Subject.objects.filter(standard_id=class_id)
+            if subjects:
+                subject_list = list(subjects.values('id', 'name'))
+            else:
+                subject_list = []
+        else:
+            subject_list = []
+        context = {'subjects': subject_list}
+        return self.render_to_json_response(context)
+
+class GetChaptersView(JSONView):
+    def get(self, request, *args, **kwargs):
+        subject_id = request.GET.get('subject_id')
+        if subject_id:
+            chapters = Chapter.objects.filter(subject_id=subject_id)
+            if chapters:
+                chapter_list = list(chapters.values('id', 'name'))
+            else:
+                chapter_list = []
+        else:
+            chapter_list = []
+        context = {'chapters': chapter_list}
+        return self.render_to_json_response(context)
