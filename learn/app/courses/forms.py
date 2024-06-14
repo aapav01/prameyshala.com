@@ -96,8 +96,8 @@ class CategoriesForm(ModelForm):
 
 class QuizForm(ModelForm):
     class_field = forms.ModelChoiceField(queryset=Classes.objects.all(), label="Class")
-    subject_field = forms.ChoiceField(label="Subject", choices=[])
-    chapter_field = forms.ChoiceField(label="Chapter", choices=[])
+    subject_field = forms.ChoiceField(label="Subject", choices=[(None, 'Select Subject')])
+    chapter_field = forms.ChoiceField(label="Chapter", choices=[(None, 'Select Chapter')])
 
     class Meta:
         model = Quiz
