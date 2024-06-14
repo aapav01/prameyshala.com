@@ -173,58 +173,40 @@
 {% endblock content %}
 {% block body_js %}
 <script>
-  $(document).ready(function() {
-      $(document).on('change', '[id^="id_"][id$="-class_field"]', function() {
-          var classId = $(this).val();
-          var prefix = $(this).attr('id').split('-')[0];
-          var subjectField = $('#' + prefix + '-subject_field');
-          var chapterField = $('#' + prefix + '-chapter_field');
-          
-          if (classId) {
-              $.ajax({
-                  url: '{% url "courses:get_subjects" %}',
-                  data: {'class_id': classId},
-                  success: function(data) {
-                      var options = '<option value="">---------</option>';
-                      for (var i = 0; i < data.subjects.length; i++) {
-                          options += '<option value="' + data.subjects[i].id + '">' + data.subjects[i].name + '</option>';
-                      }
-                      subjectField.html(options);
-                      subjectField.prop('disabled', false);
-                      chapterField.html('<option value="">---------</option>');
-                      chapterField.prop('disabled', true);
-                  }
-              });
-          } else {
-              subjectField.html('<option value="">---------</option>');
-              subjectField.prop('disabled', true);
-              chapterField.html('<option value="">---------</option>');
-              chapterField.prop('disabled', true);
-          }
+  const class_options = document.getElementById("id_{{ quiz.pk }}-class_field");
+  const subject_options = document.getElementById("id_{{ quiz.pk }}-subject_field");
+  
+  class_options.addEventListener("change", (e) => {
+    const class_id = e.target.value;
+    const subject_options = document.getElementById("id_{{ quiz.pk }}-subject_field");
+    subject_options.innerHTML = "";
+    fetch(`/courses/get_subjects/${class_id}/`)
+      .then(response => response.json())
+      .then(data => {
+        data.subjects.forEach(subject => {
+          const option = document.createElement("option");
+          option.value = subject.id;
+          option.textContent = subject.name;
+          subject_options.appendChild(option);
+          // 
+        });
       });
+  });
 
-      $(document).on('change', '[id^="id_"][id$="-subject_field"]', function() {
-          var subjectId = $(this).val();
-          var prefix = $(this).attr('id').split('-')[0];
-          var chapterField = $('#' + prefix + '-chapter_field');
-          
-          if (subjectId) {
-              $.ajax({
-                  url: '{% url "courses:get_chapters" %}',
-                  data: {'subject_id': subjectId},
-                  success: function(data) {
-                      var options = '<option value="">---------</option>';
-                      for (var i = 0; i < data.chapters.length; i++) {
-                          options += '<option value="' + data.chapters[i].id + '">' + data.chapters[i].name + '</option>';
-                      }
-                      chapterField.html(options);
-                      chapterField.prop('disabled', false);
-                  }
-              });
-          } else {
-              chapterField.html('<option value="">---------</option>');
-              chapterField.prop('disabled', true);
-          }
+  subject_options.addEventListener("change", (e) => {
+    const subject_id = e.target.value;
+    const chapter_options = document.getElementById("id_{{ quiz.pk }}-chapter_field");
+    chapter_options.innerHTML = "";
+    fetch(`/courses/get_chapters/${subject_id}/`)
+      .then(response => response.json())
+      .then(data => {
+        console.log(data);
+        data.chapters.forEach(chapter => {
+          const option = document.createElement("option");
+          option.value = chapter.id;
+          option.textContent = chapter.name;
+          chapter_options.appendChild(option);
+        });
       });
   });
 </script>
