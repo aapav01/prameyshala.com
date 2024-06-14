@@ -244,7 +244,7 @@ class Query(graphene.ObjectType):
         if not user.is_authenticated:
             raise Exception("Authentication credentials were not provided")
         chapter_instance = Chapter.objects.get(pk=chapter)
-        return Quiz.objects.get(chapter = chapter_instance)
+        return Quiz.objects.get(chapter=chapter_instance)
 
     # quiz hash
     def resolve_quiz_hash(self, info, quiz_id):
@@ -432,6 +432,7 @@ class EndQuiz(graphene.Mutation):
         grade = graphene.Int(required=True)
 
     success = graphene.Boolean()
+    message = graphene.String()
 
     def mutate(self, info, quiz_hash_id, grade):
         user = info.context.user
@@ -439,19 +440,24 @@ class EndQuiz(graphene.Mutation):
             raise Exception("Authentication credentials were not provided")
         quiz_hash = QuizHash.objects.get(quiz_hash_id=quiz_hash_id)
         quiz_hash.quiz_ended = True
-        enrollment = Enrollment.objects.get(user=user)
-        enrollment_id = enrollment.id
-        enrolled_class_id = enrollment.standard.id
-        quiz = Quiz.objects.get(pk=quiz_hash.quiz.id)
-        Grades.objects.create(
-            student_id=user.id,
-            quiz=quiz,
-            enrolled_class_id=enrolled_class_id,
-            enrollment_id=enrollment_id,
-            grade=grade
-        )
-        quiz_hash.save()
-        return EndQuiz(success=True)
+        # TODO: add error messages check other for enrollments.
+        try:
+            enrollment = Enrollment.objects.filter(user=user, standard=quiz_hash.quiz.chapter.subject.standard).filter(
+                expiration_date__gte=datetime.now()).first()
+            enrolled_class_id = enrollment.standard.id
+            quiz = Quiz.objects.get(pk=quiz_hash.quiz.id)
+            Grades.objects.create(
+                student_id=user.id,
+                quiz=quiz,
+                enrolled_class_id=enrolled_class_id,
+                enrollment_id=enrollment.id,
+                grade=grade
+            )
+            quiz_hash.save()
+        except Exception as e:
+            print(e)
+            return EndQuiz(success=False, message=e)
+        return EndQuiz(success=True, message="Quiz Ended Successfully")
 
 
 class CreateGrades(graphene.Mutation):
