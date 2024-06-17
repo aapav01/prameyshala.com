@@ -19,36 +19,33 @@ type Props = {
 const query = gql`
   query getGrades {
     grades {
+      id
       grade
       quiz {
+        timeRequired
+        type
         name
         id
-        lessonSet {
+        chapter {
           id
-          title
-          chapter {
-            name
+          name
+          subject {
             id
-            subject {
-              id
-              name
-            }
+            name
           }
         }
       }
       assignment {
         id
+        type
         title
-        lessonSet {
+        timeRequired
+        chapter {
           id
-          title
-          chapter {
+          name
+          subject {
             id
             name
-            subject {
-              id
-              name
-            }
           }
         }
       }
@@ -139,27 +136,26 @@ export default async function studentgrades({ searchParams }: Props) {
 
   // Quiz
   const quizGrade = data?.grades
-    ?.map(({ grade, quiz, student }: any) => ({ grade, quiz, student }))
+    ?.map(({ grade, quiz }: any) => ({ grade, quiz }))
     .filter((data: any) => data?.quiz);
 
   // Assignment
   const assignmentGrade = data?.grades
-    ?.map(({ grade, assignment, student }: any) => ({
+    ?.map(({ grade, assignment }: any) => ({
       grade,
       assignment,
-      student,
     }))
     .filter((data: any) => data?.assignment);
   const assignmentchapterGrade = data?.grades
     ?.map(({ grade, assignment }: any) => ({
       grade,
-      chapter: assignment ? assignment?.lessonSet[0]?.chapter : null,
+      chapter: assignment ? assignment?.chapter : null,
     }))
     .filter((data: any) => data?.chapter);
   const assignmentsubjectGrade = data?.grades
     ?.map(({ grade, assignment }: any) => ({
       grade,
-      subject: assignment ? assignment?.lessonSet[0]?.chapter?.subject : null,
+      subject: assignment ? assignment?.chapter?.subject : null,
     }))
     .filter((data: any) => data?.subject);
 
@@ -183,13 +179,13 @@ export default async function studentgrades({ searchParams }: Props) {
     ?.filter((item: any) => item?.quiz)
     .reduce((acc: any, item: any) => {
       const existingQuiz = acc.find(
-        (q: any) => q.name === item?.quiz?.lessonSet[0]?.chapter?.subject?.name
+        (q: any) => q.name === item?.quiz?.chapter?.subject?.name
       );
       if (existingQuiz) {
         existingQuiz.grades.push(parseFloat(item?.grade));
       } else {
         acc.push({
-          name: item?.quiz?.lessonSet[0]?.chapter?.subject?.name,
+          name: item?.quiz?.chapter?.subject?.name,
           grades: [parseFloat(item?.grade)],
         });
       }
@@ -212,13 +208,13 @@ export default async function studentgrades({ searchParams }: Props) {
     ?.filter((item: any) => item?.quiz)
     .reduce((acc: any, item: any) => {
       const existingQuiz = acc.find(
-        (q: any) => q.name === item?.quiz?.lessonSet[0]?.chapter?.name
+        (q: any) => q.name === item?.quiz?.chapter?.name
       );
       if (existingQuiz) {
         existingQuiz.grades.push(parseFloat(item?.grade));
       } else {
         acc.push({
-          name: item?.quiz?.lessonSet[0]?.chapter?.name,
+          name: item?.quiz?.chapter?.name,
           grades: [parseFloat(item?.grade)],
         });
       }
@@ -232,11 +228,12 @@ export default async function studentgrades({ searchParams }: Props) {
     })
   );
 
+  // Filtered
   // Filtered data for the specific chapter
   const filteredGrades = chapterId
     ? data?.grades.filter(
       (grade: any) =>
-        grade?.quiz?.lessonSet[0]?.chapter?.id.toString() === chapterId
+        grade?.quiz?.chapter?.id.toString() === chapterId
     )
     : [];
 
@@ -382,10 +379,10 @@ export default async function studentgrades({ searchParams }: Props) {
                                   <span
                                     key={`grade_${attemptIndex}`}
                                     className={`ml-2 ${grade > 7.5
-                                        ? "text-green-500"
-                                        : grade >= 5
-                                          ? "text-orange-400"
-                                          : "text-red-600"
+                                      ? "text-green-500"
+                                      : grade >= 5
+                                        ? "text-orange-400"
+                                        : "text-red-600"
                                       }`}
                                   >
                                     {grade}
@@ -481,10 +478,9 @@ export default async function studentgrades({ searchParams }: Props) {
                           return accumulator;
                         }, [])
                         .map((gradedata: any, index: any) => (
-                          <div key={`quiz_${index}`} className="mb-8">
+                          <div key={`chapter_quiz_${index}`} className="mb-8">
                             <p className="font-serif text-xl sm:text-2xl font-semibold leading-relaxed text-blue-500 mx-2">
-                              {gradedata?.quiz?.lessonSet[0]?.chapter?.name}{" "}
-                              Quiz Grades by Attempt
+                              Attempt wise {gradedata?.quiz?.name} grades
                             </p>
                             <hr className="border-blue-gray-50 " />
                             <ul className="mx-2 pt-4 text-lg sm:text-xl">
@@ -495,10 +491,10 @@ export default async function studentgrades({ searchParams }: Props) {
                                     <span
                                       key={`grade_${attemptIndex}`}
                                       className={`ml-2 ${grade > 7.5
-                                          ? "text-green-500"
-                                          : grade >= 5
-                                            ? "text-orange-400"
-                                            : "text-red-600"
+                                        ? "text-green-500"
+                                        : grade >= 5
+                                          ? "text-orange-400"
+                                          : "text-red-600"
                                         }`}
                                     >
                                       {grade}
@@ -508,16 +504,29 @@ export default async function studentgrades({ searchParams }: Props) {
                               </li>
                             </ul>
                             <div className="mt-4">
-                              {chapterChartData?.map(
-                                (chartData: any, chartIndex: any) => {
-                                  if (
-                                    chartData?.[0]?.name ===
-                                    gradedata?.quiz?.name
-                                  ) {
+                              {quizChartDataForChapter?.map(
+                                (data: any, dataIndex: number) => {
+                                  if (data?.name === gradedata?.quiz?.name) {
+                                    let chartFormattedData: {
+                                      name: string;
+                                      grade: number;
+                                      attempt: String;
+                                    }[] = [];
+                                    for (
+                                      let i = 0;
+                                      i < data?.grades?.length;
+                                      i++
+                                    ) {
+                                      chartFormattedData.push({
+                                        name: data?.name,
+                                        grade: data?.grades[i],
+                                        attempt: `Attempt ${i + 1}`,
+                                      });
+                                    }
                                     return (
                                       <LineChartComponent
-                                        chartData={chartData}
-                                        key={chartIndex}
+                                        chartData={chartFormattedData}
+                                        key={dataIndex}
                                         XAxisDatakey="attempt"
                                         YAxisDatakey="grade"
                                       />
@@ -530,9 +539,7 @@ export default async function studentgrades({ searchParams }: Props) {
                           </div>
                         ))
                     ) : (
-                      <div>
-                        <h1>No Quiz/Assignment given for this Chapter.</h1>
-                      </div>
+                      <p>No data available for this chapter.</p>
                     )}
                   </Card>
                 </div>
