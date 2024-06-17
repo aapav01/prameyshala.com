@@ -119,7 +119,7 @@ class QuizDetailView(PermissionRequiredMixin, DetailView):
     def post(self, request, **kwargs):
         quiz = self.get_object()
         chapter = Chapter.objects.get(pk=quiz.chapter.id)
-        form = QuestionForm(request.POST)
+        form = QuestionForm(request.POST, request.FILES)
         form.fields['lesson'].queryset = Lesson.objects.filter(chapter=chapter)
         self.extra_context.update({'question_form': form})
         if form.is_valid():
@@ -127,7 +127,7 @@ class QuizDetailView(PermissionRequiredMixin, DetailView):
             instance.quiz = self.get_object()
             instance.save()
             question_formset = ChoiceInlineFormSet(
-                request.POST, instance=instance, prefix='question_formset')
+                request.POST, request.FILES, instance=instance, prefix='question_formset')
             if question_formset.is_valid():
                 question_formset.save()
             else:
